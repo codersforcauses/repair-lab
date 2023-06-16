@@ -18,14 +18,14 @@
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.18.5",
-    "@prisma/client": "^4.14.1",
+    "@clerk/nextjs": "^4.21.3",
+    "@prisma/client": "^4.15.0",
     "@types/chai": "^4.3.5",
-    "next": "13.4.3",
+    "next": "13.4.6",
     "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.43.9"
+    "react-hook-form": "^7.44.3"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
@@ -36,9 +36,10 @@
     "autoprefixer": "10.4.14",
     "chai": "^4.3.7",
     "cross-env": "^7.0.3",
+    "deep-equal-in-any-order": "^2.0.6",
     "dotenv-cli": "^7.2.1",
     "eslint": "8.41.0",
-    "eslint-config-next": "13.4.4",
+    "eslint-config-next": "13.4.6",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
@@ -51,6 +52,6 @@
     "prisma": "^4.14.1",
     "tailwindcss": "3.3.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.3"
   }
 }

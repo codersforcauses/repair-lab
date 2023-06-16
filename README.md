@@ -1,6 +1,6 @@
-# Next.JS Prisma Template
+# Repair Lab Tracker
 
-Template for Next.JS Prisma projects.
+A repair tracker for [Repair Lab](https://repairlab.myfreesites.net/) and other repair cafes.
 
 ## Stack
 

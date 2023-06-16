@@ -4,11 +4,11 @@ import { Message } from "@prisma/client";
 
 import prisma from "../../lib/prisma";
 
-type Data = Message[];
-
-export default async function handler(
+// getMessagesByContent retrieves all messages from the database
+// that have the content specified in the query string.
+export default async function getMessagesByContent( // you can name this whatever you want
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Message[]>
 ) {
   const messages = await prisma.message.findMany({
     where: { content: req.query.content as string }

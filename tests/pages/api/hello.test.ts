@@ -1,12 +1,12 @@
-import { expect } from "chai";
-import prisma from "../../../src/lib/prisma";
-import { cleanup } from "../../utils";
-
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
-import endpoint, { config } from "../../../src/pages/api/hello";
 import { Message } from "@prisma/client";
+import { expect } from "chai";
+
+import { cleanup } from "../../utils";
 import { teardown } from "../../utils";
+import prisma from "../../../src/lib/prisma";
+import endpoint, { config } from "../../../src/pages/api/hello";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
