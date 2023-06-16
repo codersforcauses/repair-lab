@@ -15,7 +15,7 @@
     "format:check": "prettier -c .",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "test": "npm run docker:up && dotenv -e .env -- prisma migrate deploy && dotenv -e .env -- mocha",
+    "test": "dotenv -e .env -- prisma migrate deploy && dotenv -e .env -- mocha",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio"

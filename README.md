@@ -87,7 +87,7 @@ npx prisma studio
 
 ## Testing
 
-This uses the second db on port `5433`.
+This uses the second db on port `5433`. Make sure you've started the Docker containers.
 
 ```sh
 npm run test
