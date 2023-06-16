@@ -25,5 +25,5 @@ jobs:
       - name: Run API tests
         run: npm run test
         env:
-          DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5433/test?schema=public
-          DATABASE_URL_DIRECT: postgres://postgres:postgres@host.docker.internal:5432/test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5433/test?schema=public
+          DATABASE_URL_DIRECT: postgres://postgres:postgres@localhost:5432/test
