@@ -4,6 +4,7 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: node:18-alpine
     services:
       postgres:
         image: postgres
