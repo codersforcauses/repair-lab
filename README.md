@@ -4,14 +4,14 @@ A repair tracker for [Repair Lab](https://repairlab.myfreesites.net/) and other 
 
 ## Stack
 
-* Typescript
-* Next.JS for frontend + backend
-* Prisma as the ORM
-* Postgres (Docker) for local DB
-* Mocha + Chai for testing
-* Clerk for auth
-* TailwindCSS for styling
-* ESLint + Prettier for linting
+- Typescript
+- Next.JS for frontend + backend
+- Prisma as the ORM
+- Postgres (Docker) for local DB
+- Mocha + Chai for testing
+- Clerk for auth
+- TailwindCSS for styling
+- ESLint + Prettier for linting
 
 ## Getting Started
 

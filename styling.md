@@ -21,13 +21,13 @@ This document outlines the convention for this project as well as generally good
 ```tsx
 // DO THIS
 export default function MyComponent() {
-  return <div>My Component</div>
+  return <div>My Component</div>;
 }
 
 // NOT THIS
 export default class MyComponent extends React.Component {
   render() {
-    return <div>My Component</div>
+    return <div>My Component</div>;
   }
 }
 ```
@@ -35,12 +35,14 @@ export default class MyComponent extends React.Component {
 ```tsx
 // DO THIS
 export default function MyComponent() {
-  return <div>My Component</div>
+  return <div>My Component</div>;
 }
 
 // NOT THIS
-const MyComponent = () => <div>My Component</div>
-export default MyComponent
+const MyComponent = () => {
+  return <div>My Component</div>;
+};
+export default MyComponent;
 ```
 
 ### `src/components/`

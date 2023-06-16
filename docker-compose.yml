@@ -1,9 +1,9 @@
 version: '3.9'
 
-services: 
+services:
   db:
     image: postgres
-    environment: 
+    environment:
       # comes from the .env file
       - POSTGRES_DB
       - POSTGRES_USER
@@ -15,7 +15,7 @@ services:
 
   db-test:
     image: postgres
-    environment: 
+    environment:
       - POSTGRES_DB
       - POSTGRES_USER
       - POSTGRES_PASSWORD
