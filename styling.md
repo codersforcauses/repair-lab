@@ -1,6 +1,6 @@
 # Styling Conventions
 
-This document outlines the convention for this projects as well as generally good practices.
+This document outlines the convention for this project as well as generally good practices.
 
 ## General
 
