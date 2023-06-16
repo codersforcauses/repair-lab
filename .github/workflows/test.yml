@@ -10,7 +10,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_DB: test
         ports:
           - 5433:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -25,8 +25,5 @@ jobs:
       - name: Run API tests
         run: npm run test
         env:
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5433
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          DATABASE_URL: postgres://postgres:postgres@host.docker.internal:5433/test?schema=public
+          DATABASE_URL_DIRECT: postgres://postgres:postgres@postgres:5432/test
