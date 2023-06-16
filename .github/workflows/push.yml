@@ -41,6 +41,7 @@ jobs:
       - run: npm run format:check
 
   test:
+    name: Run API tests
     runs-on: ubuntu-latest
     container: node:18-alpine
     services:
@@ -52,7 +53,7 @@ jobs:
           POSTGRES_HOST: postgres
           POSTGRES_DB: test
         ports:
-          - 5433:5432
+          - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -65,5 +66,5 @@ jobs:
       - name: Run API tests
         run: npm run test
         env:
-          DATABASE_URL: postgres://postgres:postgres@postgres:5433/test?schema=public
-          DATABASE_URL_DIRECT: postgres://postgres:postgres@postgres:5433/test
+          DATABASE_URL: postgres://postgres:postgres@postgres:5432/test?schema=public
+          DATABASE_URL_DIRECT: postgres://postgres:postgres@postgres:5432/test
