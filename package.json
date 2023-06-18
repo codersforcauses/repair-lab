@@ -16,9 +16,11 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "test": "npm run docker:up && prisma db push && vitest run",
-    "coverage": "vitest run --coverage",
+    "coverage": "prisma migrate deploy && vitest run --coverage",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:reset": "prisma migrate reset --force && prisma db push",
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
