@@ -15,8 +15,8 @@ This document outlines the convention for this project as well as generally good
 
 ## `src/` (Next.JS stuff)
 
-- All file and folder names are in `kebab-case`. Avoid multiple word file names where possible. Favour creating extra folders.
-- Use functional components over class components. They should be defined using `function` and should be exported as `default`. Use arrow functions everywhere else.
+- All file and folder names are in `lowercase`. Avoid multiple word api endpoints where possible. Favour creating extra folders.
+- Use functional components over class components. They should be defined using `function` and should be exported as `default`. Use `(arrow) => functions()` everywhere else.
 
 ```tsx
 // DO THIS
@@ -48,9 +48,9 @@ export default MyComponent;
 ### `src/components/`
 
 - Try to reuse components as much as possible. If you find yourself copying and pasting code, it's probably time to refactor. If you didn't make the component, make sure to let them know or ask them for help.
-- All file and folder names here should be `PascalCase.tsx`. Exported component names should be in `<PascalCase />`.
+- All file and folder names here should be `lowercase.tsx`. Exported component names should be in `<PascalCase />`.
 
-> If you need to break a component into smaller components, create a folder with the same name as the component and create the smaller components in there. For example, if you have a component called `MyComponent.tsx` and you need to break it into smaller components, create a folder called `MyComponent` and create the smaller components in there. The main component should be called `index.tsx` (still exported as `MyComponent`).
+> If you need to break a component into smaller components, create a folder with the same name as the component and create the smaller components in there. For example, if you have a component called `mycomponent.tsx` and you need to break it into smaller components, create a folder called `mycomponent` and create the smaller components in there. The main component should be called `index.tsx` (still exported as `MyComponent`).
 
 ## `tests/`
 

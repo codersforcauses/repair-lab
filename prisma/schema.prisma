@@ -4,17 +4,9 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  url               = env("DATABASE_URL") // uses connection pooling
-  directUrl         = env("DATABASE_URL_DIRECT") // uses a direct connection
-  shadowDatabaseUrl = env("DATABASE_URL_DIRECT") // used for migrations 
-}
-
-model User {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  messages  Message[]
+  url               = env("DATABASE_URL")
+  directUrl         = env("DATABASE_URL_DIRECT")
+  shadowDatabaseUrl = env("DATABASE_URL_DIRECT")
 }
 
 model Message {
@@ -23,5 +15,5 @@ model Message {
   authorId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id])
+  User      String
 }
