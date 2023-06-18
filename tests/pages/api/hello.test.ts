@@ -1,7 +1,6 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
-import { Message } from "@prisma/client";
-import { expect } from "chai";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { cleanup } from "../../utils";
 import { teardown } from "../../utils";
@@ -13,17 +12,11 @@ const handler: typeof endpoint & { config?: PageConfig } = endpoint;
 handler.config = config;
 
 describe("/api/hello", () => {
-  before(async () => {
+  beforeAll(async () => {
     await cleanup();
-
-    const user = await prisma.user.create({
-      data: {
-        name: "Frinze"
-      }
-    });
     await prisma.message.create({
       data: {
-        authorId: user.id,
+        authorId: "test",
         content: "Hello World"
       }
     });
@@ -35,7 +28,7 @@ describe("/api/hello", () => {
       url: `/?content=Hello%20World`,
       test: async ({ fetch }) => {
         const res = await fetch({ method: "GET" });
-        const body = (await res.json()) as Message[]; // do a cast here or silence the ts error
+        const body = await res.json();
 
         console.log(body);
 
@@ -53,7 +46,7 @@ describe("/api/hello", () => {
       url: `/?content=Dummy`,
       test: async ({ fetch }) => {
         const res = await fetch({ method: "GET" });
-        const body = (await res.json()) as Message[]; // do a cast here or silence the ts error
+        const body = await res.json();
 
         console.log(body);
 
@@ -64,7 +57,7 @@ describe("/api/hello", () => {
     });
   });
 
-  after(() => {
+  afterAll(() => {
     teardown();
   });
 });

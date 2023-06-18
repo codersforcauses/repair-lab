@@ -6,7 +6,7 @@ import prisma from "../../lib/prisma";
 
 // getMessagesByContent retrieves all messages from the database
 // that have the content specified in the query string.
-export default async function getMessagesByContent( // you can name this whatever you want
+export default async function handler( // you can name this whatever you want
   req: NextApiRequest,
   res: NextApiResponse<Message[]>
 ) {
