@@ -15,7 +15,15 @@ A repair tracker for [Repair Lab](https://repairlab.myfreesites.net/) and other 
 
 ## Getting Started
 
-First, run the development server:
+First, install [Node](https://nodejs.org/en/download/) and [Docker](https://docs.docker.com/get-docker/).
+
+Then, install the dependencies:
+
+```bash
+npm install
+```
+
+Now run the development server:
 
 ```bash
 npm run dev
