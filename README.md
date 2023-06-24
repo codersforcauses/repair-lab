@@ -23,6 +23,8 @@ Then, install the dependencies:
 npm install
 ```
 
+Duplicate the `.env.local.example` file as `.env.local` and fill in the values found in the Discord.
+
 Now run the development server:
 
 ```bash
@@ -53,7 +55,7 @@ Or if you want to keep using the current terminal...
 docker compose up -d
 ```
 
-By default, it's configured to run one on port `5432` for local development, and `5433` for unit testing.
+By default, it's configured to run one on port `5432` for local development.
 
 **Don't forget to stop the containers!**
 
@@ -95,7 +97,7 @@ npx prisma studio
 
 ## Testing
 
-This uses the second db on port `5433`. Make sure you've started the Docker containers.
+Make sure you've started the Docker container.
 
 ```sh
 npm run test
