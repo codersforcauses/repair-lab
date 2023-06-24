@@ -7,11 +7,11 @@ module.exports = {
   ],
   theme: {
     colors: {
-      'brand-primary': '#098D85',
-      'brand-secondary': '#F9FEFD',
-      'brand-accent-grey': '#56727E',
-      'brand-accent-darkaqua': '#1E807E',
-      'brand-accent-aqua': '#A6DCDB',
+      "brand-primary": "#098D85",
+      "brand-secondary": "#F9FEFD",
+      "brand-accent-grey": "#56727E",
+      "brand-accent-darkaqua": "#1E807E",
+      "brand-accent-aqua": "#A6DCDB"
     },
     extend: {
       backgroundImage: {
