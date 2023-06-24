@@ -15,7 +15,7 @@ A repair tracker for [Repair Lab](https://repairlab.myfreesites.net/) and other 
 
 ## Getting Started
 
-First, install [Node](https://nodejs.org/en/download/) and [Docker](https://docs.docker.com/get-docker/).
+First, install [Node](https://nodejs.org/en/download/) (either is fine) and [Docker](https://docs.docker.com/get-docker/).
 
 Then, install the dependencies:
 
