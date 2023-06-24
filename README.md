@@ -23,7 +23,8 @@ Then, install the dependencies:
 npm install
 ```
 
-Duplicate the `.env.local.example` file as `.env.local` and fill in the values found in the Discord.
+Duplicate the `.env.local.example` file as `.env.local`, `.env.example` file as `.env` and fill in the values found in the Discord.
+
 If you're on Windows, change `localhost` to `host.docker.internal` for the `DATABASE_URL` and `DATABASE_URL_DIRECT` in `.env.local` and `.env`.
 
 Now run the development server:
