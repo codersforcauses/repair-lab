@@ -3,16 +3,61 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  directUrl         = env("DATABASE_URL_DIRECT")
-  shadowDatabaseUrl = env("DATABASE_URL_DIRECT")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_DIRECT")
 }
 
-model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Event {
+  id  String  @id
+  creator  String //User id (from clerk)
+  creation_date  DateTime  @default(now())
+  name  String  @unique
+  location  String
+  description  String
+  volunteers  String[]
+  
+
+  start_date  DateTime
+  end_date  DateTime
+
+  repair_requests Repair_request[] //relation field, not a column (one event to many repair_requests)
 }
+model Repair_request { //status column with enum datatype needs new table and relations? not sure
+  id  String  @id
+  user_id String //User id
+
+  event Event @relation(fields: [event_id], references: [id]) //relation field (one repair_request to one event)
+  event_id String
+
+  images String[]
+  description String
+  request_date DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  item Item_type @relation(fields: [item_type], references: [name]) //relation field
+  item_type String
+
+  brand Brand @relation(fields: [item_brand], references: [name])
+  item_brand String
+
+
+  image Repair_Request_Image[] 
+}
+
+model Item_type {
+  name String @id
+  repair_requests Repair_request[]
+}
+model Brand {
+  name String @id
+  repair_requests Repair_request[]
+}
+
+model Repair_Request_Image {
+  id String @id
+  s3_key String //potentially to be changed for privacy reasons
+
+  repair_request Repair_request @relation(fields: [repair_request_id], references: [id])
+  repair_request_id String
+}
+
