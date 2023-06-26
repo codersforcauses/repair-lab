@@ -9,21 +9,22 @@ datasource db {
 }
 
 model Event {
-  id  String  @id
-  creator  String //User id (from clerk)
-  creation_date  DateTime  @default(now())
-  name  String  @unique
-  location  String
-  description  String
+  id        String @id
+  createdBy String //User id (from clerk)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String   @unique
+  location    String
+  description String
   volunteers  String[]
-  
 
-  start_date  DateTime
-  end_date  DateTime
+  startDate DateTime
+  endDate   DateTime
 
-  repair_requests Repair_request[] //relation field, not a column (one event to many repair_requests)
+  repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
 }
-
 
 enum Status {
   PENDING
@@ -33,44 +34,44 @@ enum Status {
   CANCELLED
 }
 
-model Repair_request { 
-  id  String  @id
-  user_id String //User id
+model RepairRequest {
+  id        String @id
+  createdBy String //User id
 
-  event Event @relation(fields: [event_id], references: [id]) //relation field (one repair_request to one event)
-  event_id String
+  event   Event  @relation(fields: [eventId], references: [id]) //relation field (one repair_request to one event)
+  eventId String
 
   status Status @default(PENDING)
 
-  images String[]
+  images      String[]
   description String
-  request_date DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  item Item_type @relation(fields: [item_type], references: [name]) //relation field
-  item_type String
+  requestDate DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  item        Item_type @relation(fields: [itemType], references: [name]) //relation field
+  itemType    String
 
-  brand Brand @relation(fields: [item_brand], references: [name])
-  item_brand String
+  brand     Brand  @relation(fields: [itemBrand], references: [name])
+  itemBrand String
 
-
-  image Repair_Request_Image[] 
+  image RepairRequestImage[]
 }
 
 model Item_type {
-  name String @id
-  repair_requests Repair_request[]
+  name           String          @id
+  repairRequests RepairRequest[]
 }
+
 model Brand {
-  name String @id
-  repair_requests Repair_request[]
+  name           String          @id
+  repairRequests RepairRequest[]
 }
 
-model Repair_Request_Image {
-  id String @id
-  s3_key String //potentially to be changed for privacy reasons
+model RepairRequestImage {
+  id    String @id
+  s3Key String //Potentially to be changed for privacy reasons
 
-  repair_request Repair_request @relation(fields: [repair_request_id], references: [id])
-  repair_request_id String
+  repairRequest   RepairRequest @relation(fields: [repairRequestId], references: [id])
+  repairRequestId String
 }
 
 model Message {
@@ -80,6 +81,3 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-
-
