@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Event {
-  id        String @id
+  id        String @id @default(uuid())
   createdBy String //User id (from clerk)
 
   createdAt DateTime @default(now())
@@ -35,7 +35,7 @@ enum Status {
 }
 
 model RepairRequest {
-  id        String @id
+  id        String @id @default(uuid())
   createdBy String //User id
 
   event   Event  @relation(fields: [eventId], references: [id]) //relation field (one repair_request to one event)
@@ -46,7 +46,7 @@ model RepairRequest {
   description String
   requestDate DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  item        Item_type @relation(fields: [itemType], references: [name]) //relation field
+  item        ItemType @relation(fields: [itemType], references: [name]) //relation field
   itemType    String
 
   brand     Brand  @relation(fields: [itemBrand], references: [name])
@@ -55,7 +55,7 @@ model RepairRequest {
   images RepairRequestImage[]
 }
 
-model Item_type {
+model ItemType {
   name           String          @id
   repairRequests RepairRequest[]
 }
@@ -66,7 +66,7 @@ model Brand {
 }
 
 model RepairRequestImage {
-  id    String @id
+  id    String @id @default(uuid())
   s3Key String //Potentially to be changed for privacy reasons
 
   repairRequest   RepairRequest @relation(fields: [repairRequestId], references: [id])
