@@ -13,6 +13,14 @@ This document outlines the convention for this project as well as generally good
 - Keep margins and padding consistent. e.g. I like `p-2` and `m-2` for most things, but `p-4` and `m-4` for larger things like cards.
 - Prefer flexboxes. You can do almost everything with them and margins/padding/gaps! If there was a single thing I could make you do during this project period, it's [Flexbox Froggy](https://flexboxfroggy.com/).
 
+## `prisma` (Schema stuff)
+
+All models should be in `PascalCase`. All field names should be in `camelCase`. All enums should be in `UPPER_SNAKE_CASE`.
+
+Timestamp-related fields should be named `createdAt` and `updatedAt`. If you need to add a `deletedAt` field, it should be a `DateTime?` field.
+
+Fields that reference a user should be named `createdBy` and `updatedBy`. If you need to add a `deletedBy` field, it should be a `String?` field.
+
 ## `src/` (Next.JS stuff)
 
 - All file and folder names are in `lowercase`. Avoid multiple word api endpoints where possible. Favour creating extra folders.
