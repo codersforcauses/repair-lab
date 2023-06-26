@@ -63,5 +63,13 @@ model Repair_Request_Image {
   repair_request_id String
 }
 
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 
 
