@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
 
-const prisma = new PrismaClient();
+import repairRequestModel from "../../models/repairRequest.model";
+import validator from "../../validators/repairRequest.validator";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,10 +9,10 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      // handleGetRequest
+      res.status(405).json("Not yet implemented!");
       break;
     case "POST":
-      createRepairRequest(req, res);
+      await createRepairRequest(req, res);
       break;
     default:
       return res.status(405).json({
@@ -22,21 +21,15 @@ export default async function handler(
   }
 }
 
-const postSchema = z.object({
-  eventID: z.string(),
-  description: z.string(),
-  itemType: z.string(),
-  itemBrand: z.string()
-});
-
-const createRepairRequest = (req: NextApiRequest, res: NextApiResponse) => {
+const createRepairRequest = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   // ? May need to make this multipart/form-data to handle images or
   // ? Use base64.
-
   // TODO: Get userID from middleware.
 
-  // validate post body
-  const response = postSchema.safeParse(req.body);
+  const response = validator.postSchema.safeParse(req.body);
   if (!response.success) {
     const { errors } = response.error;
     return res.status(400).json({
@@ -44,8 +37,20 @@ const createRepairRequest = (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  // TODO: Create new repair request in database.
-  return res.status(200).json(req.body);
-};
+  const { eventId, description, itemType, itemBrand } = req.body;
 
-export const config = {};
+  try {
+    const repairRequest = await repairRequestModel.insert(
+      eventId,
+      description,
+      itemType,
+      itemBrand,
+      "mock_user" // TODO: change this once we get userID
+    );
+    return res.status(200).json({
+      id: repairRequest.id
+    });
+  } catch (error) {
+    return res.status(500).json("Error inserting into database!");
+  }
+};
