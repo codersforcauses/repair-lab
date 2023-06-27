@@ -29,7 +29,7 @@ await testApiHandler({
 
 ### But why...?
 
-Next.JS automatically converts a JSON body to an object if it sees the `content-type` header is `application/json` (can be disabled). If you don't specify the header, it will be `text/plain` and you'll get a string in the handler! This is because under the hood, it uses `node-fetch` which doesn't intelligently determine the content type. Most other libraries do this for you, including JavaScript's own `fetch` function.
+Next.JS automatically converts a JSON body to an object if it sees the `Content-Type` header is `application/json` (can be disabled). If you don't specify the header, it will be `text/plain` and you'll get a string in the handler! This is because under the hood, it uses `node-fetch` which doesn't intelligently determine the content type. Most other libraries do this for you, including JavaScript's own `fetch` function.
 
 ## Mocking
 
