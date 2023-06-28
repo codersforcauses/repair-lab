@@ -10,7 +10,7 @@ export default async function handler( // you can name this whatever you want
   req: NextApiRequest,
   res: NextApiResponse<Message[]>
 ) {
-  const messages = await prisma.message.findMany({
+  const messages = await prisma.event.findMany({
     where: { content: req.query.content as string }
   });
 
