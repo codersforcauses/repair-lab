@@ -56,7 +56,7 @@ export default function Home() {
           })}
         >
           <input
-            className={`h-12 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
+            className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
               errors.item_brand &&
               "border-red-500 focus:border-red-500 focus:ring-red-500"
             } `}
@@ -70,7 +70,7 @@ export default function Home() {
 
           <div>
             <select
-              className={`h-12 w-80 border-spacing-0.5 rounded-md border border-solid p-2 pl-2 pr-3 ${
+              className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid p-2 pl-2 pr-3 ${
                 errors.item_type &&
                 "border-red-500 focus:border-red-500 focus:ring-red-500"
               }`}
@@ -81,9 +81,12 @@ export default function Home() {
               <option value="" disabled selected hidden>
                 Item Type
               </option>
-              <option value="clothing"> Clothing </option>
-              <option value="bikes"> Bikes </option>
-              <option value="other"> Other </option>
+              <option value="clothing"> General </option>
+              <option value="electrical"> Electrical </option>
+              <option value="jewellery"> Jewellery </option>
+              <option value="bike_repairs"> Bike Repairs </option>
+              <option value="fashion_repairs"> Fashion Repairs </option>
+              <option value="others"> Others </option>
             </select>
 
             <p className="text-red-600"> {errors.item_type?.message} </p>
@@ -92,7 +95,7 @@ export default function Home() {
           <br></br>
 
           <input
-            className={`h-12 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
+            className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
               errors.description &&
               "border-red-500 focus:border-red-500 focus:ring-red-500"
             }`}
@@ -105,7 +108,7 @@ export default function Home() {
           <br></br>
 
           <input
-            className="h-12"
+            className="h-40 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10"
             type="file"
             {...register("images", { required: "*Required" })}
           />
