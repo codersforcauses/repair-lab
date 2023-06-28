@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import repairRequestModel from "../../models/repairRequest.model";
-import validator from "../../validators/repairRequest.validator";
+import repairRequestModel from "@/models/repairRequest.model";
+import validator from "@/validators/repairRequest.validator";
 
 export default async function handler(
   req: NextApiRequest,
