@@ -1,12 +1,11 @@
-import { PrismaClient, Status } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const eventNonDefaultFilled = await prisma.event.upsert({
-    where: { name: "Can Bob Fix It?" },
-    update: { name: "Can Bob Fix It? [UPDATED]" },
-    create: {
+  const eventNonDefaultFilled = await prisma.event.create({
+    data: {
+
       createdBy: "Bob (The) Builder",
 
       name: "Can Bob Fix It?",
@@ -14,7 +13,7 @@ async function main() {
       description:
         "A general contractor from Bobsville provides his services in Bobsville.",
       volunteers: [],
-
+      
       startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
       endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
     }
@@ -25,10 +24,11 @@ async function main() {
 
 main()
   .then(async () => {
+    console.log("Database seeding completed successfully.");
     await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e);
+    console.error("Error seeding database:", e);
     await prisma.$disconnect();
     process.exit(1);
   });
