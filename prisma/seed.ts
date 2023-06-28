@@ -77,6 +77,12 @@ async function main() {
   });
 
   console.log(repairRequest);
+  // TODO: Explore generating fake data with faker
+  // TODO: Add fake data to seed.ts
+  // OR, Manually:
+  // TODO: Create 2 extra repairRequests (At least 3 requests)
+  // TODO: Create 1 extra event (At least 2 events)
+  // TODO: Explore generating fake data with faker
 }
 
 main()
