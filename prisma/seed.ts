@@ -20,22 +20,6 @@ async function main() {
   });
   console.log("Deleted default Event records.");
 
-  const event1 = await prisma.event.upsert({
-    where: { name: "Can Bob Fix It?" },
-    create: {
-      createdBy: "Bob (The) Builder",
-      name: "Can Bob Fix It?",
-      location: "Bobsville",
-      description:
-        "A general contractor from Bobsville provides his services in Bobsville.",
-      volunteers: [],
-      startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
-      endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
-    },
-    update: {}
-  });
-  console.log({ event1 });
-
   // create default itemType(s)
   const clockItemType = await prisma.itemType.upsert({
     where: { name: "Clock" },
@@ -52,15 +36,37 @@ async function main() {
   });
   console.log(wonderlandBrand);
 
+  const event1 = await prisma.event.upsert({
+    where: { name: "Can Bob Fix It?" },
+    create: {
+      createdBy: "Bob (The) Builder",
+      name: "Can Bob Fix It?",
+      location: "Bobsville",
+      description:
+        "A general contractor from Bobsville provides his services in Bobsville.",
+      volunteers: [],
+      event: {
+        connect: { name: "Clock" }
+      },
+      startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
+      endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
+    },
+    update: {}
+  });
+  console.log({ event1 });
+
   const repairRequest = await prisma.repairRequest.create({
     data: {
+      createdBy: "Alice",
+      assignedTo: "Cheshire Cat",
       event: {
         connect: { id: event1.id }
       },
-      createdBy: "Alice",
       status: "PENDING",
       description: "Clock stopped ticking",
+      comment: "Clock starts to tick for 3 seconds after it has been shaken.",
       requestDate: new Date(),
+      updatedAt: new Date(),
       item: {
         connect: { name: clockItemType.name }
       },
