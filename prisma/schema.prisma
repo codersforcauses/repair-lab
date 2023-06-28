@@ -8,6 +8,71 @@ datasource db {
   directUrl = env("DATABASE_URL_DIRECT")
 }
 
+model Event {
+  id        String @id @default(uuid())
+  createdBy String //User id (from clerk)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String   @unique
+  location    String
+  description String
+  volunteers  String[]
+
+  startDate DateTime
+  endDate   DateTime
+
+  repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
+}
+
+model RepairRequest {
+  id        String @id @default(uuid())
+  createdBy String //User id
+
+  event   Event  @relation(fields: [eventId], references: [id]) //relation field (one repair_request to one event)
+  eventId String
+
+  status Status @default(PENDING)
+
+  description String
+  requestDate DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  item        ItemType @relation(fields: [itemType], references: [name]) //relation field
+  itemType    String
+
+  brand     Brand  @relation(fields: [itemBrand], references: [name])
+  itemBrand String
+
+  images RepairRequestImage[]
+}
+
+model ItemType {
+  name           String          @id
+  repairRequests RepairRequest[]
+}
+
+model Brand {
+  name           String          @id
+  repairRequests RepairRequest[]
+}
+
+model RepairRequestImage {
+  id    String @id @default(uuid())
+  s3Key String //Potentially to be changed for privacy reasons
+
+  repairRequest   RepairRequest @relation(fields: [repairRequestId], references: [id])
+  repairRequestId String
+}
+
 model Message {
   id        Int      @id @default(autoincrement())
   content   String
