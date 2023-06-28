@@ -2,9 +2,9 @@ import { z } from "zod";
 
 const postSchema = z.object({
   eventId: z.string().uuid(),
-  description: z.string(),
-  itemType: z.string(),
-  itemBrand: z.string()
+  description: z.string().nonempty(),
+  itemType: z.string().nonempty(),
+  itemBrand: z.string().nonempty()
 });
 
 const validator = {

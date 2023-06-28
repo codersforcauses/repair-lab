@@ -37,7 +37,7 @@ const createRepairRequest = async (
     });
   }
 
-  const { eventId, description, itemType, itemBrand } = req.body;
+  const { eventId, description, itemType, itemBrand } = response.data;
 
   try {
     const repairRequest = await repairRequestModel.insert(
