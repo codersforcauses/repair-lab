@@ -31,8 +31,8 @@ async function main() {
       volunteers: [],
       startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
       endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
-      },
-    update: {},
+    },
+    update: {}
   });
   console.log({ event1 });
 
@@ -40,7 +40,7 @@ async function main() {
   const clockItemType = await prisma.itemType.upsert({
     where: { name: "Clock" },
     create: { name: "Clock" },
-    update: {},
+    update: {}
   });
   console.log(clockItemType);
 
@@ -48,10 +48,9 @@ async function main() {
   const wonderlandBrand = await prisma.brand.upsert({
     where: { name: "Wonderland" },
     create: { name: "Wonderland" },
-    update: {},
+    update: {}
   });
   console.log(wonderlandBrand);
-
 
   const repairRequest = await prisma.repairRequest.create({
     data: {
@@ -67,8 +66,8 @@ async function main() {
       },
       brand: {
         connect: { name: wonderlandBrand.name }
-      },
-    },
+      }
+    }
   });
 
   console.log(repairRequest);
