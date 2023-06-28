@@ -164,7 +164,6 @@ export default function Home() {
           <label className="flex h-6 items-center">
             <input type="checkbox" />
             <span className="pl-2 text-sm">
-              {" "}
               I accept the Terms and Conditions.
             </span>
           </label>
