@@ -54,3 +54,5 @@ const createRepairRequest = async (
     return res.status(500).json("Error inserting into database!");
   }
 };
+
+export const config = {};
