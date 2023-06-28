@@ -15,7 +15,8 @@ export default function Home() {
       item_brand: "",
       item_type: "",
       description: "",
-      images: []
+      images: [],
+      event: ""
     }
   });
 
@@ -26,6 +27,8 @@ export default function Home() {
       className={`flex min-h-screen flex-col items-center ${inter.className}`}
     >
       <br></br>
+
+      {/* Logo of Repair Lab, which links to the main website. */}
 
       <picture>
         <a href="https://repairlab.myfreesites.net/" target="_blank">
@@ -38,6 +41,8 @@ export default function Home() {
       </picture>
 
       <br></br>
+
+      {/* Heading of the Page */}
 
       <h1 className="text-xl font-bold"> Submit a Repair Request</h1>
 
@@ -58,6 +63,8 @@ export default function Home() {
             }
           })}
         >
+          {/* Input field for Brand of Item */}
+
           <input
             className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
               errors.item_brand &&
@@ -71,6 +78,8 @@ export default function Home() {
 
           <br></br>
 
+          {/* Input field for Item Type */}
+
           <div>
             <select
               className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid p-2 pl-2 pr-3 ${
@@ -78,7 +87,7 @@ export default function Home() {
                 "border-red-500 focus:border-red-500 focus:ring-red-500"
               }`}
               {...register("item_type", {
-                required: "*Please select an option"
+                required: "*Please select an option."
               })}
             >
               <option value="" disabled selected hidden>
@@ -97,6 +106,8 @@ export default function Home() {
 
           <br></br>
 
+          {/* Input field for Description of Item */}
+
           <input
             className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
               errors.description &&
@@ -110,13 +121,55 @@ export default function Home() {
 
           <br></br>
 
+          {/* Input field for Images */}
+
           <input
-            className="h-40 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10"
+            className={`h-36 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10 ${
+              errors.images &&
+              "border-red-500 focus:border-red-500 focus:ring-red-500"
+            }`}
             type="file"
             {...register("images", { required: "*Required" })}
           />
 
           <p className="text-red-600"> {errors.images?.message} </p>
+
+          <br></br>
+
+          {/* Input field for Event Date */}
+
+          <div>
+            <select
+              className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid p-2 pl-2 pr-3 ${
+                errors.event &&
+                "border-red-500 focus:border-red-500 focus:ring-red-500"
+              }`}
+              {...register("event", {
+                required: "*Please select an event."
+              })}
+            >
+              <option value="" disabled selected hidden>
+                Event
+              </option>
+              <option value=""> Placeholder: Event Option 1 </option>
+              <option value=""> Placeholder: Event Option 2 </option>
+              <option value=""> Others </option>
+            </select>
+
+            <p className="text-red-600"> {errors.event?.message} </p>
+          </div>
+
+          <br></br>
+
+          <label className="flex h-6 items-center">
+            <input type="checkbox" />
+            <span className="pl-2 text-sm">
+              {" "}
+              I accept the Terms and Conditions.
+            </span>
+          </label>
+
+          <br></br>
 
           <input
             className="m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-teal-600 text-center text-lg text-white hover:bg-teal-500"
