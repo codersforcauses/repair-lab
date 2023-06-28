@@ -1,20 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Message } from "@prisma/client";
+import { Event } from "@prisma/client";
 
 import prisma from "../../lib/prisma";
 
-// getMessagesByContent retrieves all messages from the database
-// that have the content specified in the query string.
-export default async function handler( // you can name this whatever you want
+// Just getting events from prisma db and responding with them
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Message[]>
+  res: NextApiResponse<Event[]>
 ) {
-  const messages = await prisma.event.findMany({
-    where: { content: req.query.content as string }
-  });
-
-  res.status(200).json(messages);
+  const events = await prisma.event.findMany();
+  res.status(200).json(events);
 }
 
 export const config = {};
