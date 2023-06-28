@@ -20,10 +20,16 @@ model Event {
   description String
   volunteers  String[]
 
+  event     ItemType @relation(fields: [eventType], references: [name]) //relates event to the item type being repaired there
+  eventType String
+
+  disclaimer String @default("This is not the default disclaimer")
+
   startDate DateTime
   endDate   DateTime
 
   repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
+  images         EventImage[]
 }
 
 enum Status {
@@ -35,8 +41,9 @@ enum Status {
 }
 
 model RepairRequest {
-  id        String @id @default(uuid())
-  createdBy String //User id
+  id         String @id @default(uuid())
+  createdBy  String //User id
+  assignedTo String //volunteer id
 
   event   Event  @relation(fields: [eventId], references: [id]) //relation field (one repair_request to one event)
   eventId String
@@ -44,8 +51,10 @@ model RepairRequest {
   status Status @default(PENDING)
 
   description String
-  requestDate DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  comment     String //comment for repairer to document repair process
+
+  requestDate DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   item        ItemType @relation(fields: [itemType], references: [name]) //relation field
   itemType    String
 
@@ -58,6 +67,7 @@ model RepairRequest {
 model ItemType {
   name           String          @id
   repairRequests RepairRequest[]
+  Event          Event[]
 }
 
 model Brand {
@@ -71,6 +81,14 @@ model RepairRequestImage {
 
   repairRequest   RepairRequest @relation(fields: [repairRequestId], references: [id])
   repairRequestId String
+}
+
+model EventImage {
+  id    String @id @default(uuid())
+  s3Key String //Potentially to be changed for privacy reasons
+
+  RepairEvent   Event  @relation(fields: [RepairEventId], references: [id])
+  RepairEventId String
 }
 
 model Message {
