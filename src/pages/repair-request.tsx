@@ -15,7 +15,7 @@ export default function Home() {
       item_brand: "",
       item_type: "",
       description: "",
-      images: ""
+      images: []
     }
   });
 
@@ -52,7 +52,10 @@ export default function Home() {
             formData.append("item_brand", data.item_brand);
             formData.append("item_type", data.item_type);
             formData.append("description", data.description);
-            formData.append("images", data.images[0]);
+
+            if (data.images && data.images.length) {
+              formData.append("images", data.images[0]);
+            }
           })}
         >
           <input
