@@ -22,8 +22,9 @@ const Sidebar = ({ children }: Props) => {
             </div>
           </Link>
         </div>
-        <div className="items-left flex flex-col px-4">
+        <div className="items-left flex flex-col px-4 text-[#545454]">
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
+          <p className="p-1 text-center text-gray-600 ">Dashboard</p>
           <Link href="/info">
             <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <RxInfoCircled size={30} />

@@ -2,7 +2,7 @@
 import type { AppProps } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import Sidebar from "@/components/sidebar/sidebar";
+import Sidebar from "@/components/sidebar/index";
 
 import "@/styles/globals.css";
 
