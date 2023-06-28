@@ -4,33 +4,32 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-
   // repairRequestImage(s) created by default user(s)
   await prisma.repairRequestImage.deleteMany({
     where: {
       repairRequest: {
-        OR : [
-          {createdBy: "Alice",},
-          {createdBy: "Charlie"},
-          {createdBy: "David"},
+        OR: [
+          { createdBy: "Alice" },
+          { createdBy: "Charlie" },
+          { createdBy: "David" }
         ]
       }
     }
   });
-  
+
   // delete repairRequest(s) created by default user(s)
   // possibly linked to default event(s)
   await prisma.repairRequest.deleteMany({
     where: {
-      OR : [
-        {createdBy: "Alice",},
-        {createdBy: "Charlie"},
-        {createdBy: "David"},
+      OR: [
+        { createdBy: "Alice" },
+        { createdBy: "Charlie" },
+        { createdBy: "David" }
       ]
     }
   });
-  console.log("Deleted default RepairRequest records.");  
-  
+  console.log("Deleted default RepairRequest records.");
+
   // create default itemType(s)
   const clockItemType = await prisma.itemType.upsert({
     where: { name: "Clock" },
@@ -73,7 +72,7 @@ async function main() {
       createdBy: "Alice",
       assignedTo: "Cheshire Cat",
       event: {
-        connect: { id: event1.id },
+        connect: { id: event1.id }
       },
       status: "PENDING",
       description: "Clock stopped ticking",
@@ -81,23 +80,25 @@ async function main() {
       requestDate: new Date(),
       updatedAt: new Date(),
       item: {
-        connect: { name: "Clock" },
+        connect: { name: "Clock" }
       },
       brand: {
         // TODO: Needs to be able to insert new brand if not in db already
-        connect: { name: "Wonderland" },
+        connect: { name: "Wonderland" }
       },
       images: {
-        create: [{
-          s3Key: "https://tinyurl.com/broken-clock-sad",
-        },
-        {
-          s3Key: "https://tinyurl.com/broken-clock-sad",
-        }]
+        create: [
+          {
+            s3Key: "https://tinyurl.com/broken-clock-sad"
+          },
+          {
+            s3Key: "https://tinyurl.com/broken-clock-sad"
+          }
+        ]
       }
-    },
+    }
   });
-  
+
   console.log(repairRequest1);
 
   const repairRequest2 = await prisma.repairRequest.create({
@@ -105,7 +106,7 @@ async function main() {
       createdBy: "Charlie",
       assignedTo: "Cheshire Cat",
       event: {
-        connect: { id: event1.id },
+        connect: { id: event1.id }
       },
       status: "PENDING",
       description: "Clock Shattered",
@@ -113,21 +114,23 @@ async function main() {
       requestDate: new Date(),
       updatedAt: new Date(),
       item: {
-        connect: { name: "Clock" },
+        connect: { name: "Clock" }
       },
       brand: {
         // TODO: Needs to be able to insert new brand if not in db already
-        connect: { name: "Wonderland" }, 
+        connect: { name: "Wonderland" }
       },
       images: {
-        create: [{
-          s3Key: "https://tinyurl.com/broken-clock-sad",
-        },
-        {
-          s3Key: "https://tinyurl.com/broken-clock-sad",
-        }]
+        create: [
+          {
+            s3Key: "https://tinyurl.com/broken-clock-sad"
+          },
+          {
+            s3Key: "https://tinyurl.com/broken-clock-sad"
+          }
+        ]
       }
-    },
+    }
   });
   console.log(repairRequest2);
 
@@ -136,7 +139,7 @@ async function main() {
       createdBy: "David",
       assignedTo: "Cheshire Cat",
       event: {
-        connect: { id: event1.id },
+        connect: { id: event1.id }
       },
       status: "PENDING",
       description: "Clock blew up",
@@ -144,21 +147,23 @@ async function main() {
       requestDate: new Date(),
       updatedAt: new Date(),
       item: {
-        connect: { name: "Clock" },
+        connect: { name: "Clock" }
       },
       brand: {
         // TODO: Needs to be able to insert new brand if not in db already
-        connect: { name: "Wonderland" }, 
+        connect: { name: "Wonderland" }
       },
       images: {
-        create: [{
-          s3Key: "https://tinyurl.com/broken-clock-sad",
-        },
-        {
-          s3Key: "https://tinyurl.com/broken-clock-sad",
-        }]
+        create: [
+          {
+            s3Key: "https://tinyurl.com/broken-clock-sad"
+          },
+          {
+            s3Key: "https://tinyurl.com/broken-clock-sad"
+          }
+        ]
       }
-    },
+    }
   });
   console.log(repairRequest3);
 
@@ -167,7 +172,6 @@ async function main() {
   // OR, Manually:
   // TODO: Create 1 extra event (At least 2 events)
 }
-
 
 main()
   .then(async () => {
