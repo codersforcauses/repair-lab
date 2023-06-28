@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import prisma from "@/lib/prisma";
+import brandModel from "@/models/brand.model";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,8 +18,7 @@ export default async function handler(
 }
 
 const getBrands = async (req: NextApiRequest, res: NextApiResponse) => {
-  const brands = await prisma.brand.findMany();
-
+  const brands = await brandModel.getAll();
   return res.status(200).json(brands);
 };
 

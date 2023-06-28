@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import prisma from "@/lib/prisma";
+import itemTypeModel from "@/models/item-type.model";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,8 +18,7 @@ export default async function handler(
 }
 
 const getItemTypes = async (req: NextApiRequest, res: NextApiResponse) => {
-  const itemtypes = await prisma.itemType.findMany();
-
+  const itemtypes = await itemTypeModel.getAll();
   return res.status(200).json(itemtypes);
 };
 
