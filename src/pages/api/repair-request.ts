@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import formidable, { Fields } from "formidable";
 
 import repairRequestModel from "@/models/repairRequest.model";
 import validator from "@/validators/repairRequest.validator";
@@ -25,21 +26,18 @@ const createRepairRequest = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  // ? May need to make this multipart/form-data to handle images or
-  // ? Use base64.
   // TODO: Get userID from middleware.
+  const form = formidable({});
+  const [fields, files] = await form.parse(req);
 
-  const response = validator.postSchema.safeParse(req.body);
+  const response = validateFormFields(fields);
   if (!response.success) {
     const { errors } = response.error;
-    return res.status(400).json({
-      error: { message: "Invalid fields", errors }
-    });
+    return res.status(400).json({ error: errors });
   }
 
-  const { eventId, description, itemType, itemBrand } = response.data;
-
   try {
+    const { eventId, description, itemType, itemBrand } = response.data;
     const repairRequest = await repairRequestModel.insert(
       eventId,
       description,
@@ -55,4 +53,19 @@ const createRepairRequest = async (
   }
 };
 
-export const config = {};
+const validateFormFields = (fields: Fields) => {
+  const response = validator.postSchema.safeParse({
+    eventId: fields.eventId?.[0],
+    description: fields.description?.[0],
+    itemType: fields.itemType?.[0],
+    itemBrand: fields.itemBrand?.[0]
+  });
+
+  return response;
+};
+
+export const config = {
+  api: {
+    bodyParser: false
+  }
+};
