@@ -26,11 +26,11 @@ async function main() {
     where: {
       OR: [
         { createdBy: "Alice" },
-          { createdBy: "Charlie" },
-          { createdBy: "David" },
-          { createdBy: "Greg" },
-          { createdBy: "Ivan" },
-          { createdBy: "Larry" }
+        { createdBy: "Charlie" },
+        { createdBy: "David" },
+        { createdBy: "Greg" },
+        { createdBy: "Ivan" },
+        { createdBy: "Larry" }
       ]
     }
   });
@@ -58,6 +58,22 @@ async function main() {
     update: {}
   });
   console.log(wonderlandBrand);
+
+
+  const OtherBikeBrand = await prisma.brand.upsert({
+    where: { name: "OtherBikeBrand" },
+    create: { name: "OtherBikeBrand" },
+    update: {}
+  });
+  console.log(OtherBikeBrand);
+
+  const BikeBrand = await prisma.brand.upsert({
+    where: { name: "BikeBrand" },
+    create: { name: "BikeBrand" },
+    update: {}
+  });
+  console.log(BikeBrand);
+
 
   // create default event(s)
   const event1 = await prisma.event.upsert({
@@ -243,7 +259,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       brand: {
-        create: { name: "OtherBikeBrand" }
+        connect: { name: "OtherBikeBrand" }
       },
       images: {
         create: [
@@ -275,7 +291,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       brand: {
-        create: { name: "BikeBrand" }
+        connect: { name: "BikeBrand" }
       },
       images: {
         create: [
