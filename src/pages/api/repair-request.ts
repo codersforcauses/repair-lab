@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import formidable, { Fields } from "formidable";
 
 import repairRequestModel from "@/models/repairRequest.model";
-import validator from "@/validators/repairRequest.validator";
+import { repairRequestPostSchema } from "@/schema/repairRequest";
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,10 +26,7 @@ const createRepairRequest = async (
   res: NextApiResponse
 ) => {
   // TODO: Get userID from middleware.
-  const form = formidable({});
-  const [fields, files] = await form.parse(req);
-
-  const response = validateFormFields(fields);
+  const response = repairRequestPostSchema.safeParse(req);
   if (!response.success) {
     const { errors } = response.error;
     return res.status(400).json({ error: errors });
@@ -53,19 +49,4 @@ const createRepairRequest = async (
   }
 };
 
-const validateFormFields = (fields: Fields) => {
-  const response = validator.postSchema.safeParse({
-    eventId: fields.eventId?.[0],
-    description: fields.description?.[0],
-    itemType: fields.itemType?.[0],
-    itemBrand: fields.itemBrand?.[0]
-  });
-
-  return response;
-};
-
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
+export const config = {};
