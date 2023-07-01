@@ -59,7 +59,6 @@ async function main() {
   });
   console.log(wonderlandBrand);
 
-
   const OtherBikeBrand = await prisma.brand.upsert({
     where: { name: "OtherBikeBrand" },
     create: { name: "OtherBikeBrand" },
@@ -73,7 +72,6 @@ async function main() {
     update: {}
   });
   console.log(BikeBrand);
-
 
   // create default event(s)
   const event1 = await prisma.event.upsert({
@@ -106,13 +104,11 @@ async function main() {
       status: "PENDING",
       description: "Clock stopped ticking",
       comment: "Clock starts to tick for 3 seconds after it has been shaken.",
+      itemBrand: "Wonderland",
       requestDate: new Date(),
       updatedAt: new Date(),
       item: {
         connect: { name: "Clock" }
-      },
-      brand: {
-        connect: { name: "Wonderland" }
       },
       images: {
         create: [
@@ -144,9 +140,7 @@ async function main() {
       item: {
         connect: { name: "Clock" }
       },
-      brand: {
-        connect: { name: "Wonderland" }
-      },
+      itemBrand: "Wonderland",
       images: {
         create: [
           {
@@ -176,9 +170,7 @@ async function main() {
       item: {
         connect: { name: "Clock" }
       },
-      brand: {
-        connect: { name: "Wonderland" }
-      },
+      itemBrand: "Wonderland",
       images: {
         create: [
           {
@@ -226,9 +218,7 @@ async function main() {
       item: {
         connect: { name: "Bike" }
       },
-      brand: {
-        connect: { name: "Wonderland" }
-      },
+      itemBrand: "Wonderland",
       images: {
         create: [
           {
@@ -258,9 +248,7 @@ async function main() {
       item: {
         connect: { name: "Bike" }
       },
-      brand: {
-        connect: { name: "OtherBikeBrand" }
-      },
+      itemBrand: "OtherBikeBrand",
       images: {
         create: [
           {
@@ -290,9 +278,7 @@ async function main() {
       item: {
         connect: { name: "Bike" }
       },
-      brand: {
-        connect: { name: "BikeBrand" }
-      },
+      itemBrand: "BikeBrand",
       images: {
         create: [
           {
