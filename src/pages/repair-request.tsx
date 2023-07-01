@@ -151,8 +151,8 @@ export default function Home() {
               <option value="" disabled selected hidden>
                 Event
               </option>
-              <option value="placeholder_1"> Placeholder: Event Option 1 </option>
-              <option value="placeholder_2"> Placeholder: Event Option 2 </option>
+              <option value="placeholder_1">Placeholder: Event Option 1</option>
+              <option value="placeholder_2">Placeholder: Event Option 2</option>
               <option value="others_event"> Others </option>
             </select>
 
