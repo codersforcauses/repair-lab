@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CustomButton from "../components/CustomButton";
 import CustomButton from '../components/custombutton';
 
 export default function Login() {
@@ -53,30 +52,34 @@ export default function Login() {
         <div className="mb-4 relative">
             <label
               htmlFor="username"
-              className="absolute top-0 left-2 -mt-2 px-1 bg-white text-red-500 font-small"
+              className="absolute top-0 left-1 -mt-2 px-1 bg-white font-medium"
             >
-              * Username:
+              <span style={{ color: 'red' }}>*</span> Username:
             </label>
             <input
               id="username"
               type="text"
               value={username}
               onChange={handleUsernameChange}
-              placeholder="Enter your username"
+              placeholder="Username"
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block mb-2 font-medium">
+
+          <div className="mb-4 relative">
+            <label
+              htmlFor="password"
+              className="absolute top-0 left-1 -mt-2 px-1 bg-white font-medium"
+            >
               <span style={{ color: 'red' }}>*</span> Password:
             </label>
             <input
               id="password"
-              type="password"
+              type="text"
               value={password}
               onChange={handlePasswordChange}
               placeholder="Password"
-              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500 input-field"
+              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             />
           </div>
           <div className="mt-4 text-center">
