@@ -22,8 +22,8 @@ export default function repair() {
       brand: "",
       material: "",
       time: "",
-      repaired: "No",
-      spare: "No",
+      repaired: "",
+      spare: "",
       parts: "",
       desc: ""
     },
@@ -61,11 +61,21 @@ export default function repair() {
         {/* Time it took, Repaired? */}
         <div className={lineStyle}>
           <Field name="time" control={control} rules={{ required: true }} />
-          <Field name="repaired" control={control} rules={{ required: true }} />
+          <Field
+            radio={true}
+            name="repaired"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
         {/* Spare parts needed?, Part(s) needed */}
         <div className={lineStyle}>
-          <Field name="spare" control={control} rules={{ required: true }} />
+          <Field
+            radio={true}
+            name="spare"
+            control={control}
+            rules={{ required: true }}
+          />
           <Field name="parts" control={control} rules={{ required: true }} />
         </div>
         {/* Job Description */}
