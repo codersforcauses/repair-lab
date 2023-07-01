@@ -96,7 +96,6 @@ async function main() {
         connect: { name: "Clock" }
       },
       brand: {
-        // TODO: Needs to be able to insert new brand if not in db already
         connect: { name: "Wonderland" }
       },
       images: {
@@ -130,7 +129,6 @@ async function main() {
         connect: { name: "Clock" }
       },
       brand: {
-        // TODO: Needs to be able to insert new brand if not in db already
         connect: { name: "Wonderland" }
       },
       images: {
@@ -163,7 +161,6 @@ async function main() {
         connect: { name: "Clock" }
       },
       brand: {
-        // TODO: Needs to be able to insert new brand if not in db already
         connect: { name: "Wonderland" }
       },
       images: {
@@ -214,8 +211,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       brand: {
-        // TODO: Needs to be able to insert new brand if not in db already
-        connect: { name: "AnotherBikeBrand" }
+        connect: { name: "Wonderland" }
       },
       images: {
         create: [
@@ -247,8 +243,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       brand: {
-        // TODO: Needs to be able to insert new brand if not in db already
-        connect: { name: "OtherBikeBrand" }
+        create: { name: "OtherBikeBrand" }
       },
       images: {
         create: [
@@ -280,7 +275,6 @@ async function main() {
         connect: { name: "Bike" }
       },
       brand: {
-        // TODO: Needs to be able to insert new brand if not in db already
         create: { name: "BikeBrand" }
       },
       images: {
@@ -300,7 +294,7 @@ async function main() {
   // TODO: Explore generating fake data with faker (Automated Approach)
   // TODO: Add fake data to seed.ts
   // OR, Manually:
-  // TODO: Create 1 extra event (At least 2 events)
+  // TODO: Create 1 extra event (At least 2 events)[DONE]
 }
 
 main()
