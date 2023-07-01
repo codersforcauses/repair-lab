@@ -26,8 +26,11 @@ async function main() {
     where: {
       OR: [
         { createdBy: "Alice" },
-        { createdBy: "Charlie" },
-        { createdBy: "David" }
+          { createdBy: "Charlie" },
+          { createdBy: "David" },
+          { createdBy: "Greg" },
+          { createdBy: "Ivan" },
+          { createdBy: "Larry" }
       ]
     }
   });
