@@ -98,7 +98,7 @@ export default function Home() {
               <option value="jewellery"> Jewellery </option>
               <option value="bike_repairs"> Bike Repairs </option>
               <option value="fashion_repairs"> Fashion Repairs </option>
-              <option value="others"> Others </option>
+              <option value="others_item_type"> Others </option>
             </select>
 
             <p className="text-red-600"> {errors.item_type?.message} </p>
@@ -151,9 +151,9 @@ export default function Home() {
               <option value="" disabled selected hidden>
                 Event
               </option>
-              <option value=""> Placeholder: Event Option 1 </option>
-              <option value=""> Placeholder: Event Option 2 </option>
-              <option value=""> Others </option>
+              <option value="placeholder_1"> Placeholder: Event Option 1 </option>
+              <option value="placeholder_2"> Placeholder: Event Option 2 </option>
+              <option value="others_event"> Others </option>
             </select>
 
             <p className="text-red-600"> {errors.event?.message} </p>
