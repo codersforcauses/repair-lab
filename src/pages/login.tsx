@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import CustomButton from "../components/CustomButton";
 import CustomButton from '../components/custombutton';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -15,17 +16,13 @@ export default function Login() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Perform login logic here with username and password
-    console.log('Logging in...');
-    console.log('Username:', username);
-    console.log('Password:', password);
     // Reset the form
-    setUsername('');
-    setPassword('');
+    setUsername("");
+    setPassword("");
   };
 
   return (
-    <main className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen">
       <div className="w-64 bg-white rounded shadow p-8">
         <h1 className="text-2xl font-bold mb-4">Sign in</h1>
 
@@ -66,7 +63,7 @@ export default function Login() {
               value={username}
               onChange={handleUsernameChange}
               placeholder="Enter your username"
-              className="w-full border border-gray-300 px-3 py-2 pl-10 rounded focus:outline-none focus:border-blue-500"
+              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             />
           </div>
           <div className="mb-4">
@@ -78,14 +75,25 @@ export default function Login() {
               type="password"
               value={password}
               onChange={handlePasswordChange}
-              placeholder="Enter your password"
-              className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500"
+              placeholder="Password"
+              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500 input-field"
             />
           </div>
-
-          <CustomButton text="Login" onClick={handleSubmit} />
+          <div className="mt-4 text-center">
+            <a href="/forgot-password" className="text-coolGray-50 text-xs">
+              Forgot your password?
+            </a>
+          </div>
+          <div className="mt-2 text-center">
+            <a href="/signup" className="text-coolGray-50 text-xs">
+              Don't have an account? Sign up
+            </a>
+          </div>
+          <div className="w-full">
+            <CustomButton onClick={handleSubmit}>Sign in</CustomButton>
+          </div>
         </form>
       </div>
-    </main>
+    </div>
   );
 }
