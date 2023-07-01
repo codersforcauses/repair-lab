@@ -1,9 +1,15 @@
 import React from "react";
+import { GetServerSideProps, NextPage } from "next";
 
-import Cards from "@/components/cards/index";
+import Cards, { Events } from "@/components/cards/index";
 import RepairRequest from "@/components/repair-request/index";
+import prisma from "@/lib/prisma";
 
-export default function Dashboard() {
+type Props = {
+  events: Events[];
+};
+
+const Dashboard: NextPage<Props> = (events) => {
   return (
     <>
       <div className="flex justify-between gap-4 px-4 pb-20 pt-12 ">
@@ -13,10 +19,23 @@ export default function Dashboard() {
         </h1>
       </div>
       <p className="p-4 text-2xl font-bold text-[#6C727F]"> Information </p>
-      <Cards />
+      {events.events.map((event) => (
+        <div key={event.id}>
+          <Cards event={event} />
+        </div>
+      ))}
       <p className="p-4 text-2xl font-bold text-[#6C727F]">Repair requests</p>
       <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
       <RepairRequest />
     </>
   );
-}
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const events = await prisma.event.findMany();
+  return {
+    props: { events }
+  };
+};
+
+export default Dashboard;
