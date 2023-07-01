@@ -4,31 +4,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // repairRequestImage(s) created by default user(s)
-  await prisma.repairRequestImage.deleteMany({
-    where: {
-      repairRequest: {
-        OR: [
-          { createdBy: "Alice" },
-          { createdBy: "Charlie" },
-          { createdBy: "David" }
-        ]
-      }
-    }
-  });
-
-  // delete repairRequest(s) created by default user(s)
-  // possibly linked to default event(s)
-  await prisma.repairRequest.deleteMany({
-    where: {
-      OR: [
-        { createdBy: "Alice" },
-        { createdBy: "Charlie" },
-        { createdBy: "David" }
-      ]
-    }
-  });
-  console.log("Deleted default RepairRequest records.");
 
   // create default itemType(s)
   const clockItemType = await prisma.itemType.upsert({
@@ -74,8 +49,12 @@ async function main() {
   console.log({ event1 });
 
   // create default repairRequest(s)
-  const repairRequest1 = await prisma.repairRequest.create({
-    data: {
+  const repairRequest1 = await prisma.repairRequest.upsert({
+    // Overly specific where to avoid deleting someone's data later
+    where: {description: "Clock stopped ticking", 
+            createdBy: "Alice", 
+            assignedTo: "Cheshire Cat"}
+    create: {
       createdBy: "Alice",
       assignedTo: "Cheshire Cat",
       event: {
@@ -103,13 +82,17 @@ async function main() {
           }
         ]
       }
-    }
+    },
+    update: {}
   });
 
   console.log(repairRequest1);
 
-  const repairRequest2 = await prisma.repairRequest.create({
-    data: {
+  const repairRequest2 = await prisma.repairRequest.upsert({
+    where: {createdBy: "Charlie",
+            assignedTo: "Cheshire Cat",
+            description: "Clock Shattered"},
+    create: {
       createdBy: "Charlie",
       assignedTo: "Cheshire Cat",
       event: {
@@ -137,12 +120,16 @@ async function main() {
           }
         ]
       }
-    }
+    },
+    update: {}
   });
   console.log(repairRequest2);
 
-  const repairRequest3 = await prisma.repairRequest.create({
-    data: {
+  const repairRequest3 = await prisma.repairRequest.upsert({
+    where: {createdBy: "David",
+            assignedTo: "Cheshire Cat",
+            description: "Clock blew up"},
+    create: {
       createdBy: "David",
       assignedTo: "Cheshire Cat",
       event: {
@@ -170,7 +157,8 @@ async function main() {
           }
         ]
       }
-    }
+    },
+    update: {}
   });
   console.log(repairRequest3);
 
