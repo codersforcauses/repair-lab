@@ -22,9 +22,9 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-white rounded shadow p-8">
+      <div className="bg-white rounded-md shadow p-8">
         <div className="flex justify-center items-center">
-        <h1 className="text-2xl font-bold m-4">Sign in</h1>
+          <h1 className="text-2xl font-bold m-4">Sign in</h1>
         </div>
         <CustomButton
           onClick={() => {
@@ -93,7 +93,7 @@ export default function Login() {
               </a>
             </div>
             <div>
-              <a href="/signup" className="text-gray-400 text-xs underline">
+              <a href="/register" className="text-gray-400 text-xs underline">
                 Don't have an account? Sign up
               </a>
             </div>
