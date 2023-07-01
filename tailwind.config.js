@@ -34,7 +34,7 @@ module.exports = {
           900: "#154c4a",
           950: "#052e2e"
         },
-        "accent-grey": {
+        grey: {
           50: "#f4f7f7",
           100: "#e2e9eb",
           200: "#c8d4d9",
@@ -47,7 +47,7 @@ module.exports = {
           900: "#353e44",
           950: "#20272c"
         },
-        darkaqua: {
+        darkAqua: {
           50: "#f2fbfa",
           100: "#d2f5ef",
           200: "#a5eae2",
@@ -60,7 +60,7 @@ module.exports = {
           900: "#1b4646",
           950: "#0a2729"
         },
-        "accent-aqua": {
+        lightAqua: {
           50: "#f1fafa",
           100: "#dcf1ef",
           200: "#a6dcdb",
