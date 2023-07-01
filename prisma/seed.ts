@@ -174,9 +174,9 @@ async function main() {
   });
   console.log(repairRequest3);
 
-  const event2 = await prisma.Event.upsert({
+  const event2 = await prisma.event.upsert({
     where: {name: "Evans' Repair Warehouse"},
-    data: {
+    create: {
       createdBy: "Evans",
       name: "Evans' Repair Warehouse",
       location: "The big warehouse on 5th st",
