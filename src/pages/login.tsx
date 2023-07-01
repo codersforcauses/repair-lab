@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from '../components/custombutton';
+import CustomButton from "../components/custombutton";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -22,13 +22,14 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-64 bg-white rounded shadow p-8">
-        <h1 className="text-2xl font-bold mb-4">Sign in</h1>
-
+      <div className="bg-white rounded shadow p-8">
+        <div className="flex justify-center items-center">
+        <h1 className="text-2xl font-bold m-4">Sign in</h1>
+        </div>
         <CustomButton
           onClick={() => {
             // Handle Google login here
-            console.log('Continue with Google...');
+            console.log("Continue with Google...");
           }}
           text="Continue with Google"
         />
@@ -37,24 +38,24 @@ export default function Login() {
         <div className="flex items-center mb-4">
           <div
             className="border-dashed border-t-2"
-            style={{ borderColor: '#098D85', flex: 1 }}
+            style={{ borderColor: "#098D85", flex: 1 }}
           ></div>
-          <div style={{ color: '#098D85' }} className="mx-4">
+          <div style={{ color: "#098D85" }} className="mx-4">
             or
           </div>
           <div
             className="border-dashed border-t-2"
-            style={{ borderColor: '#098D85', flex: 1 }}
+            style={{ borderColor: "#098D85", flex: 1 }}
           ></div>
         </div>
 
         <form onSubmit={handleSubmit}>
-        <div className="mb-4 relative">
+          <div className="mb-4 relative">
             <label
               htmlFor="username"
-              className="absolute top-0 left-1 -mt-2 px-1 bg-white font-medium"
+              className="absolute text-sm top-0 left-1 -mt-2 px-1 bg-white font-bold"
             >
-              <span style={{ color: 'red' }}>*</span> Username:
+              <span style={{ color: "red" }}>*</span> Username
             </label>
             <input
               id="username"
@@ -69,9 +70,9 @@ export default function Login() {
           <div className="mb-4 relative">
             <label
               htmlFor="password"
-              className="absolute top-0 left-1 -mt-2 px-1 bg-white font-medium"
+              className="absolute text-sm top-0 left-1 -mt-2 px-1 bg-white font-bold"
             >
-              <span style={{ color: 'red' }}>*</span> Password:
+              <span style={{ color: "red" }}>*</span> Password
             </label>
             <input
               id="password"
@@ -82,18 +83,23 @@ export default function Login() {
               className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             />
           </div>
-          <div className="mt-4 text-center">
-            <a href="/forgot-password" className="text-coolGray-50 text-xs">
-              Forgot your password?
-            </a>
-          </div>
-          <div className="mt-2 text-center">
-            <a href="/signup" className="text-coolGray-50 text-xs">
-              Don't have an account? Sign up
-            </a>
+          <div className="m-4 text-center">
+            <div>
+              <a
+                href="/forgot-password"
+                className="text-gray-400 text-xs underline"
+              >
+                Forgot your password?
+              </a>
+            </div>
+            <div>
+              <a href="/signup" className="text-gray-400 text-xs underline">
+                Don't have an account? Sign up
+              </a>
+            </div>
           </div>
           <div className="w-full">
-            <CustomButton onClick={handleSubmit}>Sign in</CustomButton>
+            <CustomButton onClick={handleSubmit} text="Sign in"></CustomButton>
           </div>
         </form>
       </div>
