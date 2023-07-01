@@ -38,6 +38,13 @@ async function main() {
   });
   console.log(clockItemType);
 
+  const bikeItemType = await prisma.itemType.upsert({
+    where: { name: "Bike" },
+    create: { name: "Bike" },
+    update: {}
+  });
+  console.log(bikeItemType);
+
   // create default brand(s)
   const wonderlandBrand = await prisma.brand.upsert({
     where: { name: "Wonderland" },
@@ -166,6 +173,24 @@ async function main() {
     }
   });
   console.log(repairRequest3);
+
+  const event2 = await prisma.Event.upsert({
+    where: {name: "Evans' Repair Warehouse"},
+    data: {
+      createdBy: "Evans",
+      name: "Evans' Repair Warehouse",
+      location: "The big warehouse on 5th st",
+      description: "Evans fixes bikes & trikes",
+      volunteers: ["Fred", "Gerald", "Harold"],
+      event: {
+        connect: {name: "Bike"}
+      },
+      startDate: new Date(2023, 8, 12, 15, 30, 0, 0),
+      endDate: new Date(2023, 8, 15, 15, 30, 0, 0)
+    },
+    update: {}
+  });
+  console.log(event2);
 
   // TODO: Explore generating fake data with faker (Automated Approach)
   // TODO: Add fake data to seed.ts
