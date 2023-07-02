@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  margin: 0 auto;
+  width: 90%;
+  table-layout: fixed;
+}
+
+thead tr {
+  background-color: rgb(45, 187, 142);
+  /* Header row color */
+  color: white;
+  /* Text color for header row */
+}
+
+tbody {
+  background-color: rgb(159, 227, 204);
+  /* Background color for rows */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+tr {
+  width: 100%;
+}
+
+th,
+td {
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 17px;
+  color: black;
+}
