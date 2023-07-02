@@ -5,7 +5,8 @@ const insert = async (
   description: string,
   itemType: string,
   itemBrand: string,
-  createdBy: string
+  createdBy: string,
+  images: string[] | undefined
 ) => {
   const repairRequest = await prisma.repairRequest.create({
     data: {
@@ -13,7 +14,14 @@ const insert = async (
       eventId,
       description,
       itemType,
-      itemBrand
+      itemBrand,
+      images: {
+        create: images?.map((image) => {
+          return {
+            s3Key: image
+          };
+        })
+      }
     }
   });
   return repairRequest;

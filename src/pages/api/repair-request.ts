@@ -26,20 +26,21 @@ const createRepairRequest = async (
   res: NextApiResponse
 ) => {
   // TODO: Get userID from middleware.
-  const response = repairRequestPostSchema.safeParse(req);
+  const response = repairRequestPostSchema.safeParse(req.body);
   if (!response.success) {
     const { errors } = response.error;
     return res.status(400).json({ error: errors });
   }
 
   try {
-    const { eventId, description, itemType, itemBrand } = response.data;
+    const { eventId, description, itemType, itemBrand, images } = response.data;
     const repairRequest = await repairRequestModel.insert(
       eventId,
       description,
       itemType,
       itemBrand,
-      "mock_user" // TODO: change this once we get userID
+      "mock_user", // TODO: change this once we get userID
+      images
     );
     return res.status(200).json({
       id: repairRequest.id
