@@ -22,4 +22,8 @@ const getItemTypes = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(itemtypes);
 };
 
-export const config = {};
+export const config = {
+  api: {
+    externalResolver: true as boolean
+  }
+};

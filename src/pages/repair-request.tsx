@@ -1,26 +1,86 @@
 // Page for submitting a repair request
 
+import { ChangeEvent, useState } from "react";
 import { Inter } from "next/font/google";
-import { useForm } from "react-hook-form";
+import Image from "next/image";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
+import { useBrands } from "@/hooks/brands";
+import { useItemTypes } from "@/hooks/item-types";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+type FormValues = {
+  itemBrand: string;
+  itemType: string;
+  description: string;
+  images: [];
+  eventId: string;
+  tncAccepted: false;
+};
+
+const Home = () => {
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: {
-      item_brand: "",
-      item_type: "",
+      itemBrand: "",
+      itemType: "",
       description: "",
       images: [],
-      event: ""
+      eventId: "",
+      tncAccepted: false
     }
   });
 
-  console.log(errors);
+  const itemTypeList = useItemTypes();
+  const brandList = useBrands();
+
+  // Brand dropdown
+  const [brand, setBrand] = useState("");
+  const handleBrandChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setBrand(event.target.value);
+  };
+
+  // Item Types Dropdown
+  const [itemType, setItemType] = useState("");
+  const handleItemTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setItemType(event.target.value);
+  };
+
+  // Events Dropdown
+  const [event, setEvent] = useState("");
+  const handleEventChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setEvent(event.target.value);
+  };
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
+
+    const response = await fetch(`/api/repair-request`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        eventId: data.eventId,
+        itemBrand: data.itemBrand,
+        itemType: data.itemType,
+        description: data.description
+      })
+    });
+    ` `;
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("Data submitted");
+    } else {
+      alert(`Error! ${response.statusText}`);
+    }
+  };
 
   return (
     <main
@@ -32,10 +92,11 @@ export default function Home() {
 
       <picture>
         <a href="https://repairlab.myfreesites.net/" target="_blank">
-          <img
+          <Image
             src="/images/repair_lab_logo.jpg"
             alt="Repair Labs Logo"
             width={80}
+            height={80}
           />
         </a>
       </picture>
@@ -49,125 +110,160 @@ export default function Home() {
       <br></br>
 
       <div>
-        <form
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-
-            const formData = new FormData();
-            formData.append("item_brand", data.item_brand);
-            formData.append("item_type", data.item_type);
-            formData.append("description", data.description);
-
-            if (data.images && data.images.length) {
-              formData.append("images", data.images[0]);
-            }
-          })}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* Input field for Brand of Item */}
-
-          <input
-            className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
-              errors.item_brand &&
-              "border-red-500 focus:border-red-500 focus:ring-red-500"
-            } `}
-            {...register("item_brand", { required: "*Required" })}
-            placeholder="Brand"
-          />
-
-          <p className="text-red-600"> {errors.item_brand?.message} </p>
+          <div>
+            <label htmlFor="brand">Brand:</label>
+            <div className="flex">
+              <select
+                id="brand"
+                className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
+                  errors.itemBrand &&
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
+                } `}
+                {...register("itemBrand", {
+                  required: "*Please select an option."
+                })}
+                placeholder="Brand"
+                value={brand}
+                onChange={handleBrandChange}
+              >
+                <option value="" disabled selected>
+                  Select an option
+                </option>
+                {brandList.map((brand: string, index: number) => {
+                  return <option key={index}>{brand}</option>;
+                })}
+              </select>
+            </div>
+            <p className="text-red-600"> {errors.itemBrand?.message} </p>
+          </div>
 
           <br></br>
 
           {/* Input field for Item Type */}
-
           <div>
-            <select
-              className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid p-2 pl-2 pr-3 ${
-                errors.item_type &&
-                "border-red-500 focus:border-red-500 focus:ring-red-500"
-              }`}
-              {...register("item_type", {
-                required: "*Please select an option."
-              })}
-            >
-              <option value="" disabled selected hidden>
-                Item Type
-              </option>
-              <option value="clothing"> General </option>
-              <option value="electrical"> Electrical </option>
-              <option value="jewellery"> Jewellery </option>
-              <option value="bike_repairs"> Bike Repairs </option>
-              <option value="fashion_repairs"> Fashion Repairs </option>
-              <option value="others_item_type"> Others </option>
-            </select>
-
-            <p className="text-red-600"> {errors.item_type?.message} </p>
+            <label htmlFor="itemType">Item Type:</label>
+            <div className="flex">
+              <select
+                id="itemType"
+                className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
+                  errors.itemType &&
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
+                } `}
+                {...register("itemType", {
+                  required: "*Please select an option."
+                })}
+                placeholder="ItemType"
+                value={itemType}
+                onChange={handleItemTypeChange}
+              >
+                <option value="" disabled selected>
+                  Select an option
+                </option>
+                {itemTypeList.map((itemType: string, index: number) => {
+                  return <option key={index}>{itemType}</option>;
+                })}
+              </select>
+            </div>
+            <p className="text-red-600"> {errors.itemType?.message} </p>
           </div>
 
           <br></br>
 
           {/* Input field for Description of Item */}
-
-          <input
-            className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
-              errors.description &&
-              "border-red-500 focus:border-red-500 focus:ring-red-500"
-            }`}
-            {...register("description", { required: "*Required" })}
-            placeholder="Description of Item"
-          />
-
-          <p className="text-red-600"> {errors.description?.message} </p>
-
+          <div>
+            <label htmlFor="description">Item Description:</label>
+            <div className="flex">
+              <textarea
+                id="description"
+                className={`h-20 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
+                  errors.description &&
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
+                }`}
+                {...register("description", { required: "*Required" })}
+                placeholder="Description of Item"
+              />
+            </div>
+            <p className="text-red-600"> {errors.description?.message} </p>
+          </div>
           <br></br>
 
           {/* Input field for Images */}
-
-          <input
-            className={`h-36 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10 ${
-              errors.images &&
-              "border-red-500 focus:border-red-500 focus:ring-red-500"
-            }`}
-            type="file"
-            {...register("images", { required: "*Required" })}
-          />
-
-          <p className="text-red-600"> {errors.images?.message} </p>
-
+          <div>
+            <label htmlFor="description">Image:</label>
+            <div className="flex">
+              <input
+                className={`h-36 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10 ${
+                  errors.images &&
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
+                }`}
+                type="file"
+                {...register("images", { required: "*Required" })}
+              />
+            </div>
+            <p className="text-red-600"> {errors.images?.message} </p>
+          </div>
           <br></br>
 
           {/* Input field for Event Date */}
-
           <div>
-            <select
-              className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid p-2 pl-2 pr-3 ${
-                errors.event &&
-                "border-red-500 focus:border-red-500 focus:ring-red-500"
-              }`}
-              {...register("event", {
-                required: "*Please select an event."
-              })}
-            >
-              <option value="" disabled selected hidden>
-                Event
-              </option>
-              <option value="placeholder_1">Placeholder: Event Option 1</option>
-              <option value="placeholder_2">Placeholder: Event Option 2</option>
-              <option value="others_event"> Others </option>
-            </select>
-
-            <p className="text-red-600"> {errors.event?.message} </p>
+            <label htmlFor="event">Event:</label>
+            <div className="flex">
+              <select
+                id="event"
+                className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
+                  errors.eventId &&
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
+                } `}
+                {...register("eventId", {
+                  required: "*Please select an option."
+                })}
+                placeholder="Event"
+                value={event}
+                onChange={handleEventChange}
+              >
+                <option value="" disabled selected>
+                  Select an option
+                </option>
+                <option value="2e0b9272-14ef-11ee-be56-0242ac120002">
+                  HELLO
+                </option>
+                <option>2</option>
+              </select>
+            </div>
+            <p className="text-red-600"> {errors.eventId?.message} </p>
           </div>
 
           <br></br>
 
-          <label className="flex h-6 items-center">
-            <input type="checkbox" />
+          {/* Terms and Conditions Checkbox */}
+          <div className="h-6 items-center">
+            <Controller
+              control={control}
+              name="tncAccepted"
+              render={({ field: { value, onChange } }) => (
+                <input
+                  className={`${
+                    errors.tncAccepted &&
+                    "border-red-500 focus:border-red-500 focus:ring-red-500"
+                  }`}
+                  type="checkbox"
+                  checked={value}
+                  {...register("tncAccepted", {
+                    required: "*Accept terms and conditions to submit."
+                  })}
+                  onChange={(e) => {
+                    onChange(e.target.checked);
+                  }}
+                />
+              )}
+            />
             <span className="pl-2 text-sm">
               I accept the Terms and Conditions.
             </span>
-          </label>
-
+            <p className="text-red-600"> {errors.tncAccepted?.message} </p>
+          </div>
           <br></br>
 
           <input
@@ -178,4 +274,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;

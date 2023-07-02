@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
 import repairRequestModel from "@/models/repairRequest.model";
 import { repairRequestPostSchema } from "@/schema/repairRequest";
@@ -50,4 +50,8 @@ const createRepairRequest = async (
   }
 };
 
-export const config = {};
+export const config: PageConfig = {
+  api: {
+    externalResolver: true
+  }
+};

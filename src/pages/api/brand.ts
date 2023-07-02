@@ -22,4 +22,8 @@ const getBrands = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(brands);
 };
 
-export const config = {};
+export const config = {
+  api: {
+    externalResolver: true as boolean
+  }
+};
