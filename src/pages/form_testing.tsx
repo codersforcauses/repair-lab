@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 
 import Field_Input from "@/components/Field_Input";
 import Field_Radio from "@/components/Field_Radio";
+import Field_Text_Area from "@/components/Field_TextArea";
 
 type RepairData = {
   id: string;
@@ -14,6 +15,7 @@ type RepairData = {
   spare: string;
   parts: string;
   desc: string;
+  comments: string;
 };
 
 export default function Repair() {
@@ -27,7 +29,8 @@ export default function Repair() {
       repaired: "",
       spare: "",
       parts: "",
-      desc: ""
+      desc: "",
+      comments: ""
     },
     mode: "onChange"
   });
@@ -104,6 +107,14 @@ export default function Repair() {
             name="desc"
             control={control}
             rules={{ required: true }}
+          />
+        </div>
+        {/* Comments */}
+        <div className={lineStyle}>
+          <Field_Text_Area
+            name="comments"
+            control={control}
+            rules={{ required: false }}
           />
         </div>
         {/* Submit */}
