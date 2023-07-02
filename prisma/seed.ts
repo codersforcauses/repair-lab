@@ -208,7 +208,7 @@ async function main() {
       createdBy: "Greg",
       assignedTo: "Fred",
       event: {
-        connect: { id: event1.id }
+        connect: { id: event2.id }
       },
       status: "PENDING",
       description: "My bike chain came out",
@@ -238,7 +238,7 @@ async function main() {
       createdBy: "Ivan",
       assignedTo: "Gerald",
       event: {
-        connect: { id: event1.id }
+        connect: { id: event2.id }
       },
       status: "PENDING",
       description: "Brake is not working",
@@ -268,7 +268,7 @@ async function main() {
       createdBy: "Larry",
       assignedTo: "Harold",
       event: {
-        connect: { id: event1.id }
+        connect: { id: event2.id }
       },
       status: "PENDING",
       description: "Cant adjust seat height",

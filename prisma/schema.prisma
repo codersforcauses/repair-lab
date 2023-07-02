@@ -40,18 +40,26 @@ enum Status {
   CANCELLED
 }
 
+enum ItemStatus {
+  REPAIRED
+  FAILED
+  UNFINISHED
+}
+
 model RepairRequest {
   id         String @id @default(uuid())
   createdBy  String //User id
   assignedTo String //volunteer id
 
-  event   Event  @relation(fields: [eventId], references: [id]) //relation field (one repair_request to one event)
+  event   Event  @relation(fields: [eventId], references: [id]) //relation field (many repair_requests to one event)
   eventId String
 
   status Status @default(PENDING)
 
   description String
   comment     String //comment for repairer to document repair process
+  spareParts String @default("") //this should be filled out later by volunteer
+  itemStatus ItemStatus @default(UNFINISHED)
 
   requestDate DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -59,6 +67,7 @@ model RepairRequest {
   itemType    String
 
   itemBrand String
+  itemMaterial String @default("") //this should be filled out later by volunteer
 
   images RepairRequestImage[]
 }
