@@ -16,7 +16,7 @@ describe("/api/hello", () => {
     await cleanup();
     await prisma.itemType.create({
       data: {
-        name: "Test Item Type",
+        name: "Test Item Type"
       }
     });
     await prisma.event.create({

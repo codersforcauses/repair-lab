@@ -5,6 +5,5 @@ export const cleanup = async () => {
 };
 
 export const teardown = async () => {
-  await cleanup()
-  .then(() => prisma.$disconnect());
+  await cleanup().then(() => prisma.$disconnect());
 };
