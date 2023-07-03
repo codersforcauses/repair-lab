@@ -102,6 +102,6 @@ model EventImage {
   id    String @id @default(uuid())
   s3Key String //Potentially to be changed for privacy reasons
 
-  RepairEvent   Event  @relation(fields: [RepairEventId], references: [id])
-  RepairEventId String
+  repairEvent   Event  @relation(fields: [repairEventId], references: [id])
+  repairEventId String
 }
