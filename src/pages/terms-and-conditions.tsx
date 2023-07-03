@@ -1,8 +1,8 @@
 // Terms and Conditions Pop-up
 
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import { Inter } from "next/font/google";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, SubmitHandler } from "react-hook-form";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,31 +21,34 @@ const Home = () => {
     }
   });
 
-const onSubmit: SubmitHandler<FormValues> = async (data) => {
-  const response = await fetch(`/api/repair-request`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-  },
-    body: JSON.stringify(data)
-})} 
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    const response = await fetch(`/api/repair-request`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+  };
 
-function PopUp({ trigger, children }) {
-  return trigger ? (
-    <div className="popup">
-      <div className="popup-inner">
+  function PopUp({ trigger, children }: { trigger: boolean; children: ReactNode }) {
+    return trigger ? (
+      <div className="popup">
+        <div className="popup-inner">
           <button className="close-btn">Close</button>
           {children}
+        </div>
       </div>
-    </div>
-  ) : null;
-}
+    ) : null;
+  }
 
-const [showPopup, setShowPopup] = useState(false);
-const handleshowPopupChange = (event: React.MouseEvent<HTMLButtonElement>) => {
-  event.preventDefault();
-  setShowPopup(prevState => !prevState);
-};
+  const [showPopup, setShowPopup] = useState(false);
+  const handleshowPopupChange = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    setShowPopup((prevState) => !prevState);
+  };
 
   return (
     <main
@@ -56,8 +59,7 @@ const handleshowPopupChange = (event: React.MouseEvent<HTMLButtonElement>) => {
           <Controller
             control={control}
             name="tncAccepted"
-            rules = {{required: "*Accept terms and conditions to submit."
-            }}
+            rules={{ required: "*Accept terms and conditions to submit." }}
             render={({ field: { value, onChange } }) => (
               <input
                 className={`${
@@ -72,17 +74,20 @@ const handleshowPopupChange = (event: React.MouseEvent<HTMLButtonElement>) => {
               />
             )}
           />
-          <button onClick={handleshowPopupChange}> I accept the Terms and Conditions. </button>
+          <button onClick={handleshowPopupChange}>
+            {" "}
+            I accept the Terms and Conditions.{" "}
+          </button>
 
           {showPopup && (
             <PopUp trigger={showPopup}>
               <p>hi</p>
             </PopUp>
-        )}
+          )}
 
-
-          {errors.tncAccepted && (<p className="text-red-600"> {errors.tncAccepted.message} </p>)}
-
+          {errors.tncAccepted && (
+            <p className="text-red-600"> {errors.tncAccepted.message} </p>
+          )}
         </div>
         <br></br>
 
@@ -90,7 +95,6 @@ const handleshowPopupChange = (event: React.MouseEvent<HTMLButtonElement>) => {
           className="bg-teal-600 text-white hover:bg-teal-500 m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid text-center text-lg"
           type="submit"
         />
-
       </form>
     </main>
   );
