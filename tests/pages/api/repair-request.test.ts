@@ -1,7 +1,7 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
 import { RepairRequest } from "@prisma/client";
-import {beforeAll, describe, expect, it} from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import endpoint, { config } from "@/pages/api/repair-request";
 
@@ -37,7 +37,7 @@ describe("POST /api/repair-request", () => {
         endDate: new Date()
       }
     });
-  })
+  });
 
   it("should return 400 status code on invalid fields", async () => {
     await testApiHandler({
@@ -78,23 +78,28 @@ describe("POST /api/repair-request", () => {
             itemBrand: "Apple"
           })
         });
-        
+
         expect(res.status).equals(200);
-   
+
         const result = await res.json();
         const repairRequestId = result.id;
 
-        const expectedRepairRequest : RepairRequest | null = await prisma.repairRequest.findUnique({
-          where: {
-            id: repairRequestId
-          }
-        })
-        
-        expect(expectedRepairRequest?.eventId).equals("acf5ed50-19a2-11ee-be56-0242ac120002")
+        const expectedRepairRequest: RepairRequest | null =
+          await prisma.repairRequest.findUnique({
+            where: {
+              id: repairRequestId
+            }
+          });
+
+        expect(expectedRepairRequest?.eventId).equals(
+          "acf5ed50-19a2-11ee-be56-0242ac120002"
+        );
         expect(expectedRepairRequest?.itemType).equals("Laptop");
-        expect(expectedRepairRequest?.description).equals("My Macbook screen came off")
-        expect(expectedRepairRequest?.itemBrand).equals("Apple")
+        expect(expectedRepairRequest?.description).equals(
+          "My Macbook screen came off"
+        );
+        expect(expectedRepairRequest?.itemBrand).equals("Apple");
       }
     });
-  })
+  });
 });

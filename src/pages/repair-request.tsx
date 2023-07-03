@@ -58,8 +58,6 @@ const Home = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
-
     const response = await fetch(`/api/repair-request`, {
       method: "POST",
       headers: {
@@ -73,7 +71,6 @@ const Home = () => {
       })
     });
     ` `;
-    const result = await response.json();
 
     if (response.ok) {
       alert("Data submitted");
