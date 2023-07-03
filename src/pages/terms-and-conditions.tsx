@@ -18,10 +18,10 @@ const Home = () => {
   } = useForm<FormValues>({
     defaultValues: {
       tncAccepted: false
-  }
-});
+    }
+  });
 
-return (
+  return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
