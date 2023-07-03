@@ -31,7 +31,13 @@ const Home = () => {
     });
   };
 
-  function PopUp({ trigger, children }: { trigger: boolean; children: ReactNode }) {
+  function PopUp({
+    trigger,
+    children
+  }: {
+    trigger: boolean;
+    children: ReactNode;
+  }) {
     return trigger ? (
       <div className="popup">
         <div className="popup-inner">
