@@ -1,5 +1,6 @@
 // Terms and Conditions Pop-up
 
+import React, { useState } from "react";
 import { Inter } from "next/font/google";
 import { Controller, useForm } from "react-hook-form";
 
@@ -12,7 +13,6 @@ type FormValues = {
 const Home = () => {
   const {
     control,
-    register,
     handleSubmit,
     formState: { errors }
   } = useForm<FormValues>({
@@ -21,15 +21,43 @@ const Home = () => {
     }
   });
 
+const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const response = await fetch(`/api/repair-request`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+  },
+    body: JSON.stringify(data)
+})} 
+
+function PopUp({ trigger, children }) {
+  return trigger ? (
+    <div className="popup">
+      <div className="popup-inner">
+          <button className="close-btn">Close</button>
+          {children}
+      </div>
+    </div>
+  ) : null;
+}
+
+const [showPopup, setShowPopup] = useState(false);
+const handleshowPopupChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+  event.preventDefault();
+  setShowPopup(prevState => !prevState);
+};
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="h-6 items-center">
           <Controller
             control={control}
             name="tncAccepted"
+            rules = {{required: "*Accept terms and conditions to submit."
+            }}
             render={({ field: { value, onChange } }) => (
               <input
                 className={`${
@@ -38,19 +66,23 @@ const Home = () => {
                 }`}
                 type="checkbox"
                 checked={value}
-                {...register("tncAccepted", {
-                  required: "*Accept terms and conditions to submit."
-                })}
                 onChange={(e) => {
                   onChange(e.target.checked);
                 }}
               />
             )}
           />
-          <span className="pl-2 text-sm">
-            I accept the Terms and Conditions.
-          </span>
-          <p className="text-red-600"> {errors.tncAccepted?.message} </p>
+          <button onClick={handleshowPopupChange}> I accept the Terms and Conditions. </button>
+
+          {showPopup && (
+            <PopUp trigger={showPopup}>
+              <p>hi</p>
+            </PopUp>
+        )}
+
+
+          {errors.tncAccepted && (<p className="text-red-600"> {errors.tncAccepted.message} </p>)}
+
         </div>
         <br></br>
 
@@ -58,6 +90,7 @@ const Home = () => {
           className="bg-teal-600 text-white hover:bg-teal-500 m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid text-center text-lg"
           type="submit"
         />
+
       </form>
     </main>
   );
