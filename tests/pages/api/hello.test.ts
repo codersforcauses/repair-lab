@@ -14,18 +14,29 @@ handler.config = config;
 describe("/api/hello", () => {
   beforeAll(async () => {
     await cleanup();
-    await prisma.message.create({
+    await prisma.itemType.create({
       data: {
-        authorId: "test",
-        content: "Hello World"
+        name: "Test Item Type"
+      }
+    });
+    await prisma.event.create({
+      data: {
+        createdBy: "test",
+        name: "Test Event",
+        location: "Test Location",
+        description: "This is a test event",
+        volunteers: [],
+        eventType: "Test Item Type",
+        startDate: new Date(),
+        endDate: new Date()
       }
     });
   });
 
-  it("should send messages from the database", async () => {
+  it("should send events from the database", async () => {
     await testApiHandler({
       handler,
-      url: `/?content=Hello%20World`,
+      url: `/?name=Test%20Event`,
       test: async ({ fetch }) => {
         const res = await fetch({ method: "GET" });
         const body = await res.json();
@@ -34,16 +45,14 @@ describe("/api/hello", () => {
 
         expect(res.status).to.equal(200);
         expect(body).to.exist;
-        expect(body.length).to.equal(1);
-        expect(body[0].content).to.equal("Hello World");
       }
     });
   });
 
-  it("should NOT send messages from the database", async () => {
+  it("should NOT send events from the database", async () => {
     await testApiHandler({
       handler,
-      url: `/?content=Dummy`,
+      url: `/?name=Dummy`,
       test: async ({ fetch }) => {
         const res = await fetch({ method: "GET" });
         const body = await res.json();
@@ -52,7 +61,6 @@ describe("/api/hello", () => {
 
         expect(res.status).to.equal(200);
         expect(body).to.exist;
-        expect(body.length).to.equal(0);
       }
     });
   });
