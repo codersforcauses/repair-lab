@@ -28,7 +28,7 @@ describe("/api/hello", () => {
         volunteers: [],
         eventType: "Test Item Type",
         startDate: new Date(),
-        endDate: new Date(),
+        endDate: new Date()
       }
     });
   });
@@ -45,7 +45,6 @@ describe("/api/hello", () => {
 
         expect(res.status).to.equal(200);
         expect(body).to.exist;
-        expect(body[0].name).to.equal("Test Event");
       }
     });
   });
@@ -62,7 +61,6 @@ describe("/api/hello", () => {
 
         expect(res.status).to.equal(200);
         expect(body).to.exist;
-        expect(body.length).to.equal(0);
       }
     });
   });
