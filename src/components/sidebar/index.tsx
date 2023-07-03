@@ -8,7 +8,6 @@ import logo from "../../../public/images/repair_lab_logo.jpg";
 
 interface Props {
   children?: ReactNode;
-  // any props that come into the component
 }
 
 const Sidebar = ({ children }: Props) => {
@@ -37,10 +36,16 @@ const Sidebar = ({ children }: Props) => {
               <p className="px-4 text-lg">Volunteers</p>
             </div>
           </Link>
-          <Link href="/repair-requests">
+          <Link href="/repair-request">
             <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair requests</p>
+            </div>
+          </Link>
+          <Link href="/events">
+            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
+              <SlFolderAlt size={30} />
+              <p className="px-4 text-lg">Events</p>
             </div>
           </Link>
           <Link href="/">

@@ -7,6 +7,6 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse<Event[]>
 ) {
-  const event = await prisma.event.findMany();
-  return res.status(201).json(event);
+  const events = await prisma.event.findMany();
+  return res.status(201).json(events);
 }
