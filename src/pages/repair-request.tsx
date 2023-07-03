@@ -226,10 +226,9 @@ const Home = () => {
                 <option value="" disabled selected>
                   Select an option
                 </option>
-                <option value="2e0b9272-14ef-11ee-be56-0242ac120002">
-                  HELLO
-                </option>
-                <option>2</option>
+                <option value="1">Event 1</option>
+                <option value="2">Event 2</option>
+                <option value="3">Event 3</option>
               </select>
             </div>
             <p className="text-red-600"> {errors.eventId?.message} </p>
@@ -267,7 +266,7 @@ const Home = () => {
           <br></br>
 
           <input
-            className="m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-teal-600 text-center text-lg text-white hover:bg-teal-500"
+            className="bg-teal-600 text-white hover:bg-teal-500 m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid text-center text-lg"
             type="submit"
           />
         </form>
