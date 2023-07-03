@@ -1,65 +1,45 @@
-import { MouseEventHandler, useCallback, useState } from "react";
-import data from "./data.json";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Event } from "@prisma/client";
+  
 
-type Data = typeof data;
 
-type SortKeys = keyof Data[0];
+function SortableTable() {
 
-type SortOrder = "ascn" | "desc";
+  function formatDate(dateString: string): string {
+    const actualDate = new Date(dateString);
+    const day = actualDate.getDate().toString().padStart(2, '0');
+    const month = (actualDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = actualDate.getFullYear().toString();
 
-function sortData({
-  tableData,
-  sortKey,
-  reverse,
-}: {
-  tableData: Data;
-  sortKey: SortKeys;
-  reverse: boolean;
-}) {
-  if (!sortKey) return tableData;
-
-  const sortedData = data.sort((a, b) => {
-    return a[sortKey] > b[sortKey] ? 1 : -1;
-  });
-
-  if (reverse) {
-    return sortedData.reverse();
+  
+    return `${day}/${month}/${year}`;
   }
 
-  return sortedData;
-}
+  const [eventData, setEventData] = useState<Event[]>([]);
 
-
-function SortableTable({ data }: { data: Data }) {
-
-  const headers: { key: SortKeys; label: string }[] = [
-    { key: "event_name", label: "EVENT NAME" },
-    { key: "event_manager", label: "EVENT MANAGER" },
+  const headers: { key: string; label: string }[] = [
+    { key: "event_name", label: "Event Name" },
+    { key: "event_manager", label: "Event Manager" },
     { key: "location", label: "Location" },
     { key: "date", label: "Date" },
     { key: "type", label: "Type" },
     { key: "status", label: "Status" },
   ];
 
-  const [sortKey, setSortKey] = useState<SortKeys>("event_name");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("ascn");
-
-  const sortedData = useCallback(
-    () => sortData({ tableData: data, sortKey, reverse: sortOrder === "desc" }),
-    [data, sortKey, sortOrder]
-  );
-
-  function changeSort(key: SortKeys) {
-
-    setSortOrder(sortOrder === 'ascn' ? 'desc' : 'ascn')
-
-    setSortKey(key);
-
+  useEffect(() => {
+    fetch("/api/get_events")
+      .then((res) => res.json())
+      .then((data) => {
+        setEventData(data);
+      });
   }
+  , []);
+
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", padding: "20px", paddingLeft: "20px" }}>
-        <img src="/images/repair_lab_logo.jpg" alt="Event Image" style={{ width: "80px", height: "auto" }} />
+        <Image src="/images/repair_lab_logo.jpg" alt="logo" width="80" height="80" />
         <h1 style={{ marginLeft: "10px", color: "grey" }}>Event Listings</h1>
       </div>
       <div className="container">
@@ -78,15 +58,15 @@ function SortableTable({ data }: { data: Data }) {
           </thead>
 
           <tbody>
-            {sortedData().map((event) => {
+            {eventData.map((event :Event) => {
               return (
-                <tr key={event.event_name}>
-                  <td>{event.event_name}</td>
-                  <td>{event.event_manager}</td>
+                <tr key={event.name}>
+                  <td>{event.name}</td>
+                  <td>{event.createdBy}</td>
                   <td>{event.location}</td>
-                  <td>{event.date}</td>
-                  <td>{event.type}</td>
-                  <td>{event.status}</td>
+                  <td>{formatDate(String(event.startDate))}</td>
+                  <td>{event.eventType}</td>
+                  <td>INSERT STATUS</td>
                 </tr>
               );
             })}
