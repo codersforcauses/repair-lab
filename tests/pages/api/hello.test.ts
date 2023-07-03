@@ -29,7 +29,6 @@ describe("/api/hello", () => {
         eventType: "Test Item Type",
         startDate: new Date(),
         endDate: new Date(),
-        status: "UPCOMING"
       }
     });
   });
