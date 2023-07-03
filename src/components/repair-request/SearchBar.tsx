@@ -5,9 +5,9 @@ import SearchIcon from "../../../public/images/searchIcon.svg";
 
 export default function SortBy() {
   return (
-    <div className="sd:w-auto relative w-4/12 p-4 text-gray-600">
+    <div className="sd:w-auto text-gray-600 relative w-4/12 p-4">
       <input
-        className="sd:w-auto h-10 w-full rounded-3xl border-none bg-gray-100 px-5 pr-16 text-sm focus:shadow-md focus:outline-none"
+        className="sd:w-auto bg-gray-100 h-10 w-full rounded-3xl border-none px-5 pr-16 text-sm focus:shadow-md focus:outline-none"
         type="search"
         name="search"
         placeholder="Search"
@@ -17,7 +17,7 @@ export default function SortBy() {
         className="absolute right-0 top-0 mr-10 mt-[1.6rem]"
       >
         <Image
-          className="h-4 w-4 fill-current text-gray-600"
+          className="fill-current text-gray-600 h-4 w-4"
           src={SearchIcon}
           alt="test"
         />
