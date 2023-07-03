@@ -28,8 +28,16 @@ model Event {
   startDate DateTime
   endDate   DateTime
 
+  status EventStatus @default(UPCOMING)
+
   repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
   images         EventImage[]
+}
+
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
 }
 
 enum Status {
