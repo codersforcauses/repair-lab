@@ -66,7 +66,7 @@ function SortableTable() {
                   <td>{event.location}</td>
                   <td>{formatDate(String(event.startDate))}</td>
                   <td>{event.eventType}</td>
-                  <td>INSERT STATUS</td>
+                  <td>{event.status}</td>
                 </tr>
               );
             })}
