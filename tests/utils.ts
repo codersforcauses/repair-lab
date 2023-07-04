@@ -19,6 +19,5 @@ const resetDatabase = () => {
 };
 
 export const teardown = async () => {
-  await cleanup();
-  await prisma.$disconnect();
+  await cleanup().then(() => prisma.$disconnect());
 };
