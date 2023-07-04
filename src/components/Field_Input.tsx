@@ -10,7 +10,6 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
   placeholder?: string;
   icon?: string;
-  required?: boolean;
 }
 
 /*
@@ -25,12 +24,13 @@ Output:
 export default function Field_Input<T extends FieldValues = FieldValues>({
   label,
   placeholder = "",
-  icon = "",
+  icon,
   ...props
 }: FormProps<T>) {
   const { field } = useController(props);
 
-  placeholder == "" ? (placeholder = "Enter " + props.name) : "";
+  !icon ? (icon = "") : "";
+  !placeholder ? (placeholder = `Enter ${props.name}`) : "";
 
   return (
     <div className="relative mb-2 flex h-12 w-64 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
