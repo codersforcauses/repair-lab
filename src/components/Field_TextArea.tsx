@@ -34,18 +34,18 @@ export default function Field_Text_Area<T extends FieldValues = FieldValues>({
 
   return (
     <div className="relative mb-2 flex h-36 w-4/5 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
-      <div className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-[#FFF] px-1">
-        <label className="text-black text-xs font-semibold">
+      <div className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1">
+        <label className="text-xs font-semibold text-black">
           {label ?? props.name}
         </label>
         {props.rules?.required ? (
-          <span className="text-xs font-semibold text-[#FF0000]">*</span>
+          <span className="text-xs font-semibold text-red-500">*</span>
         ) : (
           ""
         )}
       </div>
       <textarea
-        className="overflow-wrap:break-text placeholder:text-gray-500 h-4/5 w-full resize-none overflow-y-auto text-sm focus:outline-none focus:ring-0"
+        className="overflow-wrap:break-text h-4/5 w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
         placeholder={placeholder}
         id={label}
         {...field}
