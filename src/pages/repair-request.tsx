@@ -223,9 +223,12 @@ const Home = () => {
                 <option value="" disabled selected>
                   Select an option
                 </option>
-                <option value="1">Event 1</option>
-                <option value="2">Event 2</option>
-                <option value="3">Event 3</option>
+                <option value="6b3e0cca-d636-472d-8c6e-1cc63bde6ceb">
+                  Evans&apos; Repair Warehouse
+                </option>
+                <option value="a6a73c2e-7937-4705-8a40-d6399c69f3bc">
+                  Can Bob Fix It?
+                </option>
               </select>
             </div>
             <p className="text-red-600"> {errors.eventId?.message} </p>
