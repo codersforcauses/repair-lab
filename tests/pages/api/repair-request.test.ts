@@ -31,6 +31,7 @@ describe("POST /api/repair-request", () => {
         createdBy: "mock user",
         name: "Laptop Repair Event",
         location: "Curtin University",
+        eventType: "Laptop",
         description: "Laptop repair event.",
         volunteers: ["Justin", "Spongebob"],
         startDate: new Date(),

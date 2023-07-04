@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import repairRequestModel from "@/models/repairRequest.model";
+import repairRequestModel from "@/models/repair-request.model";
 import { repairRequestPostSchema } from "@/schema/repairRequest";
 
 export default async function handler(
