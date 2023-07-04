@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import SearchIcon from "../../../public/images/searchIcon.svg";
+//import SearchIcon from "../../../public/images/searchIcon.svg";
 
 export default function SortBy() {
   return (
@@ -18,7 +18,7 @@ export default function SortBy() {
       >
         <Image
           className="fill-current text-gray-600 h-4 w-4"
-          src={SearchIcon}
+          src="../../../public/images/searchIcon.svg"
           alt="test"
         />
       </button>
