@@ -29,7 +29,6 @@ export default function Field_Text_Area<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field } = useController(props);
 
-  !icon ? (icon = "") : "";
   !placeholder ? (placeholder = `Enter ${props.name}`) : "";
 
   return (
@@ -50,7 +49,9 @@ export default function Field_Text_Area<T extends FieldValues = FieldValues>({
         id={label}
         {...field}
       />
-      {icon != "" ? (
+      {!icon ? (
+        ""
+      ) : (
         <Image
           src={icon}
           alt="icon"
@@ -58,8 +59,6 @@ export default function Field_Text_Area<T extends FieldValues = FieldValues>({
           height={16}
           className="min-h-4 relative w-4 min-w-0 shrink-0"
         />
-      ) : (
-        ""
       )}
     </div>
   );
