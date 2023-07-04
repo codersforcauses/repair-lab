@@ -96,6 +96,7 @@ async function main() {
   // create default repairRequest(s)
   const repairRequest1 = await prisma.repairRequest.create({
     data: {
+      id: "40e22917-5649-4dca-aae5-c2bb3d20303a",
       createdBy: "Alice",
       assignedTo: "Cheshire Cat",
       event: {
@@ -127,6 +128,7 @@ async function main() {
 
   const repairRequest2 = await prisma.repairRequest.create({
     data: {
+      id: "f7dc6714-043a-4a7e-9639-a43d3e5ad2cc",
       createdBy: "Charlie",
       assignedTo: "Cheshire Cat",
       event: {
@@ -157,6 +159,7 @@ async function main() {
 
   const repairRequest3 = await prisma.repairRequest.create({
     data: {
+      id: "3de8cb33-7406-4317-962c-83617095b9b1",
       createdBy: "David",
       assignedTo: "Cheshire Cat",
       event: {
@@ -188,6 +191,7 @@ async function main() {
   const event2 = await prisma.event.upsert({
     where: { name: "Evans' Repair Warehouse" },
     create: {
+      id: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb",
       createdBy: "Evans",
       name: "Evans' Repair Warehouse",
       location: "The big warehouse on 5th st",
@@ -205,6 +209,7 @@ async function main() {
 
   const repairRequest4 = await prisma.repairRequest.create({
     data: {
+      id: "42fdbf91-e066-49be-8b60-86439f5c97a5",
       createdBy: "Greg",
       assignedTo: "Fred",
       event: {
@@ -235,6 +240,7 @@ async function main() {
 
   const repairRequest5 = await prisma.repairRequest.create({
     data: {
+      id: "2e38f35a-7a16-4bd5-bbb9-b511def55ffe",
       createdBy: "Ivan",
       assignedTo: "Gerald",
       event: {
@@ -265,6 +271,7 @@ async function main() {
 
   const repairRequest6 = await prisma.repairRequest.create({
     data: {
+      id:"594ea3f3-4091-438b-8495-0724be3d9060",
       createdBy: "Larry",
       assignedTo: "Harold",
       event: {
