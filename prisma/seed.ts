@@ -271,7 +271,7 @@ async function main() {
 
   const repairRequest6 = await prisma.repairRequest.create({
     data: {
-      id:"594ea3f3-4091-438b-8495-0724be3d9060",
+      id: "594ea3f3-4091-438b-8495-0724be3d9060",
       createdBy: "Larry",
       assignedTo: "Harold",
       event: {
