@@ -1,8 +1,6 @@
 import React from "react";
 import Image from "next/image";
 
-// import SearchIcon from "../../../public/images/searchIcon.svg";
-
 export default function SortBy() {
   return (
     <div className="sd:w-auto text-gray-600 relative w-4/12 p-4">
