@@ -10,8 +10,12 @@ export default async function get_events(
   req: NextApiRequest,
   res: NextApiResponse<Event[]>
 ) {
+  const { sortKey, sortMethod } = req.body;
+  const sortObj: { [key: string]: "asc" | "desc" } = {};
+  sortObj[sortKey] = sortMethod; // or 'asc' for ascending order)
+
   const events = await prisma.event.findMany({
-    where: { name: req.query.content as string }
+    orderBy: sortObj
   });
 
   res.status(200).json(events);
