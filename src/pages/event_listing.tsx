@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Event } from "@prisma/client";
 
-
-
 function Table() {
-
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
     const day = actualDate.getDate().toString().padStart(2, "0");
@@ -47,24 +44,25 @@ function Table() {
       });
   }, [sortKey, sortMethod]);
 
-  function SortOptions() { // Basic functionality for sorting, styling incomplete
+  function SortOptions() {
+    // Basic functionality for sorting, styling incomplete
     return (
       <div>
-      <select onChange={(e) => setSortKey(e.target.value)}>
-      {headers.map((header) => (
-        <option value={header.key} key={header.key}>
-          {header.label}
-        </option>
-      ))}
-    </select>
-    <select onChange={(e) => setSortMethod(e.target.value)}>
-      {sortMethods.map((header) => (
-        <option value={header.key} key={header.key}>
-          {header.label}
-        </option>
-      ))}
-    </select>
-    </div>
+        <select onChange={(e) => setSortKey(e.target.value)}>
+          {headers.map((header) => (
+            <option value={header.key} key={header.key}>
+              {header.label}
+            </option>
+          ))}
+        </select>
+        <select onChange={(e) => setSortMethod(e.target.value)}>
+          {sortMethods.map((header) => (
+            <option value={header.key} key={header.key}>
+              {header.label}
+            </option>
+          ))}
+        </select>
+      </div>
     );
   }
 
