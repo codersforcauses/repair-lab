@@ -4,7 +4,7 @@ import Link from "next/link";
 import { RxImage, RxInfoCircled, RxPerson } from "react-icons/rx";
 import { SlFolderAlt } from "react-icons/sl";
 
-import logo from "../../../public/images/repair_lab_logo.jpg";
+// import logo from "../../../public/images/repair_lab_logo.jpg";
 
 interface Props {
   children?: ReactNode;
@@ -17,7 +17,7 @@ const Sidebar = ({ children }: Props) => {
         <div className="flex flex-col items-center">
           <Link href="/">
             <div className="grid-element">
-              <Image src={logo} width={150} height={150} alt="repair-labs" />
+              <Image src="../../../public/images/repair_lab_logo.jpg" width={150} height={150} alt="repair-labs" />
             </div>
           </Link>
         </div>
