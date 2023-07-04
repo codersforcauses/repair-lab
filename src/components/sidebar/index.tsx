@@ -17,7 +17,12 @@ const Sidebar = ({ children }: Props) => {
         <div className="flex flex-col items-center">
           <Link href="/">
             <div className="grid-element">
-              <Image src="../../../public/images/repair_lab_logo.jpg" width={150} height={150} alt="repair-labs" />
+              <Image
+                src="/images/repair_lab_logo.jpg"
+                width={150}
+                height={150}
+                alt="repair-labs"
+              />
             </div>
           </Link>
         </div>
