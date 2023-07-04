@@ -42,7 +42,7 @@ const Home = () => {
       <div className="popup justify-item-center fixed inset-2 z-50 flex h-auto overflow-auto rounded-md border border-solid">
         <div className="popup-inner overflow-auto bg-primary-200 bg-opacity-100">
           <button
-            className="close-btnh w-20 border-spacing-0.5 rounded-md border border-solid text-center text-lg mb-4"
+            className="close-btnh mb-4 w-20 border-spacing-0.5 rounded-md border border-solid text-center text-lg"
             onClick={() => setShowPopup(false)}
           >
             Close
@@ -101,11 +101,12 @@ const Home = () => {
             {showPopup && (
               <PopUp trigger={showPopup}>
                 <p>
-                  <h1 className="text-primary-600 text-center pl-5 pr-8 mb-4">
-                      *Please check the checkbox to acknowledge that you have
-                      read and accept our House Rules.* </h1>
+                  <h1 className="mb-4 pl-5 pr-8 text-center text-primary-600">
+                    *Please check the checkbox to acknowledge that you have read
+                    and accept our House Rules.*{" "}
+                  </h1>
 
-                  <h1 className="text-center text-lg font-bold mb-4">
+                  <h1 className="mb-4 text-center text-lg font-bold">
                     {" "}
                     House Rules:{" "}
                   </h1>
