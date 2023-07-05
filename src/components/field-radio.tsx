@@ -5,6 +5,7 @@ import {
 } from "react-hook-form";
 
 import Label from "@/components/box-label";
+import Error from "@/components/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
@@ -24,7 +25,7 @@ export default function Field_Radio<T extends FieldValues = FieldValues>({
   label,
   ...props
 }: FormProps<T>) {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   !label ? (label = props.name) : "";
 
@@ -42,6 +43,7 @@ export default function Field_Radio<T extends FieldValues = FieldValues>({
           No
         </label>
       </div>
+      {fieldState.error?.message && <Error {...props} />}
     </div>
   );
 }

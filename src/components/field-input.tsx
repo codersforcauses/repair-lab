@@ -6,6 +6,7 @@ import {
 } from "react-hook-form";
 
 import Label from "@/components/box-label";
+import Error from "@/components/error-msg";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   label?: string;
@@ -28,7 +29,7 @@ export default function Field_Input<T extends FieldValues = FieldValues>({
   icon,
   ...props
 }: FormProps<T>) {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   !placeholder ? (placeholder = `Enter ${props.name}`) : "";
   !label ? (label = props.name) : "";
@@ -53,6 +54,7 @@ export default function Field_Input<T extends FieldValues = FieldValues>({
           className="relative min-h-0 w-4 min-w-0 shrink-0"
         />
       )}
+      {fieldState.error?.message && <Error {...props} />}
     </div>
   );
 }

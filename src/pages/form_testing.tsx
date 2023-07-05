@@ -51,7 +51,7 @@ export default function Repair() {
           <Field_Input
             name="id"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: "true" }}
             label="ID"
           />
           <Field_Input

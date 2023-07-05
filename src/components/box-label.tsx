@@ -5,6 +5,11 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
 }
 
+/*
+This is a component for the labels for each text box
+Output:
+  A <div> that contains the label for an input field
+*/
 export default function Label<T extends FieldValues = FieldValues>({
   label,
   ...props
