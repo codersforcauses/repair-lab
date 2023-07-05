@@ -24,7 +24,8 @@
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
     "prisma:reset": "prisma migrate reset --force && prisma db push",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.3",
