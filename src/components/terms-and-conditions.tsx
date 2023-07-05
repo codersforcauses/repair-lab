@@ -39,10 +39,10 @@ const Home = () => {
     children: ReactNode;
   }) {
     return trigger ? (
-      <div className="popup justify-item-center fixed inset-2 z-50 flex h-auto overflow-auto rounded-md border border-solid">
-        <div className="popup-inner overflow-auto bg-primary-200 bg-opacity-100">
+      <div className="popup justify-item-center fixed inset-6 z-50 flex h-auto overflow-auto rounded-md border border-solid border-black">
+        <div className="popup-inner overflow-auto bg-white bg-opacity-100">
           <button
-            className="close-btnh mb-4 w-20 border-spacing-0.5 rounded-md border border-solid text-center text-lg"
+            className="close-btnh mb-4 w-20 border-spacing-0.5 rounded-md border border-solid bg-red-400 text-center text-lg text-white hover:bg-red-300"
             onClick={() => setShowPopup(false)}
           >
             Close
@@ -101,7 +101,7 @@ const Home = () => {
             {showPopup && (
               <PopUp trigger={showPopup}>
                 <p>
-                  <h1 className="mb-4 pl-5 pr-8 text-center text-primary-600">
+                  <h1 className="mb-4 pl-5 pr-8 text-center text-red-600">
                     *Please check the checkbox to acknowledge that you have read
                     and accept our House Rules.*{" "}
                   </h1>
@@ -181,7 +181,7 @@ const Home = () => {
             )}
 
             {errors.tncAccepted && (
-              <p className="text-red-600 mt-2">
+              <p className="mt-2 text-red-600">
                 {" "}
                 {errors.tncAccepted.message}{" "}
               </p>
@@ -192,7 +192,7 @@ const Home = () => {
         <br></br>
 
         <input
-          className={`text-white hover:bg-teal-500 m-auto mt-2 flex h-12 w-40 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-lightAqua-400 text-center  text-lg ${
+          className={`m-auto mt-2 flex h-12 w-40 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-lightAqua-400 text-center text-lg text-white  hover:bg-teal-500 ${
             errors.tncAccepted && "mt-16"
           }`}
           type="submit"
