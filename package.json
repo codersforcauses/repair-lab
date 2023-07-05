@@ -36,11 +36,12 @@
     "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.44.3",
+    "react-hook-form": "^7.45.1",
     "react-icons": "^4.9.0",
     "react-query": "^3.39.3"
   },
   "devDependencies": {
+    "@hookform/resolvers": "^3.1.1",
     "@testing-library/react": "^14.0.0",
     "@types/node": "^20.3.2",
     "@types/react": "18.2.7",
