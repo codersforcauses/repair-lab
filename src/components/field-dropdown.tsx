@@ -1,5 +1,15 @@
 import { useState } from "react";
 
+/*
+This is a component for the HTML `<select>' tag
+Will display a dropdown displaying options
+Input:
+  label: The label displayed on the text box
+  options: array of options to display
+Output:
+  An input dropdown option box compatible w/ React-hook-forms 
+*/
+
 interface Props {
   selected: string;
   setSelected: (value: string) => void;
@@ -8,7 +18,7 @@ interface Props {
 export default function DropDownField({ selected, setSelected }: Props) {
   const [isActive, setIsActive] = useState(false);
   const options = ["React", "Vue", "Angular"];
-
+  // handle function for when a user clicks an option (onClick event)
   // const handleClick = ()
   return (
     <div className="select-none">
