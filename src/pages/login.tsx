@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import Image from "next/image";
 import CustomButton from "../components/custombutton-large";
 
@@ -103,12 +103,17 @@ export default function Login() {
             </div>
             <div>
               <a href="/register" className="text-gray-400 text-xs underline">
-                Don't have an account? Sign up
+                Do not have an account? Sign up
               </a>
             </div>
           </div>
           <div className="w-full">
-            <CustomButton onClick={handleSubmit} text="Sign in"></CustomButton>
+            <CustomButton
+              onClick={() => {
+                // Handle button click
+              }}
+              text="Sign in"
+            ></CustomButton>
           </div>
         </form>
       </div>

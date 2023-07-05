@@ -1,7 +1,7 @@
 import React from "react";
 
 interface CustomButtonProps {
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
   text: string;
 }
 

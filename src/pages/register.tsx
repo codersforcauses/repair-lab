@@ -107,7 +107,12 @@ export default function Register() {
           </div>
 
           <div className="w-full">
-            <CustomButton onClick={handleSubmit} text="Sign up"></CustomButton>
+            <CustomButton
+              onClick={() => {
+                // Handle button click
+              }}
+              text="Sign up"
+            ></CustomButton>
           </div>
         </form>
       </div>
