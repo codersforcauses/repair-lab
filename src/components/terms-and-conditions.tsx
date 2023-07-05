@@ -10,7 +10,7 @@ type FormValues = {
   tncAccepted: false;
 };
 
-const Home = () => {
+const Terms_And_Conditions = () => {
   const {
     control,
     handleSubmit,
@@ -202,4 +202,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Terms_And_Conditions;
