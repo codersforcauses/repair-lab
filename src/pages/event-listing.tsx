@@ -41,7 +41,7 @@ function Table() {
     params.append('sortKey', sortKey);
     params.append('sortMethod', sortMethod);
   
-    fetch(`/api/get?${params.toString()}`)
+    fetch(`/api/get_events?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setEventData(data);
