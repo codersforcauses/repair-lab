@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { faChevronDown, faChevronUp,faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Event } from "@prisma/client";
 
 function Table() {
@@ -17,6 +17,8 @@ function Table() {
   const [eventData, setEventData] = useState<Event[]>([]);
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [sortMethod, setSortMethod] = useState<string>("asc");
+  const [expandedButton, setExpandedButton] = useState<string>("");
+
 
   // The label is what users see, the key is what the server uses
   const headers: { key: string; label: string }[] = [
@@ -35,28 +37,43 @@ function Table() {
 
   // Whenever the sortKey or sortMethod changes, the useEffect hook will run
   useEffect(() => {
-    fetch("/api/get_events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sortKey, sortMethod })
-    })
+    const params = new URLSearchParams();
+    params.append('sortKey', sortKey);
+    params.append('sortMethod', sortMethod);
+  
+    fetch(`/api/get?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setEventData(data);
       });
   }, [sortKey, sortMethod]);
+  
+
+  function handleButtonClick(key: string) {
+    if (expandedButton === key) {
+      setExpandedButton("");
+    } else {
+      setExpandedButton(key);
+    }
+
+    // If the clicked column is already the sort key, toggle the sort method
+    if (sortKey === key) {
+      setSortMethod(sortMethod === "asc" ? "desc" : "asc");
+    } else {
+      // If it's a new column, set it as the sort key with ascending order
+      setSortKey(key);
+      setSortMethod("asc");
+    }
+  }
+
+  function handleSort(key: string) {
+    setSortKey(key);
+  }
 
   function SortOptions() {
     // Basic functionality for sorting, styling incomplete
     return (
       <div>
-        <select onChange={(e) => setSortKey(e.target.value)}>
-          {headers.map((header) => (
-            <option value={header.key} key={header.key}>
-              {header.label}
-            </option>
-          ))}
-        </select>
         <select onChange={(e) => setSortMethod(e.target.value)}>
           {sortMethods.map((header) => (
             <option value={header.key} key={header.key}>
@@ -67,8 +84,6 @@ function Table() {
       </div>
     );
   }
-
-
 
   return (
     <div>
@@ -87,17 +102,19 @@ function Table() {
           height="80"
         />
         <h1 style={{ marginLeft: "10px", color: "rgb(175, 177, 182)", fontWeight: 600, fontSize: "24px" }}>Event Listings</h1>
-
       </div>
 
       {/* Basic functionality for sorting, styling incomplete */}
+
+
+
 
 
       <div className="flex justify-center">
         <div className="w-5/12 p-4 bg-red-500  relative">
 
           <input
-            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none"
+            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"
@@ -115,20 +132,31 @@ function Table() {
 
         </div>
       </div>
-
-
-
-
-      <SortOptions />
       <div className="container">
         <table>
-          <thead>
+        <thead>
             <tr>
-              {headers.map((row) => {
-                return <td key={row.key}>{row.label}</td>;
-              })}
+              {headers.map((row) => (
+                <th key={row.key}>
+                  {row.label}
+                  <button
+                    onClick={() => handleButtonClick(row.key)}
+                    style={{
+                      marginLeft: "5px",
+                      fontWeight: row.key === expandedButton ? "bold" : "normal"
+                    }}
+                  >
+                    {row.key === expandedButton ? (
+                      <FontAwesomeIcon icon={faChevronUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    )}
+                  </button>
+                </th>
+              ))}
             </tr>
           </thead>
+
 
           <tbody>
             {eventData.map((event: Event) => {
