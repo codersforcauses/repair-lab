@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import CustomButton from "../components/custombutton-large";
 
 export default function Register() {
@@ -23,6 +24,14 @@ export default function Register() {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className=" bg-white rounded-md shadow p-8">
+        <div className="flex justify-center items-center">
+          <Image
+            src="/images/repair_lab_logo.jpg"
+            alt="logo"
+            width={80}
+            height={80}
+          />
+        </div>
         <div className="flex justify-center items-center">
           <h1 className="text-2xl font-bold mb-4">Sign up</h1>
         </div>
