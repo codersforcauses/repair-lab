@@ -1,34 +1,37 @@
-import React from "react";
+import React from "react"; // not necessary as next imports it already
 
 type Props = {
-  color: string;
-  border: string;
+  color?: string;
+  border?: string;
   children?: React.ReactNode;
-  height: string;
-  onClick: () => void;
-  radius: string;
-  width: string;
+  height?: string;
+  onClick?: () => void;
+  radius?: string;
+  width?: string;
 };
 
+// good to have some default values
 const Button: React.FC<Props> = ({
-  color,
-  border,
+  color = "bg-primary-600",
+  border = "border-1",
   children,
-  height,
+  height = "h-12",
   onClick,
-  radius,
-  width
+  radius = "rounded-lg",
+  width = "w-1/2"
 }) => {
   return (
+    // uses tailwind now
     <button
       onClick={onClick}
-      style={{
-        backgroundColor: color,
-        border,
-        borderRadius: radius,
-        height,
-        width
-      }}
+      className={`${color} ${border} ${radius} ${height} ${width} text-white`}
+      // style={{
+      //   backgroundColor: color,
+      //   border,
+      //   borderRadius: radius,
+      //   height,
+      //   width
+      // }}
     >
       {children}
     </button>
@@ -36,5 +39,3 @@ const Button: React.FC<Props> = ({
 };
 
 export default Button;
-
-
