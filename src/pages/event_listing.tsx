@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { Event } from "@prisma/client";
 
@@ -66,6 +68,8 @@ function Table() {
     );
   }
 
+
+
   return (
     <div>
       <div
@@ -82,10 +86,39 @@ function Table() {
           width="80"
           height="80"
         />
-        <h1 style={{ marginLeft: "10px", color: "grey" }}>Event Listings</h1>
+        <h1 style={{ marginLeft: "10px", color: "rgb(175, 177, 182)", fontWeight: 600, fontSize: "24px" }}>Event Listings</h1>
+
       </div>
 
       {/* Basic functionality for sorting, styling incomplete */}
+
+
+      <div className="flex justify-center">
+        <div className="w-5/12 p-4 bg-red-500  relative">
+
+          <input
+            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none"
+            type="search"
+            name="search"
+            placeholder="Search"
+            style={{ backgroundColor: "rgb(239, 239, 239)" }}
+          />
+          <div
+            className="absolute right-8 top-2/4 transform -translate-y-2/4 text-gray-500 cursor-pointer"
+            onClick={() => {
+              // Handle search submit action here
+              console.log("Search submitted");
+            }}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </div>
+
+        </div>
+      </div>
+
+
+
+
       <SortOptions />
       <div className="container">
         <table>
