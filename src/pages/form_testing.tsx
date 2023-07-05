@@ -1,6 +1,9 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import Field from "@/components/Field";
+
+import Field_Input from "@/components/field-input";
+import Field_Radio from "@/components/field-radio";
+import Field_Text_Area from "@/components/field-text-area";
 
 type RepairData = {
   id: string;
@@ -12,9 +15,10 @@ type RepairData = {
   spare: string;
   parts: string;
   desc: string;
+  comments: string;
 };
 
-export default function repair() {
+export default function Repair() {
   const { control, handleSubmit } = useForm<RepairData>({
     defaultValues: {
       id: "",
@@ -25,7 +29,8 @@ export default function repair() {
       repaired: "",
       spare: "",
       parts: "",
-      desc: ""
+      desc: "",
+      comments: ""
     },
     mode: "onChange"
   });
@@ -43,26 +48,41 @@ export default function repair() {
       <form className="flex flex-col" onSubmit={onSubmit}>
         {/* ID, Item */}
         <div className={lineStyle}>
-          <Field
+          <Field_Input
             name="id"
             control={control}
-            rules={{ required: true }}
+            rules={{ required: "true" }}
             label="ID"
           />
-          <Field name="item" control={control} rules={{ required: true }} />
+          <Field_Input
+            name="item"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
 
         {/* Brand, Material */}
         <div className={lineStyle}>
-          <Field name="brand" control={control} rules={{ required: true }} />
-          <Field name="material" control={control} rules={{ required: true }} />
+          <Field_Input
+            name="brand"
+            control={control}
+            rules={{ required: true }}
+          />
+          <Field_Input
+            name="material"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
 
         {/* Time it took, Repaired? */}
         <div className={lineStyle}>
-          <Field name="time" control={control} rules={{ required: true }} />
-          <Field
-            radio={true}
+          <Field_Input
+            name="time"
+            control={control}
+            rules={{ required: true }}
+          />
+          <Field_Radio
             name="repaired"
             control={control}
             rules={{ required: true }}
@@ -70,17 +90,32 @@ export default function repair() {
         </div>
         {/* Spare parts needed?, Part(s) needed */}
         <div className={lineStyle}>
-          <Field
-            radio={true}
+          <Field_Radio
             name="spare"
             control={control}
             rules={{ required: true }}
           />
-          <Field name="parts" control={control} rules={{ required: true }} />
+          <Field_Input
+            name="parts"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
         {/* Job Description */}
         <div className={lineStyle}>
-          <Field name="desc" control={control} rules={{ required: true }} />
+          <Field_Input
+            name="desc"
+            control={control}
+            rules={{ required: true }}
+          />
+        </div>
+        {/* Comments */}
+        <div className={lineStyle}>
+          <Field_Text_Area
+            name="comments"
+            control={control}
+            rules={{ required: false }}
+          />
         </div>
         {/* Submit */}
         <input type="submit" value="Submit" className="submit"></input>
