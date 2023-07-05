@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import Field_Input from "@/components/Field_Input";
-import Field_Radio from "@/components/Field_Radio";
-import Field_Text_Area from "@/components/Field_TextArea";
+import Field_Input from "@/components/field-input";
+import Field_Radio from "@/components/field-radio";
+import Field_Text_Area from "@/components/field-text-area";
 
 type RepairData = {
   id: string;
