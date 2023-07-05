@@ -6,7 +6,7 @@ const preprocessBooleanInput = (input: unknown) => {
 };
 
 export const RepairAttemptSchema = z.object({
-  id: z.string().trim().nonempty({ message: "ID is required" }),
+  id: z.string().trim().nonempty({ message: "missing" }),
   item: z.string().nonempty({ message: "Item name is required" }),
   itemBrand: z.string().nonempty({ message: "Brand is required" }),
   itemMaterial: z.string().nonempty({ message: "Material is required" }),
@@ -15,7 +15,7 @@ export const RepairAttemptSchema = z.object({
       const processedInput = z
         .string()
         .trim()
-        .regex(/^[-+]?[0-9]+(\.[0-9]+)?$/)
+        .regex(/^[-+]?[0-9]+(\.[0-9]{1,2})?$/)
         .transform(Number)
         .safeParse(input);
       return processedInput.success ? processedInput.data : input;

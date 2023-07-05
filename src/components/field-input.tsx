@@ -23,7 +23,7 @@ Input:
 Output:
   A input text box that is compatible w/ React-hook-forms
 */
-export default function Field_Input<T extends FieldValues = FieldValues>({
+export default function FieldInput<T extends FieldValues = FieldValues>({
   label,
   placeholder = "",
   icon,

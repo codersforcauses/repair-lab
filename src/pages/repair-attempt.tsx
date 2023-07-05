@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Field from "@/components/Field";
+import FieldInput from "@/components/field-input";
 import { RepairAttemptSchema } from "@/schema/repair-attempt";
 import type { RepairAttempt } from "@/schema/repair-attempt";
+import FieldRadio from "@/components/field-radio";
+import FieldTextArea from "@/components/field-text-area";
 
 export default function RepairAttempt() {
   const {
@@ -17,7 +19,7 @@ export default function RepairAttempt() {
       itemBrand: "",
       itemMaterial: "",
       time: 1,
-      isRepaired: false, //FIXME: is literal types okay? how to convert to boolean?
+      isRepaired: false,
       isSparePartsNeeded: false,
       spareParts: "",
       comment: ""
@@ -39,46 +41,75 @@ export default function RepairAttempt() {
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         {/* ID, Item */}
         <div className={lineStyle}>
-          <Field name="id" control={control} label="ID" />
-          <Field name="item" control={control} />
+          <FieldInput
+            name="id"
+            control={control}
+            label="ID"
+            rules={{ required: true }}
+          />
+          <FieldInput
+            name="item"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
 
         {/* Brand, Material */}
         <div className={lineStyle}>
-          <Field name="itemBrand" label="Brand" control={control} />
-          <Field name="itemMaterial" label="Material" control={control} />
+          <FieldInput
+            name="itemBrand"
+            label="Brand"
+            control={control}
+            rules={{ required: true }}
+          />
+          <FieldInput
+            name="itemMaterial"
+            label="Material"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
 
         {/* Time it took, Repaired? */}
         <div className={lineStyle}>
-          <Field name="time" label="Time it took" control={control} />
-          <Field
-            radio={true}
+          <FieldInput
+            name="time"
+            label="Time it took"
+            control={control}
+            rules={{ required: true }}
+          />
+          <FieldInput
             name="isRepaired"
             label="Repaired?"
             control={control}
+            rules={{ required: true }}
           />
-          {errors.isRepaired && (
-            <p className="self-start rounded-md bg-yellow-100 px-2 py-1 italic text-red-500">
-              {errors.isRepaired?.message}
-            </p>
-          )}
         </div>
 
         {/* Spare parts needed?, Part(s) needed */}
         <div className={lineStyle}>
-          <Field
-            radio={true}
+          <FieldRadio
             name="isSparePartsNeeded"
             control={control}
             label="Spare parts needed?"
+            rules={{ required: true }}
+            placeholder="Yes/No"
           />
-          <Field name="spareParts" label="Parts needed" control={control} />
+          <FieldInput
+            name="spareParts"
+            label="Parts needed"
+            control={control}
+          />
         </div>
 
         {/* Job Description */}
         <div className={lineStyle}>
-          <Field name="comment" label="Job Description" control={control} />
+          <FieldTextArea
+            name="comment"
+            label="Job Description"
+            control={control}
+            rules={{ required: true }}
+          />
         </div>
 
         {/* Submit */}

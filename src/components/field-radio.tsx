@@ -21,7 +21,7 @@ Input:
 Output:
   A input radio option box for a 'yes' or 'no' question that is compatible w/ React-hook-forms 
 */
-export default function Field_Radio<T extends FieldValues = FieldValues>({
+export default function FieldRadio<T extends FieldValues = FieldValues>({
   label,
   ...props
 }: FormProps<T>) {
