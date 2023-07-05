@@ -63,11 +63,16 @@ model RepairRequest {
   eventId String
 
   status Status @default(PENDING)
-
   description String
-  comment     String //comment for repairer to document repair process
+  comment     String //comment for client
+  thumbnailImage String //s3 key to compressed image of object
+
+
+  repairComment String //comment for volunteer to document process
   spareParts String @default("") //this should be filled out later by volunteer
   itemStatus ItemStatus @default(UNFINISHED)
+  hoursWorked Numeric(10, 2) @default(0.00)
+
 
   requestDate DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -83,7 +88,7 @@ model RepairRequest {
 model ItemType {
   name           String          @id
   repairRequests RepairRequest[]
-  Event          Event[]
+  events         Event[]
 }
 
 model Brand {
