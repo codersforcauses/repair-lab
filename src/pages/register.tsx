@@ -22,9 +22,9 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className=" bg-white rounded-md shadow p-8">
-        <div className="flex justify-center items-center">
+    <div className="flex h-screen items-center justify-center">
+      <div className=" rounded-md bg-white p-8 shadow">
+        <div className="flex items-center justify-center">
           <Image
             src="/images/repair_lab_logo.jpg"
             alt="logo"
@@ -32,8 +32,8 @@ export default function Register() {
             height={80}
           />
         </div>
-        <div className="flex justify-center items-center">
-          <h1 className="text-2xl font-bold mb-4">Sign up</h1>
+        <div className="flex items-center justify-center">
+          <h1 className="mb-4 text-2xl font-bold">Sign up</h1>
         </div>
         <CustomButton
           onClick={() => {
@@ -42,25 +42,25 @@ export default function Register() {
           }}
           text="Continue with Google"
         />
-        <div className="flex items-center mb-4">
+        <div className="mb-4 flex items-center">
           <div
-            className="border-dashed border-t-2"
+            className="border-t-2 border-dashed"
             style={{ borderColor: "#098D85", flex: 1 }}
           ></div>
           <div style={{ color: "#098D85" }} className="mx-4">
             or
           </div>
           <div
-            className="border-dashed border-t-2"
+            className="border-t-2 border-dashed"
             style={{ borderColor: "#098D85", flex: 1 }}
           ></div>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4 relative">
+          <div className="relative mb-4">
             <label
               htmlFor="username"
-              className="absolute text-sm top-0 left-1 -mt-2 px-1 bg-white font-bold"
+              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
               <span style={{ color: "red" }}>*</span> Username
             </label>
@@ -70,14 +70,14 @@ export default function Register() {
               value={username}
               onChange={handleUsernameChange}
               placeholder="Username"
-              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
-          <div className="mb-4 relative">
+          <div className="relative mb-4">
             <label
               htmlFor="password"
-              className="absolute text-sm top-0 left-1 -mt-2 px-1 bg-white font-bold"
+              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
               <span style={{ color: "red" }}>*</span> Password
             </label>
@@ -87,14 +87,14 @@ export default function Register() {
               value={password}
               onChange={handlePasswordChange}
               placeholder="Password"
-              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
 
-          <div className="mb-4 relative">
+          <div className="relative mb-4">
             <label
               htmlFor="confirmPassword"
-              className="absolute text-sm top-0 left-1 -mt-2 px-1 bg-white font-bold"
+              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
               <span style={{ color: "red" }}>*</span> Confirm Password
             </label>
@@ -102,7 +102,7 @@ export default function Register() {
               id="confirmPassword"
               type="text"
               placeholder="Password"
-              className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
 

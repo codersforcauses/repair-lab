@@ -10,7 +10,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ onClick, text }) => {
     <button
       type="submit"
       onClick={onClick}
-      className="bg-[#098D85] text-white py-2 rounded-md font-bold cursor-pointer w-full"
+      className="w-full cursor-pointer rounded-md bg-[#098D85] py-2 font-bold text-white"
     >
       {text}
     </button>
