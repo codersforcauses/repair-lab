@@ -177,7 +177,7 @@ const Home = () => {
 
           {/* Input field for Images */}
           <div>
-            <label htmlFor="description">Image:</label>
+            <label htmlFor="image">Image:</label>
             <div className="flex">
               <input
                 className={`h-36 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10 ${
