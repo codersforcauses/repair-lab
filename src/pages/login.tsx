@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import CustomButton from "../components/custombutton-large";
 
 export default function Login() {
@@ -94,17 +95,18 @@ export default function Login() {
           </div>
           <div className="m-4 text-center">
             <div>
-              <a
-                href="/forgot-password"
-                className="text-gray-400 text-xs underline"
-              >
-                Forgot your password?
-              </a>
+              <Link href="/forgot-password">
+                <span className="text-gray-400 text-xs underline">
+                  Forgot your password?
+                </span>
+              </Link>
             </div>
             <div>
-              <a href="/register" className="text-gray-400 text-xs underline">
-                Do not have an account? Sign up
-              </a>
+              <Link href="/register">
+                <span className="text-gray-400 text-xs underline">
+                  Do not have an account? Sign up
+                </span>
+              </Link>
             </div>
           </div>
           <div className="w-full">
