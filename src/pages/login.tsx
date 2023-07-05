@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CustomButton from "../components/custombutton";
+import CustomButton from "../components/custombutton-large";
 
 export default function Login() {
   const [username, setUsername] = useState("");
