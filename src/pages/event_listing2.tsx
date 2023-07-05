@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { Event } from "@prisma/client";
 
@@ -17,6 +17,8 @@ function Table() {
   const [eventData, setEventData] = useState<Event[]>([]);
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [sortMethod, setSortMethod] = useState<string>("asc");
+  const [expandedButton, setExpandedButton] = useState<string>("");
+
 
   // The label is what users see, the key is what the server uses
   const headers: { key: string; label: string }[] = [
@@ -46,9 +48,22 @@ function Table() {
       });
   }, [sortKey, sortMethod]);
   
-  function handleButtonClick() {
-    console.log("Hello");
-    // Update the state or perform any other action you want
+
+  function handleButtonClick(key: string) {
+    if (expandedButton === key) {
+      setExpandedButton("");
+    } else {
+      setExpandedButton(key);
+    }
+
+    // If the clicked column is already the sort key, toggle the sort method
+    if (sortKey === key) {
+      setSortMethod(sortMethod === "asc" ? "desc" : "asc");
+    } else {
+      // If it's a new column, set it as the sort key with ascending order
+      setSortKey(key);
+      setSortMethod("asc");
+    }
   }
 
   function handleSort(key: string) {
@@ -90,26 +105,58 @@ function Table() {
       </div>
 
       {/* Basic functionality for sorting, styling incomplete */}
-      <div>
-        <div>
-          {headers.map((header) => (
-            <button key={header.key} onClick={() => handleSort(header.key)}>
-              {header.label}
-            </button>
-          ))}
-        </div>
-        <SortOptions />
-      </div>
 
+
+
+
+
+      <div className="flex justify-center">
+        <div className="w-5/12 p-4 bg-red-500  relative">
+
+          <input
+            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none"
+            type="search"
+            name="search"
+            placeholder="Search"
+            style={{ backgroundColor: "rgb(239, 239, 239)" }}
+          />
+          <div
+            className="absolute right-8 top-2/4 transform -translate-y-2/4 text-gray-500 cursor-pointer"
+            onClick={() => {
+              // Handle search submit action here
+              console.log("Search submitted");
+            }}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </div>
+
+        </div>
+      </div>
       <div className="container">
         <table>
-          <thead>
+        <thead>
             <tr>
-              {headers.map((row) => {
-                return <td key={row.key}>{row.label}</td>;
-              })}
+              {headers.map((row) => (
+                <th key={row.key}>
+                  {row.label}
+                  <button
+                    onClick={() => handleButtonClick(row.key)}
+                    style={{
+                      marginLeft: "5px",
+                      fontWeight: row.key === expandedButton ? "bold" : "normal"
+                    }}
+                  >
+                    {row.key === expandedButton ? (
+                      <FontAwesomeIcon icon={faChevronUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    )}
+                  </button>
+                </th>
+              ))}
             </tr>
           </thead>
+
 
           <tbody>
             {eventData.map((event: Event) => {
