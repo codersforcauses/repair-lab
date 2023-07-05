@@ -1,7 +1,5 @@
-export interface RepairRequest {
-  eventId: string;
-  itemBrand: string;
-  itemType: string;
-  description: string;
-  images?: string[];
-}
+import { z } from "zod";
+
+import { repairRequestPostSchema } from "@/schema/repair-request";
+
+type RepairRequest = z.infer<typeof repairRequestPostSchema>;

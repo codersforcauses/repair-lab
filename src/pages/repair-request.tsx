@@ -81,10 +81,8 @@ const Home = () => {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center gap-4 ${inter.className}`}
     >
-      <br></br>
-
       {/* Logo of Repair Lab, which links to the main website. */}
 
       <picture>
@@ -98,16 +96,12 @@ const Home = () => {
         </a>
       </picture>
 
-      <br></br>
-
       {/* Heading of the Page */}
 
       <h1 className="text-xl font-bold"> Submit a Repair Request</h1>
 
-      <br></br>
-
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Input field for Brand of Item */}
           <div>
             <label htmlFor="brand">Brand:</label>
@@ -135,8 +129,6 @@ const Home = () => {
             </div>
             <p className="text-red-600"> {errors.itemBrand?.message} </p>
           </div>
-
-          <br></br>
 
           {/* Input field for Item Type */}
           <div>
@@ -166,8 +158,6 @@ const Home = () => {
             <p className="text-red-600"> {errors.itemType?.message} </p>
           </div>
 
-          <br></br>
-
           {/* Input field for Description of Item */}
           <div>
             <label htmlFor="description">Item Description:</label>
@@ -184,7 +174,6 @@ const Home = () => {
             </div>
             <p className="text-red-600"> {errors.description?.message} </p>
           </div>
-          <br></br>
 
           {/* Input field for Images */}
           <div>
@@ -201,7 +190,6 @@ const Home = () => {
             </div>
             <p className="text-red-600"> {errors.images?.message} </p>
           </div>
-          <br></br>
 
           {/* Input field for Event Date */}
           <div>
@@ -234,8 +222,6 @@ const Home = () => {
             <p className="text-red-600"> {errors.eventId?.message} </p>
           </div>
 
-          <br></br>
-
           {/* Terms and Conditions Checkbox */}
           <div className="h-6 items-center">
             <Controller
@@ -263,10 +249,9 @@ const Home = () => {
             </span>
             <p className="text-red-600"> {errors.tncAccepted?.message} </p>
           </div>
-          <br></br>
 
           <input
-            className="bg-teal-600 text-white hover:bg-teal-500 m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid text-center text-lg"
+            className="m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-teal-600 text-center text-lg text-white hover:bg-teal-500"
             type="submit"
           />
         </form>
