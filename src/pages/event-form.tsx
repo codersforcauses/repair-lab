@@ -10,19 +10,20 @@ type FormData = {
   otherInfo: string;
 };
 
-export function EventForm() {
+export default function EventForm() {
   const { handleSubmit, control } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    fetch("your-api-endpoint", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    }).then((response) => {
-      // handle response
-    });
+    // fetch("your-api-endpoint", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(data)
+    // }).then((response) => {
+    //   // handle response
+    // });
+    alert(`Submitted: ${JSON.stringify(data)}`);
   };
 
   return (
@@ -67,7 +68,8 @@ export function EventForm() {
           <Select {...field} label="Assigned Volunteers" multiple>
             <MenuItem value="volunteer1">Volunteer 1</MenuItem>
             <MenuItem value="volunteer2">Volunteer 2</MenuItem>
-            {/* ... other volunteer options */}
+            <MenuItem value="volunteer3">Volunteer 3</MenuItem>
+            {/* Other volunteer options */}
           </Select>
         )}
       />
