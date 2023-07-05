@@ -34,12 +34,12 @@ export default function Field_Radio<T extends FieldValues = FieldValues>({
       <Label label={label} {...props} />
       <div className="m-auto flex flex-row items-start gap-1 text-xs">
         <label htmlFor={`${props.name}-y`} className="mr-8 flex gap-1">
-          <input {...field} type="radio" value="yes" id={`${props.name}-y`} />
+          <input {...field} type="radio" value="true" id={`${props.name}-y`} />
           Yes
         </label>
 
         <label htmlFor={`${props.name}-n`} className="flex gap-1">
-          <input {...field} type="radio" value="no" id={`${props.name}-n`} />
+          <input {...field} type="radio" value="false" id={`${props.name}-n`} />
           No
         </label>
       </div>
