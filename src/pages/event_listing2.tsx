@@ -114,7 +114,7 @@ function Table() {
         <div className="w-5/12 p-4 bg-red-500  relative">
 
           <input
-            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none"
+            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"
