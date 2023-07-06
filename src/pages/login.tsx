@@ -1,25 +1,56 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import CustomButton from "../components/custombutton-large";
+import { useRouter } from "next/navigation";
+import { useSignIn } from "@clerk/nextjs";
+
+import CustomButton from "@/components/custombutton-large";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const router = useRouter();
+
+  const handleEmailAddressChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEmailAddress(event.target.value);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  // sign in process
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Reset the form
-    setUsername("");
-    setPassword("");
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      const result = await signIn.create({
+        identifier: emailAddress,
+        password
+      });
+
+      if (result.status === "complete") {
+        console.log(result);
+        await setActive({ session: result.createdSessionId });
+        router.push("/");
+      } else {
+        /* Investigate why the login hasn't completed */
+        console.log(result);
+      }
+
+      // Reset the form
+      setEmailAddress("");
+      setPassword("");
+    } catch (err: any) {
+      console.error("error", err.errors[0]);
+    }
   };
 
   return (
@@ -62,17 +93,17 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="relative mb-4">
             <label
-              htmlFor="username"
+              htmlFor="emailAddress"
               className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
-              <span style={{ color: "red" }}>*</span> Username
+              <span style={{ color: "red" }}>*</span> Email Address
             </label>
             <input
-              id="username"
+              id="emailAddress"
               type="text"
-              value={username}
-              onChange={handleUsernameChange}
-              placeholder="Username"
+              value={emailAddress}
+              onChange={handleEmailAddressChange}
+              placeholder="Email Address"
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
             />
           </div>
@@ -86,7 +117,7 @@ export default function Login() {
             </label>
             <input
               id="password"
-              type="text"
+              type="password"
               value={password}
               onChange={handlePasswordChange}
               placeholder="Password"
