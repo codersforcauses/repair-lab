@@ -6,7 +6,20 @@ export default function Tester() {
   return (
     <main>
       <h1>This is the dropdown tester page</h1>
-      <DropDownField selected={selected} setSelected={setSelected} />
+      <DropDownField selected={selected} setSelected={setSelected} options={[
+    {
+      id: 0,
+      text: "Option1"
+    },
+    {
+      id: 1,
+      text: "Option2"
+    },
+    {
+      id: 2,
+      text: "Option3"
+    }
+  ]} />
     </main>
   );
 }

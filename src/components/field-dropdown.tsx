@@ -13,24 +13,11 @@ Output:
 interface Props {
   selected: string;
   setSelected: (value: string) => void;
+  options: {id: number, text: string}[];
 }
 // needs to be passed fields of dropdown
-export default function DropDownField({ selected, setSelected }: Props) {
+export default function DropDownField({ selected, setSelected, options }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const options = [
-    {
-      id: 0,
-      text: "Option1"
-    },
-    {
-      id: 1,
-      text: "Option2"
-    },
-    {
-      id: 2,
-      text: "Option3"
-    }
-  ];
   // handle function for when a user clicks an option (onClick event)
   // const handleClick = ()
   return (
