@@ -23,27 +23,29 @@ export default function DropDownField({ selected, setSelected, options }: Props)
   return (
     <div className="select-none px-10 py-10">
       <button
-        className="BUTTON cursor-pointer rounded bg-green-300 px-2 py-1 font-bold text-black shadow outline outline-2 outline-green-600 w-80 h-10"
+        className="BUTTON cursor-pointer rounded bg-gray-400 px-2 py-1 font-bold text-black shadow  w-60 h-10"
         onClick={(e) => setIsExpanded(!isExpanded)}
       >
         {selected === "" ? "Dropdown" : selected}
         <span className="fas fa-caret-down"></span>
       </button>
       {isExpanded && (
-        <div className="PANEL flex flex-col items-start rounded bg-green-200  py-2 font-medium shadow w-80 border">
+        <ul className="PANEL rounded bg-gray-200 py-2 font-medium shadow w-60 border absolute">
           {options.map((option) => (
-            <div
+            <li
               onClick={(e) => {
                 setSelected(option.text);
                 setIsExpanded(false);
               }}
-              className=" OPTION flex cursor-pointer py-2 hover:bg-green-400 w-80 rounded"
+              className=" OPTION cursor-pointer py-2 px-2 hover:bg-blue-400 hover:text-white"
               key={option.id}
             >
-              {option.text}
-            </div>
+              <div className="flex items-center ml-5">
+                {option.text}
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

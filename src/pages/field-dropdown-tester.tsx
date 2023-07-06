@@ -20,6 +20,7 @@ export default function Tester() {
       text: "Option3"
     }
   ]} />
+    <p>other content</p>
     </main>
   );
 }
