@@ -16,13 +16,13 @@ describe("/api/dashboard/event", () => {
     await cleanup();
     await prisma.itemType.create({
       data: {
-        name: "Test Item Type"
+        name: "Test Item Type 3"
       }
     });
     await prisma.event.create({
       data: {
         createdBy: "test",
-        name: "Test Event",
+        name: "Test Event 3",
         location: "Test Location",
         description: "This is a test event",
         volunteers: [],
