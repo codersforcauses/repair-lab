@@ -6,6 +6,7 @@ export default function Tester() {
   return (
     <main>
       <h1>This is the dropdown tester page</h1>
+      <p>content above</p>
       <DropDownField selected={selected} setSelected={setSelected} options={[
     {
       id: 0,
@@ -20,7 +21,7 @@ export default function Tester() {
       text: "Option3"
     }
   ]} />
-    <p>other content</p>
+    <p>content below</p>
     </main>
   );
 }
