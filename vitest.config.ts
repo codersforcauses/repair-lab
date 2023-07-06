@@ -2,6 +2,7 @@
 /// <reference types="vitest" />
 
 import react from "@vitejs/plugin-react";
+import path from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
@@ -10,5 +11,10 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     exclude: [...configDefaults.exclude, ".next"]
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src/")
+    }
   }
 });
