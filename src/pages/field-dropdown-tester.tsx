@@ -5,7 +5,7 @@ export default function Tester() {
   const [selected, setSelected] = useState("");
   return (
     <main>
-      <h1>Hello!</h1>
+      <h1>This is the dropdown tester page</h1>
       <DropDownField selected={selected} setSelected={setSelected} />
     </main>
   );

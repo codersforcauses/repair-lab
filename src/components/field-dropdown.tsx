@@ -17,7 +17,20 @@ interface Props {
 // needs to be passed fields of dropdown
 export default function DropDownField({ selected, setSelected }: Props) {
   const [isActive, setIsActive] = useState(false);
-  const options = ["React", "Vue", "Angular"];
+  const options = [
+    {
+      id: 0,
+      text: "React"
+    },
+    {
+      id: 1,
+      text: "Vue"
+    },
+    {
+      id: 2,
+      text: "Angular"
+    }
+  ];
   // handle function for when a user clicks an option (onClick event)
   // const handleClick = ()
   return (
@@ -34,12 +47,13 @@ export default function DropDownField({ selected, setSelected }: Props) {
           {options.map((option) => (
             <div
               onClick={(e) => {
-                setSelected(option);
+                setSelected(option.text);
                 setIsActive(false);
               }}
               className="w-96 cursor-pointer p-2.5 hover:bg-green-400"
+              key={option.id}
             >
-              {option}
+              {option.text}
             </div>
           ))}
         </div>
