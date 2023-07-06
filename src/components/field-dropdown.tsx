@@ -16,41 +16,41 @@ interface Props {
 }
 // needs to be passed fields of dropdown
 export default function DropDownField({ selected, setSelected }: Props) {
-  const [isActive, setIsActive] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const options = [
     {
       id: 0,
-      text: "React"
+      text: "Option1"
     },
     {
       id: 1,
-      text: "Vue"
+      text: "Option2"
     },
     {
       id: 2,
-      text: "Angular"
+      text: "Option3"
     }
   ];
   // handle function for when a user clicks an option (onClick event)
   // const handleClick = ()
   return (
-    <div className="select-none">
-      <div
-        className="flex w-96 cursor-pointer items-center justify-between rounded-lg bg-green-400 px-2.5 py-1 font-bold text-black shadow-2xl outline outline-2 outline-green-600"
-        onClick={(e) => setIsActive(!isActive)}
+    <div className="select-none px-10 py-10">
+      <button
+        className="BUTTON cursor-pointer rounded bg-green-300 px-2 py-1 font-bold text-black shadow outline outline-2 outline-green-600 w-80 h-10"
+        onClick={(e) => setIsExpanded(!isExpanded)}
       >
-        {selected}
+        {selected === "" ? "Dropdown" : selected}
         <span className="fas fa-caret-down"></span>
-      </div>
-      {isActive && (
-        <div className="flex flex-col items-center justify-between rounded-sm bg-green-200 px-2 py-1 font-medium text-black shadow-2xl ">
+      </button>
+      {isExpanded && (
+        <div className="PANEL flex flex-col items-start rounded bg-green-200  py-2 font-medium shadow w-80 border">
           {options.map((option) => (
             <div
               onClick={(e) => {
                 setSelected(option.text);
-                setIsActive(false);
+                setIsExpanded(false);
               }}
-              className="w-96 cursor-pointer p-2.5 hover:bg-green-400"
+              className=" OPTION flex cursor-pointer py-2 hover:bg-green-400 w-80 rounded"
               key={option.id}
             >
               {option.text}
