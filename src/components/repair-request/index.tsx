@@ -7,7 +7,7 @@ export default function RepairRequestCard() {
         <p className="text-md font-bold">Repair Description</p>
         <p className="text-lg">
           Status:
-          <span className="bg-green-200 rounded-lg p-1">PENDING</span>
+          <span className="rounded-lg bg-green-200 p-1">PENDING</span>
         </p>
         <p className="text-lg">
           Item type: <span>Laptop</span>

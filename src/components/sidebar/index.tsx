@@ -13,7 +13,7 @@ interface Props {
 const Sidebar = ({ children }: Props) => {
   return (
     <div className="flex">
-      <div className="bg-white fixed flex h-screen w-80 flex-col border-r-[1px] p-4">
+      <div className="fixed flex h-screen w-80 flex-col border-r-[1px] bg-white p-4">
         <div className="flex flex-col items-center">
           <Link href="/">
             <div className="grid-element">
@@ -27,34 +27,34 @@ const Sidebar = ({ children }: Props) => {
           </Link>
         </div>
         <div className="items-left flex flex-col px-4 text-[#545454]">
-          <span className="border-gray-200 w-full border-b-[1px] p-2"></span>
-          <p className="text-gray-600 p-1 text-center ">Dashboard</p>
+          <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
+          <p className="p-1 text-center text-gray-600 ">Dashboard</p>
           <Link href="/info">
-            <div className="bg-gray-100 hover:bg-gray-200 my-4 inline-flex cursor-pointer rounded-lg p-3">
+            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <RxInfoCircled size={30} />
               <p className="px-4 text-lg">Information</p>
             </div>
           </Link>
           <Link href="/volunteers">
-            <div className="bg-gray-100 hover:bg-gray-200 my-4 inline-flex cursor-pointer rounded-lg p-3">
+            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <RxPerson size={30} />
               <p className="px-4 text-lg">Volunteers</p>
             </div>
           </Link>
           <Link href="/repair-request">
-            <div className="bg-gray-100 hover:bg-gray-200 my-4 inline-flex cursor-pointer rounded-lg p-3">
+            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair requests</p>
             </div>
           </Link>
           <Link href="/events">
-            <div className="bg-gray-100 hover:bg-gray-200 my-4 inline-flex cursor-pointer rounded-lg p-3">
+            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Events</p>
             </div>
           </Link>
           <Link href="/">
-            <div className="bg-gray-100 hover:bg-gray-200 my-4 inline-flex cursor-pointer rounded-lg p-3">
+            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <RxImage size={30} />
               <p className="px-4 text-lg">Images</p>
             </div>

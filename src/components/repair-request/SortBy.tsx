@@ -10,10 +10,10 @@ export default function SortBy() {
   return (
     <Menu as="div" className="relative p-4 text-left">
       <div>
-        <Menu.Button className="bg-gray-100 text-gray-900 hover:bg-gray-50 inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-0 focus:shadow-md focus:outline-none">
+        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-0 hover:bg-gray-50 focus:shadow-md focus:outline-none">
           Sort By:
           <HiOutlineChevronDown
-            className="text-gray-400 -mr-1 h-5 w-5"
+            className="-mr-1 h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
         </Menu.Button>
@@ -28,7 +28,7 @@ export default function SortBy() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="bg-white ring-black absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
