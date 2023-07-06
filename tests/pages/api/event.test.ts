@@ -36,7 +36,7 @@ describe("/api/dashboard/event", () => {
   it("should send events from the database", async () => {
     await testApiHandler({
       handler,
-      url: `/?name=Test%20Event`,
+      url: `/?name=Test%20Event%203`,
       test: async ({ fetch }) => {
         const res = await fetch({ method: "GET" });
         const body = await res.json();

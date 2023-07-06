@@ -22,7 +22,7 @@ describe("/api/hello", () => {
     await prisma.event.create({
       data: {
         createdBy: "test",
-        name: "Test Event 3",
+        name: "Test Event ",
         location: "Test Location",
         description: "This is a test event",
         volunteers: [],
@@ -36,7 +36,7 @@ describe("/api/hello", () => {
   it("should send events from the database", async () => {
     await testApiHandler({
       handler,
-      url: `/?name=Test%20Event`,
+      url: `/?name=Test%20Event%203`,
       test: async ({ fetch }) => {
         const res = await fetch({ method: "GET" });
         const body = await res.json();
