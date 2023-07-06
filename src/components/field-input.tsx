@@ -23,7 +23,7 @@ Input:
 Output:
   A input text box that is compatible w/ React-hook-forms
 */
-export default function Field_Input<T extends FieldValues = FieldValues>({
+export default function FieldInput<T extends FieldValues = FieldValues>({
   label,
   placeholder = "",
   icon,
@@ -35,7 +35,7 @@ export default function Field_Input<T extends FieldValues = FieldValues>({
   !label ? (label = props.name) : "";
 
   return (
-    <div className="relative mb-2 flex h-12 w-64 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
+    <div className="relative mb-2 flex h-12 w-48 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
       <Label label={label} {...props} />
       <input
         className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"

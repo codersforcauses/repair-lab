@@ -21,7 +21,7 @@ Input:
 Output:
   A input radio option box for a 'yes' or 'no' question that is compatible w/ React-hook-forms 
 */
-export default function Field_Radio<T extends FieldValues = FieldValues>({
+export default function FieldRadio<T extends FieldValues = FieldValues>({
   label,
   ...props
 }: FormProps<T>) {
@@ -30,9 +30,9 @@ export default function Field_Radio<T extends FieldValues = FieldValues>({
   !label ? (label = props.name) : "";
 
   return (
-    <div className="relative mb-2 flex h-12 w-64 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
+    <div className="relative mb-2 flex h-12 w-48 flex-row justify-between rounded-lg border border-grey-300 px-3 shadow">
       <Label label={label} {...props} />
-      <div className="m-auto flex flex-row items-start gap-1 text-xs">
+      <div className="my-auto flex flex-row items-start gap-1 text-xs">
         <label htmlFor={`${props.name}-y`} className="mr-8 flex gap-1">
           <input {...field} type="radio" value="true" id={`${props.name}-y`} />
           Yes
