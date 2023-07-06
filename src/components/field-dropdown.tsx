@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 
 /*
 This is a component for the HTML `<select>' tag
@@ -45,17 +45,6 @@ export default function DropDownField({
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
   // handle function for when a user clicks an option (onClick event)
-  const handleClick = (txt: string) => {
-    return (
-      <>
-        onClick=
-        {() => {
-          setSelected(txt);
-          setIsExpanded(false);
-        }}
-      </>
-    );
-  };
   return (
     <div className="select-none px-10 py-10">
       <button
@@ -70,7 +59,10 @@ export default function DropDownField({
           <UpTriangle size={10} />
           {options.map((option) => (
             <li
-              {...handleClick(option.text)}
+              onClick={() => {
+                setSelected(option.text);
+                setIsExpanded(false);
+              }}
               className=" OPTION cursor-pointer px-2 py-2 hover:bg-blue-400 hover:text-white"
               key={option.id}
             >
