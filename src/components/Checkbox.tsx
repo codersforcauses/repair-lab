@@ -1,4 +1,8 @@
-import { FieldValues, useController, UseControllerProps } from "react-hook-form";
+import {
+  FieldValues,
+  useController,
+  UseControllerProps
+} from "react-hook-form";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
@@ -22,18 +26,11 @@ export default function Field_Checkbox<T extends FieldValues = FieldValues>({
 
   return (
     <div className="flex items-center">
-      <input
-        type="checkbox"
-        {...field}
-      />
+      <input type="checkbox" {...field} />
 
       {label && (
         <label htmlFor={props.name}>
-          {href ? (
-            <a href={href}>{label}</a>
-          ) : (
-            label
-          )}
+          {href ? <a href={href}>{label}</a> : label}
         </label>
       )}
     </div>
