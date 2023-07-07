@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { faChevronDown, faChevronUp,faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faChevronUp, faSearch, faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Event } from "@prisma/client";
 
@@ -64,6 +64,10 @@ function Table() {
       setSortKey(key);
       setSortMethod("asc");
     }
+  }
+
+  function openOptions(){
+
   }
 
   function handleSort(key: string) {
@@ -132,47 +136,51 @@ function Table() {
 
         </div>
       </div>
-      <div className="container">
-        <table>
-        <thead>
-            <tr>
-              {headers.map((row) => (
-                <th key={row.key}>
-                  {row.label}
-                  <button
-                    onClick={() => handleButtonClick(row.key)}
-                    style={{
-                      marginLeft: "5px",
-                      fontWeight: row.key === expandedButton ? "bold" : "normal"
-                    }}
-                  >
-                    {row.key === expandedButton ? (
-                      <FontAwesomeIcon icon={faChevronUp} />
-                    ) : (
-                      <FontAwesomeIcon icon={faChevronDown} />
-                    )}
-                  </button>
-                </th>
-              ))}
-            </tr>
-          </thead>
+      <div className="flex justify-center">
+        <div className="container">
+          <table>
+          <thead>
+              <tr>
+                {headers.map((row) => (
+                  <th key={row.key}>
+                    {row.label}
+                    <button
+                      onClick={() => handleButtonClick(row.key)}
+                      style={{
+                        marginLeft: "5px",
+                        fontWeight: row.key === expandedButton ? "bold" : "normal"
+                      }}
+                    >
+                      {row.key === expandedButton ? (
+                        <FontAwesomeIcon icon={faChevronUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      )}
+                    </button>
+                  </th>
+                ))}
+                <th className="text-justify w-24"> Edit </th>
+              </tr>
+            </thead>
 
 
-          <tbody>
-            {eventData.map((event: Event) => {
-              return (
-                <tr key={event.name}>
-                  <td>{event.name}</td>
-                  <td>{event.createdBy}</td>
-                  <td>{event.location}</td>
-                  <td>{formatDate(String(event.startDate))}</td>
-                  <td>{event.eventType}</td>
-                  <td>{event.status}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+            <tbody>
+              {eventData.map((event: Event) => {
+                return (
+                  <tr key={event.name}>
+                    <td>{event.name}</td>
+                    <td>{event.createdBy}</td>
+                    <td>{event.location}</td>
+                    <td>{formatDate(String(event.startDate))}</td>
+                    <td>{event.eventType}</td>
+                    <td>{event.status}</td>
+                    <td className="ml-0 text-center pl-0 align-center " ><button> <FontAwesomeIcon icon={faCog} /> </button></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
