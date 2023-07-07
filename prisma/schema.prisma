@@ -68,10 +68,10 @@ model RepairRequest {
   thumbnailImage String //s3 key to compressed image of object
 
 
-  repairComment String //comment for volunteer to document process
+  repairComment String @default("") //comment for volunteer to document process
   spareParts String @default("") //this should be filled out later by volunteer
   itemStatus ItemStatus @default(UNFINISHED)
-  hoursWorked Numeric(10, 2) @default(0.00)
+  hoursWorked Decimal @db.Decimal(10, 2) @default(0.00)
 
 
   requestDate DateTime @default(now())
