@@ -3,8 +3,8 @@ import prisma from "@/lib/prisma";
 const getAll = async () => {
   return await prisma.itemType.findMany();
 };
-const itemTypeModel = {
+const itemTypeService = {
   getAll
 };
 
-export default itemTypeModel;
+export default itemTypeService;

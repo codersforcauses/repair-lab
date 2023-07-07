@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import itemTypeModel from "@/models/item-type.model";
+import itemTypeService from "@/services/item-type.service";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +18,7 @@ export default async function handler(
 }
 
 const getItemTypes = async (req: NextApiRequest, res: NextApiResponse) => {
-  const itemtypes = await itemTypeModel.getAll();
+  const itemtypes = await itemTypeService.getAll();
   return res.status(200).json(itemtypes);
 };
 

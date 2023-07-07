@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import brandModel from "@/models/brand.model";
+import brandService from "@/services/brand.service";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +18,7 @@ export default async function handler(
 }
 
 const getBrands = async (req: NextApiRequest, res: NextApiResponse) => {
-  const brands = await brandModel.getAll();
+  const brands = await brandService.getAll();
   return res.status(200).json(brands);
 };
 

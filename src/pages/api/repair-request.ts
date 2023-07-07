@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import repairRequestModel from "@/models/repair-request.model";
 import { repairRequestPostSchema } from "@/schema/repair-request";
+import repairRequestService from "@/services/repair-request.service";
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,15 +33,11 @@ const createRepairRequest = async (
   }
 
   try {
-    const { eventId, description, itemType, itemBrand, images } = response.data;
-    const repairRequest = await repairRequestModel.insert(
-      eventId,
-      description,
-      itemType,
-      itemBrand,
-      "mock_user", // TODO: change this once we get userID
-      images
-    );
+    const repairRequest = await repairRequestService.insert({
+      ...response.data,
+      createdBy: "mock_user" // TODO: change this once we get userID
+    });
+
     return res.status(200).json({
       id: repairRequest.id
     });
