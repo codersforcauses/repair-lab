@@ -19,12 +19,12 @@ export default function Field<T extends FieldValues = FieldValues>({
 
   return (
     <>
-      <label className="mb-2 block text-lg font-medium capitalize text-gray-900 dark:text-white">
+      <label className="text-gray-900 dark:text-white mb-2 block text-lg font-medium capitalize">
         {label ?? props.name}
       </label>
       {!radio && (
         <input
-          className="flex w-full flex-1 flex-col items-start gap-1 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          className="border-gray-300 bg-gray-50 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 flex w-full flex-1 flex-col items-start gap-1 rounded-lg border p-2.5 text-sm"
           {...field}
           placeholder={props.name}
         />

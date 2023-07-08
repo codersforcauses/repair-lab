@@ -38,7 +38,7 @@ export default function repair() {
 
   return (
     <main className="mx-3">
-      <h1 className="mb-2 block text-xl text-red-500">General Repairs</h1>
+      <h1 className="text-red-500 mb-2 block text-xl">General Repairs</h1>
 
       <form className="flex flex-col" onSubmit={onSubmit}>
         {/* ID, Item */}
