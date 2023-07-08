@@ -28,7 +28,7 @@ export default function Field_Checkbox<T extends FieldValues = FieldValues>({
 
   return (
     <div className="order-3 flex h-12 w-96 flex-none items-center self-stretch">
-      <input type="checkbox" {...field} className="mr-4" />
+      <input type="checkbox" {...field} className="ml-4 mr-4" />
 
       {label && (
         <label htmlFor={props.name}>
