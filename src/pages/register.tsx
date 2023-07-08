@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
+
 import CustomButton from "../components/custombutton-large";
 
 export default function Register() {
