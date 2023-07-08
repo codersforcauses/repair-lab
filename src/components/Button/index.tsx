@@ -7,6 +7,7 @@ type Props = {
   radius?: string;
   width?: string;
   textColor?: string;
+  position?: string;
 };
 
 const Button = ({
@@ -16,8 +17,9 @@ const Button = ({
   height = "h-12",
   onClick,
   radius = "rounded-lg",
-  width = "w-1/2",
-  textColor = "text-white"
+  width = "w-1/6",
+  textColor = "text-white",
+  position = "center"
 }: Props) => {
   return (
     <button
