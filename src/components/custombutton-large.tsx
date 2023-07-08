@@ -1,16 +1,16 @@
-import React from "react";
+import { HTMLAttributes } from "react";
 
-interface CustomButtonProps {
+interface CustomButtonProps extends HTMLAttributes<HTMLButtonElement> {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   text: string;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ onClick, text }) => {
+const CustomButton = ({ onClick, text }: CustomButtonProps) => {
   return (
     <button
       type="submit"
       onClick={onClick}
-      className="w-full cursor-pointer rounded-md bg-[#098D85] py-2 font-bold text-white"
+      className="w-full cursor-pointer rounded-md bg-primary-600 py-2 font-bold text-white"
     >
       {text}
     </button>
