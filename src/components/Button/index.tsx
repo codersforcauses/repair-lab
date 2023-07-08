@@ -24,7 +24,7 @@ const Button = ({
   return (
     <button
       onClick={onClick}
-      className={`${color} ${border} ${radius} ${height} ${width} ${textColor}`}
+      className={`${color} ${border} ${radius} ${height} ${width} ${textColor} ${position}`}
     >
       {children}
     </button>
