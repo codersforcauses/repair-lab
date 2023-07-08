@@ -37,45 +37,35 @@ async function deleteIdUniqueData() {
   console.log("Deleted default RepairRequest records.");
 }
 
+async function createItemType(name: string) {
+  const type = await prisma.itemType.upsert({
+    where: { name },
+    create: { name },
+    update: {}
+  });
+  console.log(type);
+}
+
+async function createBrand(name: string) {
+  const brand = await prisma.brand.upsert({
+    where: { name },
+    create: { name },
+    update: {}
+  });
+  console.log(brand);
+}
+
 async function main() {
   deleteIdUniqueData();
 
   // create default itemType(s)
-  const ClockItemType = await prisma.itemType.upsert({
-    where: { name: "Clock" },
-    create: { name: "Clock" },
-    update: {}
-  });
-  console.log(ClockItemType);
-
-  const BikeItemType = await prisma.itemType.upsert({
-    where: { name: "Bike" },
-    create: { name: "Bike" },
-    update: {}
-  });
-  console.log(BikeItemType);
+  createItemType("Clock");
+  createItemType("Bike");
 
   // create default brand(s)
-  const WonderlandBrand = await prisma.brand.upsert({
-    where: { name: "Wonderland" },
-    create: { name: "Wonderland" },
-    update: {}
-  });
-  console.log(WonderlandBrand);
-
-  const OtherBikeBrand = await prisma.brand.upsert({
-    where: { name: "OtherBikeBrand" },
-    create: { name: "OtherBikeBrand" },
-    update: {}
-  });
-  console.log(OtherBikeBrand);
-
-  const BikeBrand = await prisma.brand.upsert({
-    where: { name: "BikeBrand" },
-    create: { name: "BikeBrand" },
-    update: {}
-  });
-  console.log(BikeBrand);
+  createBrand("Wonderland");
+  createBrand("BikeBrand");
+  createBrand("OtherBikeBrand");
 
   // create default event(s)
   const event1 = await prisma.event.upsert({
