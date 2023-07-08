@@ -8,6 +8,7 @@ type Props = {
   onClick?: () => void;
   radius?: string;
   width?: string;
+  textColor?: string;
 };
 
 // good to have some default values
@@ -18,13 +19,14 @@ const Button: React.FC<Props> = ({
   height = "h-12",
   onClick,
   radius = "rounded-lg",
-  width = "w-1/2"
+  width = "w-1/2",
+  textColor = "text-white"
 }) => {
   return (
     // uses tailwind now
     <button
       onClick={onClick}
-      className={`${color} ${border} ${radius} ${height} ${width} text-white`}
+      className={`${color} ${border} ${radius} ${height} ${width} ${textColor}`}
       // style={{
       //   backgroundColor: color,
       //   border,
