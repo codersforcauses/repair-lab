@@ -9,7 +9,6 @@ import SortBy from "@/components/repair-request/SortBy";
 import RepairRequestCard from "../components/repair-request/index";
 const inter = Inter({ subsets: ["latin"] });
 
-
 function getRepairContent() {
   const repair = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const content = [];
@@ -46,4 +45,3 @@ export default function RepairRequest() {
     </main>
   );
 }
-
