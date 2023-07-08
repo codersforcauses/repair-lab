@@ -7,10 +7,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 const inter = Inter({ subsets: ["latin"] });
 
 type FormValues = {
-  tncAccepted: false;
+  tncAccepted: boolean;
 };
 
-const Terms_And_Conditions = () => {
+const TermsAndConditions = () => {
   const {
     control,
     handleSubmit,
@@ -86,30 +86,30 @@ const Terms_And_Conditions = () => {
                 />
               )}
             />
-            <span className="pl-3">
-              I accept the{" "}
-              <button
-                className="text-darkAqua-400"
-                onClick={handleshowPopupChange}
-              >
-                {" "}
-                Terms and Conditions{" "}
-              </button>
-              .
-            </span>
+            <span className="pl-3">I have read the </span>
+            <button
+              className="text-darkAqua-400"
+              onClick={handleshowPopupChange}
+            >
+              {" "}
+              disclaimer{" "}
+            </button>
+
+            <span>.</span>
 
             {showPopup && (
               <PopUp trigger={showPopup}>
                 <p>
-                  <h1 className="mb-4 pl-5 pr-8 text-center text-red-600">
-                    *Please check the checkbox to acknowledge that you have read
-                    and accept our House Rules.*{" "}
-                  </h1>
-
-                  <h1 className="mb-4 text-center text-lg font-bold">
+                  <h1 className="mb-4 gap-y-4 text-center text-lg font-bold">
                     {" "}
                     House Rules:{" "}
                   </h1>
+
+                  <p className="mb-4 gap-y-4 pl-10 pr-10 text-red-600">
+                    *Note: Please check the checkbox to acknowledge that you
+                    have read and accept our House Rules.*{" "}
+                  </p>
+
                   <ol className="tlex grid list-decimal justify-center gap-y-4 pl-10 pr-10">
                     <li>
                       Workshop participants carry out the repair themselves
@@ -202,4 +202,4 @@ const Terms_And_Conditions = () => {
   );
 };
 
-export default Terms_And_Conditions;
+export default TermsAndConditions;
