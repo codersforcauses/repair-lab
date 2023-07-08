@@ -9,7 +9,7 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "PATCH":
-      await createRepairAttempt(req, res);
+      await updateRepairRequest(req, res);
       break;
     default:
       return res.status(405).end(`Method ${req.method} Not Allowed`);
@@ -17,7 +17,7 @@ export default async function handler(
 }
 
 //
-const createRepairAttempt = async (
+const updateRepairRequest = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -27,12 +27,12 @@ const createRepairAttempt = async (
   }
 
   try {
-    const { id, itemMaterial, time, isRepaired, spareParts, comment } =
+    const { id, itemMaterial, hoursWorked, isRepaired, spareParts, comment } =
       response.data;
     const repairAttempt = await RepairAttemptModel.update(
       id,
       itemMaterial,
-      // time,
+      hoursWorked,
       isRepaired ? "REPAIRED" : "FAILED",
       spareParts,
       comment

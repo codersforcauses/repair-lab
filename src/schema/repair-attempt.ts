@@ -10,7 +10,7 @@ export const RepairAttemptSchema = z.object({
   item: z.string().nonempty({ message: "Item name is required" }),
   itemBrand: z.string().nonempty({ message: "Brand is required" }),
   itemMaterial: z.string().nonempty({ message: "Material is required" }),
-  time: z.preprocess(
+  hoursWorked: z.preprocess(
     (input) => {
       const processedInput = z
         .string()

@@ -5,6 +5,7 @@ import { RepairAttemptSchema } from "@/schema/repair-attempt";
 import type { RepairAttempt } from "@/schema/repair-attempt";
 import FieldRadio from "@/components/field-radio";
 import FieldTextArea from "@/components/field-text-area";
+import Button from "@/components/Button";
 
 export default function RepairAttempt() {
   const {
@@ -18,7 +19,7 @@ export default function RepairAttempt() {
       item: "",
       itemBrand: "",
       itemMaterial: "",
-      time: 1,
+      hoursWorked: 1,
       isRepaired: false,
       isSparePartsNeeded: false,
       spareParts: "",
@@ -73,7 +74,7 @@ export default function RepairAttempt() {
         {/* Time it took, Repaired? */}
         <div className={lineStyle}>
           <FieldInput
-            name="time"
+            name="hoursWorked"
             label="Time it took"
             control={control}
             rules={{ required: true }}
@@ -113,12 +114,7 @@ export default function RepairAttempt() {
         </div>
 
         {/* Submit */}
-        <input
-          type="submit"
-          value="Submit"
-          className="w-156 h-38 leading-38 rounded-8 mx-auto block items-center justify-center bg-primary-600 font-semibold
-          text-white"
-        ></input>
+        <Button>Submit</Button>
       </form>
     </main>
   );
