@@ -25,15 +25,18 @@ export default function Field_Checkbox<T extends FieldValues = FieldValues>({
   const { field } = useController({ ...props });
 
   return (
-    <div className="flex items-center w-96 h-12 order-3 self-stretch flex-none">
-      <input type="checkbox" 
-      {...field} 
-      clasName="absolute w-4 h-4 ml-15 mt-170 rounded-sm bg-blue-500"
-      />
+    <div className="order-3 flex h-12 w-96 flex-none items-center self-stretch">
+      <input type="checkbox" {...field} />
 
       {label && (
         <label htmlFor={props.name}>
-          {href ? <a href={href} className="underline">{label}</a> : label}
+          {href ? (
+            <a href={href} className="underline">
+              {label}
+            </a>
+          ) : (
+            label
+          )}
         </label>
       )}
     </div>
