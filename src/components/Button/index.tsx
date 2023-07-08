@@ -17,7 +17,7 @@ const Button = ({
   height = "h-12",
   onClick,
   radius = "rounded-lg",
-  width = "w-1/6",
+  width = "w-full",
   textColor = "text-white",
   position = "mx-auto"
 }: Props) => {
