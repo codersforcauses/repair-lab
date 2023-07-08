@@ -111,6 +111,7 @@ async function main() {
       item: {
         connect: { name: "Clock" }
       },
+      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
       images: {
         create: [
           {
@@ -143,6 +144,7 @@ async function main() {
         connect: { name: "Clock" }
       },
       itemBrand: "Wonderland",
+      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
       images: {
         create: [
           {
@@ -174,6 +176,7 @@ async function main() {
         connect: { name: "Clock" }
       },
       itemBrand: "Wonderland",
+      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
       images: {
         create: [
           {
@@ -224,6 +227,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       itemBrand: "Wonderland",
+      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
       images: {
         create: [
           {
@@ -255,6 +259,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       itemBrand: "OtherBikeBrand",
+      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
       images: {
         create: [
           {
@@ -286,6 +291,7 @@ async function main() {
         connect: { name: "Bike" }
       },
       itemBrand: "BikeBrand",
+      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
       images: {
         create: [
           {
