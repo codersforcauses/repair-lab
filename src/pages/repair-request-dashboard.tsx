@@ -5,6 +5,8 @@ import { CiCirclePlus } from "react-icons/ci";
 import Navbar from "@/components/Navbar";
 import SearchBar from "@/components/repair-request/SearchBar";
 import SortBy from "@/components/repair-request/SortBy";
+import Sidebar from "@/components/sidebar/index";
+
 
 import RepairRequestCard from "../components/repair-request/index";
 const inter = Inter({ subsets: ["latin"] });
@@ -24,6 +26,7 @@ function getRepairContent() {
 
 export default function RepairRequest() {
   return (
+    <Sidebar>
     <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
       <Navbar />
       <div className="container">
@@ -43,5 +46,7 @@ export default function RepairRequest() {
         <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
       </div>
     </main>
+    </Sidebar>
   );
 }
+  
