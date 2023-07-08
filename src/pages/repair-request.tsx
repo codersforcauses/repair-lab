@@ -238,9 +238,7 @@ const Home = () => {
                   {...register("tncAccepted", {
                     required: "*Accept terms and conditions to submit."
                   })}
-                  onChange={(e) => {
-                    onChange(e.target.checked);
-                  }}
+                  onChange={(e) => !e.target.checked}
                 />
               )}
             />
