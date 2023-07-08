@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -44,6 +45,7 @@ async function createItemType(name: string) {
     update: {}
   });
   console.log(type);
+  return type;
 }
 
 async function createBrand(name: string) {
@@ -53,58 +55,53 @@ async function createBrand(name: string) {
     update: {}
   });
   console.log(brand);
+  return brand;
 }
 
-async function main() {
-  deleteIdUniqueData();
-
-  // create default itemType(s)
-  createItemType("Clock");
-  createItemType("Bike");
-
-  // create default brand(s)
-  createBrand("Wonderland");
-  createBrand("BikeBrand");
-  createBrand("OtherBikeBrand");
-
-  // create default event(s)
-  const event1 = await prisma.event.upsert({
-    where: { name: "Can Bob Fix It?" },
+async function createRandomEvent() {
+  const eventName = faker.commerce.productName();
+  const event = await prisma.event.upsert({
+    where: { name: eventName },
     create: {
-      createdBy: "Bob (The) Builder",
-      name: "Can Bob Fix It?",
-      location: "Bobsville",
+      createdBy: faker.person.fullName(),
+      name: eventName,
+      location: faker.location.street(),
       description:
-        "A general contractor from Bobsville provides his services in Bobsville.",
-      volunteers: ["Cheshire Cat"],
+        faker.lorem.sentence(),
+      volunteers: [faker.person.fullName()],
       event: {
-        connect: { name: "Clock" }
+        connect: { name: faker.helpers.arrayElement(["Clock", "Bike"]) }
       },
       startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
       endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
     },
     update: {}
   });
-  console.log({ event1 });
+  console.log(event);
+  return event;
+}
 
-  const event2 = await prisma.event.upsert({
-    where: { name: "Evans' Repair Warehouse" },
-    create: {
-      id: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb",
-      createdBy: "Evans",
-      name: "Evans' Repair Warehouse",
-      location: "The big warehouse on 5th st",
-      description: "Evans fixes bikes & trikes",
-      volunteers: ["Fred", "Gerald", "Harold"],
-      event: {
-        connect: { name: "Bike" }
-      },
-      startDate: new Date(2023, 8, 12, 15, 30, 0, 0),
-      endDate: new Date(2023, 8, 15, 15, 30, 0, 0)
-    },
-    update: {}
-  });
-  console.log(event2);
+async function main() {
+  faker.seed(100);
+
+  await deleteIdUniqueData();
+
+  await Promise.all([
+    createItemType("Clock"),
+    createItemType("Bike"),
+    createItemType("Computer"),
+
+    createBrand("Wonderland"),
+    createBrand("BikeBrand"),
+    createBrand("OtherBikeBrand")
+  ]);
+
+  // create default event(s)
+  const event1 = await createRandomEvent();
+  const event2 = await createRandomEvent();
+  const event3 = await createRandomEvent();
+  const event4 = await createRandomEvent();
+  const event5 = await createRandomEvent();
 
   // create default repairRequest(s)
   const repairRequest1 = await prisma.repairRequest.create({
