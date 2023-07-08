@@ -114,7 +114,7 @@ export default function RepairAttempt() {
         </div>
 
         {/* Submit */}
-        <Button>Submit</Button>
+        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
       </form>
     </main>
   );
