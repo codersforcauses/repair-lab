@@ -20,18 +20,20 @@ Output:
 export default function Field_Checkbox<T extends FieldValues = FieldValues>({
   label,
   href,
+  sampleText,
   ...props
 }: FormProps<T>) {
   const { field } = useController({ ...props });
 
   return (
     <div className="order-3 flex h-12 w-96 flex-none items-center self-stretch">
-      <input type="checkbox" {...field} />
+      <input type="checkbox" {...field} className="mr-4" />
 
       {label && (
         <label htmlFor={props.name}>
+          {sampleText}
           {href ? (
-            <a href={href} className="underline">
+            <a href={href} className="ml-2 font-bold underline">
               {label}
             </a>
           ) : (
