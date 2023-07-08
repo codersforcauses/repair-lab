@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
+
 import Field from "@/components/Field";
 
 type RepairData = {
@@ -14,7 +15,7 @@ type RepairData = {
   desc: string;
 };
 
-export default function repair() {
+export default function Repair() {
   const { control, handleSubmit } = useForm<RepairData>({
     defaultValues: {
       id: "",
