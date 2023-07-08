@@ -8,6 +8,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   label?: string;
   href?: string;
+  sampleText?: string;
 }
 
 /*
