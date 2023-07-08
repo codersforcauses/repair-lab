@@ -48,9 +48,9 @@ export default function Register() {
           text="Continue with Google"
         />
         <div className="mb-4 flex items-center">
-          <div className="border-t-2 border-dashed border-primary-600 flex-1"></div>
-          <div className="text-primary-600 mx-4">or</div>
-          <div className="border-t-2 border-dashed border-primary-600 flex-1"></div>
+          <div className="flex-1 border-t-2 border-dashed border-primary-600"></div>
+          <div className="mx-4 text-primary-600">or</div>
+          <div className="flex-1 border-t-2 border-dashed border-primary-600"></div>
         </div>
         {/* TODO: Add form logic */}
         <form onSubmit={handleSubmit(onSubmit)}>
