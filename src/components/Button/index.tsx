@@ -1,5 +1,3 @@
-import React from "react"; // not necessary as next imports it already
-
 type Props = {
   color?: string;
   border?: string;
@@ -11,7 +9,6 @@ type Props = {
   textColor?: string;
 };
 
-// good to have some default values
 const Button: React.FC<Props> = ({
   color = "bg-primary-600",
   border = "border-1",
@@ -23,17 +20,9 @@ const Button: React.FC<Props> = ({
   textColor = "text-white"
 }) => {
   return (
-    // uses tailwind now
     <button
       onClick={onClick}
-      className={`${color} ${border} ${radius} ${height} ${width} ${textColor}`}
-      // style={{
-      //   backgroundColor: color,
-      //   border,
-      //   borderRadius: radius,
-      //   height,
-      //   width
-      // }}
+      className={`${color} ${border} ${radius} ${height} ${width} ${textColor}`}  
     >
       {children}
     </button>
