@@ -1,5 +1,6 @@
-import { Button, MenuItem, Select, TextField } from "@material-ui/core";
+import { MenuItem, Select } from "@material-ui/core";
 import { Controller, useForm } from "react-hook-form";
+import Button from "../components/Button/index";
 
 type FormData = {
   eventName: string;
@@ -42,7 +43,7 @@ export default function EventForm() {
               htmlFor="eventName"
               className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
-              <span style={{ color: "red" }}>*</span> Event Name
+              <span className="text-red-500">*</span> Event Name
             </label>
             <input
               id="eventName"
@@ -54,7 +55,6 @@ export default function EventForm() {
           </div>
         )}
       />
-
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <Controller
@@ -67,7 +67,7 @@ export default function EventForm() {
                     htmlFor="location"
                     className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                   >
-                    <span style={{ color: "red" }}>*</span> Location
+                    <span className="text-red-500">*</span> Location
                   </label>
                   <input
                     id="location"
@@ -91,7 +91,7 @@ export default function EventForm() {
                     htmlFor="dateTime"
                     className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                   >
-                    <span style={{ color: "red" }}>*</span>Date-Time
+                    <span className="text-red-500">*</span>Date-Time
                   </label>
                   <input
                     id="dateTime"
@@ -114,7 +114,7 @@ export default function EventForm() {
         htmlFor="eventType"
         className="block text-black text-sm font-bold bg-white px-1 py-1 mt-2"
       >
-        <span style={{ color: "red" }}>*</span> Event Type
+        <span className="text-red-500">*</span> Event Type
       </label>
       <Select
         {...field}
@@ -138,7 +138,7 @@ export default function EventForm() {
             htmlFor="assignedVolunteers"
             className="block text-black text-sm font-bold bg-white px-1 py-1 mt-2"
           >
-            <span style={{ color: "red" }}>*</span> Volunteers
+            <span className="text-red-500">*</span> Volunteers
           </label>
           <Select
             {...field}
@@ -155,9 +155,15 @@ export default function EventForm() {
       )}
     />
         <div className="text-center">
-          <Button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
-            Create Event
-          </Button>
+        <Button
+  type="submit"
+  color="bg-primary-600"
+  textColor="text-white"
+  radius="rounded-md"
+  className="px-4 py-2"
+>
+  Create Event
+</Button>
         </div>
       </form>
       </div>
