@@ -14,7 +14,7 @@ interface RepairRequestCreateInput {
 }
 
 interface IRepairRequestService {
-  insert(details?: RepairRequestCreateInput): Promise<RepairRequest>;
+  insert(details: RepairRequestCreateInput): Promise<RepairRequest>;
 }
 
 class RepairRequestService implements IRepairRequestService {
