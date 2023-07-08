@@ -1,8 +1,7 @@
 import {
+  FieldValues,
   useController,
-  UseControllerProps,
-  FieldValues
-} from "react-hook-form";
+  UseControllerProps} from "react-hook-form";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
