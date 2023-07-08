@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function main() {
+async function deleteIdUniqueData() {
   // repairRequestImage(s) created by default user(s)
   await prisma.repairRequestImage.deleteMany({
     where: {
@@ -35,29 +35,33 @@ async function main() {
     }
   });
   console.log("Deleted default RepairRequest records.");
+}
+
+async function main() {
+  deleteIdUniqueData();
 
   // create default itemType(s)
-  const clockItemType = await prisma.itemType.upsert({
+  const ClockItemType = await prisma.itemType.upsert({
     where: { name: "Clock" },
     create: { name: "Clock" },
     update: {}
   });
-  console.log(clockItemType);
+  console.log(ClockItemType);
 
-  const bikeItemType = await prisma.itemType.upsert({
+  const BikeItemType = await prisma.itemType.upsert({
     where: { name: "Bike" },
     create: { name: "Bike" },
     update: {}
   });
-  console.log(bikeItemType);
+  console.log(BikeItemType);
 
   // create default brand(s)
-  const wonderlandBrand = await prisma.brand.upsert({
+  const WonderlandBrand = await prisma.brand.upsert({
     where: { name: "Wonderland" },
     create: { name: "Wonderland" },
     update: {}
   });
-  console.log(wonderlandBrand);
+  console.log(WonderlandBrand);
 
   const OtherBikeBrand = await prisma.brand.upsert({
     where: { name: "OtherBikeBrand" },
@@ -93,6 +97,25 @@ async function main() {
   });
   console.log({ event1 });
 
+  const event2 = await prisma.event.upsert({
+    where: { name: "Evans' Repair Warehouse" },
+    create: {
+      id: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb",
+      createdBy: "Evans",
+      name: "Evans' Repair Warehouse",
+      location: "The big warehouse on 5th st",
+      description: "Evans fixes bikes & trikes",
+      volunteers: ["Fred", "Gerald", "Harold"],
+      event: {
+        connect: { name: "Bike" }
+      },
+      startDate: new Date(2023, 8, 12, 15, 30, 0, 0),
+      endDate: new Date(2023, 8, 15, 15, 30, 0, 0)
+    },
+    update: {}
+  });
+  console.log(event2);
+
   // create default repairRequest(s)
   const repairRequest1 = await prisma.repairRequest.create({
     data: {
@@ -124,7 +147,6 @@ async function main() {
       }
     }
   });
-
   console.log(repairRequest1);
 
   const repairRequest2 = await prisma.repairRequest.create({
@@ -190,25 +212,6 @@ async function main() {
     }
   });
   console.log(repairRequest3);
-
-  const event2 = await prisma.event.upsert({
-    where: { name: "Evans' Repair Warehouse" },
-    create: {
-      id: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb",
-      createdBy: "Evans",
-      name: "Evans' Repair Warehouse",
-      location: "The big warehouse on 5th st",
-      description: "Evans fixes bikes & trikes",
-      volunteers: ["Fred", "Gerald", "Harold"],
-      event: {
-        connect: { name: "Bike" }
-      },
-      startDate: new Date(2023, 8, 12, 15, 30, 0, 0),
-      endDate: new Date(2023, 8, 15, 15, 30, 0, 0)
-    },
-    update: {}
-  });
-  console.log(event2);
 
   const repairRequest4 = await prisma.repairRequest.create({
     data: {
