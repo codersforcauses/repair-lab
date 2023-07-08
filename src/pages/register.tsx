@@ -1,30 +1,34 @@
-import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 import CustomButton from "../components/custombutton-large";
 
+interface RegisterFormValues {
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm<RegisterFormValues>();
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
+  const onSubmit = (data: RegisterFormValues) => {
+    // TODO: Handle form submission
+    console.log(data);
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     // Reset the form
-    setUsername("");
-    setPassword("");
+    reset();
   };
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <div className=" rounded-md bg-white p-8 shadow">
+      <div className="rounded-md bg-white p-8 shadow">
         <div className="flex items-center justify-center">
           <Image
             src="/images/repair_lab_logo.jpg"
@@ -38,41 +42,37 @@ export default function Register() {
         </div>
         <CustomButton
           onClick={() => {
-            // Handle Google login here
+            // TODO: Handle Google login here
             console.log("Continue with Google...");
           }}
           text="Continue with Google"
         />
         <div className="mb-4 flex items-center">
-          <div
-            className="border-t-2 border-dashed"
-            style={{ borderColor: "#098D85", flex: 1 }}
-          ></div>
-          <div style={{ color: "#098D85" }} className="mx-4">
-            or
-          </div>
-          <div
-            className="border-t-2 border-dashed"
-            style={{ borderColor: "#098D85", flex: 1 }}
-          ></div>
+          <div className="border-t-2 border-dashed border-primary-600 flex-1"></div>
+          <div className="text-primary-600 mx-4">or</div>
+          <div className="border-t-2 border-dashed border-primary-600 flex-1"></div>
         </div>
-
-        <form onSubmit={handleSubmit}>
+        {/* TODO: Add form logic */}
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="relative mb-4">
             <label
               htmlFor="username"
               className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
-              <span style={{ color: "red" }}>*</span> Username
+              <span className="text-red-500">*</span> Username
             </label>
             <input
               id="username"
               type="text"
-              value={username}
-              onChange={handleUsernameChange}
+              {...register("username", { required: true })}
               placeholder="Username"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
+                errors.username ? "border-red-500" : ""
+              }`}
             />
+            {errors.username && (
+              <span className="text-red-500">Username is required</span>
+            )}
           </div>
 
           <div className="relative mb-4">
@@ -80,16 +80,20 @@ export default function Register() {
               htmlFor="password"
               className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
-              <span style={{ color: "red" }}>*</span> Password
+              <span className="text-red-500">*</span> Password
             </label>
             <input
               id="password"
-              type="text"
-              value={password}
-              onChange={handlePasswordChange}
+              type="password"
+              {...register("password", { required: true })}
               placeholder="Password"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
+                errors.password ? "border-red-500" : ""
+              }`}
             />
+            {errors.password && (
+              <span className="text-red-500">Password is required</span>
+            )}
           </div>
 
           <div className="relative mb-4">
@@ -97,16 +101,28 @@ export default function Register() {
               htmlFor="confirmPassword"
               className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
             >
-              <span style={{ color: "red" }}>*</span> Confirm Password
+              <span className="text-red-500">*</span> Confirm Password
             </label>
             <input
               id="confirmPassword"
-              type="text"
-              placeholder="Password"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              type="password"
+              {...register("confirmPassword", { required: true })}
+              placeholder="Confirm Password"
+              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
+                errors.confirmPassword ? "border-red-500" : ""
+              }`}
             />
+            {errors.confirmPassword && (
+              <span className="text-red-500">Confirm Password is required</span>
+            )}
           </div>
-
+          <div className="m-4 text-center">
+            <Link href="/login">
+              <span className="text-xs text-gray-400 underline">
+                Already have an account? Sign in
+              </span>
+            </Link>
+          </div>
           <div className="w-full">
             <CustomButton
               onClick={() => {
