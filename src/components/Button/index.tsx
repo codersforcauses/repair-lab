@@ -19,7 +19,7 @@ const Button = ({
   radius = "rounded-lg",
   width = "w-1/6",
   textColor = "text-white",
-  position = "center"
+  position = "mx-auto"
 }: Props) => {
   return (
     <button
