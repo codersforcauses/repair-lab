@@ -9,7 +9,7 @@ type Props = {
   textColor?: string;
 };
 
-const Button: React.FC<Props> = ({
+const Button = ({
   color = "bg-primary-600",
   border = "border-1",
   children,
@@ -18,7 +18,7 @@ const Button: React.FC<Props> = ({
   radius = "rounded-lg",
   width = "w-1/2",
   textColor = "text-white"
-}) => {
+}: Props) => {
   return (
     <button
       onClick={onClick}
