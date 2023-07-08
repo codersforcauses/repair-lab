@@ -35,6 +35,7 @@ describe("GET /api/item-type", () => {
         expect(res.status).toBe(200);
         const result = await res.json();
 
+        expect(result.length).equals(2);
         expect(result[0].name).equals("Bike");
         expect(result[1].name).equals("Phone");
       }
