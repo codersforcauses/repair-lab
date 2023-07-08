@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 import Image from "next/image";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-import Button from "@/components/Button";
 import { useBrands } from "@/hooks/brands";
 import { useItemTypes } from "@/hooks/item-types";
 
@@ -251,11 +250,10 @@ const Home = () => {
             <p className="text-red-600"> {errors.tncAccepted?.message} </p>
           </div>
 
-          {/* <input
+          <input
             className="m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-teal-600 text-center text-lg text-white hover:bg-teal-500"
             type="submit"
-          /> */}
-          <Button> Submit</Button>
+          />
         </form>
       </div>
     </main>
