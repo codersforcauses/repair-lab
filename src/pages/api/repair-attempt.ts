@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Prisma } from "@prisma/client";
 
 import { RepairAttemptSchema } from "@/schema/repair-attempt";
 import RepairAttemptModel from "@/models/repair-attempt.model";
@@ -37,9 +38,13 @@ const updateRepairRequest = async (
       spareParts,
       comment
     );
-
     return res.status(200).json(repairAttempt);
-  } catch (error) {
-    return res.status(500).json({ message: "Failed inserting to database" });
+  } catch (error: unknown) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025")
+        return res.status(404).json({ message: "Repair request not found." });
+      return res.status(400).json({ message: "Client error" });
+    }
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
