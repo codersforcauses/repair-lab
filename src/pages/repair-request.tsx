@@ -16,12 +16,11 @@ type FormValues = {
   description: string;
   images: [];
   eventId: string;
-  tncAccepted: false;
+  tncAccepted: boolean;
 };
 
 const Home = () => {
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors }
