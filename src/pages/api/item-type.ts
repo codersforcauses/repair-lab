@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import itemTypeService from "@/services/item-type.service";
+import ItemTypeService from "@/services/item-type";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,12 +18,14 @@ export default async function handler(
 }
 
 const getItemTypes = async (req: NextApiRequest, res: NextApiResponse) => {
+  const itemTypeService = new ItemTypeService();
   const itemtypes = await itemTypeService.getAll();
+  
   return res.status(200).json(itemtypes);
 };
 
-export const config = {
+export const config: PageConfig = {
   api: {
-    externalResolver: true as boolean
+    externalResolver: true
   }
 };

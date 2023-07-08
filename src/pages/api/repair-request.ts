@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
 import { repairRequestPostSchema } from "@/schema/repair-request";
-import repairRequestService from "@/services/repair-request.service";
+import RepairRequestService from "@/services/repair-request";
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,15 +26,16 @@ const createRepairRequest = async (
   res: NextApiResponse
 ) => {
   // TODO: Get userID from middleware.
-  const response = repairRequestPostSchema.safeParse(req.body);
-  if (!response.success) {
-    const { errors } = response.error;
+  const requestBody = repairRequestPostSchema.safeParse(req.body);
+  if (!requestBody.success) {
+    const { errors } = requestBody.error;
     return res.status(400).json({ error: errors });
   }
 
   try {
+    const repairRequestService = new RepairRequestService();
     const repairRequest = await repairRequestService.insert({
-      ...response.data,
+      ...requestBody.data,
       createdBy: "mock_user" // TODO: change this once we get userID
     });
 
