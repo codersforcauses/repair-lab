@@ -20,7 +20,7 @@ export default async function handler(
 const getItemTypes = async (req: NextApiRequest, res: NextApiResponse) => {
   const itemTypeService = new ItemTypeService();
   const itemtypes = await itemTypeService.getAll();
-  
+
   return res.status(200).json(itemtypes);
 };
 

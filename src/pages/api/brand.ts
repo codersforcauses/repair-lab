@@ -20,7 +20,7 @@ export default async function handler(
 const getBrands = async (req: NextApiRequest, res: NextApiResponse) => {
   const brandService = new BrandService();
   const brands = await brandService.getAll();
-  
+
   return res.status(200).json(brands);
 };
 
