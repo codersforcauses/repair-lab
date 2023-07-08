@@ -4,7 +4,7 @@ import { ItemStatus } from "@prisma/client";
 const update = async (
   id: string,
   itemMaterial: string,
-  // time: number, FIXME: Missing from db schema
+  hoursWorked: number,
   itemStatus: ItemStatus,
   spareParts: string | undefined,
   comment: string
@@ -13,7 +13,7 @@ const update = async (
     where: { id: id },
     data: {
       itemMaterial,
-      // time,
+      hoursWorked,
       itemStatus,
       spareParts,
       comment
