@@ -18,6 +18,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
 /*
 This is a component for the HTML `<input>' tag
 Input:
+  id: The ID for the the input
   label: The label displayed on the text box
   placeholder: The placeholder message displayed on the text box
   icon: An optional Image path to display an .svg file
@@ -37,7 +38,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
     : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow";
   return (
     <div className={errorStyle}>
-      <Label label={!label ? `${props.name}` : `${label}`} {...props} />
+      <Label label={!label ? props.name : label} {...props} />
       <input
         className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
         placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
