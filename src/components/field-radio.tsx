@@ -30,7 +30,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
   !label ? (label = props.name) : "";
 
   return (
-    <div className="relative mb-2 flex h-12 w-48 flex-row justify-between rounded-lg border border-grey-300 px-3 shadow">
+    <div className="relative mb-2 flex h-12 w-full flex-row justify-between rounded-lg border border-grey-300 px-3 shadow">
       <Label label={label} {...props} />
       <div className="my-auto flex flex-row items-start gap-1 text-xs">
         <label htmlFor={`${props.name}-y`} className="mr-8 flex gap-1">

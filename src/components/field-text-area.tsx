@@ -35,7 +35,7 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
   !label ? (label = props.name) : "";
 
   return (
-    <div className="relative mb-2 flex h-36 w-96 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
+    <div className="relative mb-2 flex h-36 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
       <Label label={label} {...props} />
       <textarea
         className="overflow-wrap:break-text h-4/5 w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"

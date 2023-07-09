@@ -9,6 +9,7 @@ import Label from "@/components/box-label";
 import Error from "@/components/error-msg";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
+  id?: string;
   label?: string;
   placeholder?: string;
   icon?: string;
@@ -24,23 +25,23 @@ Output:
   A input text box that is compatible w/ React-hook-forms
 */
 export default function FieldInput<T extends FieldValues = FieldValues>({
+  id,
   label,
-  placeholder = "",
+  placeholder,
   icon,
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-
-  !placeholder ? (placeholder = `Enter ${props.name}`) : "";
-  !label ? (label = props.name) : "";
-
+  const errorStyle = !fieldState.invalid
+    ? "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow"
+    : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow";
   return (
-    <div className="relative mb-2 flex h-12 w-48 flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow">
-      <Label label={label} {...props} />
+    <div className={errorStyle}>
+      <Label label={!label ? `${props.name}` : `${label}`} {...props} />
       <input
         className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
-        placeholder={placeholder}
-        id={label}
+        placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
+        id={!id ? `${props.name}` : `${id}`}
         {...field}
       />
       {!icon ? (
@@ -54,7 +55,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
           className="relative min-h-0 w-4 min-w-0 shrink-0"
         />
       )}
-      {fieldState.error?.message && <Error {...props} />}
+      {fieldState.invalid && <Error {...props} />}
     </div>
   );
 }
