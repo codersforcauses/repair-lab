@@ -8,7 +8,11 @@ interface RepairRequestCardProps {
   volunteer: string;
 }
 
-export default function RepairRequestCard({props} : {props: RepairRequestCardProps}) {
+export default function RepairRequestCard({
+  props
+}: {
+  props: RepairRequestCardProps;
+}) {
   return (
     <div className="col-span-1 flex w-full justify-between rounded-3xl border bg-[#EEEEEE] p-4">
       <div className="flex w-full flex-col leading-8 ">

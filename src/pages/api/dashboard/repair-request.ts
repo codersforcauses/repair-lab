@@ -9,9 +9,9 @@ export default async function handle(
 ) {
   if (req.method == "GET") {
     const eventName = req.query.event as string;
-    const repairRequests = await prisma.repairRequest.findMany({where:{event: {name: eventName}}});
-    console.log(repairRequests)
-    return res.status(200).json(repairRequests); 
+    const repairRequests = await prisma.repairRequest.findMany({
+      where: { event: { name: eventName } }
+    });
+    return res.status(200).json(repairRequests);
   }
-  
 }
