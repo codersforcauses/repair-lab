@@ -4,8 +4,8 @@ import {
   UseControllerProps
 } from "react-hook-form";
 
-import Label from "@/components/box-label";
-import Error from "@/components/error-msg";
+import Label from "@/components/Form Fields/box-label";
+import Error from "@/components/Form Fields/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
