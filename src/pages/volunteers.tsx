@@ -30,6 +30,7 @@ export default function Volunteers() {
     <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
       <Navbar />
       <div className="container">
+      <p className="p-4 text-2xl font-bold text-[#6C727F]">Volunteers</p>
         <div className="container mx-auto">
           <div className="flex justify-end">
           </div>
