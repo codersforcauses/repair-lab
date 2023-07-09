@@ -11,7 +11,7 @@ type FormValues = {
   tncAccepted: boolean;
 };
 
-const TermsAndConditionsReference = () => {
+const TermsAndConditions = () => {
   const {
     control,
     handleSubmit,
@@ -164,10 +164,9 @@ const TermsAndConditionsReference = () => {
                     </p>
                   </div>
 
-                  <div className="mt-10 w-auto flex justify-center">
-                      <Button onClick={handleshowPopupChange}>Close</Button>
+                  <div className="mt-10 flex justify-center">
+                    <Button onClick={handleshowPopupChange}>Close</Button>
                   </div>
-
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -178,4 +177,4 @@ const TermsAndConditionsReference = () => {
   );
 };
 
-export default TermsAndConditionsReference;
+export default TermsAndConditions;
