@@ -69,7 +69,11 @@ export default function DropDownField({
       <p className="text-sm">Click to select an option</p>
       <div className="flex h-8 w-fit cursor-pointer flex-wrap justify-start rounded border border-grey-400 px-2 py-0 font-semibold text-blue-500 shadow">
         <button className="" onClick={(e) => setIsExpanded(!isExpanded)}>
-          {selected === "" ? "-select-" : selected}
+          {selected === "" ? (
+            <span className="opacity-70">-select-</span>
+          ) : (
+            selected
+          )}
           <DownTriangle size={10} />
         </button>
       </div>

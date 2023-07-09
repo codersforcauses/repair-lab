@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DropDownField from "@/components/field-dropdown";
+import Dropdown from "@/components/dropdown_headless";
 
 export default function Tester() {
   const [selected, setSelected] = useState("");
@@ -45,6 +46,7 @@ export default function Tester() {
           }
         ]}
       />
+      <Dropdown />
       <p>content below</p>
     </main>
   );
