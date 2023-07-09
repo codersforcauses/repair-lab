@@ -7,7 +7,7 @@ import "@/styles/globals.css";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ClerkProvider {...pageProps}>
-        <Component {...pageProps} />
+      <Component {...pageProps} />
     </ClerkProvider>
   );
 }

@@ -3,12 +3,10 @@ import { Inter } from "next/font/google";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Navbar from "@/components/Navbar";
-import SearchBar from "@/components/repair-request/SearchBar";
-import SortBy from "@/components/repair-request/SortBy";
 import Sidebar from "@/components/sidebar/index";
 
-import RepairRequestCard from "../components/repair-request/index";
 import VolunteerCard from "../components/repair-request/volunteer-card";
+
 const inter = Inter({ subsets: ["latin"] });
 
 function getRepairContent() {
@@ -27,23 +25,22 @@ function getRepairContent() {
 export default function Volunteers() {
   return (
     <Sidebar>
-    <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
-      <Navbar />
-      <div className="container">
-        <div className="container mx-auto">
-          <div className="flex justify-end">
+      <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
+        <Navbar />
+        <div className="container">
+          <p className="p-4 text-2xl font-bold text-[#6C727F]">Volunteers</p>
+          <div className="container mx-auto">
+            <div className="flex justify-end"></div>
           </div>
-        </div>
-        <div className="grid gap-4 p-4 lg:grid-cols-5 ">
-          {getRepairContent()}
-          <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
-            <CiCirclePlus color="#d9d9d9" size={100} />
+          <div className="grid gap-4 p-4 lg:grid-cols-5 ">
+            {getRepairContent()}
+            <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
+              <CiCirclePlus color="#d9d9d9" size={100} />
+            </div>
           </div>
+          <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
         </div>
-        <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
-      </div>
-    </main>
+      </main>
     </Sidebar>
   );
 }
-  
