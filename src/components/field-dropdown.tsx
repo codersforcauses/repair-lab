@@ -1,5 +1,7 @@
 import { useState, ChangeEvent } from "react";
 
+// things that might need to be customizable: size of dropdown,
+
 /*
 This is a component for the HTML `<select>' tag
 Will display a dropdown displaying options
@@ -18,7 +20,7 @@ interface Props {
 }
 
 const UpTriangle = ({ size }: { size: number }) => {
-  const borderStyle = "1px solid rgb(209, 213, 219)";
+  const borderStyle = "1px solid rgb(161 182 191)";
   return (
     <div
       style={{
@@ -28,10 +30,27 @@ const UpTriangle = ({ size }: { size: number }) => {
         width: `${size}px`,
         height: `${size}px`,
         transform: "rotate(45deg)",
-        // backgroundColor: "turquoise",
-        backgroundColor: "rgb(229 231 235)",
+        backgroundColor: "rgb(241 250 250)",
         borderLeft: borderStyle,
         borderTop: borderStyle
+      }}
+    ></div>
+  );
+};
+
+const DownTriangle = ({ size }: { size: number }) => {
+  const borderStyle = `${size}px solid transparent`;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: "150px",
+        left: `400px`,
+        width: `${size}px`,
+        height: `${size}px`,
+        borderLeft: borderStyle,
+        borderRight: borderStyle,
+        borderTop: `${size}px solid rgb(41 163 157)`
       }}
     ></div>
   );
@@ -46,16 +65,17 @@ export default function DropDownField({
   const [isExpanded, setIsExpanded] = useState(false);
   // handle function for when a user clicks an option (onClick event)
   return (
-    <div className="select-none px-10 py-10">
-      <button
-        className="BUTTON h-10 w-32 cursor-pointer rounded bg-gray-400 px-2 py-1 font-bold text-black shadow"
-        onClick={(e) => setIsExpanded(!isExpanded)}
-      >
-        {selected === "" ? "Dropdown" : selected}
-        <span className="fas fa-caret-down"></span>
-      </button>
+    <div className="select-none px-20 py-20">
+      <p className="text-sm">Click to select an option</p>
+      <div className="flex h-8 w-fit cursor-pointer flex-wrap justify-start rounded border border-grey-400 px-2 py-0 font-semibold text-blue-500 shadow">
+        <button className="" onClick={(e) => setIsExpanded(!isExpanded)}>
+          {selected === "" ? "-select-" : selected}
+          <DownTriangle size={10} />
+        </button>
+      </div>
+
       {isExpanded && (
-        <ul className="PANEL absolute mt-2 w-40 rounded border border-gray-300 bg-gray-200 py-2 font-medium shadow">
+        <ul className="PANEL border-1 absolute mt-2 flex flex-col rounded border border-grey-300 bg-lightAqua-50 py-2 font-medium shadow">
           <UpTriangle size={10} />
           {options.map((option) => (
             <li
@@ -63,10 +83,12 @@ export default function DropDownField({
                 setSelected(option.text);
                 setIsExpanded(false);
               }}
-              className=" OPTION cursor-pointer px-2 py-2 hover:bg-blue-400 hover:text-white"
+              className=" OPTION cursor-pointer px-2 py-2 hover:bg-darkAqua-500 hover:text-white"
               key={option.id}
             >
-              <div className="ml-5 flex items-center">{option.text}</div>
+              <div className="ml-5 flex w-20 min-w-min flex-wrap items-center">
+                {option.text}
+              </div>
             </li>
           ))}
         </ul>
