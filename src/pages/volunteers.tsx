@@ -3,12 +3,10 @@ import { Inter } from "next/font/google";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Navbar from "@/components/Navbar";
-import SearchBar from "@/components/repair-request/SearchBar";
-import SortBy from "@/components/repair-request/SortBy";
 import Sidebar from "@/components/sidebar/index";
 
-import RepairRequestCard from "../components/repair-request/index";
 import VolunteerCard from "../components/repair-request/volunteer-card";
+
 const inter = Inter({ subsets: ["latin"] });
 
 function getRepairContent() {
