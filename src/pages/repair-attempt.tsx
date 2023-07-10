@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+import Button from "@/components/Button";
 import FieldInput from "@/components/field-input";
-import { RepairAttemptSchema } from "@/schema/repair-attempt";
-import type { RepairAttempt } from "@/schema/repair-attempt";
 import FieldRadio from "@/components/field-radio";
 import FieldTextArea from "@/components/field-text-area";
-import Button from "@/components/Button";
+import type { RepairAttempt } from "@/schema/repair-attempt";
+import { RepairAttemptSchema } from "@/schema/repair-attempt";
 
 export default function RepairAttempt() {
   const { control, handleSubmit } = useForm<RepairAttempt>({
@@ -107,10 +108,16 @@ export default function RepairAttempt() {
           />
         </div>
 
-        {/* Submit */}
-        <Button onClick={handleSubmit(onSubmit)} width="w-1/6 h-9">
-          Submit
-        </Button>
+        <div className={lineStyle}>
+          {/* Submit */}
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            width="w-1/6"
+            position="ml-auto"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </main>
   );
