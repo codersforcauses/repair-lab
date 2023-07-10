@@ -1,6 +1,6 @@
 import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-// import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { HiChevronDown } from "react-icons/hi";
 
 interface Props {
   selected: string;
@@ -21,8 +21,8 @@ export default function DropDown({
   options,
   selected,
   setSelected,
-  width = 56,
-  height = 20,
+  width = 80,
+  height = 10,
   required = false,
   placeholder = "-select-",
   header = ""
@@ -31,11 +31,13 @@ export default function DropDown({
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button
-          className={`flex justify-between w-${width} h-${height} gap-x-1.5 overflow-hidden rounded-md bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-grey-50`}
+          className={classNames(
+            "flex w-96 gap-x-1.5 overflow-hidden rounded-md bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:shadow-grey-300 "
+          )}
         >
           {header !== "" ? (
             required === false ? (
-              <span className="justify center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-grey-700">
+              <span className="justify center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-grey-700 ">
                 {header}
               </span>
             ) : (
@@ -51,10 +53,12 @@ export default function DropDown({
           {selected === "" ? (
             <span className="opacity-70">{placeholder}</span>
           ) : (
-            <p className="truncate text-grey-700">{selected}</p>
+            <span className="truncate text-grey-900">{selected}</span>
           )}
-          <div className="-mr-1 h-5 w-5 text-grey-700">{"\u2304"}</div>
-          {/* <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
+          <HiChevronDown
+            className="ml-auto h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
         </Menu.Button>
       </div>
 
@@ -68,7 +72,7 @@ export default function DropDown({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={`absolute left-0 z-0 mt-2 origin-top-right rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none w-${width}`}
+          className={`absolute left-0 z-10 mt-2 origin-top-right rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none `}
         >
           <div className="py-1">
             {options.map((option) => (
