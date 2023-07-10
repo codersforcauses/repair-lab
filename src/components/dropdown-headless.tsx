@@ -37,11 +37,11 @@ export default function DropDown({
             required === false ? (
               <span className="justify center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-grey-700">
                 {header}
-                
               </span>
             ) : (
               <span className="justify center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-grey-700">
-                {header}<div className="text-red-500">*</div>
+                {header}
+                <div className="text-red-500">*</div>
               </span>
             )
           ) : (
@@ -49,7 +49,7 @@ export default function DropDown({
           )}
 
           {selected === "" ? (
-            <span className="opacity-70">Item Type</span>
+            <span className="opacity-70">{placeholder}</span>
           ) : (
             <p className="truncate text-grey-700">{selected}</p>
           )}
