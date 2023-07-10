@@ -7,10 +7,12 @@ type Props = {
   radius?: string;
   width?: string;
   textColor?: string;
+  textSize?: string;
+  hover?: string;
   position?: string;
 };
 
-const Button = ({
+export default function Button({
   color = "bg-primary-600",
   border = "border-1",
   children,
@@ -19,16 +21,17 @@ const Button = ({
   radius = "rounded-lg",
   width = "w-full",
   textColor = "text-white",
+  textSize = "text-lg",
+  hover = "bg-primary-800",
   position = "mx-auto"
-}: Props) => {
+}: Props) {
+  hover = "hover:" + hover;
   return (
     <button
       onClick={onClick}
-      className={`${color} ${border} ${radius} ${height} ${width} ${textColor} ${position}`}
+      className={`${color} ${border} ${radius} ${height} ${width} ${textColor} ${textSize} ${hover} ${position}`}
     >
       {children}
     </button>
   );
-};
-
-export default Button;
+}
