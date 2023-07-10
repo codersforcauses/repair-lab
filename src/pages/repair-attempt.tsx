@@ -27,7 +27,7 @@ export default function RepairAttempt() {
   });
 
   const onSubmit: SubmitHandler<RepairAttempt> = async (data) => {
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     const response = await fetch(`/api/repair-attempt`, {
       method: "PATCH",
       headers: {

@@ -49,9 +49,8 @@ const updateRepairRequest = async (
         res.statusMessage = "Repair attempt not found";
         return res.status(404).end();
       }
-      return res.status(400).send("Client Error");
+      return res.status(400).json({ message: "Client Error" });
     }
-    console.log(req.body, error);
     return res.status(500).json({ message: { error } });
   }
 };
