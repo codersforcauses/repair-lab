@@ -1,11 +1,10 @@
+// Terms and Conditions Pop-up
+
 import { Fragment, useState } from "react";
-import { Inter } from "next/font/google";
 import { Dialog, Transition } from "@headlessui/react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-import Button from "@/components/button";
-
-const inter = Inter({ subsets: ["latin"] });
+import Button from "@/components/Button";
 
 type FormValues = {
   tncAccepted: boolean;
@@ -22,7 +21,7 @@ const TermsAndConditions = () => {
     }
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (dataValues) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const response = await fetch(`/api/repair-request`, {
       method: "POST",
       headers: {
@@ -33,23 +32,48 @@ const TermsAndConditions = () => {
   };
 
   const [showPopup, setShowPopup] = useState(false);
-  const handleshowPopupChange = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
   };
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center">
-        <button
-          type="button"
-          onClick={handleshowPopupChange}
-          className="text-darkAqua-400"
-        >
-          disclaimer.
-        </button>
+      <div className="static flex justify-center">
+          <label htmlFor="tncAccepted">
+            <div className="relative h-6 justify-center">
+              <Controller
+                control={control}
+                name="tncAccepted"
+                rules={{
+                  required: "*Please refer to the terms and conditions."
+                }}
+                render={({ field: { value, onChange } }) => (
+                  <input
+                    className={`${
+                      errors.tncAccepted &&
+                      "border-red-500 focus:border-red-500 focus:ring-red-500"
+                    }`}
+                    type="checkbox"
+                    checked={value}
+                    onChange={(e) => {
+                      onChange(e.target.checked);
+                    }}
+                  />
+                )}
+              />
+
+              <span className="pl-3">I have read and accept the</span>
+              <button
+                type="button"
+                onClick={handleshowPopupChange}
+                className="text-darkAqua-400 pl-1.5 hover:text-darkAqua-200"
+              >
+                house rules
+              </button>
+              <span>.</span>
+           
+            </div>
+          </label>
       </div>
 
       <Transition appear show={showPopup} as={Fragment}>
@@ -63,7 +87,7 @@ const TermsAndConditions = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black bg-opacity-80" />
           </Transition.Child>
 
           <div className="fixed inset-0 h-auto overflow-y-auto">
@@ -164,7 +188,7 @@ const TermsAndConditions = () => {
                     </p>
                   </div>
 
-                  <div className="mt-10 flex justify-center">
+                  <div className="mt-8 flex justify-center">
                     <Button onClick={handleshowPopupChange}>Close</Button>
                   </div>
                 </Dialog.Panel>
@@ -173,6 +197,7 @@ const TermsAndConditions = () => {
           </div>
         </Dialog>
       </Transition>
+
     </>
   );
 };
