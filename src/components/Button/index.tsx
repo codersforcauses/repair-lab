@@ -12,7 +12,7 @@ type Props = {
   position?: string;
 };
 
-const Button = ({
+export default function Button({
   color = "bg-primary-600",
   border = "border-1",
   children,
@@ -24,7 +24,7 @@ const Button = ({
   textSize = "text-lg",
   hover = "bg-primary-800",
   position = "mx-auto"
-}: Props) => {
+}: Props) {
   hover = "hover:" + hover;
   return (
     <button
@@ -34,6 +34,4 @@ const Button = ({
       {children}
     </button>
   );
-};
-
-export default Button;
+}
