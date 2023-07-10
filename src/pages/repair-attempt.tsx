@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import type { RepairAttempt } from "@/schema/repair-attempt";
+import type { RepairAttempt } from "@/types";
 import { RepairAttemptSchema } from "@/schema/repair-attempt";
 import FieldInput from "@/components/field-input";
 import FieldRadio from "@/components/field-radio";
@@ -22,12 +22,24 @@ export default function RepairAttempt() {
       isRepaired: false,
       isSparePartsNeeded: false,
       spareParts: "",
-      comment: ""
+      repairComment: ""
     }
   });
 
-  const onSubmit: SubmitHandler<RepairAttempt> = (data) => {
+  const onSubmit: SubmitHandler<RepairAttempt> = async (data) => {
     console.log(JSON.stringify(data));
+    const response = await fetch(`/api/repair-attempt`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (response.ok) {
+      alert("Data submitted");
+    } else {
+      alert(`Error! ${response.statusText}`);
+    }
   };
 
   const lineStyle = "mb-4 flex items-start gap-8";
@@ -80,11 +92,12 @@ export default function RepairAttempt() {
             control={control}
             rules={{ required: true }}
           />
-          <FieldInput
+          <FieldRadio
             name="isRepaired"
-            label="Repaired?"
             control={control}
+            label="Repaired?"
             rules={{ required: true }}
+            placeholder="Yes/No"
           />
         </div>
 
@@ -107,7 +120,7 @@ export default function RepairAttempt() {
         {/* Job Description */}
         <div className={lineStyle}>
           <FieldTextArea
-            name="comment"
+            name="repairComment"
             label="Job Description"
             control={control}
             rules={{ required: true }}

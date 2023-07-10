@@ -7,7 +7,7 @@ const update = async (
   hoursWorked: number,
   itemStatus: ItemStatus,
   spareParts: string | undefined,
-  comment: string
+  repairComment: string
 ) => {
   const repairAttempt = await prisma.repairRequest.update({
     where: { id: id },
@@ -16,7 +16,7 @@ const update = async (
       hoursWorked,
       itemStatus,
       spareParts,
-      comment
+      repairComment
     }
   });
   return repairAttempt;

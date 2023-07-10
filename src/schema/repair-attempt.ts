@@ -30,9 +30,7 @@ export const RepairAttemptSchema = z.object({
   isRepaired: z.preprocess(preprocessBooleanInput, z.boolean()),
   isSparePartsNeeded: z.preprocess(preprocessBooleanInput, z.boolean()),
   spareParts: z.string().optional(),
-  comment: z
+  repairComment: z
     .string()
     .min(5, { message: "Job description must be at least 5 characters long." })
 });
-
-export type RepairAttempt = z.infer<typeof RepairAttemptSchema>;
