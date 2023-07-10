@@ -39,41 +39,40 @@ const TermsAndConditions = () => {
   return (
     <>
       <div className="static flex justify-center">
-          <label htmlFor="tncAccepted">
-            <div className="relative h-6 justify-center">
-              <Controller
-                control={control}
-                name="tncAccepted"
-                rules={{
-                  required: "*Please refer to the terms and conditions."
-                }}
-                render={({ field: { value, onChange } }) => (
-                  <input
-                    className={`${
-                      errors.tncAccepted &&
-                      "border-red-500 focus:border-red-500 focus:ring-red-500"
-                    }`}
-                    type="checkbox"
-                    checked={value}
-                    onChange={(e) => {
-                      onChange(e.target.checked);
-                    }}
-                  />
-                )}
-              />
+        <label htmlFor="tncAccepted">
+          <div className="relative h-6 justify-center">
+            <Controller
+              control={control}
+              name="tncAccepted"
+              rules={{
+                required: "*Please refer to the terms and conditions."
+              }}
+              render={({ field: { value, onChange } }) => (
+                <input
+                  className={`${
+                    errors.tncAccepted &&
+                    "border-red-500 focus:border-red-500 focus:ring-red-500"
+                  }`}
+                  type="checkbox"
+                  checked={value}
+                  onChange={(e) => {
+                    onChange(e.target.checked);
+                  }}
+                />
+              )}
+            />
 
-              <span className="pl-3">I have read and accept the</span>
-              <button
-                type="button"
-                onClick={handleshowPopupChange}
-                className="text-darkAqua-400 pl-1.5 hover:text-darkAqua-200"
-              >
-                house rules
-              </button>
-              <span>.</span>
-           
-            </div>
-          </label>
+            <span className="pl-3">I have read and accept the</span>
+            <button
+              type="button"
+              onClick={handleshowPopupChange}
+              className="pl-1.5 text-darkAqua-400 hover:text-darkAqua-200"
+            >
+              house rules
+            </button>
+            <span>.</span>
+          </div>
+        </label>
       </div>
 
       <Transition appear show={showPopup} as={Fragment}>
@@ -197,7 +196,6 @@ const TermsAndConditions = () => {
           </div>
         </Dialog>
       </Transition>
-
     </>
   );
 };
