@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Prisma } from "@prisma/client";
 
 import { RepairAttemptSchema } from "@/schema/repair-attempt";
-import RepairAttemptModel from "@/models/repair-attempt.model";
+import RepairAttemptService from "@/services/repair-attempt";
 
 export default async function handler(
   req: NextApiRequest,
@@ -34,7 +34,7 @@ const updateRepairRequest = async (
       spareParts,
       repairComment
     } = parseResult.data;
-    const repairAttempt = await RepairAttemptModel.update(
+    const repairAttempt = await RepairAttemptService.update(
       id,
       itemMaterial,
       hoursWorked,

@@ -22,8 +22,8 @@ const update = async (
   return repairAttempt;
 };
 
-const RepairAttemptModel = {
+const RepairAttemptService = {
   update
 };
 
-export default RepairAttemptModel;
+export default RepairAttemptService;
