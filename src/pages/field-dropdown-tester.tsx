@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DropDownField from "@/components/field-dropdown";
-import Dropdown from "@/components/dropdown_headless";
+import Dropdown from "@/components/dropdown-headless";
 
 export default function Tester() {
   const [selected, setSelected] = useState("");
@@ -46,8 +46,48 @@ export default function Tester() {
           }
         ]}
       />
-      <Dropdown />
+      <div className="flex justify-center">
+        <Dropdown 
+        selected={selected}
+        setSelected={setSelected}
+        // width={80}
+        options={[
+          {
+            id: 0,
+            text: "Option1"
+          },
+          {
+            id: 1,
+            text: "Option2"
+          },
+          {
+            id: 2,
+            text: "Option3"
+          },
+          {
+            id: 3,
+            text: "LongerOption4"
+          },
+          {
+            id: 4,
+            text: "EvenLongerOption5"
+          },
+          {
+            id: 5,
+            text: "Option6"
+          },
+          {
+            id: 6,
+            text: "Option7"
+          },
+          {
+            id: 7,
+            text: "A really really long option for the purpose of testing"
+          }
+        ]}/>
+      </div>
       <p>content below</p>
+      <p className="flex justify-center">more content below</p>
     </main>
   );
 }

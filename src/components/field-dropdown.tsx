@@ -79,7 +79,7 @@ export default function DropDownField({
       </div>
 
       {isExpanded && (
-        <ul className="PANEL border-1 absolute mt-2 flex flex-col rounded border border-grey-300 bg-lightAqua-50 py-2 font-medium shadow">
+        <ul className="border-1 absolute mt-2 flex flex-col rounded border border-grey-300 bg-lightAqua-50 py-2 font-medium shadow">
           <UpTriangle size={10} />
           {options.map((option) => (
             <li
@@ -87,7 +87,7 @@ export default function DropDownField({
                 setSelected(option.text);
                 setIsExpanded(false);
               }}
-              className=" OPTION cursor-pointer px-2 py-2 hover:bg-darkAqua-500 hover:text-white"
+              className=" cursor-pointer px-2 py-2 hover:bg-darkAqua-500 hover:text-white"
               key={option.id}
             >
               <div className="ml-5 flex w-20 min-w-min flex-wrap items-center">
