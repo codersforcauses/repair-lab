@@ -23,9 +23,7 @@ const updateRepairRequest = async (
   res: NextApiResponse
 ) => {
   const response = RepairAttemptSchema.safeParse(req.body);
-  if (!response.success) {
-    return res.status(400).json(response.error);
-  }
+  if (!response.success) return res.status(400).json(response.error);
 
   try {
     const { id, itemMaterial, hoursWorked, isRepaired, spareParts, comment } =

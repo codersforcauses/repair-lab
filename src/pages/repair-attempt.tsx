@@ -6,6 +6,9 @@ import type { RepairAttempt } from "@/schema/repair-attempt";
 import FieldRadio from "@/components/field-radio";
 import FieldTextArea from "@/components/field-text-area";
 import Button from "@/components/Button";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttempt() {
   const { control, handleSubmit } = useForm<RepairAttempt>({
@@ -27,13 +30,17 @@ export default function RepairAttempt() {
     console.log(JSON.stringify(data));
   };
 
-  const lineStyle = "mb-2 flex items-start gap-6";
+  const lineStyle = "mb-4 flex items-start gap-8";
 
   return (
-    <main className="box">
-      <h1 className="heading">General Repair Attempt</h1>
+    <main
+      className={`bg-whiteshadow-md m-4 flex min-h-screen flex-col items-center gap-4 rounded-lg border-2 border-teal-300 ${inter.className}`}
+    >
+      <h1 className="w-full rounded-t-lg bg-[#d9d9d9] py-3 pl-8 text-3xl font-semibold leading-normal text-grey-950">
+        General Repair Attempt
+      </h1>
 
-      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="p-5" onSubmit={handleSubmit(onSubmit)}>
         {/* ID, Item */}
         <div className={lineStyle}>
           <FieldInput
@@ -108,9 +115,16 @@ export default function RepairAttempt() {
         </div>
 
         {/* Submit */}
-        <Button onClick={handleSubmit(onSubmit)} width="w-1/6 h-9">
-          Submit
-        </Button>
+        <div className={`mt-4 ${lineStyle}`}>
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            width="w-1/6"
+            height="h-9"
+            textSize="text-base"
+          >
+            Submit
+          </Button>
+        </div>
       </form>
     </main>
   );
