@@ -8,11 +8,7 @@ import FieldTextArea from "@/components/field-text-area";
 import Button from "@/components/Button";
 
 export default function RepairAttempt() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<RepairAttempt>({
+  const { control, handleSubmit } = useForm<RepairAttempt>({
     resolver: zodResolver(RepairAttemptSchema),
     defaultValues: {
       id: "",
@@ -34,12 +30,10 @@ export default function RepairAttempt() {
   const lineStyle = "mb-2 flex items-start gap-6";
 
   return (
-    <main className="mx-3">
-      <h1 className="mb-2 block text-xl text-red-500">
-        General Repair Attempt
-      </h1>
+    <main className="box">
+      <h1 className="heading">General Repair Attempt</h1>
 
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
         {/* ID, Item */}
         <div className={lineStyle}>
           <FieldInput
@@ -114,7 +108,9 @@ export default function RepairAttempt() {
         </div>
 
         {/* Submit */}
-        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+        <Button onClick={handleSubmit(onSubmit)} width="w-1/6 h-9">
+          Submit
+        </Button>
       </form>
     </main>
   );
