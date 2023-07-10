@@ -7,6 +7,8 @@ type Props = {
   radius?: string;
   width?: string;
   textColor?: string;
+  textSize?: string;
+  hover?: string;
   position?: string;
 };
 
@@ -19,12 +21,15 @@ const Button = ({
   radius = "rounded-lg",
   width = "w-full",
   textColor = "text-white",
+  textSize = "text-lg",
+  hover = "bg-primary-800",
   position = "mx-auto"
 }: Props) => {
+  hover = "hover:" + hover;
   return (
     <button
       onClick={onClick}
-      className={`${color} ${border} ${radius} ${height} ${width} ${textColor} ${position}`}
+      className={`${color} ${border} ${radius} ${height} ${width} ${textColor} ${textSize} ${hover} ${position}`}
     >
       {children}
     </button>
