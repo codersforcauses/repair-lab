@@ -22,10 +22,9 @@ export default function Button({
   width = "w-full",
   textColor = "text-white",
   textSize = "text-lg",
-  hover = "bg-primary-800",
+  hover = "hover:bg-primary-800",
   position = "mx-auto"
 }: Props) {
-  hover = "hover:" + hover;
   return (
     <button
       onClick={onClick}
