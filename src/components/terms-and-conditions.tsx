@@ -2,35 +2,10 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
 
-type FormValues = {
-  tncAccepted: boolean;
-};
-
 const TermsAndConditions = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormValues>({
-    defaultValues: {
-      tncAccepted: false
-    }
-  });
-
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const response = await fetch(`/api/repair-request`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-  };
-
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
@@ -39,40 +14,15 @@ const TermsAndConditions = () => {
   return (
     <>
       <div className="static flex justify-center">
-        <label htmlFor="tncAccepted">
-          <div className="relative h-6 justify-center">
-            <Controller
-              control={control}
-              name="tncAccepted"
-              rules={{
-                required: "*Please refer to the terms and conditions."
-              }}
-              render={({ field: { value, onChange } }) => (
-                <input
-                  className={`${
-                    errors.tncAccepted &&
-                    "border-red-500 focus:border-red-500 focus:ring-red-500"
-                  }`}
-                  type="checkbox"
-                  checked={value}
-                  onChange={(e) => {
-                    onChange(e.target.checked);
-                  }}
-                />
-              )}
-            />
-
-            <span className="pl-3">I have read and accept the</span>
-            <button
-              type="button"
-              onClick={handleshowPopupChange}
-              className="pl-1.5 text-darkAqua-400 hover:text-darkAqua-200"
-            >
-              house rules
-            </button>
-            <span>.</span>
-          </div>
-        </label>
+        <span className="pl-3">I have read and accept the</span>
+        <button
+          type="button"
+          onClick={handleshowPopupChange}
+          className="pl-1.5 text-darkAqua-400 hover:text-darkAqua-200"
+        >
+          house rules
+        </button>
+        <span>.</span>
       </div>
 
       <Transition appear show={showPopup} as={Fragment}>
