@@ -1,10 +1,15 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import Field_Input from "@/components/field-input";
-import Field_Radio from "@/components/field-radio";
-import Field_Text_Area from "@/components/field-text-area";
+import Field_Input from "@/components/Form Fields/field-input";
+import Field_Radio from "@/components/Form Fields/field-radio";
+import Field_Text_Area from "@/components/Form Fields/field-text-area";
 
+/**
+ * This is a sample form page using React Hook Form for testing purposes
+ * It is based on the General Repairs form
+ * Feel free to dabble around
+ */
 type RepairData = {
   id: string;
   item: string;
@@ -53,6 +58,7 @@ export default function Repair() {
             control={control}
             rules={{ required: "true" }}
             label="ID"
+            icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
           />
           <Field_Input
             name="item"
@@ -114,7 +120,8 @@ export default function Repair() {
           <Field_Text_Area
             name="comments"
             control={control}
-            rules={{ required: false }}
+            rules={{ required: true }}
+            icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
           />
         </div>
         {/* Submit */}
