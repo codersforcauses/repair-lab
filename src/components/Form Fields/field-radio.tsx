@@ -11,6 +11,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   id?: string;
   label?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 /*
@@ -43,6 +44,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
             type="radio"
             value="true"
             id={!id ? `${props.name}-y` : `${id}-y`}
+            onChange={props.onChange}
           />
           Yes
         </label>
@@ -53,6 +55,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
             type="radio"
             value="false"
             id={!id ? `${props.name}-n` : `${id}-n`}
+            onChange={props.onChange}
           />
           No
         </label>

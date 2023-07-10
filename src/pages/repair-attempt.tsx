@@ -2,15 +2,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import type { RepairAttempt } from "@/types";
 import { RepairAttemptSchema } from "@/schema/repair-attempt";
-import FieldInput from "@/components/field-input";
-import FieldRadio from "@/components/field-radio";
-import FieldTextArea from "@/components/field-text-area";
+import FieldInput from "@/components/Form Fields/field-input";
+import FieldRadio from "@/components/Form Fields/field-radio";
+import FieldTextArea from "@/components/Form Fields/field-text-area";
 import Button from "@/components/Button";
 import { Inter } from "next/font/google";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
+const lineStyle = "mb-4 flex flex-row items-start gap-8";
 
 export default function RepairAttempt() {
+  const [display, setdisplay] = useState<string>("hidden");
+
   const { control, handleSubmit } = useForm<RepairAttempt>({
     resolver: zodResolver(RepairAttemptSchema),
     defaultValues: {
@@ -18,9 +22,9 @@ export default function RepairAttempt() {
       item: "",
       itemBrand: "",
       itemMaterial: "",
-      hoursWorked: 1,
-      isRepaired: false,
-      isSparePartsNeeded: false,
+      hoursWorked: undefined,
+      isRepaired: undefined,
+      isSparePartsNeeded: undefined,
       spareParts: "",
       repairComment: ""
     }
@@ -42,17 +46,18 @@ export default function RepairAttempt() {
     }
   };
 
-  const lineStyle = "mb-4 flex items-start gap-8";
-
   return (
     <main
-      className={`bg-whiteshadow-md m-4 flex min-h-screen flex-col items-center gap-4 rounded-lg border-2 border-teal-300 ${inter.className}`}
+      className={`m-4 flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-white shadow-md ${inter.className}`}
     >
       <h1 className="w-full rounded-t-lg bg-[#d9d9d9] py-3 pl-8 text-3xl font-semibold leading-normal text-grey-950">
         General Repair Attempt
       </h1>
 
-      <form className="p-5" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex w-full min-w-[520px] flex-col flex-wrap p-5"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {/* ID, Item */}
         <div className={lineStyle}>
           <FieldInput
@@ -79,6 +84,7 @@ export default function RepairAttempt() {
           <FieldInput
             name="itemMaterial"
             label="Material"
+            placeholder="e.g. Wood, Metal, Plastic"
             control={control}
             rules={{ required: true }}
           />
@@ -89,6 +95,7 @@ export default function RepairAttempt() {
           <FieldInput
             name="hoursWorked"
             label="Time it took"
+            placeholder="Time in hours, e.g. 1.5"
             control={control}
             rules={{ required: true }}
           />
@@ -97,23 +104,31 @@ export default function RepairAttempt() {
             control={control}
             label="Repaired?"
             rules={{ required: true }}
-            placeholder="Yes/No"
           />
         </div>
 
         {/* Spare parts needed?, Part(s) needed */}
         <div className={lineStyle}>
-          <FieldRadio
-            name="isSparePartsNeeded"
-            control={control}
-            label="Spare parts needed?"
-            rules={{ required: true }}
-            placeholder="Yes/No"
-          />
+          <div className="min-w-[200px]">
+            <FieldRadio
+              name="isSparePartsNeeded"
+              control={control}
+              label="Spare parts needed?"
+              onChange={(e) => {
+                e.target.value === "true"
+                  ? setdisplay("")
+                  : setdisplay("hidden");
+                console.log(display);
+              }}
+              rules={{ required: true }}
+            />
+          </div>
           <FieldInput
             name="spareParts"
             label="Parts needed"
+            placeholder="e.g. 2x screws"
             control={control}
+            display={display}
           />
         </div>
 
@@ -122,13 +137,14 @@ export default function RepairAttempt() {
           <FieldTextArea
             name="repairComment"
             label="Job Description"
+            placeholder="Describe the repair job in detail"
             control={control}
             rules={{ required: true }}
           />
         </div>
 
         {/* Submit */}
-        <div className={`mt-4 ${lineStyle}`}>
+        <div className={`mt-5 ${lineStyle}`}>
           <Button
             onClick={handleSubmit(onSubmit)}
             width="w-1/6"

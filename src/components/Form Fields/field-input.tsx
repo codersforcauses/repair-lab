@@ -13,6 +13,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
   placeholder?: string;
   icon?: string;
+  display?: string;
 }
 
 /*
@@ -37,7 +38,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
     ? "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow"
     : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow";
   return (
-    <div className={errorStyle}>
+    <div className={`${errorStyle} ${props.display}`}>
       <Label label={!label ? props.name : label} {...props} />
       <input
         className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
