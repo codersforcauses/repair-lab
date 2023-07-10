@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FieldInput from "@/components/field-input";
-import { RepairAttemptSchema } from "@/schema/repair-attempt";
 import type { RepairAttempt } from "@/schema/repair-attempt";
+import { RepairAttemptSchema } from "@/schema/repair-attempt";
+import FieldInput from "@/components/field-input";
 import FieldRadio from "@/components/field-radio";
 import FieldTextArea from "@/components/field-text-area";
 import Button from "@/components/Button";
