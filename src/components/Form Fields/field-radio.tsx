@@ -30,8 +30,8 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
   const { field, fieldState } = useController(props);
 
   const errorStyle = !fieldState.invalid
-    ? "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow"
-    : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow";
+    ? "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300"
+    : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300";
 
   return (
     <div className={errorStyle}>
