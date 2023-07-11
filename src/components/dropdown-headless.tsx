@@ -87,6 +87,7 @@ export default function DropDown({
                       active ? "bg-darkAqua-400 text-white" : "text-grey-700",
                       "block px-4 py-2 text-sm"
                     )}
+                    key={option.id}
                   >
                     {option.text}
                   </a>
