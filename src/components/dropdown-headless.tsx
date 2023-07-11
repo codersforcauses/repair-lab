@@ -1,6 +1,6 @@
 import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { HiChevronDown } from "react-icons/hi";
+import { HiChevronDown, HiCheck } from "react-icons/hi";
 
 interface Props {
   selected: string;
@@ -88,7 +88,7 @@ export default function DropDown({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={`absolute left-0 z-10 mt-2 min-w-min origin-top rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
+          className={`absolute left-0 z-10 mt-2 min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
         >
           <div className="py-1">
             {options.map((option) => (
@@ -101,10 +101,22 @@ export default function DropDown({
                     }}
                     className={classNames(
                       active ? "bg-darkAqua-400 text-white" : "text-grey-800",
-                      "block px-4 py-2 text-sm"
+                      "block pr-4 pl-2 py-2 text-sm"
                     )}
                   >
-                    {option.text}
+                    {option.text === selected ? (
+                      <span className="relative left-0 flex ">
+                        <HiCheck
+                          className="h-5 w-5 text-darkAqua-600"
+                          aria-hidden="true"
+                        />
+                        <span className="pl-2">
+                          {option.text}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="pl-7">{option.text}</span>
+                    )}
                   </a>
                 )}
               </Menu.Item>
