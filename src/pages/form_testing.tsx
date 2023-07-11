@@ -23,7 +23,6 @@ type RepairData = {
 export default function Repair() {
   const [selected, setSelected] = useState("");
   const { control, handleSubmit } = useForm<RepairData>({
-    
     defaultValues: {
       id: "",
       item: "",
