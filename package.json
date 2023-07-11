@@ -18,7 +18,7 @@
     "format:check": "prettier -c .",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "test": "npm run docker:up && prisma db push && vitest run",
+    "test": "npm run docker:up && prisma db push && vitest --no-threads run",
     "coverage": "prisma migrate deploy && vitest run --coverage",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
@@ -39,7 +39,7 @@
     "react-hook-form": "^7.44.3",
     "react-icons": "^4.9.0",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.14.1"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",

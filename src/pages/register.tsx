@@ -1,31 +1,34 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSignUp } from "@clerk/nextjs";
+import { useForm } from "react-hook-form";
 
 import CustomButton from "../components/custombutton-large";
 
+interface RegisterFormValues {
+  emailAddress: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export default function Register() {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
   const router = useRouter();
 
-  const handleEmailAddressChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setEmailAddress(event.target.value);
-  };
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm<RegisterFormValues>();
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
+  const onSubmit = async (data: RegisterFormValues) => {
+    const { emailAddress, password } = data;
 
-  // Sign up process
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     if (!isLoaded) {
       return;
     }
@@ -36,7 +39,9 @@ export default function Register() {
         password
       });
 
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code"
+      });
 
       // change the UI to our pending section.
       setPendingVerification(true);
@@ -45,9 +50,9 @@ export default function Register() {
       console.log(JSON.stringify(err, null, 2));
     }
 
+    console.log(data);
     // Reset the form
-    setEmailAddress("");
-    setPassword("");
+    reset();
   };
 
   // This verifies the user using email code that is delivered.
@@ -88,47 +93,45 @@ export default function Register() {
           />
         </div>
         {!pendingVerification && (
-          <div>
+          <>
             <div className="flex items-center justify-center">
               <h1 className="mb-4 text-2xl font-bold">Sign up</h1>
             </div>
             <CustomButton
               onClick={() => {
-                // Handle Google login here
+                // TODO: Handle Google login here
                 console.log("Continue with Google...");
               }}
               text="Continue with Google"
             />
             <div className="mb-4 flex items-center">
-              <div
-                className="border-t-2 border-dashed"
-                style={{ borderColor: "#098D85", flex: 1 }}
-              ></div>
-              <div style={{ color: "#098D85" }} className="mx-4">
-                or
-              </div>
-              <div
-                className="border-t-2 border-dashed"
-                style={{ borderColor: "#098D85", flex: 1 }}
-              ></div>
+              <div className="flex-1 border-t-2 border-dashed border-primary-600"></div>
+              <div className="mx-4 text-primary-600">or</div>
+              <div className="flex-1 border-t-2 border-dashed border-primary-600"></div>
             </div>
-
-            <form onSubmit={handleSubmit}>
+            {/* TODO: Add form logic */}
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="relative mb-4">
                 <label
-                  htmlFor="emailAddress"
+                  htmlFor="username"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
-                  <span style={{ color: "red" }}>*</span> Email Address
+                  <span className="text-red-500">*</span> Username
                 </label>
                 <input
-                  id="emailAddress"
+                  id="username"
                   type="text"
-                  value={emailAddress}
-                  onChange={handleEmailAddressChange}
+                  {...register("emailAddress", { required: true })}
                   placeholder="Email Address"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                  className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
+                    errors.emailAddress ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.emailAddress && (
+                  <span className="text-red-500">
+                    Email address is required
+                  </span>
+                )}
               </div>
 
               <div className="relative mb-4">
@@ -136,16 +139,20 @@ export default function Register() {
                   htmlFor="password"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
-                  <span style={{ color: "red" }}>*</span> Password
+                  <span className="text-red-500">*</span> Password
                 </label>
                 <input
                   id="password"
                   type="password"
-                  value={password}
-                  onChange={handlePasswordChange}
+                  {...register("password", { required: true })}
                   placeholder="Password"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                  className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
+                    errors.password ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.password && (
+                  <span className="text-red-500">Password is required</span>
+                )}
               </div>
 
               <div className="relative mb-4">
@@ -153,16 +160,30 @@ export default function Register() {
                   htmlFor="confirmPassword"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
-                  <span style={{ color: "red" }}>*</span> Confirm Password
+                  <span className="text-red-500">*</span> Confirm Password
                 </label>
                 <input
                   id="confirmPassword"
                   type="password"
-                  placeholder="Password"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                  {...register("confirmPassword", { required: true })}
+                  placeholder="Confirm Password"
+                  className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
+                    errors.confirmPassword ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.confirmPassword && (
+                  <span className="text-red-500">
+                    Confirm Password is required
+                  </span>
+                )}
               </div>
-
+              <div className="m-4 text-center">
+                <Link href="/login">
+                  <span className="text-xs text-gray-400 underline">
+                    Already have an account? Sign in
+                  </span>
+                </Link>
+              </div>
               <div className="w-full">
                 <CustomButton
                   onClick={() => {
@@ -172,7 +193,7 @@ export default function Register() {
                 ></CustomButton>
               </div>
             </form>
-          </div>
+          </>
         )}
         {pendingVerification && (
           <div>
