@@ -9,13 +9,29 @@ interface Props {
   width?: number;
   height?: number;
   required?: boolean;
-  placeholder: string;
+  placeholder?: string;
   header?: string;
 }
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
+
+/*
+This is a component for a dropdown menu
+Will display a dropdown displaying options inputted
+Input:
+  selected: string; // useState variable to hold last clicked on option
+  setSelected: (value: string) => void; // function to update useState variable
+  options: { id: number; text: string }[]; // array of objects with option text and id number
+  width?: number; // width of button, doesnt work
+  height?: number; // height of button, doesnt work
+  required?: boolean; // whether field is required or not
+  placeholder: string; // placeholder string before any option is selected
+  header?: string; // text on border of button
+Output:
+  A dropdown that is compatible w/ React-hook-forms 
+*/
 
 export default function DropDown({
   options,
@@ -28,20 +44,20 @@ export default function DropDown({
   header = ""
 }: Props) {
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left pb-4">
       <div>
         <Menu.Button
           className={classNames(
-            "flex w-96 gap-x-1.5 overflow-hidden rounded-md bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:shadow-grey-300 "
+            `flex justify-between w-64 h-12 gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
           )}
         >
           {header !== "" ? (
             required === false ? (
-              <span className="justify center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-grey-700 ">
+              <span className="justify-center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-black ">
                 {header}
               </span>
             ) : (
-              <span className="justify center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-grey-700">
+              <span className="justify-center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-black">
                 {header}
                 <div className="text-red-500">*</div>
               </span>
@@ -51,12 +67,12 @@ export default function DropDown({
           )}
 
           {selected === "" ? (
-            <span className="opacity-70">{placeholder}</span>
+            <span className="text-gray-500">{placeholder}</span>
           ) : (
             <span className="truncate text-grey-900">{selected}</span>
           )}
           <HiChevronDown
-            className="ml-auto h-5 w-5 text-gray-400"
+            className="ml-auto h-6 w-5 text-grey-600"
             aria-hidden="true"
           />
         </Menu.Button>
@@ -72,7 +88,7 @@ export default function DropDown({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={`absolute left-0 z-10 mt-2 origin-top-right rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none `}
+          className={`absolute left-0 z-10 mt-2 origin-top rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none `}
         >
           <div className="py-1">
             {options.map((option) => (
@@ -84,7 +100,7 @@ export default function DropDown({
                       setSelected(option.text);
                     }}
                     className={classNames(
-                      active ? "bg-darkAqua-400 text-white" : "text-grey-700",
+                      active ? "bg-darkAqua-400 text-white" : "text-grey-800",
                       "block px-4 py-2 text-sm"
                     )}
                   >

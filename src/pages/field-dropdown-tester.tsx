@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Dropdown from "@/components/dropdown-headless";
+import Field_Radio from "@/components/field-radio";
 
 export default function Tester() {
   const [selected, setSelected] = useState("");
@@ -50,6 +51,7 @@ export default function Tester() {
             }
           ]}
         />
+        {/* <Field_Radio label="a label"  /> */}
       </div>
       <p>content below</p>
       <p className="flex justify-center">more content below</p>
