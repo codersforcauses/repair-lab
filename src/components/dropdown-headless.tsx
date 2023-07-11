@@ -44,20 +44,20 @@ export default function DropDown({
   header = ""
 }: Props) {
   return (
-    <Menu as="div" className="relative inline-block text-left pb-4">
+    <Menu as="div" className="relative inline-block pb-4 text-left">
       <div>
         <Menu.Button
           className={classNames(
-            `flex justify-between w-64 h-12 gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
+            `flex h-12 w-64 justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
           )}
         >
           {header !== "" ? (
             required === false ? (
-              <span className="justify-center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-black ">
+              <span className="absolute -top-3 flex items-center justify-center bg-white px-2 py-1 text-xs text-black ">
                 {header}
               </span>
             ) : (
-              <span className="justify-center absolute -top-3 flex items-center bg-white px-2 py-1 text-xs text-black">
+              <span className="absolute -top-3 flex items-center justify-center bg-white px-2 py-1 text-xs text-black">
                 {header}
                 <div className="text-red-500">*</div>
               </span>
@@ -88,7 +88,7 @@ export default function DropDown({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={`absolute left-0 z-10 mt-2 origin-top rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none `}
+          className={`absolute left-0 z-10 mt-2 min-w-min origin-top rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
         >
           <div className="py-1">
             {options.map((option) => (
