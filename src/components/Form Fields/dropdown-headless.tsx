@@ -101,18 +101,19 @@ export default function DropDown({
                     }}
                     className={classNames(
                       active ? "bg-darkAqua-400 text-white" : "text-grey-800",
-                      "block pr-4 pl-2 py-2 text-sm"
+                      "block py-2 pl-2 pr-4 text-sm"
                     )}
                   >
                     {option.text === selected ? (
                       <span className="relative left-0 flex ">
                         <HiCheck
-                          className="h-5 w-5 text-darkAqua-600"
+                          className={classNames(
+                            "h-5 w-5",
+                            active ? "text-white" : "text-darkAqua-600"
+                          )}
                           aria-hidden="true"
                         />
-                        <span className="pl-2">
-                          {option.text}
-                        </span>
+                        <span className="pl-2">{option.text}</span>
                       </span>
                     ) : (
                       <span className="pl-7">{option.text}</span>
