@@ -1,4 +1,5 @@
-import { MenuItem, Select } from "@material-ui/core"; // To be replaced by i36 dropdown component
+import { useRouter } from "next/router";
+import { MenuItem, Select } from "@material-ui/core"; // To be replaced by i27 select component
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "../components/Button/index";
@@ -9,12 +10,10 @@ type FormData = {
   dateTime: string;
   eventStatus: string;
   assignedVolunteers: string[];
-  sparePartsNeeded: boolean;
-  partNeeded?: string;
-  eventSummary: string;
 };
 export default function EventForm() {
   const { handleSubmit, control } = useForm<FormData>();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const response = await fetch(`/api/event`, {
@@ -28,10 +27,7 @@ export default function EventForm() {
         location: data.location,
         dateTime: data.dateTime,
         eventStatus: data.eventStatus,
-        assignedVolunteers: data.assignedVolunteers,
-        sparePartsNeeded: data.sparePartsNeeded,
-        partNeeded: data.partNeeded,
-        eventSummary: data.eventSummary
+        assignedVolunteers: data.assignedVolunteers
       })
     });
 
@@ -44,8 +40,21 @@ export default function EventForm() {
 
   return (
     <div>
-      <div className="mb-5 bg-slate-300 px-3 py-4">
-        <h1 className="text-xl font-bold">Create New Event</h1>
+      <div className="mb-2 grid grid-cols-2">
+        <div className="mb-8 bg-lightAqua-300 px-6 py-4">
+          <h1 className="text-xl font-bold">Create New Event</h1>
+        </div>
+        <div className="mb-8 bg-lightAqua-300 px-6 py-4 text-right">
+          <Button
+            color="bg-lightAqua-300"
+            textColor="text-black"
+            height="h-8"
+            width="w-8"
+            onClick={() => router.push("./")}
+          >
+            X
+          </Button>
+        </div>
       </div>
       <div className="container mx-auto px-5">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,7 +63,7 @@ export default function EventForm() {
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <div className="relative mb-4">
+              <div className="relative mb-6">
                 <label
                   htmlFor="eventName"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
@@ -65,13 +74,13 @@ export default function EventForm() {
                   id="eventName"
                   type="text"
                   {...field}
-                  placeholder="Repair event"
+                  placeholder="General repairs, fashion repairs, etc."
                   className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
                 />
               </div>
             )}
           />
-          <div className="mb-4 grid grid-cols-2 gap-4">
+          <div className="mb-6 grid grid-cols-2 gap-4">
             <div>
               <Controller
                 name="location"
@@ -89,7 +98,7 @@ export default function EventForm() {
                       id="location"
                       type="text"
                       {...field}
-                      placeholder="Location"
+                      placeholder="UWA, education centre, etc."
                       className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
                     />
                   </div>
@@ -125,14 +134,14 @@ export default function EventForm() {
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <div className="relative mb-4">
+              <div className="relative mb-6">
                 <label
                   htmlFor="eventStatus"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
                   Event Status <span className="text-red-500">*</span>
                 </label>
-                {/* The label overlaps the border of the select component - to be fixed after importing the i36 dropdown component. */}
+                {/* The label overlaps the border of the select component - to be fixed after importing the i27 select component. */}
                 <Select
                   {...field}
                   id="eventStatus"
@@ -150,14 +159,14 @@ export default function EventForm() {
             control={control}
             defaultValue={[]}
             render={({ field }) => (
-              <div className="relative mb-4">
+              <div className="relative mb-6">
                 <label
                   htmlFor="assignedVolunteers"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
                   Volunteer(s) <span className="text-red-500">*</span>
                 </label>
-                {/* The label overlaps the border of the select component - to be fixed after importing the i36 dropdown component. */}
+                {/* The label overlaps the border of the select component - to be fixed after importing the i27 select component. */}
                 <Select
                   {...field}
                   id="assignedVolunteers"
@@ -172,91 +181,9 @@ export default function EventForm() {
               </div>
             )}
           />
-          <div className="mb-3 grid grid-cols-2 gap-4">
-            <div>
-              <Controller
-                name="sparePartsNeeded"
-                control={control}
-                render={({ field }) => (
-                  <div className="relative mb-2">
-                    <label
-                      htmlFor="sparePartsNeeded"
-                      className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                    >
-                      Spare parts needed?{" "}
-                      <span className="text-red-500">*</span>
-                    </label>
-                    {/* The label overlaps the border of the select component - to be fixed after importing the i36 dropdown component. */}
-                    <Select
-                      {...field}
-                      id="sparePartsNeeded"
-                      className="w-full rounded-md border border-gray-300 pb-1 pl-3 pr-2 pt-1 focus:border-blue-500 focus:outline-none"
-                    >
-                      <MenuItem value="Y">Y</MenuItem>
-                      <MenuItem value="N">N</MenuItem>
-                    </Select>
-                  </div>
-                )}
-              />
-            </div>
-            <div>
-              <Controller
-                name="partNeeded"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <div className="relative mb-2">
-                    <label
-                      htmlFor="partNeeded"
-                      className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                    >
-                      Part needed
-                    </label>
-                    <input
-                      id="partNeeded"
-                      type="text"
-                      {...field}
-                      placeholder="Part"
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
-                    />
-                  </div>
-                )}
-              />
-            </div>
-          </div>
-          <Controller
-            name="eventSummary"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <div className="relative mb-4">
-                <label
-                  htmlFor="eventSummary"
-                  className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                >
-                  Event Summary <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="eventSummary"
-                  type="text"
-                  {...field}
-                  placeholder="......"
-                  className="h-20 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-            )}
-          />
           <div className="text-right">
-            <Button
-              type="submit"
-              height="h-8"
-              width="w-1/6"
-              color="bg-primary-600"
-              textColor="text-white"
-              radius="rounded-md"
-              className="px-4 py-2"
-            >
-              Submit
+            <Button height="h-8" width="w-1/5" radius="rounded-md">
+              Save Event
             </Button>
           </div>
         </form>
