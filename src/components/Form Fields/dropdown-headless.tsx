@@ -1,6 +1,8 @@
-import { useState, Fragment } from "react";
+import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { HiChevronDown, HiCheck } from "react-icons/hi";
+import { HiCheck, HiChevronDown } from "react-icons/hi";
+
+import Label from "@/components/Form Fields/box-label";
 
 interface Props {
   selected: string;
@@ -41,30 +43,18 @@ export default function DropDown({
   height = 10,
   required = false,
   placeholder = "-select-",
-  header = ""
+  header = "",
+  ...props
 }: Props) {
   return (
     <Menu as="div" className="relative inline-block pb-4 text-left">
       <div>
         <Menu.Button
           className={classNames(
-            `flex h-12 w-64 justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
+            `flex h-10 w-64 justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
           )}
         >
-          {header !== "" ? (
-            required === false ? (
-              <span className="absolute -top-3 flex items-center justify-center bg-white px-2 py-1 text-xs text-black ">
-                {header}
-              </span>
-            ) : (
-              <span className="absolute -top-3 flex items-center justify-center bg-white px-2 py-1 text-xs text-black">
-                {header}
-                <div className="text-red-500">*</div>
-              </span>
-            )
-          ) : (
-            ""
-          )}
+          <Label label={!header ? props.name : header} {...props} />
 
           {selected === "" ? (
             <span className="text-gray-500">{placeholder}</span>
@@ -87,9 +77,7 @@ export default function DropDown({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items
-          className={`absolute left-0 z-10 mt-2 min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
-        >
+        <Menu.Items className="absolute left-0 z-10 mt-2 min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
           <div className="py-1">
             {options.map((option) => (
               <Menu.Item key={option.id}>
