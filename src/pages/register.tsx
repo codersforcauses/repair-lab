@@ -23,7 +23,7 @@ export default function Register() {
     handleSubmit,
     register,
     formState: { errors },
-    reset
+    watch
   } = useForm<RegisterFormValues>();
 
   const onSubmit = async (data: RegisterFormValues) => {
@@ -45,14 +45,13 @@ export default function Register() {
 
       // change the UI to our pending section.
       setPendingVerification(true);
-    } catch (err) {
-      // TODO: Use an alert to show error
-      console.log(JSON.stringify(err, null, 2));
-    }
+    } catch (err: any) {
+      const errorCode = err.errors[0].code;
 
-    console.log(data);
-    // Reset the form
-    reset();
+      if (errorCode === "form_identifier_exists") {
+        console.log("There is already an account created.");
+      }
+    }
   };
 
   // This verifies the user using email code that is delivered.
@@ -67,10 +66,6 @@ export default function Register() {
         code
       });
 
-      if (completeSignUp.status !== "complete") {
-        // TODO: Use an alert to show error
-        console.log(JSON.stringify(completeSignUp, null, 2));
-      }
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
@@ -113,15 +108,22 @@ export default function Register() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="relative mb-4">
                 <label
-                  htmlFor="username"
+                  htmlFor="emailAddress"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
-                  <span className="text-red-500">*</span> Username
+                  <span className="text-red-500">*</span> Email Address
                 </label>
                 <input
-                  id="username"
+                  id="emailAddress"
                   type="text"
-                  {...register("emailAddress", { required: true })}
+                  {...register("emailAddress", {
+                    required: "Email is required",
+                    validate: {
+                      matchPattern: (v) =>
+                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                        "Email address must be a valid address"
+                    }
+                  })}
                   placeholder="Email Address"
                   className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
                     errors.emailAddress ? "border-red-500" : ""
@@ -129,7 +131,7 @@ export default function Register() {
                 />
                 {errors.emailAddress && (
                   <span className="text-red-500">
-                    Email address is required
+                    {errors.emailAddress.message}
                   </span>
                 )}
               </div>
@@ -144,14 +146,18 @@ export default function Register() {
                 <input
                   id="password"
                   type="password"
-                  {...register("password", { required: true })}
+                  {...register("password", {
+                    required: "Password is required"
+                  })}
                   placeholder="Password"
                   className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
                     errors.password ? "border-red-500" : ""
                   }`}
                 />
                 {errors.password && (
-                  <span className="text-red-500">Password is required</span>
+                  <span className="text-red-500">
+                    {errors.password.message}
+                  </span>
                 )}
               </div>
 
@@ -165,7 +171,14 @@ export default function Register() {
                 <input
                   id="confirmPassword"
                   type="password"
-                  {...register("confirmPassword", { required: true })}
+                  {...register("confirmPassword", {
+                    required: "Confirm password is required",
+                    validate: (val: string) => {
+                      if (watch("password") != val) {
+                        return "Your passwords do not match";
+                      }
+                    }
+                  })}
                   placeholder="Confirm Password"
                   className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
                     errors.confirmPassword ? "border-red-500" : ""
@@ -173,7 +186,7 @@ export default function Register() {
                 />
                 {errors.confirmPassword && (
                   <span className="text-red-500">
-                    Confirm Password is required
+                    {errors.confirmPassword.message}
                   </span>
                 )}
               </div>

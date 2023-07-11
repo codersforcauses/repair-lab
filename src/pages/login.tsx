@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,8 @@ interface LoginFormValues {
 
 export default function Login() {
   const { isLoaded, signIn, setActive } = useSignIn();
+  const [loginError, setLoginError] = useState(false);
+
   const router = useRouter();
 
   const {
@@ -24,34 +27,42 @@ export default function Login() {
   } = useForm<LoginFormValues>();
 
   const onSubmit = async (data: LoginFormValues) => {
-    const {emailAddress, password} = data;
+    const { emailAddress, password } = data;
 
-      if (!isLoaded) {
-        return;
-      }
-  
-      try {
-        const result = await signIn.create({
-          identifier: emailAddress,
-          password
-        });
-  
-        if (result.status === "complete") {
-          console.log(result);
-          await setActive({ session: result.createdSessionId });
-          router.push("/");
-        } else {
-          /* Investigate why the login hasn't completed */
-          console.log(result);
-        }
-  
-        // Reset the form
-      } catch (err: any) {
-        console.error("error", err.errors[0]);
-      }
-    console.log(data);
+    if (!isLoaded) {
+      return;
+    }
 
-    // Reset the form
+    try {
+      const result = await signIn.create({
+        identifier: emailAddress,
+        password
+      });
+
+      /**
+       * Few different statuses for result.status, but they currently do not apply to us right now,
+       * but may apply to us in the future.
+       * https://clerk.com/docs/reference/clerkjs/signin?utm_source=www.google.com&utm_medium=referral&utm_campaign=none
+       */
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        router.push("/");
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      const errorCode = err.errors[0].code;
+      if (
+        errorCode === "form_password_incorrect" ||
+        errorCode === "form_identifier_not_found"
+      ) {
+        setLoginError(true);
+      } else {
+        // TODO: Use better alert component for error.
+        alert("Something went wrong!");
+      }
+    }
+
     reset();
   };
 
@@ -85,6 +96,12 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+          {loginError && (
+            <div className="relative mb-4">
+              <span className="text-red-500">Invalid email or password</span>
+            </div>
+          )}
+
           <div className="relative mb-4">
             <label
               htmlFor="emailAddress"
@@ -95,14 +112,23 @@ export default function Login() {
             <input
               id="emailAddress"
               type="text"
-              {...register("emailAddress", { required: true })}
+              {...register("emailAddress", {
+                required: "Email address is required",
+                validate: {
+                  matchPattern: (v) =>
+                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                    "Email address must be a valid address"
+                }
+              })}
               placeholder="Email Address"
               className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
                 errors.emailAddress ? "border-red-500" : ""
               }`}
             />
             {errors.emailAddress && (
-              <span className="text-red-500">Email address is required</span>
+              <span className="text-red-500">
+                {errors.emailAddress.message}
+              </span>
             )}
           </div>
 
@@ -116,14 +142,14 @@ export default function Login() {
             <input
               id="password"
               type="password"
-              {...register("password", { required: true })}
+              {...register("password", { required: "Password is required" })}
               placeholder="Password"
               className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
                 errors.password ? "border-red-500" : ""
               }`}
             />
             {errors.password && (
-              <span className="text-red-500">Password is required</span>
+              <span className="text-red-500">{errors.password.message}</span>
             )}
           </div>
           <div className="m-4 text-center">
