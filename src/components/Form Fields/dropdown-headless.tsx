@@ -48,7 +48,7 @@ export default function DropDown({
       <div>
         <Menu.Button
           className={classNames(
-            `flex h-12 w-64 justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
+            `flex h-10 w-full justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
           )}
         >
           {header !== "" ? (
@@ -88,7 +88,7 @@ export default function DropDown({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={`absolute left-0 z-10 mt-2 min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
+          className={`absolute left-0 z-10 mt-2 min-w-min w-full origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
         >
           <div className="py-1">
             {options.map((option) => (

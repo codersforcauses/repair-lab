@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Dropdown from "@/components/Form Fields/dropdown-headless";
-import Field_Radio from "@/components/field-radio";
+import Field_Radio from "@/components/Form Fields/field-radio";
 
 export default function Tester() {
   const [selected, setSelected] = useState("");
@@ -8,7 +8,7 @@ export default function Tester() {
     <main>
       <h1>This is the dropdown tester page</h1>
       <p>content above</p>
-      <div className="flex justify-center">
+      <div className="flex justify-center flex-col">
         <Dropdown
           selected={selected}
           setSelected={setSelected}
