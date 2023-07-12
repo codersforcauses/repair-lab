@@ -74,7 +74,7 @@ module.exports = {
           950: "#182f34"
         }
       }
-    }
-  },
-  plugins: []
+    },
+    plugins: []
+  }
 };
