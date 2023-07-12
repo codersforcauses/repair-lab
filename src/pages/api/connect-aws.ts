@@ -10,6 +10,9 @@ export default async function SendToBucket(file: File) {
     }
 
     const s3 = new S3({
+      region: process.env.AWS_BUCKET_REGION,
+      accessKeyId: process.env.AWS_ACCESS_KEY,
+      secretAccessKey: process.env.AWS_SECRET_KEY,
       signatureVersion: "v4"
     })
     const url = await s3.getSignedUrlPromise("putObject", fileParams);
