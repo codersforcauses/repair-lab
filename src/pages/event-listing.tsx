@@ -19,6 +19,8 @@ async function getEvent(eventName: string) {
 
 function Table() {
   const [modalActive, toggleModal] = useState(false)
+  const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const onSubmit = handleSubmit(data => console.log(data));
 
 
   function formatDate(dateString: string): string {
@@ -102,20 +104,23 @@ function Table() {
     );
   }
 
-  function openOptions(){
+  function EditForm(column: string){
+    const columnInt = parseInt(column.column);
+    const key = headers[columnInt].key;
+    const label = headers[columnInt].label;
 
+    setValue(key, "content");
+
+    return (
+      <form onSubmit={onSubmit} className="flow-root">
+        <label className="font-light text-sm m-1 pl-10 float-left">{label}:</label>
+        <input {...register(key)} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+      </form>
+    );
   }
 
   function handleSort(key: string) {
     setSortKey(key);
-  }
-
-  function optionsModal(name: string) {
-    return (
-      <div className="absolute align-middle self-center w-1/2 h-2/3 border-slate-700 bg-50 rounded-md">
-        <h1> MODAL TIME </h1>
-      </div>
-      );
   }
 
   function SortOptions() {
@@ -155,10 +160,11 @@ function Table() {
       </div>
 
        {/*options modal*/}
-      <div>
-        <button onClick={() => toggleModal(true)}>Open Modal</button>
+      <button onClick={() => toggleModal(true)}>Open Modal</button>
+
+      <div className=" flex justify-center items-center">
           <Dialog open={modalActive} onClose={() => toggleModal(false)}
-          className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 ">
+          className="flex justify-center p-4 text-center sm:items-center sm:p-0 inset-0 absolute">
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <Dialog.Title className=" flow-root border-b-[1px] border-slate-300 p-4 bg-lightAqua-300 font-semibold">
@@ -170,20 +176,23 @@ function Table() {
               </Dialog.Title>
               <Dialog.Description className="p-3">
                 Select each field below to change their contents
-              </Dialog.Description>
+              
 
-              <p>
-                
-              </p>
-
-              <div className=" border-t-[1px] border-slate-200 ">
+                <EditForm column="0"/>
+                <EditForm column="1"/>
+                <EditForm column="2"/>
+                <EditForm column="3"/>
+                <EditForm column="4"/>
+                <EditForm column="5"/>
+              </Dialog.Description >
+              <Dialog.Description className=" border-t-[1px] border-slate-200 align-bottom">
                 <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
                   Accept
                 </button>
                 <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
                   Cancel
                 </button>
-              </div>
+              </Dialog.Description>
             </Dialog.Panel>
           </Dialog>
       </div>
@@ -191,7 +200,7 @@ function Table() {
       {/* Basic functionality for sorting, styling incomplete */}
 
       <div className="flex justify-center">
-        <div className="w-5/12 p-4 bg-red-500  relative">
+        <div className="w-5/12 p-4 relative">
 
           <input
             className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none "
