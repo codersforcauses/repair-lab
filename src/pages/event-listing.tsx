@@ -66,6 +66,19 @@ function Table() {
     }
   }
 
+  function ToggleChevron(column: string){
+    const columnInt = parseInt(column.column);
+    return(
+      <button
+        onClick={() => handleButtonClick(headers[columnInt].key)}> {headers[columnInt].key === expandedButton ? (
+          <FontAwesomeIcon icon={faChevronUp} />
+        ) : (
+          <FontAwesomeIcon icon={faChevronDown} />
+        )}
+      </button>
+    );
+  }
+
   function openOptions(){
 
   }
@@ -138,10 +151,17 @@ function Table() {
       </div>
       <div className="flex justify-center">
         <div className="container">
-          <table>
+          <table className="table-auto">
           <thead>
-              <tr>
-                {headers.map((row) => (
+              <tr className="pb-10 text-left hover:bg-gray-100">
+                <th className="pl-5"> {headers[0].label} <ToggleChevron column="0"/> </th>
+                <th> {headers[1].label} <ToggleChevron column="1"/> </th>
+                <th> {headers[2].label} <ToggleChevron column="2"/> </th>
+                <th > {headers[3].label} <ToggleChevron column="3"/> </th>
+                <th> {headers[4].label} <ToggleChevron column="4"/> </th>
+                <th> {headers[5].label} <ToggleChevron column="5"/> </th>
+
+                {/*{headers.map((row) => (
                   <th key={row.key}>
                     {row.label}
                     <button
@@ -158,8 +178,10 @@ function Table() {
                       )}
                     </button>
                   </th>
-                ))}
-                <th className="text-justify w-24"> Edit </th>
+
+                ))}*/}
+                
+                <th className="text-justify w-10"> Edit </th>
               </tr>
             </thead>
 
@@ -167,10 +189,10 @@ function Table() {
             <tbody>
               {eventData.map((event: Event) => {
                 return (
-                  <tr key={event.name}>
-                    <td>{event.name}</td>
+                  <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-700">
+                    <td className="pl-5">{event.name}</td>
                     <td>{event.createdBy}</td>
-                    <td>{event.location}</td>
+                    <td className="">{event.location}</td>
                     <td>{formatDate(String(event.startDate))}</td>
                     <td>{event.eventType}</td>
                     <td>{event.status}</td>
