@@ -1,18 +1,27 @@
 import { ChangeEvent, useMemo } from "react";
 import { useRef } from "react";
 import { DragEvent, useState } from "react";
-import { FieldValues } from "react-hook-form";
+import {
+  FieldValues,
+  useController,
+  UseControllerProps
+} from "react-hook-form";
 import { BiImageAdd } from "react-icons/bi";
 
-import ImageChip from "@/components/Form Fields/image-upload/image-chip";
+import ImageChip from "@/components/Form Fields/field-image-upload/image-chip";
 
-export interface FieldUploadProps extends FieldValues {
-  name: string;
+export interface FieldUploadProps<T extends FieldValues = FieldValues>
+  extends UseControllerProps<T> {
   multiple?: boolean;
   accept?: string;
 }
 
-export default function FieldUpload({ name, multiple }: FieldUploadProps) {
+export default function FieldUpload<T extends FieldValues = FieldValues>({
+  multiple,
+  ...props
+}: FieldUploadProps<T>) {
+  const { field } = useController(props);
+
   const [dragging, setDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,12 +35,14 @@ export default function FieldUpload({ name, multiple }: FieldUploadProps) {
 
     const isValid = fileArray.every((file) => {
       // images only
-      if (!file.type.startsWith("image/")) {
+      if (
+        !(file.type === ".png" || file.type === ".jpg" || file.type === ".jpeg")
+      ) {
         alert("Only images are allowed");
         return;
       }
-      // 10MB max
-      if (file.size > 10 * 1024 * 1024) {
+      // 5MB max
+      if (file.size > 5 * 1024 * 1024) {
         alert("File is too big");
         return;
       }
@@ -86,19 +97,20 @@ export default function FieldUpload({ name, multiple }: FieldUploadProps) {
       onDrop={handleDrop}
     >
       <input
+        {...field}
         className="hidden"
-        id={name}
+        id={props.name}
         ref={inputRef}
         type="file"
         multiple={multiple}
         onChange={handleChange}
-        accept="image/*"
+        accept=".png, .jpeg, .jpg"
       />
       <label
         className={`flex min-h-[12rem] w-full items-center justify-center rounded-lg bg-lightAqua-200 transition hover:bg-lightAqua-300
         ${dragging ? "border-2 border-dashed border-darkAqua-700" : ""}
         `}
-        htmlFor={name}
+        htmlFor={props.name}
       >
         <div className="flex flex-wrap items-center justify-center gap-2 p-2">
           {files.length > 0 ? (
@@ -117,7 +129,9 @@ export default function FieldUpload({ name, multiple }: FieldUploadProps) {
           ) : (
             <div className="flex flex-col items-center">
               <BiImageAdd className="h-16 w-16 text-white" />
-              <p className="text-black">Drag and drop your files here or</p>
+              <p className="text-black">
+                Drag and drop your file{multiple && "s"} here or
+              </p>
               <button
                 className="text-darkAqua-700 hover:text-darkAqua-950 hover:underline"
                 onClick={onButtonClick}

@@ -47,7 +47,7 @@ export default function Repair() {
   const lineStyle = "mb-2 flex items-start gap-6";
 
   return (
-    <main className="mx-3">
+    <section className="mx-3">
       <h1 className="mb-2 block text-xl text-red-500">General Repairs</h1>
 
       <form className="flex flex-col" onSubmit={onSubmit}>
@@ -127,6 +127,6 @@ export default function Repair() {
         {/* Submit */}
         <input type="submit" value="Submit" className="submit"></input>
       </form>
-    </main>
+    </section>
   );
 }
