@@ -19,7 +19,7 @@ const Modal = () => {
         <button
           type="button"
           onClick={handleshowPopupChange}
-          className="text-black rounded-md border border-darkAqua-400 bg-darkAqua-400 p-2 pl-1.5 hover:bg-darkAqua-200"
+          className="rounded-md border border-darkAqua-400 bg-darkAqua-400 p-2 pl-1.5 text-black hover:bg-darkAqua-200"
         >
           Modal Demo
         </button>
@@ -62,7 +62,7 @@ const Modal = () => {
 
                   <div className="mt-2">
                     <p className="text-m text-gray-500">
-                      <p className="text-red-600 m-6 gap-y-4 pl-10 pr-10 text-center text-xl font-bold">
+                      <p className="m-6 gap-y-4 pl-10 pr-10 text-center text-xl font-bold text-red-600">
                         *Notice:......*{" "}
                       </p>
 
@@ -76,9 +76,9 @@ const Modal = () => {
                       </ol>
                     </p>
                   </div>
-                  <div className="mt-0 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"></div>
+                  <div className="md-1 mt-5 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"></div>
 
-                  <div className="mt-8 flex justify-end">
+                  <div className="md-1 mt-5 flex justify-end">
                     <Button onClick={handleshowPopupChange} width="w-1/4">
                       Submit
                     </Button>
@@ -86,9 +86,9 @@ const Modal = () => {
 
                   <button
                     onClick={handleshowPopupChange}
-                    className="hover:bg-gray-50 absolute right-2 top-2 rounded-lg p-1"
+                    className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
                   >
-                    <BsXCircle className="hover:text-gray-600 text-lightAqua-300 " />
+                    <BsXCircle className="text-lightAqua-300 hover:text-gray-600 " />
                   </button>
                 </Dialog.Panel>
               </Transition.Child>
