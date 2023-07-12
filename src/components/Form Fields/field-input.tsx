@@ -14,6 +14,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   placeholder?: string;
   icon?: string;
   type?: string;
+  width?: string;
 }
 
 /*
@@ -32,12 +33,13 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   placeholder,
   icon,
   type,
+  width = "full",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
   const errorStyle = !fieldState.invalid
-    ? "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300"
-    : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300";
+    ? `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`
+    : `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300`;
   return (
     <div className={errorStyle}>
       <Label label={!label ? props.name : label} {...props} />

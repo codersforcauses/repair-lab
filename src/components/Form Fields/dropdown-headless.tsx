@@ -13,9 +13,7 @@ import Error from "@/components/Form Fields/error-msg";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   options: { id: number; text: string }[];
-  width?: number;
-  height?: number;
-  required?: boolean;
+  width?: string;
   placeholder?: string;
   label?: string;
 }
@@ -38,20 +36,22 @@ Output:
 export default function DropDown<T extends FieldValues = FieldValues>({
   options,
   placeholder = "-select-",
-  label = "",
+  label,
+  width = "full",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-
-  const errorStyle = !fieldState.invalid
-    ? `flex h-10 w-full justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
-    : `flex h-10 w-full justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-red-500 hover:shadow-grey-300 `;
 
   return (
     <div className="relative mb-2 inline-block w-full text-left">
       <Menu>
         <div>
-          <Menu.Button className={errorStyle}>
+          <Menu.Button
+            className={classNames(
+              `flex h-10 w-${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`,
+              fieldState.invalid ? "ring-red-500" : "ring-grey-300"
+            )}
+          >
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
 

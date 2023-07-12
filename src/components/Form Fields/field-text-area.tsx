@@ -12,6 +12,8 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
   placeholder?: string;
   icon?: string;
+  width?: string;
+  height?: string;
 }
 
 /*
@@ -26,13 +28,15 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
   id,
   label,
   placeholder,
+  width = "full",
+  height = "36",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
   const errorStyle = !fieldState.invalid
-    ? "relative mb-2 flex h-36 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300"
-    : "relative mb-2 flex h-36 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300";
+    ? `relative mb-2 flex h-${height} w-${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`
+    : `relative mb-2 flex h-${height} w-${width} flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300`;
 
   !placeholder ? (placeholder = `Enter ${props.name}`) : "";
   !label ? (label = props.name) : "";
