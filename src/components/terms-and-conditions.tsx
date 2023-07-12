@@ -81,15 +81,15 @@ export const TermsAndConditions = () => {
                           limitation of liability: neither the organisers of
                           Repair Lab nor the repair volunteers are liable:
                           <ol className="list-disc">
-                            <li>
+                            <li className="ml-4">
                               for any loss that may result from advice or
                               instructions concerning repairs,
                             </li>
-                            <li>
+                            <li className="ml-4">
                               for the loss of items handed over for repair,
                             </li>
-                            <li>for indirect or consequential loss,</li>
-                            <li>
+                            <li className="ml-4">for indirect or consequential loss,</li>
+                            <li className="ml-4">
                               for any other kind of loss resulting from work
                               performed at Repair Lab.
                             </li>
