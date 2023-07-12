@@ -25,7 +25,7 @@ export default function Error<T extends FieldValues = FieldValues>({
       <p
         className={
           !className
-            ? "absolute -bottom-3 right-2 gap-0.5 self-start rounded-full bg-white px-1 text-xs italic text-red-500"
+            ? "absolute -bottom-2 right-2 gap-0.5 self-start rounded-full bg-white px-1 text-xs italic text-red-500"
             : className
         }
       >
