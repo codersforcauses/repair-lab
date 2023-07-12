@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 .container {
   display: flex;
   justify-content: center;
@@ -11,23 +10,21 @@ table {
   margin: 0 auto;
   width: 90%;
   table-layout: fixed;
+  border-radius: 10px;
+  overflow: hidden; /* Ensure content stays within the rounded borders */
 }
 
 thead tr {
-  background-color: rgb(45, 187, 142);
+  background-color: #A6DCDB;
   /* Header row color */
   color: white;
   /* Text color for header row */
 }
 
 tbody {
-  background-color: rgb(159, 227, 204);
+  background-color: #F9FEFD;
   /* Background color for rows */
   border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-tr {
-  width: 100%;
 }
 
 th,
@@ -37,4 +34,6 @@ td {
   font-weight: 500;
   font-size: 17px;
   color: black;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add border-bottom for lines between rows */
 }
+

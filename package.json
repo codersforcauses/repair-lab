@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.3",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@prisma/client": "^4.15.0",
     "@types/chai": "^4.3.5",
     "axios": "^1.4.0",
