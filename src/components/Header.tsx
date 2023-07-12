@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Navbar() {
+export default function Header() {
   return (
     <>
       <div className="flex justify-between gap-4 px-5 pb-8 pt-12 ">
