@@ -1,12 +1,16 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import {
+  FieldValues,
+  useController,
+  UseControllerProps
+} from "react-hook-form";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import Label from "@/components/Form Fields/box-label";
 
-interface Props {
-  selected: string;
-  setSelected: (value: string) => void;
+export interface FormProps<T extends FieldValues = FieldValues>
+  extends UseControllerProps<T> {
   options: { id: number; text: string }[];
   width?: number;
   height?: number;
@@ -35,17 +39,17 @@ Output:
   A dropdown that is compatible w/ React-hook-forms 
 */
 
-export default function DropDown({
+export default function DropDown<T extends FieldValues = FieldValues>({
   options,
-  selected,
-  setSelected,
   width = 80,
   height = 10,
   required = false,
   placeholder = "-select-",
   header = "",
   ...props
-}: Props) {
+}: FormProps<T>) {
+  const { field } = useController(props);
+
   return (
     <Menu as="div" className="relative inline-block pb-4 text-left">
       <div>
@@ -56,10 +60,10 @@ export default function DropDown({
         >
           {/* <Label label={!header ? props.name : header} {...props} /> */}
 
-          {selected === "" ? (
+          {field.value === "" ? (
             <span className="text-gray-500">{placeholder}</span>
           ) : (
-            <span className="truncate text-grey-900">{selected}</span>
+            <span className="truncate text-grey-900">{field.value}</span>
           )}
           <HiChevronDown
             className="ml-auto h-6 w-5 text-grey-600"
@@ -77,25 +81,21 @@ export default function DropDown({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items
-          className={`absolute left-0 z-10 mt-2 min-w-min w-full origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none`}
-        >
+        <Menu.Items className="absolute left-0 z-10 mt-2 w-full min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
           <div className="py-1">
             {options.map((option) => (
               <Menu.Item key={option.id}>
                 {({ active }) => (
                   <a
                     href="#"
-                    onClick={() => {
-                      setSelected(option.text);
-                    }}
+                    onClick={() => field.onChange(option.text)}
                     className={classNames(
                       active ? "bg-darkAqua-400 text-white" : "text-grey-800",
                       "block py-2 pl-2 pr-4 text-sm"
                     )}
                   >
-                    {option.text === selected ? (
-                      <span className="relative left-0 flex ">
+                    {option.text === field.value ? (
+                      <span className="relative left-0 flex">
                         <HiCheck
                           className={classNames(
                             "h-5 w-5",

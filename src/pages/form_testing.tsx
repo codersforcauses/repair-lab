@@ -22,6 +22,7 @@ type RepairData = {
   parts: string;
   desc: string;
   comments: string;
+  dropdown: string;
 };
 
 export default function Repair() {
@@ -36,7 +37,8 @@ export default function Repair() {
       spare: "",
       parts: "",
       desc: "",
-      comments: ""
+      comments: "",
+      dropdown: ""
     },
     mode: "onChange"
   });
@@ -116,10 +118,10 @@ export default function Repair() {
             rules={{ required: true }}
           />
         </div>
+
         <DropDown
-          selected={selected}
-          setSelected={setSelected}
-          // width={80}
+          name="dropdown"
+          control={control}
           placeholder="Select an Item"
           header="header"
           required={true}
@@ -158,6 +160,7 @@ export default function Repair() {
             }
           ]}
         />
+
         {/* Comments */}
         <div className={lineStyle}>
           <Field_Text_Area
