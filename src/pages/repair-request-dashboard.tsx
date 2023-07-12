@@ -13,7 +13,7 @@ import RepairRequestCard from "../components/repair-request/index";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RepairRequest() {
+export default function RepairRequests() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
 
   interface RepairRequestCardProps {
@@ -46,7 +46,7 @@ export default function RepairRequest() {
   // Getting the repair requests for this event
   useEffect(() => {
     const params = new URLSearchParams();
-    const eventName = "Can Bob Fix It?" as string;
+    const eventName = "Can Bob Fix It?" as string; // TODO: Get the actual event name that the event manager selected
     params.append("event", eventName);
     fetch(`/api/dashboard/repair-request?${params.toString()}`)
       .then((res) => res.json())
