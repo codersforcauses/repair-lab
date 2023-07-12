@@ -4,10 +4,10 @@ import { Inter } from "next/font/google";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
-import Navbar from "@/components/Navbar";
-import SearchBar from "@/components/repair-request/SearchBar";
-import SortBy from "@/components/repair-request/SortBy";
+import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
+import SearchBar from "@/components/ui/SearchBar";
+import SortBy from "@/components/ui/SortBy";
 
 import RepairRequestCard from "../components/repair-request/index";
 
@@ -58,8 +58,8 @@ export default function RepairRequest() {
   return (
     <Sidebar>
       <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
-        <Navbar />
         <div className="container">
+          <Header />
           <div className="container mx-auto items-center">
             {/* <div className="flex justify-between">*/}
             <p className="p-4 text-2xl font-bold text-[#6C727F]">

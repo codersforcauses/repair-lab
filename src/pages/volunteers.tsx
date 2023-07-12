@@ -2,7 +2,7 @@ import React from "react";
 import { Inter } from "next/font/google";
 import { CiCirclePlus } from "react-icons/ci";
 
-import Navbar from "@/components/Header";
+import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 
 import VolunteerCard from "../components/repair-request/volunteer-card";
@@ -26,7 +26,7 @@ export default function Volunteers() {
   return (
     <Sidebar>
       <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
-        <Navbar />
+        <Header />
         <div className="container">
           <div className="container mx-auto">
             <div className="flex justify-end"></div>
