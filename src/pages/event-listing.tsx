@@ -54,17 +54,17 @@ function Table() {
   ];
 
   // Whenever the sortKey or sortMethod changes, the useEffect hook will run
-  // useEffect(() => {
-  //   const params = new URLSearchParams();
-  //   params.append('sortKey', sortKey);
-  //   params.append('sortMethod', sortMethod);
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.append('sortKey', sortKey);
+    params.append('sortMethod', sortMethod);
   
-  //   fetch(`/api/get_events?${params.toString()}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setEventData(data);
-  //     });
-  // }, [sortKey, sortMethod]);
+    fetch(`/api/get_events?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEventData(data);
+      });
+  }, [sortKey, sortMethod]);
 
 
   //will toggle modal visibility for editing events
@@ -161,7 +161,6 @@ function Table() {
       </div>
 
        {/*options modal*/}
-      <button onClick={() => toggleModal(true)} className="absolute">Open Modal</button>
 
       <div className=" flex justify-center items-center">
           <Dialog open={modalActive} onClose={() => toggleModal(false)}
@@ -262,14 +261,14 @@ function Table() {
             <tbody>
               {eventData.map((event: Event) => {
                 return (
-                  <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-700">
+                  <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-100">
                     <td className="pl-5">{event.name}</td>
                     <td>{event.createdBy}</td>
                     <td className="">{event.location}</td>
                     <td>{formatDate(String(event.startDate))}</td>
                     <td>{event.eventType}</td>
                     <td>{event.status}</td>
-                    <td className="ml-0 text-center pl-0 align-center " ><button> <FontAwesomeIcon icon={faCog} /> </button></td>
+                    <td className="ml-0 text-center pl-0 align-center " ><button onClick={() => toggleModal(true)}> <FontAwesomeIcon icon={faCog} /> </button></td>
                   </tr>
                 );
               })}
