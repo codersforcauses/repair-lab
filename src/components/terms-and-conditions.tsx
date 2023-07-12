@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import Button from "@/components/Button";
 
-const TermsAndConditions = () => {
+export const TermsAndConditions = () => {
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
@@ -149,5 +149,3 @@ const TermsAndConditions = () => {
     </>
   );
 };
-
-export default TermsAndConditions;
