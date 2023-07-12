@@ -31,14 +31,19 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const errorStyle = !fieldState.invalid
-    ? `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`
-    : `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300`;
+  const baseStyle = `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const errorBorderStyle = `border-red-500`;
+  const normalBorderStyle = `border-grey-300`;
+  const radioStyle = `my-auto flex flex-row items-start gap-4 text-xs`;
 
   return (
-    <div className={errorStyle}>
+    <div
+      className={`${baseStyle} ${
+        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
+      }`}
+    >
       <Label label={!label ? props.name : label} {...props} />
-      <div className="my-auto flex flex-row items-start gap-4 text-xs">
+      <div className={radioStyle}>
         <label htmlFor={`${props.name}-y`} className="flex gap-1">
           <input
             {...field}

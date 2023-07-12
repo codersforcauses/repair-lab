@@ -42,14 +42,19 @@ export default function DropDown<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
+  const baseStyle = `flex h-10 w-${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
+  const normalBorderStyle = `ring-grey-300`;
+  const errorBorderStyle = `ring-red-500`;
   return (
     <div className="relative mb-2 inline-block w-full text-left">
       <Menu>
         <div>
           <Menu.Button
             className={classNames(
-              `flex h-10 w-${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`,
-              fieldState.invalid ? "ring-red-500" : "ring-grey-300"
+              { baseStyle },
+              fieldState.invalid
+                ? `${errorBorderStyle}`
+                : `${normalBorderStyle}`
             )}
           >
             <Label label={!label ? props.name : label} {...props} />

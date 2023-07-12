@@ -37,15 +37,22 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-  const errorStyle = !fieldState.invalid
-    ? `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`
-    : `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow hover:shadow-grey-300`;
+
+  const baseStyle = `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const errorBorderStyle = `border-red-500`;
+  const normalBorderStyle = `border-grey-300`;
+  const inputStyle = `mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
+
   return (
-    <div className={errorStyle}>
+    <div
+      className={`${baseStyle} ${
+        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
+      }`}
+    >
       <Label label={!label ? props.name : label} {...props} />
       <input
         type={!type ? "text" : `${type}`}
-        className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
+        className={inputStyle}
         placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
         id={!id ? `${props.name}` : `${id}`}
         {...field}
