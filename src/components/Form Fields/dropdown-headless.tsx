@@ -54,7 +54,7 @@ export default function DropDown({
             `flex h-10 w-full justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
           )}
         >
-          <Label label={!header ? props.name : header} {...props} />
+          {/* <Label label={!header ? props.name : header} {...props} /> */}
 
           {selected === "" ? (
             <span className="text-gray-500">{placeholder}</span>
