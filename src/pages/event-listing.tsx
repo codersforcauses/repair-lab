@@ -141,26 +141,27 @@ function Table() {
   return (
     <div>
 
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          padding: "20px",
-          paddingLeft: "20px"
-        }}
-      >
-        <Image
+      {/*HEADER BAR*/}
+      <div className=" w-full flex flex-row p-5 pb-2 border-slate-300 border-b-[2px] ">
+        <Image className=""
           src="/images/repair_lab_logo.jpg"
           alt="logo"
-          width="80"
-          height="80"
+          width="90"
+          height="90"
         />
-        <h1 style={{ marginLeft: "10px", color: "rgb(175, 177, 182)", fontWeight: 600, fontSize: "24px" }}>Event Listings</h1>
+        <h1 className="ml-20 text-slate-600 text-3xl font-semibold mt-10"> Event Listings</h1>
+
+        {/*ACCOUNT AREA*/}
+        <div className="self-center justify-self-end absolute right-10">
+          <span className="text-slate-600 font-light mr-2"> Account Name </span>
+          <button className="w-12 h-12 bg-slate-800 rounded-full">
+            O
+          </button>
+        </div>
       </div>
 
        {/*options modal*/}
-      <button onClick={() => toggleModal(true)}>Open Modal</button>
+      <button onClick={() => toggleModal(true)} className="absolute">Open Modal</button>
 
       <div className=" flex justify-center items-center">
           <Dialog open={modalActive} onClose={() => toggleModal(false)}
