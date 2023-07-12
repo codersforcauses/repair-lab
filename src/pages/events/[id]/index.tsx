@@ -33,7 +33,7 @@ export default function RepairRequest() {
   //     return result;
   // });
 
-  async function RepairContent() {
+  function RepairContent() {
     const content = [];
 
     for (let i = 0; i < repairRequests.length; i++) {
@@ -67,7 +67,7 @@ export default function RepairRequest() {
       fetch(`/api/events/repair-request?${params.toString()}`)
         .then((res) => res.json())
         .then((data) => {
-          // setRepairRequestCounter(data.length);
+          setRepairRequestCounter(data.length);
           setRepairRequests(data);
         });
     } catch (err) {
