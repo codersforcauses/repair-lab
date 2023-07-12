@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 
-import FieldImageUpload from "@/components/field-image-upload";
+import FieldImageUpload from "@/components/Form Fields/image-upload";
 
 const inter = Inter({ subsets: ["latin"] });
 
