@@ -36,7 +36,11 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
     const isValid = fileArray.every((file) => {
       // images only
       if (
-        !(file.type === ".png" || file.type === ".jpg" || file.type === ".jpeg")
+        !(
+          file.type === "image/png" ||
+          file.type === "image/jpg" ||
+          file.type === "image/jpeg"
+        )
       ) {
         alert("Only images are allowed");
         return;
