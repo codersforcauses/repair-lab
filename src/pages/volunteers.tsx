@@ -6,7 +6,8 @@ import { CiCirclePlus } from "react-icons/ci";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 
-import VolunteerCard from "../components/repair-request/volunteer-card";
+import Header from "./../components/Header";
+import VolunteerCard from "../components/event/volunteer-card";
 
 const inter = Inter({ subsets: ["latin"] });
 

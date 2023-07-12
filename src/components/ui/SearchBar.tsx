@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { AiOutlineSearch } from "react-icons/ai";
 
 export default function SortBy() {
   return (
@@ -13,13 +13,7 @@ export default function SortBy() {
         type="submit"
         className="absolute right-0 top-0 mr-10 mt-[1.6rem]"
       >
-        <Image
-          className="h-4 w-4 fill-current text-gray-600"
-          src="/images/searchIcon.svg"
-          width="50"
-          height="50"
-          alt="test"
-        />
+        <AiOutlineSearch className="-mr-1 h-5 w-5 " />
       </button>
     </div>
   );
