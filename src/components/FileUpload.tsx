@@ -13,14 +13,20 @@ export default function FileUpload() {
     StoreFile(e.target.files[0]);
   }
 
-  const submitImage=(e) => {
+  const submitImage = (e) => {
     e.preventDefault();
     console.log("Image uploading, submit button clicked!");
-
-    const returnData = SendToBucket(e);
-    SetFile(null);
-    return 0;
-  }
+  
+    SendToBucket(file)
+      .then(() => {
+        SetFile(null);
+        console.log("Image uploaded successfully!");
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+      });
+  };
+  
 
   return (
     <form onSubmit={submitImage}>
