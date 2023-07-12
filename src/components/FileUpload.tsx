@@ -6,16 +6,11 @@ export default function FileUpload() {
 
   const [message, SendMessage] = useState();
   const [file, SetFile] = useState();
-  
-
-  function SetFile(e) {
-    console.log("StoreFile");
-    StoreFile(e.target.files[0]);
-  }
 
   const submitImage = (e) => {
     e.preventDefault();
     console.log("Image uploading, submit button clicked!");
+    SetFile(e);
   
     SendToBucket(file)
       .then(() => {
