@@ -48,7 +48,6 @@ export default function Repair() {
   });
 
   const lineStyle = "mb-2 flex items-start gap-6";
-  const [selected, setSelected] = React.useState("");
   return (
     <main className="mx-3">
       <h1 className="mb-2 block text-xl text-red-500">General Repairs</h1>
@@ -123,8 +122,8 @@ export default function Repair() {
           name="dropdown"
           control={control}
           placeholder="Select an Item"
-          header="header"
-          required={true}
+          label="header"
+          rules={{ required: true }}
           options={[
             {
               id: 0,

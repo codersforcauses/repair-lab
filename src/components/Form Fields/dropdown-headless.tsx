@@ -16,7 +16,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   height?: number;
   required?: boolean;
   placeholder?: string;
-  header?: string;
+  label?: string;
 }
 
 function classNames(...classes: any) {
@@ -34,18 +34,15 @@ Input:
   height?: number; // height of button, doesnt work
   required?: boolean; // whether field is required or not
   placeholder: string; // placeholder string before any option is selected
-  header?: string; // text on border of button
+  label?: string; // text on border of button
 Output:
   A dropdown that is compatible w/ React-hook-forms 
 */
 
 export default function DropDown<T extends FieldValues = FieldValues>({
   options,
-  width = 80,
-  height = 10,
-  required = false,
   placeholder = "-select-",
-  header = "",
+  label = "",
   ...props
 }: FormProps<T>) {
   const { field } = useController(props);
@@ -58,7 +55,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
             `flex h-10 w-full justify-between gap-x-1.5 overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-grey-300 hover:shadow-grey-300 `
           )}
         >
-          <Label label={!header ? props.name : header} {...props} />
+          <Label label={!label ? props.name : label} {...props} />
 
           {field.value === "" ? (
             <span className="text-gray-500">{placeholder}</span>
