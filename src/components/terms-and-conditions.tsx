@@ -88,7 +88,9 @@ export const TermsAndConditions = () => {
                             <li className="ml-4">
                               for the loss of items handed over for repair,
                             </li>
-                            <li className="ml-4">for indirect or consequential loss,</li>
+                            <li className="ml-4">
+                              for indirect or consequential loss,
+                            </li>
                             <li className="ml-4">
                               for any other kind of loss resulting from work
                               performed at Repair Lab.
