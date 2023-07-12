@@ -8,7 +8,7 @@ export default function FileUpload() {
   const [file, SetFile] = useState();
   
 
-  function StoreFile(e) {
+  function SetFile(e) {
     console.log("StoreFile");
     StoreFile(e.target.files[0]);
   }
