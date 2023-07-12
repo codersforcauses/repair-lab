@@ -1,21 +1,33 @@
 import { useForm } from "react-hook-form";
 
+import Button from "@/components/Button";
 import FieldImageUpload from "@/components/Form Fields/field-image-upload";
 
+interface FormData {
+  single: File;
+  multiple: File[];
+}
+
 export default function Test() {
-  const { control } = useForm();
+  const { control, handleSubmit } = useForm<FormData>();
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
+
   return (
     <section className="container mx-auto flex min-h-screen flex-col items-center justify-between">
-      <div className="flex w-full flex-col gap-4">
+      <form className="flex w-full flex-col gap-4" onSubmit={onSubmit}>
         <div>
           <h2 className="text-xl font-bold">Test Single</h2>
-          <FieldImageUpload name="test" control={control} />
+          <FieldImageUpload name="single" control={control} />
         </div>
         <div>
           <h2 className="text-xl font-bold">Test Multiple</h2>
-          <FieldImageUpload name="test" control={control} multiple />
+          <FieldImageUpload name="multiple" control={control} multiple />
         </div>
-      </div>
+        <Button width="w-full">Submit</Button>
+      </form>
     </section>
   );
 }

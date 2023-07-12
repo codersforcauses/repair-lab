@@ -14,10 +14,14 @@ export interface FieldUploadProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   multiple?: boolean;
   accept?: string;
+  fileLimit?: number;
+  sizeLimit?: number;
 }
 
 export default function FieldUpload<T extends FieldValues = FieldValues>({
   multiple,
+  fileLimit = 5,
+  sizeLimit = 10,
   ...props
 }: FieldUploadProps<T>) {
   const { field } = useController(props);
@@ -33,6 +37,12 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
   const handleFiles = (fileList: FileList) => {
     const fileArray = Array.from(fileList);
 
+    // check file limit
+    if (fileArray.length > fileLimit) {
+      alert(`You can only upload ${fileLimit} files at a time`);
+      return;
+    }
+
     const isValid = fileArray.every((file) => {
       // images only
       if (
@@ -45,8 +55,9 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
         alert("Only images are allowed");
         return;
       }
-      // 5MB max
-      if (file.size > 5 * 1024 * 1024) {
+
+      // 10MB max by default
+      if (file.size > sizeLimit * 1024 * 1024) {
         alert("File is too big");
         return;
       }
@@ -56,10 +67,22 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
     if (!isValid) return; // TODO set rhf errors
 
     if (!multiple) {
-      setFiles([fileArray[0]]);
+      setFiles(() => {
+        // update internal state
+        const newState = fileArray[0];
+        // update rhf state
+        field.onChange([newState]);
+        return [newState];
+      });
       return;
     }
-    setFiles([...files, ...fileArray]);
+    setFiles((state) => {
+      // update internal state
+      const newState = [...state, ...fileArray];
+      // update rhf state
+      field.onChange(newState);
+      return newState;
+    });
   };
 
   // handle drag events
@@ -101,7 +124,6 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
       onDrop={handleDrop}
     >
       <input
-        {...field}
         className="hidden"
         id={props.name}
         ref={inputRef}
