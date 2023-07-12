@@ -51,7 +51,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
         <div>
           <Menu.Button
             className={classNames(
-              { baseStyle },
+              `${baseStyle}`,
               fieldState.invalid
                 ? `${errorBorderStyle}`
                 : `${normalBorderStyle}`
