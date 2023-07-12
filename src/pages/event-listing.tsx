@@ -167,17 +167,17 @@ function Table() {
           className="flex justify-center p-4 text-center sm:items-center sm:p-0 inset-0 absolute">
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-              <Dialog.Title className=" flow-root border-b-[1px] border-slate-300 p-4 bg-lightAqua-300 font-semibold">
+              <Dialog.Title className=" flow-root border-slate-300 p-4 bg-lightAqua-300 font-semibold">
                 <span className="float-left"> Edit Event Details </span>
                 <button onClick={() => toggleModal(false)} className="hover:bg-lightAqua-500 rounded-full items-center w-6 h-6 float-right">
                   <FontAwesomeIcon className="align-middle text-xl align-text-top" icon={faXmark} />
                 </button>
 
               </Dialog.Title>
-              <Dialog.Description className="p-3">
+              <Dialog.Description  className="p-3 font-light">
                 Select each field below to change their contents
-              
-
+              </Dialog.Description >
+              <Dialog.Description>
                 <EditForm column="0"/>
                 <EditForm column="1"/>
                 <EditForm column="2"/>
@@ -185,7 +185,7 @@ function Table() {
                 <EditForm column="4"/>
                 <EditForm column="5"/>
               </Dialog.Description >
-              <Dialog.Description className=" border-t-[1px] border-slate-200 align-bottom">
+              <Dialog.Description className=" border-t-[1px] border-slate-200 align-bottom mt-3">
                 <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
                   Accept
                 </button>
