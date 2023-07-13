@@ -4,6 +4,7 @@ import { Fragment, useState } from "react";
 import { Inter } from "next/font/google";
 import { Dialog, Transition } from "@headlessui/react";
 import { Controller, useForm } from "react-hook-form";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,11 @@ export const TermsAndConditions = () => {
     setShowPopup((prevState) => !prevState);
   };
 
+  const [Accepted, setAccepted] = useState(false);
+  const handleAcceptedChange = () => {
+    setAccepted((prevState) => !prevState);
+  }
+
   return (
     <>
       <div className="static flex justify-center">
@@ -38,12 +44,8 @@ export const TermsAndConditions = () => {
           name="tncAccepted"
           render={({ field: { value, onChange } }) => (
             <input
-              className={`${
-                errors.tncAccepted &&
-                "border-red-500 focus:border-red-500 focus:ring-red-500"
-              }`}
               type="checkbox"
-              checked={value}
+              checked={Accepted}
               {...register("tncAccepted", {
                 required: "*Accept terms and conditions to submit."
               })}
@@ -64,7 +66,6 @@ export const TermsAndConditions = () => {
         </button>
         <span>.</span>
 
-        <p className="text-red-600"> {errors.tncAccepted?.message} </p>
       </div>
 
       <Transition appear show={showPopup} as={Fragment}>
@@ -93,6 +94,12 @@ export const TermsAndConditions = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-auto max-w-5xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <div className="flex justify-end">
+                    <button onClick={handleshowPopupChange}>
+                      <AiFillCloseCircle className="text-2xl" color="teal" />
+                    </button>
+                  </div>
+
                   <Dialog.Title
                     as="h3"
                     className="border-b p-5 text-center text-2xl font-medium leading-6 text-gray-900"
@@ -100,14 +107,10 @@ export const TermsAndConditions = () => {
                     House Rules
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-m text-gray-500">
-                      <p className="m-6 gap-y-4 pl-10 pr-10 text-center text-red-600">
-                        *Note: Please check the checkbox to acknowledge that you
-                        have read and accept our House Rules.*{" "}
-                      </p>
 
+                    <p className="text-m text-gray-500">
                       <ol className="tlex grid list-decimal justify-center gap-y-4 pl-10 pr-10">
-                        <li>
+                        <li className="mt-4">
                           Workshop participants carry out the repair themselves
                           whenever possible, and repair volunteers are on site
                           to help or provide advice, if necessary.
@@ -182,7 +185,7 @@ export const TermsAndConditions = () => {
                   </div>
 
                   <div className="mt-8 flex justify-center">
-                    <Button onClick={handleshowPopupChange}>
+                    <Button onClick={() => { handleshowPopupChange(); handleAcceptedChange(); }}>
                       Accept and Close
                     </Button>
                   </div>
