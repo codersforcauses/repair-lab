@@ -1,70 +1,47 @@
 /* eslint-disable no-console */
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
-
 const prisma = new PrismaClient();
 
-async function deleteIdUniqueData() {
-  // repairRequestImage(s) created by default user(s)
-  await prisma.repairRequestImage.deleteMany({
-    where: {
-      repairRequest: {
-        OR: [
-          { createdBy: "Alice" },
-          { createdBy: "Charlie" },
-          { createdBy: "David" },
-          { createdBy: "Greg" },
-          { createdBy: "Ivan" },
-          { createdBy: "Larry" }
-        ]
-      }
-    }
-  });
+async function deleteAllData() {
+  const tablenames = await prisma.$queryRaw<
+    Array<{ tablename: string }>
+  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`
 
-  // delete repairRequest(s) created by default user(s)
-  // possibly linked to default event(s)
-  await prisma.repairRequest.deleteMany({
-    where: {
-      OR: [
-        { createdBy: "Alice" },
-        { createdBy: "Charlie" },
-        { createdBy: "David" },
-        { createdBy: "Greg" },
-        { createdBy: "Ivan" },
-        { createdBy: "Larry" }
-      ]
-    }
-  });
-  console.log("Deleted default RepairRequest records.");
+  const tables = tablenames
+    .map(({ tablename }) => tablename)
+    .filter((name) => name !== '_prisma_migrations')
+    .map((name) => `"public"."${name}"`)
+    .join(', ')
+
+  try {
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`)
+  } catch (error) {
+    console.log({ error })
+  }
 }
 
 async function createItemType(name: string) {
-  const type = await prisma.itemType.upsert({
-    where: { name },
-    create: { name },
-    update: {}
+  const itemType = await prisma.itemType.create({
+    data: { name },
   });
-  console.log(type);
-  return type;
+  console.log(itemType);
+  return itemType;
 }
 
 async function createBrand(name: string) {
-  const brand = await prisma.brand.upsert({
-    where: { name },
-    create: { name },
-    update: {}
+  const brand = await prisma.brand.create({
+    data: { name },
   });
   console.log(brand);
   return brand;
 }
 
 async function createRandomEvent() {
-  const eventName = faker.commerce.productName();
-  const event = await prisma.event.upsert({
-    where: { name: eventName },
-    create: {
+  const event = await prisma.event.create({
+    data: {
       createdBy: faker.person.fullName(),
-      name: eventName,
+      name: faker.commerce.productName(),
       location: faker.location.street(),
       description:
         faker.lorem.sentence(),
@@ -75,7 +52,6 @@ async function createRandomEvent() {
       startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
       endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
     },
-    update: {}
   });
   console.log(event);
   return event;
@@ -84,7 +60,7 @@ async function createRandomEvent() {
 async function main() {
   faker.seed(100);
 
-  await deleteIdUniqueData();
+  await deleteAllData();
 
   await Promise.all([
     createItemType("Clock"),
