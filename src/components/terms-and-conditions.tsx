@@ -48,14 +48,16 @@ export const TermsAndConditions = () => {
           )}
         />
 
-        <span className="pl-2">I have read and accept the</span>
-        <button
-          type="button"
-          onClick={handleshowPopupChange}
-          className="pl-1.5 text-darkAqua-400 hover:text-darkAqua-200"
-        >
-          house rules
-        </button>
+        <div className="space-x-1.5">
+          <span className="pl-2">I have read and accept the</span>
+          <button
+            type="button"
+            onClick={handleshowPopupChange}
+            className="text-darkAqua-400 hover:text-darkAqua-200"
+          >
+            house rules
+          </button>
+        </div>
         <span>.</span>
       </div>
 
@@ -115,18 +117,16 @@ export const TermsAndConditions = () => {
                           unpaid volunteers reflects the allocation of risks and
                           limitation of liability: neither the organisers of
                           Repair Lab nor the repair volunteers are liable:
-                          <ol className="list-disc">
-                            <li className="ml-4">
+                          <ol className="ml-4 list-disc">
+                            <li>
                               for any loss that may result from advice or
                               instructions concerning repairs,
                             </li>
-                            <li className="ml-4">
+                            <li>
                               for the loss of items handed over for repair,
                             </li>
-                            <li className="ml-4">
-                              for indirect or consequential loss,
-                            </li>
-                            <li className="ml-4">
+                            <li>for indirect or consequential loss,</li>
+                            <li>
                               for any other kind of loss resulting from work
                               performed at Repair Lab.
                             </li>
