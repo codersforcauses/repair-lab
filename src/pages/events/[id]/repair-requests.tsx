@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
-import {RepairRequestCardProps} from "@/components/event/index";
+import { RepairRequestCardProps } from "@/components/event/index";
 import RepairRequestCard from "@/components/event/index";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
@@ -18,12 +18,15 @@ export default function RepairRequest() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
   const [repairRequestCounter, setRepairRequestCounter] = useState<number>(0);
 
-  const [headerValues, setHeaderValues] = useState<HeaderProps>({} as HeaderProps);
+  const [headerValues, setHeaderValues] = useState<HeaderProps>(
+    {} as HeaderProps
+  );
   const [eventId, setEventId] = useState<string>("" as string);
 
   const router = useRouter();
   useEffect(() => {
-    if(router.isReady) { // ensures that the router query parameters are ready
+    if (router.isReady) {
+      // ensures that the router query parameters are ready
       setEventId(router.query.id as string);
     }
   }, [router.isReady, router.query.id]);
@@ -46,12 +49,11 @@ export default function RepairRequest() {
         </div>
       );
     }
-    return content.map((card)=>[card, card, card, card]); // Temporary: this is to test scrolling with many cards
+    return content.map((card) => [card, card, card, card]); // Temporary: this is to test scrolling with many cards
   }
 
   // Getting the repair requests for this event
   useEffect(() => {
-    
     const params = new URLSearchParams();
     params.append("event", eventId);
     try {
@@ -63,22 +65,21 @@ export default function RepairRequest() {
           setRepairRequests(data);
         });
 
-    // Getting the event information
-    fetch(`/api/dashboard/get-event?${params.toString()}`)
-      .then((res) => res.json())
-      .then((event) => {
-        setHeaderValues({
-          name: event.name,
-          location: event.location,
-          startDate: event.startDate,
-          endDate: event.endDate,
-          createdBy: event.createdBy // TODO: Later get name from clerk, given userID
+      // Getting the event information
+      fetch(`/api/dashboard/get-event?${params.toString()}`)
+        .then((res) => res.json())
+        .then((event) => {
+          setHeaderValues({
+            name: event.name,
+            location: event.location,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            createdBy: event.createdBy // TODO: Later get name from clerk, given userID
+          });
         });
-      });
     } catch (err) {
       /* empty */
     }
-
   }, [eventId]);
   return (
     <Sidebar>

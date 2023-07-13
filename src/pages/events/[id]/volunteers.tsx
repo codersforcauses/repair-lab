@@ -13,17 +13,22 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
-  const [headerValues, setHeaderValues] = useState<HeaderProps>({} as HeaderProps);
+  const [headerValues, setHeaderValues] = useState<HeaderProps>(
+    {} as HeaderProps
+  );
   const [eventId, setEventId] = useState<string>("" as string);
 
   const router = useRouter();
   useEffect(() => {
-    if(router.isReady) { // ensures that the router query parameters are ready
+    if (router.isReady) {
+      // ensures that the router query parameters are ready
       setEventId(router.query.id as string);
     }
   }, [router.isReady, router.query.id]);
+
   function Volunteers() {
     const content = [];
+    console.log(volunteers);
     for (let i = 0; i < volunteers.length; i++) {
       content.push(
         <div key={i}>
@@ -41,16 +46,21 @@ export default function Volunteers() {
     fetch(`/api/dashboard/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
-        setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
-        setHeaderValues({
-          name: event.name,
-          location: event.location,
-          startDate: event.startDate,
-          endDate: event.endDate,
-          createdBy: event.createdBy // TODO: Later get name from clerk, given userID
-        });
+        console.log(event);
+        if (event.error) {
+          console.log(event.error);
+        } else {
+          setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
+          setHeaderValues({
+            name: event.name,
+            location: event.location,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            createdBy: event.createdBy // TODO: Later get name from clerk, given userID
+          });
+        }
       });
-  }, [eventId]);
+  }, [eventId, router.isReady]);
 
   return (
     <Sidebar>

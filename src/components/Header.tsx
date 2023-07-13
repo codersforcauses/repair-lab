@@ -3,12 +3,12 @@ import React from "react";
 export interface HeaderProps {
   name: string;
   createdBy: string;
-  location :string;
+  location: string;
   startDate: Date;
   endDate: Date;
 }
 
-export default function Header( {props}: {props: HeaderProps}) {
+export default function Header({ props }: { props: HeaderProps }) {
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
     const day = actualDate.getDate().toString().padStart(2, "0");
@@ -25,15 +25,17 @@ export default function Header( {props}: {props: HeaderProps}) {
             Repair Event
           </h1>
           <p className="mr-8 text-lg text-[#098D85]">
-            Event Manager: <span className="text-zinc-800">{props.createdBy} </span>
+            Event Manager:{" "}
+            <span className="text-zinc-800">{props.createdBy} </span>
           </p>
         </div>
         <div>
           <h1 className="text-right text-xl text-zinc-600">
             Location: {props.location} <br />
-          Date: {formatDate(String(props.startDate))}
+            Date: {formatDate(String(props.startDate))}
             <br />
-            Time: {String(props.startDate).slice(12,16)}-{String(props.endDate).slice(12,16)}
+            Time: {String(props.startDate).slice(12, 16)}-
+            {String(props.endDate).slice(12, 16)}
           </h1>
         </div>
       </div>

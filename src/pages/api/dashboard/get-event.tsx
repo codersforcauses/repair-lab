@@ -9,9 +9,7 @@ export default async function handler(
   if (req.method == "GET") {
     const id = req.query.event as string;
     const event = await prisma.event.findUnique({
-
-      where: { id: id },
-      
+      where: { id: id }
     });
     if (!event) {
       return res.status(404).json({ error: "Event not found" });
