@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { CiCirclePlus } from "react-icons/ci";
 
+import VolunteerCard from "@/components/event/volunteer-card";
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar/index";
-
-import VolunteerCard from "../components/Event/volunteer-card";
+import Sidebar from "@/components/sidebar/index";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -4,9 +4,9 @@ import { Inter } from "next/font/google";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
-import RepairRequestCard from "@/components/Event/index";
+import RepairRequestCard from "@/components/event/index";
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar/index";
+import Sidebar from "@/components/sidebar/index";
 import SearchBar from "@/components/ui/SearchBar";
 import SortBy from "@/components/ui/SortBy";
 
