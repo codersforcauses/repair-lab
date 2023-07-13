@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import brandModel from "@/models/brand.model";
+import BrandService from "@/services/brand";
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,12 +18,14 @@ export default async function handler(
 }
 
 const getBrands = async (req: NextApiRequest, res: NextApiResponse) => {
-  const brands = await brandModel.getAll();
+  const brandService = new BrandService();
+  const brands = await brandService.getAll();
+
   return res.status(200).json(brands);
 };
 
-export const config = {
+export const config: PageConfig = {
   api: {
-    externalResolver: true as boolean
+    externalResolver: true
   }
 };
