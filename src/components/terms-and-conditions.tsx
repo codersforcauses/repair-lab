@@ -1,11 +1,30 @@
 // Terms and Conditions Pop-up
 
 import { Fragment, useState } from "react";
+import { Inter } from "next/font/google";
 import { Dialog, Transition } from "@headlessui/react";
+import { Controller, useForm } from "react-hook-form";
+
+const inter = Inter({ subsets: ["latin"] });
 
 import Button from "@/components/Button";
 
+type FormValues = {
+  tncAccepted: boolean;
+};
+
 export const TermsAndConditions = () => {
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormValues>({
+    defaultValues: {
+      tncAccepted: false
+    }
+  });
+
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
@@ -14,7 +33,28 @@ export const TermsAndConditions = () => {
   return (
     <>
       <div className="static flex justify-center">
-        <span className="pl-3">I have read and accept the</span>
+        <Controller
+          control={control}
+          name="tncAccepted"
+          render={({ field: { value, onChange } }) => (
+            <input
+              className={`${
+                errors.tncAccepted &&
+                "border-red-500 focus:border-red-500 focus:ring-red-500"
+              }`}
+              type="checkbox"
+              checked={value}
+              {...register("tncAccepted", {
+                required: "*Accept terms and conditions to submit."
+              })}
+              onChange={(e) => {
+                onChange(e.target.checked);
+              }}
+            />
+          )}
+        />
+
+        <span className="pl-2">I have read and accept the</span>
         <button
           type="button"
           onClick={handleshowPopupChange}
@@ -23,6 +63,8 @@ export const TermsAndConditions = () => {
           house rules
         </button>
         <span>.</span>
+
+        <p className="text-red-600"> {errors.tncAccepted?.message} </p>
       </div>
 
       <Transition appear show={showPopup} as={Fragment}>
@@ -140,7 +182,9 @@ export const TermsAndConditions = () => {
                   </div>
 
                   <div className="mt-8 flex justify-center">
-                    <Button onClick={handleshowPopupChange}>Close</Button>
+                    <Button onClick={handleshowPopupChange}>
+                      Accept and Close
+                    </Button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
