@@ -18,7 +18,7 @@ export default function Volunteers() {
     for (let i = 0; i < volunteers.length; i++) {
       content.push(
         <div key={i}>
-          <VolunteerCard name={volunteers[i]} />{" "}
+          <VolunteerCard />
           {/* //TODO: Get more volunteer info from clerk (email, phone number, etc) */}
         </div>
       );
