@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { faker } from "@faker-js/faker";
-import { PrismaClient } from "@prisma/client";
+import { Brand, ItemType, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function deleteAllData() {
@@ -21,20 +21,28 @@ async function deleteAllData() {
   }
 }
 
-async function createItemType(name: string) {
-  const itemType = await prisma.itemType.create({
-    data: { name },
+async function createItemTypes(itemTypeNames: Array<string>) {
+  const itemTypes: ItemType[] = [];
+  itemTypeNames.forEach(async (name) => {
+    const itemType = await prisma.itemType.create({
+      data: { name },
+    });
+    itemTypes.push(itemType);
+    console.log(itemType);
   });
-  console.log(itemType);
-  return itemType;
+  return itemTypes;
 }
 
-async function createBrand(name: string) {
-  const brand = await prisma.brand.create({
-    data: { name },
+async function createBrands(brandNames: Array<string>) {
+  const brands: Brand[] = [];
+  brandNames.forEach(async (name) => {
+    const brand = await prisma.brand.create({
+      data: { name },
+    });
+    brands.push(brand);
+    console.log(brand);
   });
-  console.log(brand);
-  return brand;
+  return brands;
 }
 
 async function createRandomEvent() {
@@ -57,36 +65,13 @@ async function createRandomEvent() {
   return event;
 }
 
-async function main() {
-  faker.seed(100);
-
-  await deleteAllData();
-
-  await Promise.all([
-    createItemType("Clock"),
-    createItemType("Bike"),
-    createItemType("Computer"),
-
-    createBrand("Wonderland"),
-    createBrand("BikeBrand"),
-    createBrand("OtherBikeBrand")
-  ]);
-
-  // create default event(s)
-  const event1 = await createRandomEvent();
-  const event2 = await createRandomEvent();
-  const event3 = await createRandomEvent();
-  const event4 = await createRandomEvent();
-  const event5 = await createRandomEvent();
-
-  // create default repairRequest(s)
-  const repairRequest1 = await prisma.repairRequest.create({
+async function createRandomRepairRequest() {
+  const repairRequest = await prisma.repairRequest.create({
     data: {
-      id: "40e22917-5649-4dca-aae5-c2bb3d20303a",
       createdBy: "Alice",
       assignedTo: "Cheshire Cat",
       event: {
-        connect: { id: event1.id }
+        connect: { id: "event1.id" }
       },
       status: "PENDING",
       description: "Clock stopped ticking",
@@ -108,10 +93,29 @@ async function main() {
           }
         ]
       }
-    }
+    },
   });
-  console.log(repairRequest1);
+  console.log(repairRequest);
+}
 
+async function main() {
+  faker.seed(0);
+
+  const itemTypes: string[] = ["Clock", "Bike", "Computer"];
+  const brands: string[] = ["Wonderland", "BikeBrand", "OtherBikeBrand"];
+
+  await deleteAllData();
+  await createItemTypes(itemTypes);
+  await createBrands(brands);
+
+  // create default event(s)
+  const event1 = await createRandomEvent();
+  const event2 = await createRandomEvent();
+  const event3 = await createRandomEvent();
+  const event4 = await createRandomEvent();
+  const event5 = await createRandomEvent();
+
+  // create default repairRequest(s)
   const repairRequest2 = await prisma.repairRequest.create({
     data: {
       id: "f7dc6714-043a-4a7e-9639-a43d3e5ad2cc",
@@ -271,11 +275,6 @@ async function main() {
     }
   });
   console.log(repairRequest6);
-
-  // TODO: Explore generating fake data with faker (Automated Approach)
-  // TODO: Add fake data to seed.ts
-  // OR, Manually:
-  // TODO: Create 1 extra event (At least 2 events)[DONE]
 }
 
 main()
