@@ -46,7 +46,7 @@ export default function RepairRequest() {
         </div>
       );
     }
-    return content.map((card)=>[card, card, card, card]); // Array of JSX elements
+    return content.map((card)=>[card, card, card, card]); // Temporary: this is to test scrolling with many cards
   }
 
   // Getting the repair requests for this event
