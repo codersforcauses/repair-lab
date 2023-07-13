@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { RxImage, RxPerson } from "react-icons/rx";
 import { SlFolderAlt } from "react-icons/sl";
 
@@ -9,6 +10,9 @@ interface Props {
 }
 
 const Sidebar = ({ children }: Props) => {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <div className="flex">
       <div className="fixed flex h-screen w-80 flex-col border-r-[1px] bg-white p-4">
@@ -32,13 +36,13 @@ const Sidebar = ({ children }: Props) => {
           >
             Back to Dashboard
           </Link>
-          <Link href="#">
+          <Link href={`/events/${id}/repair-requests`}>
             <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair requests</p>
             </div>
           </Link>
-          <Link href="/volunteers">
+          <Link href={`/events/${id}/volunteers`}>
             <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <RxPerson size={30} />
               <p className="px-4 text-lg">Volunteers</p>
