@@ -4,26 +4,17 @@ import { Inter } from "next/font/google";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
+import {RepairRequestCardProps} from "@/components/event/index";
 import RepairRequestCard from "@/components/event/index";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 import SearchBar from "@/components/ui/SearchBar";
 import SortBy from "@/components/ui/SortBy";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairRequest() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
   const [repairRequestCounter, setRepairRequestCounter] = useState<number>(0);
-
-  interface RepairRequestCardProps {
-    id: string;
-    description: string;
-    status: string;
-    itemType: string;
-    brand: string;
-    volunteer: string;
-  }
 
   function RepairContent() {
     const content = [];
@@ -43,14 +34,14 @@ export default function RepairRequest() {
         </div>
       );
     }
-    return content; // Array of JSX elements
+    return content.map((card)=>[card, card, card, card]); // Array of JSX elements
   }
 
   // Getting the repair requests for this event
   useEffect(() => {
     const params = new URLSearchParams();
     const eventName = "Can Bob Fix It?" as string;
-    params.append("event", eventName);
+    params.append("event", eventName); // TODO: Later use event id from dynamic route
     try {
       fetch(`/api/events/repair-request?${params.toString()}`)
         .then((res) => res.json())
@@ -61,6 +52,7 @@ export default function RepairRequest() {
     } catch (err) {
       /* empty */
     }
+
   }, []);
   return (
     <Sidebar>
