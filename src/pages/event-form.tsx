@@ -1,13 +1,16 @@
 import { useRouter } from "next/router";
 import { MenuItem, Select } from "@material-ui/core"; // To be replaced by i27 select component
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { BsXCircle } from "react-icons/bs";
+
+import FieldInput from "@/components/Form Fields/field-input";
 
 import Button from "../components/Button/index";
 
 type FormData = {
   eventName: string;
   location: string;
-  dateTime: string;
+  dateTime: Date; // or string?
   eventStatus: string;
   assignedVolunteers: string[];
 };
@@ -16,8 +19,8 @@ export default function EventForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const response = await fetch(`/api/event`, {
-      // To work on /api/event.ts
+    const response = await fetch(`/api/event-form`, {
+      // To work on /api/event-form.ts & services & schema
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -52,13 +55,13 @@ export default function EventForm() {
             width="w-8"
             onClick={() => router.push("./")}
           >
-            X
+            <BsXCircle className="text-black hover:text-gray-600 " />
           </Button>
         </div>
       </div>
       <div className="container mx-auto px-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
+          {/* <Controller
             name="eventName"
             control={control}
             defaultValue=""
@@ -79,10 +82,19 @@ export default function EventForm() {
                 />
               </div>
             )}
-          />
+          /> */}
+          <div className="mb-6">
+            <FieldInput
+              name="eventName"
+              label="Event Name"
+              control={control}
+              rules={{ required: "Name required" }}
+              placeholder="General repairs, fashion repairs, etc."
+            />
+          </div>
           <div className="mb-6 grid grid-cols-2 gap-4">
             <div>
-              <Controller
+              {/* <Controller
                 name="location"
                 control={control}
                 defaultValue=""
@@ -103,13 +115,19 @@ export default function EventForm() {
                     />
                   </div>
                 )}
+              /> */}
+              <FieldInput
+                name="location"
+                label="Location"
+                control={control}
+                rules={{ required: "Location required" }}
+                placeholder="UWA, education centre, etc."
               />
             </div>
             <div>
-              <Controller
+              {/* <Controller
                 name="dateTime"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <div className="relative">
                     <label
@@ -126,6 +144,13 @@ export default function EventForm() {
                     />
                   </div>
                 )}
+              /> */}
+              <FieldInput
+                name="dateTime"
+                type="datetime-local"
+                label="Date - Time"
+                control={control}
+                rules={{ required: "Date and time required" }}
               />
             </div>
           </div>

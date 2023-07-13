@@ -13,6 +13,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
   placeholder?: string;
   icon?: string;
+  type?: string;
 }
 
 /*
@@ -30,6 +31,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   label,
   placeholder,
   icon,
+  type,
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
@@ -40,6 +42,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
     <div className={errorStyle}>
       <Label label={!label ? props.name : label} {...props} />
       <input
+        type={!type ? "text" : `${type}`}
         className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
         placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
         id={!id ? `${props.name}` : `${id}`}
