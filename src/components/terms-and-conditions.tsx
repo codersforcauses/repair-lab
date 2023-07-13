@@ -1,12 +1,9 @@
 // Terms and Conditions Pop-up
 
 import { Fragment, useState } from "react";
-import { Inter } from "next/font/google";
 import { Dialog, Transition } from "@headlessui/react";
 import { Controller, useForm } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
-
-const inter = Inter({ subsets: ["latin"] });
 
 import Button from "@/components/Button";
 
@@ -15,12 +12,7 @@ type FormValues = {
 };
 
 export const TermsAndConditions = () => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormValues>({
+  const { control, register } = useForm<FormValues>({
     defaultValues: {
       tncAccepted: false
     }
@@ -34,7 +26,7 @@ export const TermsAndConditions = () => {
   const [Accepted, setAccepted] = useState(false);
   const handleAcceptedChange = () => {
     setAccepted((prevState) => !prevState);
-  }
+  };
 
   return (
     <>
@@ -42,7 +34,7 @@ export const TermsAndConditions = () => {
         <Controller
           control={control}
           name="tncAccepted"
-          render={({ field: { value, onChange } }) => (
+          render={({ field: { onChange } }) => (
             <input
               type="checkbox"
               checked={Accepted}
@@ -65,7 +57,6 @@ export const TermsAndConditions = () => {
           house rules
         </button>
         <span>.</span>
-
       </div>
 
       <Transition appear show={showPopup} as={Fragment}>
@@ -107,7 +98,6 @@ export const TermsAndConditions = () => {
                     House Rules
                   </Dialog.Title>
                   <div className="mt-2">
-
                     <p className="text-m text-gray-500">
                       <ol className="tlex grid list-decimal justify-center gap-y-4 pl-10 pr-10">
                         <li className="mt-4">
@@ -185,7 +175,12 @@ export const TermsAndConditions = () => {
                   </div>
 
                   <div className="mt-8 flex justify-center">
-                    <Button onClick={() => { handleshowPopupChange(); handleAcceptedChange(); }}>
+                    <Button
+                      onClick={() => {
+                        handleshowPopupChange();
+                        handleAcceptedChange();
+                      }}
+                    >
                       Accept and Close
                     </Button>
                   </div>
