@@ -16,7 +16,7 @@ export default function RepairRequestCard({
 }) {
   return (
     <div className="col-span-1 grid w-full  rounded-3xl border bg-zinc-200 ">
-      <ThumbnailRepairRequest props={props.id} />
+      <ThumbnailRepairRequest id={props.id} />
       <div className="grid w-full p-4 leading-8">
         <p className="text-md font-bold">{props.description}</p>
         <p className="text-lg">

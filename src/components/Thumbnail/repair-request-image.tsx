@@ -2,9 +2,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { RepairRequestImage } from "@prisma/client";
 
-export default function ThumbnailRepairRequest({ props }: { props: string }) {
+export default function ThumbnailRepairRequest({ id }: { id: string }) {
   const [image, setImage] = useState<RepairRequestImage[]>([]);
-  console.log(props);
+  console.log(id);
   // useEffect(() => {
   //   const params = new URLSearchParams();
   //   params.append("id", props);
