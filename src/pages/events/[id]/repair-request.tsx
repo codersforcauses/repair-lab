@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
-import { RepairRequest, RepairRequestImage } from "@prisma/client";
+import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
-import RepairRequestCard from "@/components/event/index";
+import RepairRequestCard from "@/components/Event/index";
 import Header from "@/components/Header";
-import Sidebar from "@/components/sidebar/index";
+import Sidebar from "@/components/Sidebar/index";
 import SearchBar from "@/components/ui/SearchBar";
 import SortBy from "@/components/ui/SortBy";
 
@@ -15,39 +15,27 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RepairRequest() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
   const [repairRequestCounter, setRepairRequestCounter] = useState<number>(0);
-  const [images, setImages] = useState<RepairRequestImage[]>([]);
 
   interface RepairRequestCardProps {
+    id: string;
     description: string;
     status: string;
     itemType: string;
     brand: string;
     volunteer: string;
-    // images: RepairRequestImage;
   }
-
-  // const fetchRepairRequestImage = (repairRequestId: string) => RepairRequestImage ({
-  //        const result: fetch(
-  //       `/api/events/repair-request-image?${repairRequestId.toString()}`
-  //     ).then((res) => res.json());
-  //     return result;
-  // });
 
   function RepairContent() {
     const content = [];
 
     for (let i = 0; i < repairRequests.length; i++) {
       const props: RepairRequestCardProps = {
+        id: repairRequests[i].id,
         description: repairRequests[i].description,
         status: repairRequests[i].status,
         itemType: repairRequests[i].itemType,
         brand: repairRequests[i].itemBrand,
         volunteer: repairRequests[i].assignedTo
-        // images: {
-        //   id: images[i].id,
-        //   s3Key: images[i].s3Key,
-        //   repairRequestId: images[i].repairRequestId
-        // }
       };
       content.push(
         <div key={i}>
@@ -80,16 +68,15 @@ export default function RepairRequest() {
         <Header />
         <div className="container">
           <div className="container mx-auto items-center">
-            {/* <div className="flex justify-between">*/}
-            <p className="p-4 text-2xl font-bold text-[#6C727F]">
-              Results({repairRequestCounter})
-            </p>
-
-            <div className="flex justify-end">
-              <SortBy />
-              <SearchBar />
+            <div className="flex justify-between">
+              <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
+                <span>Results({repairRequestCounter})</span>
+              </div>
+              <div className="flex justify-end">
+                <SortBy />
+                <SearchBar />
+              </div>
             </div>
-            {/* </div> */}
           </div>
           <div className="grid gap-4 p-4 lg:grid-cols-5 ">
             {RepairContent()}

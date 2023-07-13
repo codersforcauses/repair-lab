@@ -8,9 +8,9 @@ function classNames(...classes: string[]) {
 
 export default function SortBy() {
   return (
-    <Menu as="div" className="relative p-4 text-left">
+    <Menu as="div" className="relative w-full p-4 text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-0 hover:bg-gray-50 focus:shadow-md focus:outline-none">
+        <Menu.Button className="inline-flex w-auto justify-center gap-x-1.5 rounded-md bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-0 hover:bg-gray-50 focus:shadow-md focus:outline-none">
           Sort By:
           <HiOutlineChevronDown
             className="-mr-1 h-5 w-5 text-gray-400"

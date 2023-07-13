@@ -1,10 +1,8 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { RxImage, RxInfoCircled, RxPerson } from "react-icons/rx";
+import { RxImage, RxPerson } from "react-icons/rx";
 import { SlFolderAlt } from "react-icons/sl";
-
-// import logo from "../../../public/images/repair_lab_logo.jpg";
 
 interface Props {
   children?: ReactNode;
@@ -26,10 +24,15 @@ const Sidebar = ({ children }: Props) => {
             </div>
           </Link>
         </div>
-        <div className="items-left flex flex-col px-4 text-[#545454]">
+        <div className="items-left flex flex-col px-4 text-zinc-600">
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
-          <p className="p-1 text-center text-gray-600 ">Dashboard</p>
-          <Link href="/repair-request-dashboard">
+          <Link
+            href="#"
+            className="p-1 text-center text-lg font-bold text-gray-600"
+          >
+            Back to Dashboard
+          </Link>
+          <Link href="#">
             <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair requests</p>
