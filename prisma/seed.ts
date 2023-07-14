@@ -53,6 +53,14 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
   const events: Event[] = [];
 
   for (let i = 0; i < count; i++) {
+    const date = faker.date.future();
+
+    const startDate = new Date(date);
+    startDate.setHours(faker.number.int({min: 8, max: 12}));
+
+    const endDate = new Date(date);
+    endDate.setHours(faker.number.int({min: 13, max: 17}));
+
     const event = await prisma.event.create({
       data: {
         createdBy: faker.person.fullName(),
@@ -63,8 +71,8 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
         event: {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
-        startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
-        endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
+        startDate: startDate,
+        endDate: endDate,
       },
     });
     events.push(event);
