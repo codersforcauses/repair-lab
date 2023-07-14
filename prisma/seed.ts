@@ -96,7 +96,7 @@ async function createRandomRepairRequests(count: number, events: Event[], itemTy
         event: {
           connect: { id: faker.helpers.arrayElement(events).id }
         },
-        status: faker.helpers.arrayElement(["PENDING", "COMPLETED"]),
+        status: "PENDING",
         description: faker.lorem.sentence(),
         comment: faker.lorem.sentence(),
         itemBrand: faker.helpers.arrayElement(brands).name,
