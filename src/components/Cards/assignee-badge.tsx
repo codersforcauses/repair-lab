@@ -9,7 +9,13 @@ export default function AssigneeBade({ firstName, lastName, avatar }: Props) {
     <div className="rounded-lg bg-slate-300 p-2">
       <div>
         <div className="flex flex-row gap-2">
-          <div className="h-8 w-8 self-center rounded-full bg-blue-500"></div>
+          <div>
+            <img
+              src="images/repair_lab_logo.jpg"
+              className="h-8 w-8 rounded-full"
+              alt="avatar"
+            ></img>
+          </div>
           <div className="flex flex-col ">
             <p className="text-xs font-bold">{firstName}</p>
             <p className="text-xs">{lastName}</p>

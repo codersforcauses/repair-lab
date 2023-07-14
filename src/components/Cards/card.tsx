@@ -6,9 +6,18 @@ type Props = {
   description?: string;
   image?: string;
   status?: string;
+  firstName?: string;
+  lastName?: string;
 };
 
-export default function Card({ title, description, image, status }: Props) {
+export default function Card({
+  title,
+  description,
+  image,
+  status,
+  firstName,
+  lastName
+}: Props) {
   function handleClick() {
     alert("Something happens");
   }
@@ -28,7 +37,11 @@ export default function Card({ title, description, image, status }: Props) {
         <div className="mb-1 flex flex-row items-center justify-between">
           <h3 className=" t self-start text-xl font-bold">{title}</h3>
           <div className="">
-            <AssigneeBade firstName="Bambang" lastName="Johnson" avatar="yes" />
+            <AssigneeBade
+              firstName={firstName}
+              lastName={lastName}
+              avatar="yes"
+            />
           </div>
         </div>
         <div className="mb-3 h-32 overflow-auto text-sm font-light">
