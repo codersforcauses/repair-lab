@@ -6,18 +6,18 @@ export default function StatusPill({ status }: Props) {
   let bgColor;
   switch (status) {
     case "good":
-      bgColor = "green-500";
+      bgColor = "bg-green-500";
       break;
     case "meh":
-      bgColor = "yellow-500";
+      bgColor = "bg-yellow-500";
       break;
     case "bad":
-      bgColor = "red-500";
+      bgColor = "bg-red-500";
   }
 
   return (
     <button
-      className={`bg-${bgColor} right-0 rounded-full px-2 text-xs font-bold text-white`}
+      className={`${bgColor} right-0 rounded-full px-2 text-xs font-bold text-white`}
     >
       Press Me
     </button>
