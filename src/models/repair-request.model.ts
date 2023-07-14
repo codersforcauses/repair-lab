@@ -6,7 +6,9 @@ const insert = async (
   itemType: string,
   itemBrand: string,
   createdBy: string,
-  images: string[] | undefined
+  images: string[] | undefined,
+  comment: string, 
+  thumbnailImage: string
 ) => {
   const repairRequest = await prisma.repairRequest.create({
     data: {
@@ -15,6 +17,8 @@ const insert = async (
       description,
       itemType,
       itemBrand,
+      comment,
+      thumbnailImage,
       images: {
         create: images?.map((image) => {
           return {
