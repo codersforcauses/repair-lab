@@ -1,22 +1,32 @@
+import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/router";
-import { MenuItem, Select } from "@material-ui/core"; // To be replaced by i27 select component
+/* import { MenuItem, Select } from "@material-ui/core"; // To be replaced by i27 select component */
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { BsXCircle } from "react-icons/bs";
+import { GrClose } from "react-icons/gr";
 
 import FieldInput from "@/components/Form Fields/field-input";
+import { useItemTypes } from "@/hooks/item-types";
 
 import Button from "../components/Button/index";
 
 type FormData = {
-  eventName: string;
+  name: string;
   location: string;
-  dateTime: Date; // or string?
-  eventStatus: string;
-  assignedVolunteers: string[];
+  startDate: Date; // or string?
+  endDate: Date; // or string?
+  eventType: string;
+  volunteers: string[];
 };
 export default function EventForm() {
   const { handleSubmit, control } = useForm<FormData>();
   const router = useRouter();
+  const itemTypeList = useItemTypes();
+
+  // Item Types Dropdown
+  const [itemType, setItemType] = useState("");
+  const handleItemTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setItemType(event.target.value);
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const response = await fetch(`/api/event-form`, {
@@ -26,11 +36,12 @@ export default function EventForm() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        eventName: data.eventName,
+        name: data.name,
         location: data.location,
-        dateTime: data.dateTime,
-        eventStatus: data.eventStatus,
-        assignedVolunteers: data.assignedVolunteers
+        startDate: data.startDate,
+        endDate: data.endDate,
+        eventType: data.eventType,
+        volunteers: data.volunteers
       })
     });
 
@@ -55,118 +66,62 @@ export default function EventForm() {
             width="w-8"
             onClick={() => router.push("./")}
           >
-            <BsXCircle className="text-black hover:text-gray-600 " />
+            <GrClose />
           </Button>
         </div>
       </div>
       <div className="container mx-auto px-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* <Controller
-            name="eventName"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <div className="relative mb-6">
-                <label
-                  htmlFor="eventName"
-                  className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                >
-                  Event Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="eventName"
-                  type="text"
-                  {...field}
-                  placeholder="General repairs, fashion repairs, etc."
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-            )}
-          /> */}
           <div className="mb-6">
             <FieldInput
-              name="eventName"
+              name="name"
               label="Event Name"
               control={control}
               rules={{ required: "Name required" }}
               placeholder="General repairs, fashion repairs, etc."
             />
           </div>
+          <div className="mb-6">
+            <FieldInput
+              name="location"
+              label="Location"
+              control={control}
+              rules={{ required: "Location required" }}
+              placeholder="UWA, education centre, etc."
+            />
+          </div>
           <div className="mb-6 grid grid-cols-2 gap-4">
             <div>
-              {/* <Controller
-                name="location"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <div className="relative">
-                    <label
-                      htmlFor="location"
-                      className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                    >
-                      Location <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="location"
-                      type="text"
-                      {...field}
-                      placeholder="UWA, education centre, etc."
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
-                    />
-                  </div>
-                )}
-              /> */}
               <FieldInput
-                name="location"
-                label="Location"
+                name="startDate"
+                type="datetime-local"
+                label="Start Date & Time"
                 control={control}
-                rules={{ required: "Location required" }}
-                placeholder="UWA, education centre, etc."
+                rules={{ required: "Date and time required" }}
               />
             </div>
             <div>
-              {/* <Controller
-                name="dateTime"
-                control={control}
-                render={({ field }) => (
-                  <div className="relative">
-                    <label
-                      htmlFor="dateTime"
-                      className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                    >
-                      Date - Time <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id="dateTime"
-                      type="datetime-local"
-                      {...field}
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
-                    />
-                  </div>
-                )}
-              /> */}
               <FieldInput
-                name="dateTime"
+                name="endDate"
                 type="datetime-local"
-                label="Date - Time"
+                label="End Date & Time"
                 control={control}
                 rules={{ required: "Date and time required" }}
               />
             </div>
           </div>
-          <Controller
-            name="eventStatus"
+          {/* <Controller
+            name="itemType"
             control={control}
             defaultValue=""
             render={({ field }) => (
               <div className="relative mb-6">
                 <label
-                  htmlFor="eventStatus"
+                  htmlFor="itemType"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
-                  Event Status <span className="text-red-500">*</span>
+                  Item Type <span className="text-red-500">*</span>
                 </label>
-                {/* The label overlaps the border of the select component - to be fixed after importing the i27 select component. */}
                 <Select
                   {...field}
                   id="eventStatus"
@@ -174,40 +129,57 @@ export default function EventForm() {
                 >
                   <MenuItem value="ongoing">Ongoing</MenuItem>
                   <MenuItem value="completed">Completed</MenuItem>
-                  {/* ... other status options */}
                 </Select>
               </div>
             )}
-          />
+          /> */}
+          <div className="mb-6">
+            <label htmlFor="eventType">
+              Event Type <span className="text-red-500">*</span>
+            </label>
+            <div className="flex">
+              <select
+                id="eventType"
+                className="h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3"
+                value={itemType}
+                onChange={handleItemTypeChange}
+              >
+                <option value="" disabled selected>
+                  Select an option
+                </option>
+                {itemTypeList.map((itemType: string, index: number) => {
+                  return <option key={index}>{itemType}</option>;
+                })}
+              </select>
+            </div>
+          </div>
           <Controller
-            name="assignedVolunteers"
+            name="volunteers"
             control={control}
             defaultValue={[]}
             render={({ field }) => (
               <div className="relative mb-6">
                 <label
-                  htmlFor="assignedVolunteers"
+                  htmlFor="volunteers"
                   className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
                 >
                   Volunteer(s) <span className="text-red-500">*</span>
                 </label>
-                {/* The label overlaps the border of the select component - to be fixed after importing the i27 select component. */}
-                <Select
+                <select
                   {...field}
-                  id="assignedVolunteers"
+                  id="volunteers"
                   multiple
                   className="w-full rounded-md border border-gray-300 pb-1 pl-3 pr-2 pt-1  focus:border-blue-500 focus:outline-none"
                 >
-                  <MenuItem value="volunteer1">Volunteer 1</MenuItem>
-                  <MenuItem value="volunteer2">Volunteer 2</MenuItem>
-                  <MenuItem value="volunteer3">Volunteer 3</MenuItem>
-                  {/* Other volunteer options */}
-                </Select>
+                  <option value="volunteer1">Volunteer 1</option>
+                  <option value="volunteer2">Volunteer 2</option>
+                  <option value="volunteer3">Volunteer 3</option>
+                </select>
               </div>
             )}
           />
           <div className="text-right">
-            <Button height="h-8" width="w-1/5" radius="rounded-md">
+            <Button height="h-8" width="w-1/4" radius="rounded-md">
               Save Event
             </Button>
           </div>
