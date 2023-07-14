@@ -1,23 +1,29 @@
 /* eslint-disable no-console */
 import { faker } from "@faker-js/faker";
-import { Brand, Event, ItemType, PrismaClient, RepairRequest } from "@prisma/client";
+import {
+  Brand,
+  Event,
+  ItemType,
+  PrismaClient,
+  RepairRequest
+} from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function deleteAllData() {
   const tablenames = await prisma.$queryRaw<
     Array<{ tablename: string }>
-  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`
+  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
 
   const tables = tablenames
     .map(({ tablename }) => tablename)
-    .filter((name) => name !== '_prisma_migrations')
+    .filter((name) => name !== "_prisma_migrations")
     .map((name) => `"public"."${name}"`)
-    .join(', ')
+    .join(", ");
 
   try {
-    await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`)
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`);
   } catch (error) {
-    console.log({ error })
+    console.log({ error });
   }
 }
 
@@ -26,7 +32,7 @@ async function createItemTypes(itemTypeNames: string[]) {
 
   for (const name of itemTypeNames) {
     const itemType = await prisma.itemType.create({
-      data: { name },
+      data: { name }
     });
 
     itemTypes.push(itemType);
@@ -41,7 +47,7 @@ async function createBrands(brandNames: string[]) {
 
   for (const name of brandNames) {
     const brand = await prisma.brand.create({
-      data: { name },
+      data: { name }
     });
 
     brands.push(brand);
@@ -58,10 +64,10 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
     const date = faker.date.future();
 
     const startDate = new Date(date);
-    startDate.setHours(faker.number.int({min: 8, max: 12}));
+    startDate.setHours(faker.number.int({ min: 8, max: 12 }));
 
     const endDate = new Date(date);
-    endDate.setHours(faker.number.int({min: 13, max: 17}));
+    endDate.setHours(faker.number.int({ min: 13, max: 17 }));
 
     const event = await prisma.event.create({
       data: {
@@ -74,8 +80,8 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
         startDate: startDate,
-        endDate: endDate,
-      },
+        endDate: endDate
+      }
     });
 
     events.push(event);
@@ -85,7 +91,12 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
   return events;
 }
 
-async function createRandomRepairRequests(count: number, events: Event[], itemTypes: ItemType[], brands: Brand[]) {
+async function createRandomRepairRequests(
+  count: number,
+  events: Event[],
+  itemTypes: ItemType[],
+  brands: Brand[]
+) {
   const repairRequests: RepairRequest[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -106,20 +117,20 @@ async function createRandomRepairRequests(count: number, events: Event[], itemTy
         item: {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
-        thumbnailImage: faker.image.urlPlaceholder({width: 640, height: 480}),
+        thumbnailImage: faker.image.urlPlaceholder({ width: 640, height: 480 }),
         repairComment: faker.lorem.sentence(),
         spareParts: faker.lorem.sentence(),
         images: {
           create: [
             {
-              s3Key: faker.image.urlPlaceholder({width: 640, height: 480})
+              s3Key: faker.image.urlPlaceholder({ width: 640, height: 480 })
             },
             {
-              s3Key: faker.image.urlPlaceholder({width: 640, height: 480})
+              s3Key: faker.image.urlPlaceholder({ width: 640, height: 480 })
             }
           ]
         }
-      },
+      }
     });
 
     repairRequests.push(repairRequest);
@@ -142,7 +153,12 @@ async function main() {
   const brands: Brand[] = await createBrands(brandNames);
   const events: Event[] = await createRandomEvents(eventCount, itemTypes);
   // const repairRequests: RepairRequest[] =
-  await createRandomRepairRequests(repairRequestCount, events, itemTypes, brands);
+  await createRandomRepairRequests(
+    repairRequestCount,
+    events,
+    itemTypes,
+    brands
+  );
 }
 
 main()
