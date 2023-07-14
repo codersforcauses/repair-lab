@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
