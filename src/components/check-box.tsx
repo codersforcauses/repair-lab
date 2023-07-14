@@ -15,35 +15,22 @@ import {
 } from "react-hook-form";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
-  label?: string;
-  href?: string;
-  hrefLabel?: string;
+  children?: React.ReactNode;
 }
 
-export default function Field_Checkbox<T extends FieldValues = FieldValues>({
-  label,
-  href,
-  hrefLabel,
+export default function FieldCheckbox<T extends FieldValues = FieldValues>({
+  children,
   ...props
 }: FormProps<T>) {
   const { field } = useController({ ...props });
 
   return (
-    <div className="order-3 flex h-12 w-96 flex-none items-center self-stretch">
-      <input type="checkbox" {...field} className="ml-4 mr-4" />
+    <div className="px-2 py-2">
+      <input type="checkbox" {...field} id={props.name} className="ml-4 mr-4" />
 
-      {label && (
-        <label htmlFor={props.name}>
-          {label}
-          {href ? (
-            <a href={href} className="ml-2 font-bold underline">
-              {hrefLabel}
-            </a>
-          ) : (
-            hrefLabel
-          )}
-        </label>
-      )}
+      <label htmlFor={props.name}>
+          {children}
+      </label>
     </div>
   );
 }
