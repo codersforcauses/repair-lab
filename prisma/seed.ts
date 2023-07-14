@@ -28,6 +28,7 @@ async function createItemTypes(itemTypeNames: string[]) {
     const itemType = await prisma.itemType.create({
       data: { name },
     });
+
     itemTypes.push(itemType);
     console.log(itemType);
   }
@@ -42,6 +43,7 @@ async function createBrands(brandNames: string[]) {
     const brand = await prisma.brand.create({
       data: { name },
     });
+
     brands.push(brand);
     console.log(brand);
   }
@@ -75,6 +77,7 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
         endDate: endDate,
       },
     });
+
     events.push(event);
     console.log(event);
   }
@@ -82,7 +85,7 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
   return events;
 }
 
-async function createRandomRepairRequests(count: number, events: Event[], itemTypes: ItemType[]) {
+async function createRandomRepairRequests(count: number, events: Event[], itemTypes: ItemType[], brands: Brand[]) {
   const repairRequests: RepairRequest[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -96,25 +99,29 @@ async function createRandomRepairRequests(count: number, events: Event[], itemTy
         status: faker.helpers.arrayElement(["PENDING", "COMPLETED"]),
         description: faker.lorem.sentence(),
         comment: faker.lorem.sentence(),
-        itemBrand: faker.helpers.arrayElement(itemTypes).name,
-        requestDate: new Date(),
-        updatedAt: new Date(),
+        itemBrand: faker.helpers.arrayElement(brands).name,
+        itemMaterial: faker.word.noun(),
+        requestDate: faker.date.past(),
+        updatedAt: faker.date.recent(),
         item: {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
-        thumbnailImage: "https://tinyurl.com/broken-clock-sad",
+        thumbnailImage: faker.image.urlPlaceholder({width: 640, height: 480}),
+        repairComment: faker.lorem.sentence(),
+        spareParts: faker.lorem.sentence(),
         images: {
           create: [
             {
-              s3Key: "https://tinyurl.com/broken-clock-sad"
+              s3Key: faker.image.urlPlaceholder({width: 640, height: 480})
             },
             {
-              s3Key: "https://tinyurl.com/broken-clock-sad"
+              s3Key: faker.image.urlPlaceholder({width: 640, height: 480})
             }
           ]
         }
       },
     });
+
     repairRequests.push(repairRequest);
     console.log(repairRequest);
   }
@@ -123,18 +130,19 @@ async function createRandomRepairRequests(count: number, events: Event[], itemTy
 }
 
 async function main() {
-  faker.seed(0);
-  await deleteAllData();
-
+  const fakerSeed = 0;
   const itemTypeNames: string[] = ["Clock", "Bike", "Computer"];
-  const brandNames: string[] = ["Wonderland", "BikeBrand", "OtherBikeBrand"];
+  const brandNames: string[] = ["Seiko", "Giant Bicycles", "Alienware"];
   const eventCount = 10;
   const repairRequestCount = 15;
 
+  faker.seed(fakerSeed);
+  await deleteAllData();
   const itemTypes: ItemType[] = await createItemTypes(itemTypeNames);
   const brands: Brand[] = await createBrands(brandNames);
   const events: Event[] = await createRandomEvents(eventCount, itemTypes);
-  const repairRequests: RepairRequest[] = await createRandomRepairRequests(repairRequestCount, events, itemTypes);
+  // const repairRequests: RepairRequest[] =
+  await createRandomRepairRequests(repairRequestCount, events, itemTypes, brands);
 }
 
 main()
