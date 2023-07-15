@@ -38,7 +38,6 @@ export default function Home() {
           Aldus PageMaker including versions of Lorem Ipsum.
         </div>
       </div>
-      {/* Page 2 Start */}
       <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
         <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
         <div className="flex flex-col rounded-lg border">
@@ -51,7 +50,6 @@ export default function Home() {
               className="h-auto w-auto justify-center"
             />
           </div>
-
           <div className="bg-grey-100 pt-2 text-center text-xl">
             <span className="pb-10 font-bold"> Event Name </span>
             <div className="pt-2 text-sm">
@@ -65,7 +63,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       <div className="mb-16 h-auto bg-white">
         <div className="pb-5 pt-16 text-center text-2xl font-bold">
           Submit item for repair
