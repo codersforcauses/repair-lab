@@ -33,12 +33,12 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   placeholder,
   icon,
   type,
-  width = "full",
+  width = "w-full",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
   const inputStyle = `mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;

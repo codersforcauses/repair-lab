@@ -28,13 +28,13 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
   id,
   label,
   placeholder,
-  width = "full",
-  height = "36",
+  width = "w-full",
+  height = "h-36",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `relative mb-2 flex h-${height} w-${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`;
+  const baseStyle = `relative mb-2 flex ${height} ${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
   const textAreaStyle = `overflow-wrap:break-text h-4/5 w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;

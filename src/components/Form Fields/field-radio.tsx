@@ -26,12 +26,12 @@ Output:
 export default function FieldRadio<T extends FieldValues = FieldValues>({
   id,
   label,
-  width = "full",
+  width = "w-full",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `relative mb-2 flex h-10 w-${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
   const radioStyle = `my-auto flex flex-row items-start gap-4 text-xs`;
