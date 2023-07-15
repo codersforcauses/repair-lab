@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import ListCard from "@/components/repair-request/list-card";
+import Card from "@/components/Cards/card";
 
 
 
@@ -21,7 +21,12 @@ export default function RepairReqList() {
 
       {/* Heading of the Page */}
       <h1 className="text-xl font-bold"> Repair Request List</h1>
-      <ListCard/>
+      
+      {/* TODO */}
+      <Card title = "title" 
+            description = "description" 
+      />
+
     </main>
   );
 }
