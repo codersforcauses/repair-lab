@@ -1,12 +1,16 @@
 import { Inter } from "next/font/google";
 
-import RepairRequest from "@/pages/repair-request";
+import Button from "@/components/Button";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
-      <RepairRequest />
+    <main
+      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+    >
+      <h1>Hello!</h1>
+      <Button aria-label="button"> Hello </Button>
     </main>
   );
 }
