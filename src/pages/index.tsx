@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import Image from "next/image";
 
+import Button from "@/components/Button";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -44,6 +46,7 @@ export default function Home() {
       <div>page 2</div>
       <div className="w-flex flex-col h-9 bg-white">
         <div className="text-center text-2xl font-bold mt-10 mb-5">Submit item for repair</div>
+        <Button aria-label="button"> Hello </Button>
       </div>
     </div>
   );
