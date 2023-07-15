@@ -44,9 +44,11 @@ export default function Home() {
         </div>
       </div>
       <div>page 2</div>
-      <div className="w-flex flex-col h-9 bg-white">
-        <div className="text-center text-2xl font-bold mt-10 mb-5">Submit item for repair</div>
-        <Button aria-label="button"> Hello </Button>
+      <div className="flex-col h-9 bg-white pb-10 -translate-y-1/2 -mb-5">
+        <div className="text-center text-2xl font-bold mt-10">
+          Submit item for repair
+        </div>
+        <Button aria-label="button" className="ml-10 mr-10 h-10 mb-5"> New Request </Button>
       </div>
     </div>
   );
