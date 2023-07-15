@@ -7,8 +7,8 @@ import {
 } from "react-hook-form";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 
-import Label from "@/components/Form Fields/box-label";
-import Error from "@/components/Form Fields/error-msg";
+import Label from "@/components/FormFields/box-label";
+import Error from "@/components/FormFields/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
