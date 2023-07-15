@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
-import VolunteerCard from "@/components/event/volunteer-card";
+import AssigneeBadge from "@/components/Cards/assignee-badge";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
@@ -28,14 +28,15 @@ export default function Volunteers() {
 
   function Volunteers() {
     const content = [];
-    console.log(volunteers);
+    // TODO: Include more volunteer info from clerk (email, avatar, etc) */}
+
     for (let i = 0; i < volunteers.length; i++) {
       content.push(
         <div key={i}>
-          <VolunteerCard />
-          {/* //TODO: Include more volunteer info from clerk (email, phone number, etc) */}
+          <AssigneeBadge firstName={volunteers[i]}  />
         </div>
       );
+      
     }
     return content;
   }
@@ -46,19 +47,16 @@ export default function Volunteers() {
     fetch(`/api/dashboard/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
-        console.log(event);
-        if (event.error) {
-          console.log(event.error);
-        } else {
-          setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
-          setHeaderValues({
-            name: event.name,
-            location: event.location,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            createdBy: event.createdBy // TODO: Later get name from clerk, given userID
-          });
-        }
+        
+      setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
+      setHeaderValues({
+        name: event.name,
+        location: event.location,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        createdBy: event.createdBy // TODO: Later get name from clerk, given userID
+      });
+    
       });
   }, [eventId, router.isReady]);
 
