@@ -11,16 +11,20 @@ import { Dialog } from '@headlessui/react'
 
 
 
-
-async function getEvent(eventName: string) {
-  return await prisma.event.findUnique({
-    where: {name: eventName}
-  })
-}
-
 function Table() {
+  const [formData, setFormData] = useState<Partial<Event>>({
+    id: undefined,
+    name: "",
+    createdBy: "",
+    location: "",
+    startDate: undefined,
+    eventType: "",
+    status: undefined,
+  });
+
+  const router = useRouter();
+
   const [modalActive, toggleModal] = useState(false)
-  const { register, setValue, formState: { errors } } = useForm<FormData>();
   const onSubmit = handleSubmit(data => console.log(data));
 
 
@@ -38,16 +42,6 @@ function Table() {
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
 
-  const [formData, setFormData] = useState<Partial<Event>>({
-    id: undefined,
-    name: "",
-    createdBy: "",
-    location: "",
-    startDate: undefined,
-    eventType: "",
-    status: undefined,
-  });
-
 
   // The label is what users see, the key is what the server uses
   const headers: { key: string; label: string }[] = [
@@ -64,18 +58,18 @@ function Table() {
     { key: "desc", label: "Descending" }
   ];
 
-  // // Whenever the sortKey or sortMethod changes, the useEffect hook will run
-  // useEffect(() => {
-  //   const params = new URLSearchParams();
-  //   params.append('sortKey', sortKey);
-  //   params.append('sortMethod', sortMethod);
+  // Whenever the sortKey or sortMethod changes, the useEffect hook will run
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.append('sortKey', sortKey);
+    params.append('sortMethod', sortMethod);
   
-  //   fetch(`/api/get_events?${params.toString()}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setEventData(data);
-  //     });
-  // }, [sortKey, sortMethod]);
+    fetch(`/api/get_events?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEventData(data);
+      });
+  }, [sortKey, sortMethod]);
 
 
   //will toggle modal visibility for editing events
@@ -102,6 +96,68 @@ function Table() {
       setSortMethod("asc");
     }
   }
+
+    // takes form values and posts them to DB
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    console.log("in function");
+    //event.preventDefault();
+  
+    try {
+
+      const response = await fetch("/api/edit_event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        const updatedEvent = await response.json();
+        // Do something with the updated event, if needed
+        console.log(updatedEvent);
+        setShowForm(false);
+        router.reload(); // Reload the page to update the event data
+      } else {
+        console.error("Failed to update event");
+      }
+    } catch (error) {
+      console.error("An error occurred while updating the event:", error);
+    }
+  }
+
+  function handleSearch(searchTerm: string) {
+    const params = new URLSearchParams();
+    params.append("sortKey", sortKey);
+    params.append("sortMethod", sortMethod);
+    params.append("search", searchTerm);
+
+    fetch(`/api/search?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEventData(data);
+      });
+  }
+
+  // formats input data before passing it on
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+  
+    // Convert startDate to a Date object before assigning it
+    if (name === "startDate") {
+      const formattedDate = new Date(value);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: formattedDate,
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
+  }
+
 
   function ToggleChevron(column: string){
     const columnInt = parseInt(column.column);
@@ -165,69 +221,6 @@ function Table() {
         </select>
       </div>
     );
-  }
-
-
-  // takes form values and posts them to DB
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    console.log("in function");
-    //event.preventDefault();
-  
-    try {
-
-      const response = await fetch("/api/edit_event", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      if (response.ok) {
-        const updatedEvent = await response.json();
-        // Do something with the updated event, if needed
-        console.log(updatedEvent);
-        setShowForm(false);
-        router.reload(); // Reload the page to update the event data
-      } else {
-        console.error("Failed to update event");
-      }
-    } catch (error) {
-      console.error("An error occurred while updating the event:", error);
-    }
-  }
-
-
-  function handleSearch(searchTerm: string) {
-    const params = new URLSearchParams();
-    params.append("sortKey", sortKey);
-    params.append("sortMethod", sortMethod);
-    params.append("search", searchTerm);
-
-    fetch(`/api/search?${params.toString()}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setEventData(data);
-      });
-  }
-
-  // formats input data before passing it on
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-  
-    // Convert startDate to a Date object before assigning it
-    if (name === "startDate") {
-      const formattedDate = new Date(value);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: formattedDate,
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
   }
 
 
