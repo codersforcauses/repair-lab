@@ -346,7 +346,9 @@ function Table() {
               {eventData.map((event: Event) => {
                 return (
                   <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-100">
-                    <td className="pl-5">{event.name}</td>
+                    <td className="pl-5">
+                      <button onClick={() => router.push("/event-form/" + event.id)}>{event.name}</button>
+                    </td>
                     <td>{event.createdBy}</td>
                     <td>{event.location}</td>
                     <td>{formatDate(String(event.startDate))}</td>
