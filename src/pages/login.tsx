@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSignIn } from "@clerk/nextjs";
+import { useSignIn, useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 
 import CustomButton from "@/components/custombutton-large";
@@ -16,14 +16,17 @@ interface LoginFormValues {
 export default function Login() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const [loginError, setLoginError] = useState(false);
+  const [loginErrMsg, setLoginErrMsg] = useState("");
+  const { isSignedIn } = useUser();
 
   const router = useRouter();
+
+  if (isSignedIn) router.push("/");
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm<LoginFormValues>();
 
   const onSubmit = async (data: LoginFormValues) => {
@@ -51,24 +54,14 @@ export default function Login() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      const errorCode = err.errors[0].code;
-      if (
-        errorCode === "form_password_incorrect" ||
-        errorCode === "form_identifier_not_found"
-      ) {
-        setLoginError(true);
-      } else {
-        // TODO: Use better alert component for error.
-        alert("Something went wrong!");
-      }
+      setLoginError(true);
+      setLoginErrMsg(err.errors[0].longMessage);
     }
-
-    reset();
   };
 
   return (
     <div className="flex h-screen items-center justify-center">
-      <div className="rounded-md bg-white p-8 shadow">
+      <div className="w-screen rounded-md bg-white p-8 shadow md:w-3/6 lg:w-4/12">
         <div className="flex items-center justify-center">
           <Image
             src="/images/repair_lab_logo.jpg"
