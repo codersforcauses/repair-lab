@@ -89,7 +89,7 @@ export default function RepairRequest() {
           <div className="container mx-auto items-center">
             <div className="flex justify-between">
               <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-                <span>Results({repairRequestCounter})</span>
+                <span>Repair Requests ({repairRequestCounter})</span>
               </div>
               <div className="flex justify-end">
                 <SortBy />

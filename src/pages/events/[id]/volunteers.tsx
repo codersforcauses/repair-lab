@@ -67,7 +67,9 @@ export default function Volunteers() {
       <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
         <Header props={headerValues} />
         <div className="container">
-          <p className="p-4 text-2xl font-bold text-[#6C727F]">Volunteers</p>
+          <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
+                <span>Volunteers ({volunteers.length})</span>
+              </div>
           <div className="container mx-auto">
             <div className="flex justify-end"></div>
           </div>
