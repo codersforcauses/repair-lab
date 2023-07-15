@@ -43,13 +43,41 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div>page 2</div>
+
+
+      {/* Page 2 Start */}
+      <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
+        <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
+        <div className="flex flex-col rounded-lg border">
+          <div>
+            <Image
+              src="/images/event_details.jpg"
+              alt="Large white bowl of fresh potato goodness"
+              width={500}
+              height={500}
+              className="h-auto w-auto justify-center"
+            />
+          </div>
+
+          <div className="bg-grey-100 pt-2 text-center text-xl">
+            <span className="font-bold pb-10"> Event Name </span>
+            <div className="text-sm pt-2"> 
+              <h1 className="font-bold">National Potato Chip Day </h1>
+              <h2>Date: March 14th</h2>
+              <p className="pt-2 pl-10 pr-10 pb-3"> Lots of Potato Chip Eating, Potato merch, Baby Potatoes </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="flex-col h-9 bg-white pb-10 -translate-y-1/2 -mb-5">
         <div className="text-center text-2xl font-bold mt-10">
           Submit item for repair
         </div>
         <Button aria-label="button" className="ml-10 mr-10 h-10 mb-5"> New Request </Button>
       </div>
+
+      
     </div>
   );
 }
