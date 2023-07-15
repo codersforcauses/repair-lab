@@ -14,7 +14,7 @@ const Modal = () => {
 
   return (
     <>
-      <div className="static flex justify-center">
+      <div className="fixed inset-0 flex items-center justify-center">
         <span className="pl-3"></span>
         <button
           type="button"
@@ -40,8 +40,8 @@ const Modal = () => {
             <div className="fixed inset-0 bg-grey-950 opacity-20" />
           </Transition.Child>
 
-          <div className="fixed inset-0 h-auto overflow-y-auto">
-            <div className="flex items-center justify-center p-4 text-center">
+          <div className="fixed inset-0 h-full overflow-y-auto">
+            <div className="flex h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -51,7 +51,7 @@ const Modal = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-auto max-w-5xl transform overflow-hidden rounded-2xl bg-[#FFFFFF] p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#FFFFFF] p-6 text-left align-middle shadow-xl transition-all sm:max-w-lg md:max-w-2xl">
                   {/* <div className="text-gray-300 p-5 text-center text-2xl font-medium leading-6"></div> */}
                   <Dialog.Title
                     as="h3"
@@ -66,13 +66,9 @@ const Modal = () => {
                         *Notice:......*{" "}
                       </p>
 
-                      <ol className="tlex grid list-decimal justify-center gap-y-4 pl-10 pr-10">
-                        <li>
-                          Demo..............................................................................................................
-                        </li>
-                        <li>
-                          Demo..............................................................................................................
-                        </li>
+                      <ol className="pl-full grid list-decimal justify-center gap-y-4 pr-10">
+                        <li>Demo.........</li>
+                        <li>Demo.........</li>
                       </ol>
                     </p>
                   </div>
