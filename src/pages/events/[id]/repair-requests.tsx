@@ -8,8 +8,6 @@ import { CiCirclePlus } from "react-icons/ci";
 import { RxAvatar } from "react-icons/rx";
 
 import Card, { CardProps } from "@/components/Cards/card";
-import { RepairRequestCardProps } from "@/components/event/index";
-import RepairRequestCard from "@/components/event/index";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
@@ -44,6 +42,7 @@ export default function RepairRequest() {
         description: repairRequests[i].description,
         status: repairRequests[i].status,
         firstName: repairRequests[i].assignedTo,
+        lastName: "",
         avatar: "/images/repair_lab_logo.jpg"
       };
       content.push(
@@ -52,7 +51,7 @@ export default function RepairRequest() {
         </div>
       );
     }
-    return content; // Temporary: this is to test scrolling with many cards
+    return content;
   }
 
   // Getting the repair requests for this event
@@ -77,7 +76,7 @@ export default function RepairRequest() {
             location: event.location,
             startDate: event.startDate,
             endDate: event.endDate,
-            createdBy: event.createdBy // TODO: Later get name from clerk, given userID
+            createdBy: event.createdBy // TODO: Later get creator name from clerk, given userID
           });
         });
     } catch (err) {
@@ -100,7 +99,7 @@ export default function RepairRequest() {
               </div>
             </div>
           </div>
-          <div className="grid gap-4 p-4 lg:grid-cols-3 md:grid-rows-3 sm:grid-rows-2">
+          <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-3">
             {RepairContent()}
             <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
               <CiCirclePlus color="#d9d9d9" size={100} />

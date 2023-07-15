@@ -33,10 +33,9 @@ export default function Volunteers() {
     for (let i = 0; i < volunteers.length; i++) {
       content.push(
         <div key={i}>
-          <AssigneeBadge firstName={volunteers[i]}  />
+          <AssigneeBadge firstName={volunteers[i]} />
         </div>
       );
-      
     }
     return content;
   }
@@ -47,16 +46,14 @@ export default function Volunteers() {
     fetch(`/api/dashboard/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
-        
-      setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
-      setHeaderValues({
-        name: event.name,
-        location: event.location,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        createdBy: event.createdBy // TODO: Later get name from clerk, given userID
-      });
-    
+        setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
+        setHeaderValues({
+          name: event.name,
+          location: event.location,
+          startDate: event.startDate,
+          endDate: event.endDate,
+          createdBy: event.createdBy // TODO: Later get name from clerk, given userID
+        });
       });
   }, [eventId, router.isReady]);
 
@@ -66,8 +63,8 @@ export default function Volunteers() {
         <Header props={headerValues} />
         <div className="container">
           <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-                <span>Volunteers ({volunteers.length})</span>
-              </div>
+            <span>Volunteers ({volunteers.length})</span>
+          </div>
           <div className="container mx-auto">
             <div className="flex justify-end"></div>
           </div>
