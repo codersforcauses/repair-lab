@@ -24,7 +24,6 @@ export default function Card({
     alert("Something happens");
   }
 
-  const cardStyle = `w-36 `;
   return (
     <div
       onClick={handleClick}
