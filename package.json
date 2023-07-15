@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.21.3",
+    "@headlessui/react": "^1.7.15",
     "@prisma/client": "^4.15.0",
     "@types/chai": "^4.3.5",
     "axios": "^1.4.0",
