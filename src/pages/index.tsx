@@ -64,7 +64,7 @@ export default function Home() {
       </div>
 
       <div className="h-auto bg-white mb-16">
-        <div className="text-center text-2xl font-bold mt-10 mb-10">
+        <div className="text-center text-2xl font-bold pt-16 pb-5">
           Submit item for repair
         </div>
         <div className="h-30 pr-10 pl-10 mt-5 mb-10">
