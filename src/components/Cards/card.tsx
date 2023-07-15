@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import AssigneeBade from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
 
@@ -28,7 +30,7 @@ export default function Card({
       className="col-span-1 w-72 flex-col overflow-hidden rounded-lg bg-slate-200 shadow-2xl transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-slate-100"
     >
       <div className="flex justify-center">
-        <img src={props.image} alt="" className="object-fit max-h-32 w-full" />
+        <Image src={props.image || ""} alt="hello" className="object-fit max-h-32 w-full" width={100} height={100} />
       </div>
       <div className="p-2">
         <div className="mb-1 flex flex-row items-start justify-between">
