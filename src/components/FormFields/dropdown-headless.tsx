@@ -18,7 +18,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
 }
 
-function classNames(...classes: any) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
