@@ -40,17 +40,17 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
         <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
-        <div className="flex flex-col rounded-lg border">
+        <div className="flex flex-col">
           <div>
             <Image
               src="/images/event_details.jpg"
               alt="Large white bowl of fresh potato goodness"
               width={500}
               height={500}
-              className="h-auto w-auto justify-center"
+              className="h-auto w-auto justify-center rounded-t-lg"
             />
           </div>
-          <div className="bg-grey-100 pt-2 text-center text-xl">
+          <div className="rounded-b-lg bg-grey-100 pt-2 text-center text-xl">
             <span className="pb-10 font-bold"> Event Name </span>
             <div className="pt-2 text-sm">
               <h1 className="font-bold">National Potato Chip Day </h1>
