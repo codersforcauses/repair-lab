@@ -42,7 +42,9 @@ export default function Home() {
         </div>
       </div>
       <div>page 2</div>
-      <div className="w-screen h-9">page 3</div>
+      <div className="w-flex flex-col h-9 bg-white">
+        <div className="text-center text-2xl font-bold mt-10 mb-5">Submit item for repair</div>
+      </div>
     </div>
   );
 }
