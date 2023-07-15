@@ -1,11 +1,10 @@
 /*
 This is a component for a checkbox with accompanying text.
-Input:
-  label: The text displayed next to the checkbox
-  href: The URL for the hyperlink
-  hrefLabel: The text displayed for the hyperlink
-Output:
-  A checkbox input with associated text that is compatible with react-hook-form
+It is a wrapper around the react-hook-form useController hook.
+How to use:
+    <FieldCheckbox name="myCheckbox" control={control}>
+      Some text <a href="https://www.google.com">with a link</a>
+    </FieldCheckbox>
 */
 
 import {
@@ -28,9 +27,7 @@ export default function FieldCheckbox<T extends FieldValues = FieldValues>({
     <div className="px-2 py-2">
       <input type="checkbox" {...field} id={props.name} className="ml-4 mr-4" />
 
-      <label htmlFor={props.name}>
-          {children}
-      </label>
+      <label htmlFor={props.name}>{children}</label>
     </div>
   );
 }
