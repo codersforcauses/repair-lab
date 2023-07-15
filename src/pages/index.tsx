@@ -5,7 +5,7 @@ import Button from "@/components/Button/index";
 export default function Home() {
   return (
     <div className="bg-lightAqua-100">
-      <div className="relative h-36 w-full">
+      <div className="relative h-44 w-full">
         <Image
           src="/images/landing.jpg"
           alt="Greyscale picture of water animal"
