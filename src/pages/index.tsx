@@ -7,21 +7,23 @@ export default function Home() {
   return (
     <div className="relative">
       <div className="h-screen w-screen">
-        <div className="h-1/3 w-full">
+        <div className="h-1/3 w-full relative">
           <Image
             src="/images/landing.jpg"
             alt="Greyscale picture of water animal"
-            width={200}
-            height={400}
-            className="h-full"
+            // width={200}
+            // height={400}
+            fill={true}
+            className="object-cover object-center"
           />
         </div>
-        <div className="left-1/2 top-1/4 z-10 w-32 -translate-y-1/2 transform">
+        <div className="flex justify-center -translate-y-1/2 transform w-full">
           <Image
             src="/images/repair_lab_logo.png"
             alt="Greyscale picture of water animal"
             width={500}
             height={500}
+            className="h-28 w-28"
           />
         </div>
         <div className="relative left-1/2 top-1/2 z-10 -translate-x-1/2 transform">
@@ -45,6 +47,5 @@ export default function Home() {
       <div>
       </div>
       </div>
-    </div>
   );
 }
