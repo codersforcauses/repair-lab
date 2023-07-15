@@ -34,7 +34,7 @@ const Sidebar = ({ children }: Props) => {
             href="#"
             className="p-1 text-center text-lg font-bold text-gray-600"
           >
-            Back to Dashboard
+            Back to Events
           </Link>
           <Link href={`/events/${id}/repair-requests`}>
             <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">

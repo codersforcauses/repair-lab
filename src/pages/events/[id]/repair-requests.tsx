@@ -1,10 +1,13 @@
+/* eslint-disable unused-imports/no-unused-imports */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
+import { RxAvatar } from "react-icons/rx";
 
+import Card, { CardProps } from "@/components/Cards/card";
 import { RepairRequestCardProps } from "@/components/event/index";
 import RepairRequestCard from "@/components/event/index";
 import { HeaderProps } from "@/components/Header";
@@ -35,21 +38,21 @@ export default function RepairRequest() {
     const content = [];
 
     for (let i = 0; i < repairRequests.length; i++) {
-      const props: RepairRequestCardProps = {
-        id: repairRequests[i].id,
+      const props: CardProps = {
+        title: repairRequests[i].id,
+        image: "/images/broken-clock-sad.jpg",
         description: repairRequests[i].description,
         status: repairRequests[i].status,
-        itemType: repairRequests[i].itemType,
-        brand: repairRequests[i].itemBrand,
-        volunteer: repairRequests[i].assignedTo
+        firstName: repairRequests[i].assignedTo,
+        avatar: "/images/repair_lab_logo.jpg"
       };
       content.push(
         <div key={i}>
-          <RepairRequestCard props={props} />
+          <Card props={props} />
         </div>
       );
     }
-    return content.map((card) => [card, card, card, card]); // Temporary: this is to test scrolling with many cards
+    return content; // Temporary: this is to test scrolling with many cards
   }
 
   // Getting the repair requests for this event
@@ -97,7 +100,7 @@ export default function RepairRequest() {
               </div>
             </div>
           </div>
-          <div className="grid gap-4 p-4 lg:grid-cols-5 ">
+          <div className="grid gap-4 p-4 lg:grid-cols-3 md:grid-rows-3 sm:grid-rows-2">
             {RepairContent()}
             <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
               <CiCirclePlus color="#d9d9d9" size={100} />
