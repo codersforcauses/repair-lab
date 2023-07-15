@@ -179,7 +179,7 @@ export default function EventForm() {
             )}
           />
           <div className="text-right">
-            <Button height="h-8" width="w-1/4" radius="rounded-md">
+            <Button height="h-11" width="w-1/6" radius="rounded-md">
               Save Event
             </Button>
           </div>
