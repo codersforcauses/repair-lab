@@ -26,8 +26,7 @@ export default function Home() {
             className="h-28 w-28"
           />
         </div>
-        <div className="relative left-1/2 top-1/2 z-10 -translate-x-1/2 transform">
-          <div className="flex flex-col pr-10 pl-10">
+        <div className="flex justify-center pr-10 pl-10">
             <div className="mb-1 text-center text-xl font-bold pt-28">About Us</div>
             <div className="">
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -40,12 +39,11 @@ export default function Home() {
               and more recently with desktop publishing software like Aldus
               PageMaker including versions of Lorem Ipsum.
             </div>
-          </div>
         </div>
       </div>
-      {/* PAGE 2 START */}
       <div>
+        page 2
       </div>
-      </div>
+    </div>
   );
 }
