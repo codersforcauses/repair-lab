@@ -7,7 +7,7 @@ import "@/styles/repair.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ClerkProvider {...pageProps}>
+    <ClerkProvider clerkJSVariant="headless" {...pageProps}>
       <Component {...pageProps} />
     </ClerkProvider>
   );

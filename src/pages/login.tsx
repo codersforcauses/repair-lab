@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSignIn, useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 
+import SignInOAuthButton from "@/components/Button/sign-in-oauth";
 import CustomButton from "@/components/custombutton-large";
 
 interface LoginFormValues {
@@ -73,13 +74,7 @@ export default function Login() {
         <div className="flex items-center justify-center">
           <h1 className="m-4 text-2xl font-bold">Sign in</h1>
         </div>
-        <CustomButton
-          onClick={() => {
-            // TODO: Handle Google login here
-            console.log("Continue with Google...");
-          }}
-          text="Continue with Google"
-        />
+        <SignInOAuthButton />
 
         {/* Separate the "Login with Google" button with a custom color dashed line and "or" text */}
         <div className="mb-4 flex items-center">
