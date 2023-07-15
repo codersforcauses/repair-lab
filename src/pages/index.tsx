@@ -12,8 +12,6 @@ export default function Home() {
           <Image
             src="/images/landing.jpg"
             alt="Greyscale picture of water animal"
-            // width={200}
-            // height={400}
             fill={true}
             className="object-cover object-center"
           />
@@ -67,11 +65,11 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex-col h-9 bg-white pb-10 -translate-y-1/2 -mb-5">
-        <div className="text-center text-2xl font-bold mt-10">
+      <div className="h-auto bg-white mb-16">
+        <div className="text-center text-2xl font-bold mt-10 mb-10">
           Submit item for repair
         </div>
-        <div className="h-30 pr-10 pl-10 mt-5 mb-16">
+        <div className="h-30 pr-10 pl-10 mt-5 mb-10">
         <Button aria-label="button"> New Request </Button>
         </div>
       </div>
