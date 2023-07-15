@@ -116,7 +116,7 @@ function Table() {
         const updatedEvent = await response.json();
         // Do something with the updated event, if needed
         console.log(updatedEvent);
-        setShowForm(false);
+        toggleModal(false);
         router.reload(); // Reload the page to update the event data
       } else {
         console.error("Failed to update event");
@@ -189,15 +189,16 @@ function Table() {
       <form onSubmit={handleSubmit} className="flow-root">
         {headers.map((row) => (
           <div key={row.key}>
-            <label className="font-light text-sm m-1 pl-10 float-left">
+            <label className="font-light text-sm pl-10 float-left">
               {row.label}
             </label>
-            <input
+            <input className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right"
               type="text"
               name={row.key}
               value={formData[row.key as keyof Partial<Event>]}
               onChange={handleInputChange}
             />
+            <br/>
           </div>
         ))}
       </form>
@@ -264,14 +265,7 @@ function Table() {
               <Dialog.Description  className="p-3 font-light">
                 Select each field below to change their contents
               </Dialog.Description >
-              <Dialog.Description>
-                <EditForm column="0"/>
-                {/*<EditForm column="1"/>
-                <EditForm column="2"/>
-                <EditForm column="3"/>
-                <EditForm column="4"/>
-                <EditForm column="5"/>*/}
-              </Dialog.Description >
+              <EditForm column="0"/>
               <Dialog.Description className=" border-t-[2px] border-slate-200 align-bottom mt-3">
                 <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
                   Accept
