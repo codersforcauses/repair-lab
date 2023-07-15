@@ -21,10 +21,7 @@ export default async function handler(
   }
 }
 
-const createEventForm = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const createEventForm = async (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: Get userID from middleware.
   const requestBody = eventFormPostSchema.safeParse(req.body);
   if (!requestBody.success) {

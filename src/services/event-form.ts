@@ -9,10 +9,10 @@ interface EventCreateInput {
   createdBy: string;
   name: string;
   location: string;
-  startDate: Date; 
-  endDate: Date; 
+  startDate: Date;
+  endDate: Date;
   eventType: string;
-  description?: string;
+  description: string;
   volunteers: string[];
 }
 
@@ -28,7 +28,7 @@ class EventFormService implements IEventService {
         ...rest,
         volunteers: volunteers
       }
-    });  
+    });
 
     return createdEvent;
   }
