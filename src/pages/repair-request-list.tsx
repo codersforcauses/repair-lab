@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-export default function ListCard() {
+import ListCard from "@/components/repair-request/list-card";
+
+
+
+export default function RepairReqList() {
   return (
     <main className="flex min-h-screen flex-col items-center gap-4">
       {/* Logo of Repair Lab, which links to the main website. */}
@@ -17,6 +21,7 @@ export default function ListCard() {
 
       {/* Heading of the Page */}
       <h1 className="text-xl font-bold"> Repair Request List</h1>
+      <ListCard/>
     </main>
   );
 }
