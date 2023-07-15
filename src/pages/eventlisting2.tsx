@@ -20,6 +20,7 @@ function Table() {
 
   const [eventData, setEventData] = useState<Event[]>([]);
   const [sortKey, setSortKey] = useState<string>("startDate");
+  const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -49,6 +50,20 @@ function Table() {
     { key: "asc", label: "Ascending" },
     { key: "desc", label: "Descending" }
   ];
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.append('sortKey', sortKey);
+    params.append('sortMethod', sortMethod);
+  
+    fetch(`/api/get_events?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEventData(data);
+      });
+  }, []);
+  
+
 
   function openOptions(selectedEvent: Event) {
     setFormData(selectedEvent);
@@ -121,18 +136,34 @@ function Table() {
   }
 
   
-  function handleSearch(searchTerm: string) {
-    const params = new URLSearchParams();
-    params.append("sortKey", sortKey);
-    params.append("sortMethod", sortMethod);
-    params.append("search", searchTerm);
+  // function handleSearch(searchTerm: string) {
+  //   const params = new URLSearchParams();
+  //   params.append("sortKey", sortKey);
+  //   params.append("sortMethod", sortMethod);
+  //   params.append("search", searchTerm);
 
+  //   fetch(`/api/search?${params.toString()}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setEventData(data);
+  //     });
+      
+  // }
+
+  useEffect(()=> {
+    const params = new URLSearchParams();
+    params.append('sortKey', sortKey);
+    params.append('sortMethod', sortMethod);
+    params.append('searchWord', searchWord);
+  
     fetch(`/api/search?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setEventData(data);
       });
-  }
+  },[sortKey, sortMethod, searchWord]);
+  
+  
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -163,6 +194,7 @@ function Table() {
     // If the clicked column is already the sort key, toggle the sort method
     if (sortKey === key) {
       setSortMethod(sortMethod === "asc" ? "desc" : "asc");
+
     } else {
       // If it's a new column, set it as the sort key with ascending order
       setSortKey(key);
@@ -196,7 +228,7 @@ function Table() {
             type="search"
             name="search"
             placeholder="Search"
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => setSearchWord(e.target.value)}
             style={{ backgroundColor: "rgb(239, 239, 239)" }}
           />
           <div

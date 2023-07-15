@@ -10,8 +10,8 @@ export default async function get_events(
   req: NextApiRequest,
   res: NextApiResponse<Event[]>
 ) {
-  const { sortKey, sortMethod, search } = req.query; // Include 'search' query parameter
-  console.log("Search word:", search);
+  const { sortKey, sortMethod, searchWord } = req.query; // Include 'search' query parameter
+  console.log("Search word:", searchWord);
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 
@@ -19,8 +19,8 @@ export default async function get_events(
   const events = await prisma.event.findMany({
     where: {
       OR: [
-        { name: { contains: search as string } },
-        { location: { contains: search as string } },
+        { name: { contains: searchWord as string } },
+        { location: { contains: searchWord as string } },
         // Add more fields to search if necessary
       ],
     },
