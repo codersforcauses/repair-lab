@@ -2,6 +2,11 @@ import Image from "next/image";
 
 import Card from "@/components/Cards/card";
 
+type FormValues = {
+  itemBrand: string;
+  itemType: string;
+  description: string;
+}
 
 
 export default function RepairReqList() {
@@ -21,11 +26,12 @@ export default function RepairReqList() {
 
       {/* Heading of the Page */}
       <h1 className="text-xl font-bold"> Repair Request List</h1>
-      
-      {/* TODO */}
-      <Card title = "title" 
-            description = "description" 
-      />
+
+      {/* get the request list from the database and display it here*/}
+
+      <Card 
+        title = "title" 
+        description = "description"/>
 
     </main>
   );
