@@ -7,6 +7,7 @@ type Props = {
   radius?: string;
   width?: string;
   textColor?: string;
+  className?: string;
 };
 
 const Button = ({
