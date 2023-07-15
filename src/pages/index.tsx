@@ -6,9 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <div className="">
-      <div className="h-screen w-screen bg-blue-100">
-        <div className="relative h-1/3 w-full">
+    <div className="bg-lightAqua-100">
+        <div className="relative h-36 w-full">
           <Image
             src="/images/landing.jpg"
             alt="Greyscale picture of water animal"
@@ -25,7 +24,7 @@ export default function Home() {
             className="h-28 w-28"
           />
         </div>
-        <div className="">
+        <div className="mb-16">
           <div className="mb-10 text-center text-3xl font-bold mt-5">About Us</div>
           <div className="pl-10 pr-10 text-sm text-center">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -39,7 +38,6 @@ export default function Home() {
             including versions of Lorem Ipsum.
           </div>
         </div>
-      </div>
       {/* Page 2 Start */}
       <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
         <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
