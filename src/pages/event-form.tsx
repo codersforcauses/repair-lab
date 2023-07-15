@@ -10,6 +10,7 @@ import { useItemTypes } from "@/hooks/item-types";
 import Button from "../components/Button/index";
 
 type FormData = {
+  eventId: string;
   name: string;
   location: string;
   startDate: Date; // or string?

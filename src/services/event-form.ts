@@ -5,11 +5,14 @@ import { Event } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
 interface EventCreateInput {
+  eventId: string;
+  createdBy: string;
   name: string;
   location: string;
-  startDate: Date; // or string?
-  endDate: Date; // or string?
+  startDate: Date; 
+  endDate: Date; 
   eventType: string;
+  description?: string;
   volunteers: string[];
 }
 
@@ -19,9 +22,13 @@ interface IEventService {
 
 class EventFormService implements IEventService {
   async insert(details: EventCreateInput): Promise<Event> {
+    const { volunteers, ...rest } = details;
     const createdEvent = await prisma.event.create({
-      data: details,
-    });
+      data: {
+        ...rest,
+        volunteers: volunteers
+      }
+    });  
 
     return createdEvent;
   }

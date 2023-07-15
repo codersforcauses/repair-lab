@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
 import { eventFormPostSchema } from "@/schema/event-form";
-import RepairRequestService from "@/services/event-form";
+import EventFormService from "@/services/event-form";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +12,7 @@ export default async function handler(
       res.status(405).json("Not yet implemented!");
       break;
     case "POST":
-      await createRepairRequest(req, res);
+      await createEventForm(req, res);
       break;
     default:
       return res.status(405).json({
@@ -21,7 +21,7 @@ export default async function handler(
   }
 }
 
-const createRepairRequest = async (
+const createEventForm = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -33,14 +33,14 @@ const createRepairRequest = async (
   }
 
   try {
-    const repairRequestService = new RepairRequestService();
-    const repairRequest = await repairRequestService.insert({
+    const eventFormService = new EventFormService();
+    const eventForm = await eventFormService.insert({
       ...requestBody.data,
       createdBy: "mock_user" // TODO: change this once we get userID
     });
 
     return res.status(200).json({
-      id: repairRequest.id
+      id: eventForm.id
     });
   } catch (error) {
     return res.status(500).json("Error inserting into database!");
