@@ -17,7 +17,7 @@ export default function StatusPill({ status }: Props) {
 
   return (
     <button
-      className={`${bgColor} right-0 rounded-full px-2 text-xs font-bold text-white`}
+      className={`${bgColor} right-0 rounded-full px-2 text-xs font-semibold text-white`}
     >
       Press Me
     </button>
