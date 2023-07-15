@@ -35,7 +35,7 @@ Output:
 
 export default function DropDown<T extends FieldValues = FieldValues>({
   options,
-  placeholder = "-select-",
+  placeholder,
   label,
   width = "full",
   ...props
@@ -59,9 +59,10 @@ export default function DropDown<T extends FieldValues = FieldValues>({
           >
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
-
             {field.value === "" ? (
-              <span className="text-gray-500">{placeholder}</span>
+              <span className="text-gray-500">
+                {!placeholder ? `Select ${props.name}` : `${placeholder}`}
+              </span>
             ) : (
               <span className="truncate text-grey-900">{field.value}</span>
             )}
