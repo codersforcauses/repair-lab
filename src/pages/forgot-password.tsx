@@ -28,7 +28,7 @@ export default function ForgotPassword() {
   } = useForm<ForgotPasswordFormValues>();
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
-    const { email, password, code, confirmPassword } = data;
+    const { email, password, code } = data;
     if (!isLoaded) {
       return null;
     }
