@@ -3,6 +3,7 @@ import Image from "next/image";
 import { faChevronDown, faChevronUp, faSearch, faCog, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Event } from "@prisma/client";
+import { useRouter } from "next/router";
 
 import { useForm } from "react-hook-form";
 
@@ -19,7 +20,7 @@ async function getEvent(eventName: string) {
 
 function Table() {
   const [modalActive, toggleModal] = useState(false)
-  const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { register, setValue, formState: { errors } } = useForm<FormData>();
   const onSubmit = handleSubmit(data => console.log(data));
 
 
@@ -37,6 +38,16 @@ function Table() {
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
 
+  const [formData, setFormData] = useState<Partial<Event>>({
+    id: undefined,
+    name: "",
+    createdBy: "",
+    location: "",
+    startDate: undefined,
+    eventType: "",
+    status: undefined,
+  });
+
 
   // The label is what users see, the key is what the server uses
   const headers: { key: string; label: string }[] = [
@@ -53,25 +64,26 @@ function Table() {
     { key: "desc", label: "Descending" }
   ];
 
-  // Whenever the sortKey or sortMethod changes, the useEffect hook will run
-  useEffect(() => {
-    const params = new URLSearchParams();
-    params.append('sortKey', sortKey);
-    params.append('sortMethod', sortMethod);
+  // // Whenever the sortKey or sortMethod changes, the useEffect hook will run
+  // useEffect(() => {
+  //   const params = new URLSearchParams();
+  //   params.append('sortKey', sortKey);
+  //   params.append('sortMethod', sortMethod);
   
-    fetch(`/api/get_events?${params.toString()}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setEventData(data);
-      });
-  }, [sortKey, sortMethod]);
+  //   fetch(`/api/get_events?${params.toString()}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setEventData(data);
+  //     });
+  // }, [sortKey, sortMethod]);
 
 
   //will toggle modal visibility for editing events
 
-  useEffect(() => {
-
-  }, [modalActive]);
+  function openOptions(selectedEvent: Event) {
+    setFormData(selectedEvent);
+    toggleModal(true);
+  }
   
 
   function handleButtonClick(key: string) {
@@ -105,16 +117,33 @@ function Table() {
   }
 
   function EditForm(column: string){
-    const columnInt = parseInt(column.column);
-    const key = headers[columnInt].key;
-    const label = headers[columnInt].label;
+    //const key = row.key;
+    //const label = row.label;
 
-    setValue(key, "content");
+    //setValue(key, "content");
+
+    // return (
+    //   <form onSubmit={handleSubmit} className="flow-root">
+    //     <label className="font-light text-sm m-1 pl-10 float-left">{label}:</label>
+    //     <input {...register(key)} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+    //   </form>
+    // );
 
     return (
-      <form onSubmit={onSubmit} className="flow-root">
-        <label className="font-light text-sm m-1 pl-10 float-left">{label}:</label>
-        <input {...register(key)} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+      <form onSubmit={handleSubmit} className="flow-root">
+        {headers.map((row) => (
+          <div key={row.key}>
+            <label className="font-light text-sm m-1 pl-10 float-left">
+              {row.label}
+            </label>
+            <input
+              type="text"
+              name={row.key}
+              value={formData[row.key as keyof Partial<Event>]}
+              onChange={handleInputChange}
+            />
+          </div>
+        ))}
       </form>
     );
   }
@@ -137,6 +166,71 @@ function Table() {
       </div>
     );
   }
+
+
+  // takes form values and posts them to DB
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    console.log("in function");
+    //event.preventDefault();
+  
+    try {
+
+      const response = await fetch("/api/edit_event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        const updatedEvent = await response.json();
+        // Do something with the updated event, if needed
+        console.log(updatedEvent);
+        setShowForm(false);
+        router.reload(); // Reload the page to update the event data
+      } else {
+        console.error("Failed to update event");
+      }
+    } catch (error) {
+      console.error("An error occurred while updating the event:", error);
+    }
+  }
+
+
+  function handleSearch(searchTerm: string) {
+    const params = new URLSearchParams();
+    params.append("sortKey", sortKey);
+    params.append("sortMethod", sortMethod);
+    params.append("search", searchTerm);
+
+    fetch(`/api/search?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEventData(data);
+      });
+  }
+
+  // formats input data before passing it on
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.target;
+  
+    // Convert startDate to a Date object before assigning it
+    if (name === "startDate") {
+      const formattedDate = new Date(value);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: formattedDate,
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
+  }
+
+
 
   return (
     <div>
@@ -179,13 +273,13 @@ function Table() {
               </Dialog.Description >
               <Dialog.Description>
                 <EditForm column="0"/>
-                <EditForm column="1"/>
+                {/*<EditForm column="1"/>
                 <EditForm column="2"/>
                 <EditForm column="3"/>
                 <EditForm column="4"/>
-                <EditForm column="5"/>
+                <EditForm column="5"/>*/}
               </Dialog.Description >
-              <Dialog.Description className=" border-t-[1px] border-slate-200 align-bottom mt-3">
+              <Dialog.Description className=" border-t-[2px] border-slate-200 align-bottom mt-3">
                 <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
                   Accept
                 </button>
@@ -207,6 +301,7 @@ function Table() {
             type="search"
             name="search"
             placeholder="Search"
+            onChange={(e) => handleSearch(e.target.value)}
             style={{ backgroundColor: "rgb(239, 239, 239)" }}
           />
           <div
@@ -221,6 +316,8 @@ function Table() {
 
         </div>
       </div>
+
+      {/*main table*/}
       <div className="flex justify-center">
         <div className="container ">
           <table className="table-auto">
@@ -264,7 +361,7 @@ function Table() {
                   <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-100">
                     <td className="pl-5">{event.name}</td>
                     <td>{event.createdBy}</td>
-                    <td className="">{event.location}</td>
+                    <td>{event.location}</td>
                     <td>{formatDate(String(event.startDate))}</td>
                     <td>{event.eventType}</td>
                     <td>{event.status}</td>
