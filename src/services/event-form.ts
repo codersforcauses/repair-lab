@@ -1,40 +1,30 @@
 /* eslint-disable no-unused-vars */
 
-import { RepairRequest } from "@prisma/client";
+import { Event } from "@prisma/client";
 
 import prisma from "@/lib/prisma";
 
-interface RepairRequestCreateInput {
-  createdBy: string;
-  description: string;
-  itemBrand: string;
-  itemType: string;
-  eventId: string;
-  images?: string[];
+interface EventCreateInput {
+  name: string;
+  location: string;
+  startDate: Date; // or string?
+  endDate: Date; // or string?
+  eventType: string;
+  volunteers: string[];
 }
 
-interface IRepairRequestService {
-  insert(details: RepairRequestCreateInput): Promise<RepairRequest>;
+interface IEventService {
+  insert(details: EventCreateInput): Promise<Event>;
 }
 
-class RepairRequestService implements IRepairRequestService {
-  async insert(details: RepairRequestCreateInput): Promise<RepairRequest> {
-    const { images, ...rest } = details;
-    const repairRequest = await prisma.repairRequest.create({
-      data: {
-        ...rest,
-        images: {
-          create: images?.map((image) => {
-            return {
-              s3Key: image
-            };
-          })
-        }
-      }
+class EventFormService implements IEventService {
+  async insert(details: EventCreateInput): Promise<Event> {
+    const createdEvent = await prisma.event.create({
+      data: details,
     });
 
-    return repairRequest;
+    return createdEvent;
   }
 }
 
-export default RepairRequestService;
+export default EventFormService;
