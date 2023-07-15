@@ -42,6 +42,7 @@ export default function Home() {
         </div>
       </div>
       <div>page 2</div>
+      <div className="w-screen h-9">page 3</div>
     </div>
   );
 }
