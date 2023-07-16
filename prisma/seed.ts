@@ -153,7 +153,7 @@ async function main() {
   const itemTypeNames: string[] = ["Clock", "Bike", "Computer"];
   const brandNames: string[] = ["Seiko", "Giant Bicycles", "Alienware"];
   const eventCount = 10;
-  const repairRequestCount = 15;
+  const repairRequestCount = 50;
 
   faker.seed(fakerSeed);
   await deleteAllData();
