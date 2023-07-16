@@ -12,7 +12,7 @@ import prisma from "../../../src/lib/prisma";
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
 handler.config = config;
 
-describe("POST /api/repair-request", () => {
+describe("POST PATCH /api/repair-request", () => {
   beforeAll(async () => {
     await cleanup();
     await prisma.brand.create({
