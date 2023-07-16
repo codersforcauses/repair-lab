@@ -48,7 +48,7 @@ export default function RepairAttempt() {
 
   return (
     <main
-      className={`m-4 flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-white shadow-md ${inter.className}`}
+      className={`flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-white shadow-md max-[768px]:m-7 md:mx-auto md:my-7 md:w-[768px]  ${inter.className}`}
     >
       <h1 className="w-full rounded-t-lg bg-[#d9d9d9] px-5 py-3 text-3xl font-semibold leading-normal  text-grey-950 max-[415px]:text-center max-[415px]:text-lg">
         General Repair Attempt
