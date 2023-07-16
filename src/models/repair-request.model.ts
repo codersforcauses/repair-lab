@@ -7,7 +7,7 @@ const insert = async (
   itemBrand: string,
   createdBy: string,
   images: string[] | undefined,
-  comment: string, 
+  comment: string,
   thumbnailImage: string
 ) => {
   const repairRequest = await prisma.repairRequest.create({

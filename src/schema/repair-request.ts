@@ -6,6 +6,6 @@ export const repairRequestPostSchema = z.object({
   itemType: z.string().nonempty(),
   itemBrand: z.string().nonempty(),
   images: z.string().array().optional(),
-  thumbnailImage: z.string(), 
-  comment: z.string().optional()
+  comment: z.string().nonempty(),
+  thumbnailImage: z.string().nonempty()
 });

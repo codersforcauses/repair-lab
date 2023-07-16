@@ -8,7 +8,7 @@ export const cleanup = async () => {
 
 const resetDatabase = () => {
   return new Promise((resolve, reject) => {
-    exec("npx prisma migrate reset --force", (error, stdout) => {
+    exec("npx prisma db push --force-reset", (error, stdout) => {
       if (error) {
         reject(error);
         return;
