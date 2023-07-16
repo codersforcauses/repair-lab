@@ -99,7 +99,7 @@ export default function RepairRequest() {
               </div>
             </div>
           </div>
-          <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-3">
+          <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
             {RepairContent()}
             <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
               <CiCirclePlus color="#d9d9d9" size={100} />

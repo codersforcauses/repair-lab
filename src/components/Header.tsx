@@ -18,7 +18,7 @@ export default function Header({ props }: { props: HeaderProps }) {
   }
   return (
     <>
-      <div className="flex justify-between gap-4 px-5 pb-8 pt-12 ">
+      <div className="header-component sticky top-0 z-50 flex justify-between gap-4 px-5 pb-8 pt-12 ">
         <div>
           <h1 className="text-2xl font-bold text-zinc-600">
             St Catherine’s <br />

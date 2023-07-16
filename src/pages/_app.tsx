@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "@/styles/globals.css";
 import "@/styles/repair.css";
+import "@/styles/header.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
