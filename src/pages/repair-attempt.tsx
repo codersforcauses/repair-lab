@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 import FieldInput from "@/components/Form Fields/field-input";
 import FieldRadio from "@/components/Form Fields/field-radio";
 import FieldTextArea from "@/components/Form Fields/field-text-area";
-import { RepairAttemptSchema } from "@/schema/repair-attempt";
+import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { RepairAttempt } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,7 +16,7 @@ export default function RepairAttempt() {
   const [display, setdisplay] = useState<string>("hidden");
 
   const { control, handleSubmit } = useForm<RepairAttempt>({
-    resolver: zodResolver(RepairAttemptSchema),
+    resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
       id: "",
       item: "",
@@ -31,8 +31,8 @@ export default function RepairAttempt() {
   });
 
   const onSubmit: SubmitHandler<RepairAttempt> = async (data) => {
-    // console.log(JSON.stringify(data));
-    const response = await fetch(`/api/repair-attempt`, {
+    console.log(JSON.stringify(data));
+    const response = await fetch(`/api/repair-request`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
