@@ -18,7 +18,7 @@ export default async function handler(
 }
 
 const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query
+  const { id } = req.query;
   const userService = new UserService();
   const users = await userService.getUser(id as string);
 

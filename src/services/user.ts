@@ -5,7 +5,7 @@ import { User } from "@clerk/nextjs/dist/types/server/clerkClient";
 
 interface IUserService {
   getAll(): Promise<User[]>;
-  getUser(userId: string): Promise<User>
+  getUser(userId: string): Promise<User>;
 }
 
 class UserService implements IUserService {
