@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Prisma } from "@prisma/client";
 
 import { RepairAttemptSchema } from "@/schema/repair-attempt";
-import RepairAttemptService from "@/services/repair-attempt";
+import RepairRequestService from "@/services/repair-request";
 
 export default async function handler(
   req: NextApiRequest,

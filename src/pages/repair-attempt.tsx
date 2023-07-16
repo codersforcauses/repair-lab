@@ -10,7 +10,6 @@ import { Inter } from "next/font/google";
 import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
-const lineStyle = "mb-4 flex flex-row items-start gap-8";
 
 export default function RepairAttempt() {
   const [display, setdisplay] = useState<string>("hidden");
@@ -50,16 +49,13 @@ export default function RepairAttempt() {
     <main
       className={`m-4 flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-white shadow-md ${inter.className}`}
     >
-      <h1 className="w-full rounded-t-lg bg-[#d9d9d9] py-3 pl-8 text-3xl font-semibold leading-normal text-grey-950">
+      <h1 className="w-full rounded-t-lg bg-[#d9d9d9] px-5 py-3 text-3xl font-semibold leading-normal  text-grey-950 max-[415px]:text-center max-[415px]:text-lg">
         General Repair Attempt
       </h1>
 
-      <form
-        className="flex w-full min-w-[520px] flex-col flex-wrap p-5"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* ID, Item */}
-        <div className={lineStyle}>
+        <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
           <FieldInput
             name="id"
             control={control}
@@ -71,10 +67,8 @@ export default function RepairAttempt() {
             control={control}
             rules={{ required: true }}
           />
-        </div>
 
-        {/* Brand, Material */}
-        <div className={lineStyle}>
+          {/* Brand, Material */}
           <FieldInput
             name="itemBrand"
             label="Brand"
@@ -88,10 +82,8 @@ export default function RepairAttempt() {
             control={control}
             rules={{ required: true }}
           />
-        </div>
 
-        {/* Time it took, Repaired? */}
-        <div className={lineStyle}>
+          {/* Time it took, Repaired? */}
           <FieldInput
             name="hoursWorked"
             label="Time it took"
@@ -99,17 +91,16 @@ export default function RepairAttempt() {
             control={control}
             rules={{ required: true }}
           />
-          <FieldRadio
-            name="isRepaired"
-            control={control}
-            label="Repaired?"
-            rules={{ required: true }}
-          />
-        </div>
 
-        {/* Spare parts needed?, Part(s) needed */}
-        <div className={lineStyle}>
-          <div className="min-w-[200px]">
+          {/* Spare parts needed?, Part(s) needed */}
+          <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
+            <FieldRadio
+              name="isRepaired"
+              control={control}
+              label="Repaired?"
+              rules={{ required: true }}
+            />
+
             <FieldRadio
               name="isSparePartsNeeded"
               control={control}
@@ -118,22 +109,21 @@ export default function RepairAttempt() {
                 e.target.value === "true"
                   ? setdisplay("")
                   : setdisplay("hidden");
-                console.log(display);
               }}
               rules={{ required: true }}
             />
           </div>
+
           <FieldInput
             name="spareParts"
             label="Parts needed"
             placeholder="e.g. 2x screws"
             control={control}
             display={display}
+            rules={{ required: display === "hidden" ? false : true }}
           />
-        </div>
 
-        {/* Job Description */}
-        <div className={lineStyle}>
+          {/* Job Description */}
           <FieldTextArea
             name="repairComment"
             label="Job Description"
@@ -144,11 +134,11 @@ export default function RepairAttempt() {
         </div>
 
         {/* Submit */}
-        <div className={`mt-5 ${lineStyle}`}>
+        <div className={`my-5 flex flex-row`}>
           <Button
             onClick={handleSubmit(onSubmit)}
-            width="w-1/6"
             height="h-9"
+            width="w-1/3"
             textSize="text-base"
           >
             Submit
