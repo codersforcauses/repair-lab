@@ -34,14 +34,11 @@ const updateRepairRequest = async (
       spareParts,
       repairComment
     } = parseResult.data;
-    const repairAttempt = await RepairAttemptService.update(
-      id,
-      itemMaterial,
-      hoursWorked,
-      isRepaired ? "REPAIRED" : "FAILED",
-      spareParts,
-      repairComment
-    );
+    const repairRequestService = new RepairRequestService();
+    const repairAttempt = await repairRequestService
+      .update
+      // result of type RepairRequestUpdateInput
+      ();
     return res.status(200).json(repairAttempt);
   } catch (error: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

@@ -58,4 +58,4 @@ class RepairRequestService implements IRepairRequestService {
   }
 }
 
-export default { RepairRequestService };
+export default RepairRequestService;

@@ -1,13 +1,14 @@
+import { useState } from "react";
+import { Inter } from "next/font/google";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import type { RepairAttempt } from "@/types";
-import { RepairAttemptSchema } from "@/schema/repair-attempt";
+
+import Button from "@/components/Button";
 import FieldInput from "@/components/Form Fields/field-input";
 import FieldRadio from "@/components/Form Fields/field-radio";
 import FieldTextArea from "@/components/Form Fields/field-text-area";
-import Button from "@/components/Button";
-import { Inter } from "next/font/google";
-import { useState } from "react";
+import { RepairAttemptSchema } from "@/schema/repair-attempt";
+import type { RepairAttempt } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -134,7 +135,7 @@ export default function RepairAttempt() {
         </div>
 
         {/* Submit */}
-        <div className={`my-5 flex flex-row`}>
+        <div className="my-5 flex flex-row">
           <Button
             onClick={handleSubmit(onSubmit)}
             height="h-9"
