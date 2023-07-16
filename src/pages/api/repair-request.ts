@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { Prisma } from "@prisma/client";
 
 import {
-  repairRequestPostSchema,
-  repairRequestPatchSchema
+  repairRequestPatchSchema,
+  repairRequestPostSchema
 } from "@/schema/repair-request";
 import RepairRequestService from "@/services/repair-request";
 

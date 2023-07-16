@@ -38,6 +38,16 @@ describe("POST /api/repair-request", () => {
         endDate: new Date()
       }
     });
+    await prisma.repairRequest.create({
+      data: {
+        id: "acf5ed50-19a2-11ee-be56-0242ac120002",
+        createdBy: "mock user",
+        eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
+        description: "My laptop is broken",
+        itemType: "Laptop",
+        itemBrand: "Apple"
+      }
+    });
   });
 
   it("should return 400 status code on invalid fields", async () => {
@@ -103,49 +113,6 @@ describe("POST /api/repair-request", () => {
       }
     });
   });
-});
-
-describe("PATCH /api/repair-request", () => {
-  beforeAll(async () => {
-    await cleanup();
-    await prisma.brand.create({
-      data: {
-        name: "BMW"
-      }
-    });
-
-    await prisma.itemType.create({
-      data: {
-        name: "Bike"
-      }
-    });
-
-    await prisma.event.create({
-      data: {
-        id: "acf5ed50-19a2-11ee-be56-0242ac120002",
-        createdBy: "mock user",
-        name: "Repair Event",
-        location: "UWA",
-        eventType: "General",
-        description: "General repair event.",
-        volunteers: ["JUN", "Kyle"],
-        startDate: new Date(),
-        endDate: new Date()
-      }
-    });
-
-    await prisma.repairRequest.create({
-      data: {
-        id: "d5a2d8b0-19a3-11ee-be56-0242ac120002",
-        createdBy: "mock user",
-        eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
-        description: "My bike wheel is broken",
-        itemType: "Bike",
-        itemBrand: "BMW"
-      }
-    });
-  });
-
   it("should return 404 status code on invalid fields", async () => {
     await testApiHandler({
       handler,
@@ -185,15 +152,15 @@ describe("PATCH /api/repair-request", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            id: "d5a2d8b0-19a3-11ee-be56-0242ac120002",
-            item: "Bike",
-            itemBrand: "BMW",
+            id: "acf5ed50-19a2-11ee-be56-0242ac120002",
+            item: "Laptop",
+            itemBrand: "Apple",
             itemMaterial: "Metal",
             hoursWorked: 9.9,
             isRepaired: true,
             isSparePartsNeeded: true,
-            spareParts: "new wheel x1",
-            repairComment: "nice bike. fixed!"
+            spareParts: "new brain x1",
+            repairComment: "nice brain. fixed!"
           })
         });
 
@@ -210,11 +177,11 @@ describe("PATCH /api/repair-request", () => {
           });
 
         expect(expectedRepairRequest?.itemMaterial).equals("Metal");
-        expect(expectedRepairRequest?.hoursWorked).equals(9.9);
+        expect(expectedRepairRequest?.hoursWorked.toNumber()).equals(9.9);
         expect(expectedRepairRequest?.itemStatus).equals("REPAIRED");
-        expect(expectedRepairRequest?.spareParts).equals("new wheel x1");
+        expect(expectedRepairRequest?.spareParts).equals("new brain x1");
         expect(expectedRepairRequest?.repairComment).equals(
-          "nice bike. fixed!"
+          "nice brain. fixed!"
         );
       }
     });

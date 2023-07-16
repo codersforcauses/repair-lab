@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "RepairRequest" ALTER COLUMN "comment" DROP NOT NULL,
+ALTER COLUMN "comment" DROP DEFAULT,
+ALTER COLUMN "thumbnailImage" DROP NOT NULL,
+ALTER COLUMN "thumbnailImage" DROP DEFAULT;
