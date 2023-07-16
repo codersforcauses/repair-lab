@@ -26,19 +26,19 @@ const updateRepairRequest = async (
   if (!parseResult.success) return res.status(400).json(parseResult.error);
 
   try {
-    const {
-      id,
-      itemMaterial,
-      hoursWorked,
-      isRepaired,
-      spareParts,
-      repairComment
-    } = parseResult.data;
+    // const {
+    //   id,
+    //   itemMaterial,
+    //   hoursWorked,
+    //   isRepaired,
+    //   spareParts,
+    //   repairComment
+    // } = parseResult.data;
     const repairRequestService = new RepairRequestService();
-    const repairAttempt = await repairRequestService
-      .update
-      // result of type RepairRequestUpdateInput
-      ();
+    const repairAttempt = await repairRequestService.update({
+      ...parseResult.data,
+      itemStatus: "REPAIRED"
+    });
     return res.status(200).json(repairAttempt);
   } catch (error: unknown) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

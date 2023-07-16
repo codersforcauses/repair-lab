@@ -19,7 +19,7 @@ interface RepairRequestUpdateInput {
   itemMaterial: string;
   hoursWorked: number;
   itemStatus: ItemStatus;
-  spareParts: string | undefined;
+  spareParts?: string | undefined;
   repairComment: string;
 }
 
