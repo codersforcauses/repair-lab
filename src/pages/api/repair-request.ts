@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { getAuth } from "@clerk/nextjs/server";
 
 import { repairRequestPostSchema } from "@/schema/repair-request";
 import RepairRequestService from "@/services/repair-request";
@@ -25,18 +26,19 @@ const createRepairRequest = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  // TODO: Get userID from middleware.
   const requestBody = repairRequestPostSchema.safeParse(req.body);
   if (!requestBody.success) {
     const { errors } = requestBody.error;
     return res.status(400).json({ error: errors });
   }
 
+  const { userId } = getAuth(req);
+
   try {
     const repairRequestService = new RepairRequestService();
     const repairRequest = await repairRequestService.insert({
       ...requestBody.data,
-      createdBy: "mock_user" // TODO: change this once we get userID
+      createdBy: userId as string
     });
 
     return res.status(200).json({
