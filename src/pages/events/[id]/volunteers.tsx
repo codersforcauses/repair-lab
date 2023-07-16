@@ -41,6 +41,7 @@ export default function Volunteers() {
   }
 
   useEffect(() => {
+    if (!router.isReady || !eventId) return;
     const params = new URLSearchParams();
     params.append("event", eventId);
     fetch(`/api/dashboard/get-event?${params.toString()}`)
