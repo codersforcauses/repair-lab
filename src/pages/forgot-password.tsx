@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import router from "next/router";
 import { useSignIn } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 import CustomButton from "@/components/custombutton-large";
 
@@ -77,6 +78,14 @@ export default function ForgotPassword() {
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="w-screen rounded-md bg-white p-8 md:w-3/6 lg:w-4/12">
+        <div className="flex items-center justify-center">
+          <Image
+            src="/images/repair_lab_logo.jpg"
+            alt="logo"
+            width={80}
+            height={80}
+          />
+        </div>
         <div className="flex items-center justify-center">
           <h1 className="m-4 text-2xl font-bold">Forgot Password?</h1>
         </div>
