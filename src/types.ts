@@ -1,7 +1,9 @@
 import { z } from "zod";
 
-import { repairRequestPostSchema } from "@/schema/repair-request";
-import { RepairAttemptSchema } from "@/schema/repair-attempt";
+import {
+  repairRequestPostSchema,
+  repairRequestPatchSchema
+} from "@/schema/repair-request";
 
 export type RepairRequest = z.infer<typeof repairRequestPostSchema>;
-export type RepairAttempt = z.infer<typeof RepairAttemptSchema>;
+export type RepairAttempt = z.infer<typeof repairRequestPatchSchema>;

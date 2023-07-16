@@ -113,6 +113,8 @@ describe("POST PATCH /api/repair-request", () => {
       }
     });
   });
+
+  // PATCH
   it("should return 404 status code on invalid fields", async () => {
     await testApiHandler({
       handler,
