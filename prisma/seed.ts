@@ -77,7 +77,13 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
         name: faker.commerce.productName(),
         location: faker.location.street(),
         description: faker.lorem.sentence(),
-        volunteers: [faker.person.fullName(), faker.person.fullName(), faker.person.fullName(), faker.person.fullName(), faker.person.fullName()],
+        volunteers: [
+          faker.person.fullName(),
+          faker.person.fullName(),
+          faker.person.fullName(),
+          faker.person.fullName(),
+          faker.person.fullName()
+        ],
         event: {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
