@@ -23,7 +23,7 @@ export default function Card({ props }: { props: CardProps }) {
       onClick={handleClick}
       onKeyDown={handleClick}
       role="presentation"
-      className="col-span-1 w-72 flex-col overflow-hidden rounded-lg bg-slate-200 shadow-2xl transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-slate-100"
+      className="col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-slate-200 shadow-2xl transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-slate-100"
     >
       <div className="flex justify-center">
         <Image
@@ -35,25 +35,27 @@ export default function Card({ props }: { props: CardProps }) {
         />
       </div>
       <div className="p-2">
-        <div className="mb-1 flex flex-row items-start justify-between">
-          <h3 className="h-14 w-1/2 self-start overflow-hidden text-ellipsis text-xl font-bold">
-            Repair ID:{props.title}
+        <div className="flex flex-row items-start justify-between">
+          <h3 className="h-18 flex w-full flex-col  self-start text-xl font-bold">
+            Repair ID:
           </h3>
-          <div className="">
-            <AssigneeBade
-              firstName={props.firstName}
-              lastName={props.lastName}
-              avatar={props.avatar}
-            />
+
+          <div className="pr-2">
+            <StatusPill status={props.status} />
           </div>
         </div>
+        <p className="mb-3 w-full text-sm font-semibold">{props.title}</p>
         <div>
           <p className="mb-3 h-32 overflow-y-scroll text-ellipsis text-sm font-light">
             {props.description}
           </p>
         </div>
         <div className="m-2 mt-0 flex justify-end">
-          <StatusPill status={props.status} />
+          <AssigneeBade
+            firstName={props.firstName}
+            lastName={props.lastName}
+            avatar={props.avatar}
+          />
         </div>
       </div>
     </div>
