@@ -13,8 +13,8 @@ type FormData = {
   eventId: string;
   name: string;
   location: string;
-  startDate: Date; // or string?
-  endDate: Date; // or string?
+  startDate: Date; 
+  endDate: Date; 
   eventType: string;
   volunteers: string[];
 };
@@ -23,15 +23,14 @@ export default function EventForm() {
   const router = useRouter();
   const itemTypeList = useItemTypes();
 
-  // Item Types Dropdown
   const [itemType, setItemType] = useState("");
+
   const handleItemTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setItemType(event.target.value);
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const response = await fetch(`/api/event-form`, {
-      // To work on /api/event-form.ts & services & schema
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -111,29 +110,6 @@ export default function EventForm() {
               />
             </div>
           </div>
-          {/* <Controller
-            name="itemType"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <div className="relative mb-6">
-                <label
-                  htmlFor="itemType"
-                  className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-                >
-                  Item Type <span className="text-red-500">*</span>
-                </label>
-                <Select
-                  {...field}
-                  id="eventStatus"
-                  className="w-full rounded-md border border-gray-300 pb-1 pl-3 pr-2 pt-1  focus:border-blue-500 focus:outline-none"
-                >
-                  <MenuItem value="ongoing">Ongoing</MenuItem>
-                  <MenuItem value="completed">Completed</MenuItem>
-                </Select>
-              </div>
-            )}
-          /> */}
           <div className="mb-6">
             <label htmlFor="eventType">
               Event Type <span className="text-red-500">*</span>

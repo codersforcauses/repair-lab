@@ -42,7 +42,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
     <div className={errorStyle}>
       <Label label={!label ? props.name : label} {...props} />
       <input
-        type={!type ? "text" : `${type}`}
+        type={type ?? "text"}
         className="mr-1 w-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
         placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
         id={!id ? `${props.name}` : `${id}`}
