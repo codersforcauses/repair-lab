@@ -7,7 +7,7 @@ export default function ForgotPassword() {
     <div>
       <Panel>
         <PanelHeader title="Forgot Password?" />
-        <ForgotPasswordForm/>
+        <ForgotPasswordForm />
       </Panel>
     </div>
   );
