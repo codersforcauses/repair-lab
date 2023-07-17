@@ -18,9 +18,9 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
             width={100}
             height={100}
           />
-          <div className="flex flex-col ">
+          <div className="flex flex-col justify-center">
             <p className="text-xs font-bold">{firstName}</p>
-            <p className="text-xs">{lastName}</p>
+            {!lastName ? "" : <p className="text-xs">{lastName}</p>}
           </div>
         </div>
       </div>
