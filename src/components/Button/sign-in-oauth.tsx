@@ -22,14 +22,12 @@ const SignInOAuthButton = ({ strategy, label, icon }: Props) => {
   };
 
   return (
-    <div className="flex justify-center">
-      <Button onClick={() => signInWith(strategy)} width="w-full">
-        <div className="relative flex items-center justify-center space-x-4">
-          <div className="w-5">{icon}</div>
-          <span className="">{label}</span>
-        </div>
-      </Button>
-    </div>
+    <Button onClick={() => signInWith(strategy)} width="w-full">
+      <div className="relative flex items-center justify-center space-x-4">
+        <div className="w-5">{icon}</div>
+        <span className="">{label}</span>
+      </div>
+    </Button>
   );
 };
 

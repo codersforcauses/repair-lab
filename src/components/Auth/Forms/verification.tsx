@@ -4,6 +4,7 @@ import { useSignUp } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
+import FieldInput from "@/components/Form Fields/field-input";
 
 interface VerificationFormValues {
   code: string;
@@ -16,14 +17,10 @@ const VerificationForm = () => {
   const [verificationErrorMsg, setVerificationErrMsg] = useState("");
   const { isLoaded, signUp, setActive } = useSignUp();
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors }
-  } = useForm<VerificationFormValues>();
+  const { control, handleSubmit } = useForm<VerificationFormValues>();
 
   // This verifies the user using email code that is delivered.
-  const onPressVerify = async (data: VerificationFormValues) => {
+  const verifyHandler = async (data: VerificationFormValues) => {
     setVerificationError(false);
     const { code } = data;
 
@@ -40,6 +37,7 @@ const VerificationForm = () => {
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setVerificationError(true);
       setVerificationErrMsg(err.errors[0].longMessage);
@@ -49,36 +47,26 @@ const VerificationForm = () => {
   return (
     <div>
       <form
-        className="mt-2 flex flex-col gap-2"
-        onSubmit={handleSubmit(onPressVerify)}
+        className="mt-2 flex flex-col gap-4"
+        onSubmit={handleSubmit(verifyHandler)}
       >
         {verificationError && (
           <div className="relative mb-4">
             <span className="text-red-500">{verificationErrorMsg}</span>
           </div>
         )}
-        <div className="relative mb-4">
-          <label
-            htmlFor="code"
-            className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-          >
-            <span style={{ color: "red" }}>*</span> Verification Code
-          </label>
-          <input
-            id="code"
-            type="text"
-            {...register("code", {
-              required: "Code is required"
-            })}
-            placeholder="Code"
-            className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-              errors.code ? "border-red-500" : ""
-            }`}
-          />
-        </div>
-        <div className="flex justify-center">
-          <Button width="w-full">Verify Email</Button>
-        </div>
+        <FieldInput
+          name="code"
+          control={control}
+          rules={{
+            required: "Code is required"
+          }}
+          placeholder="Enter code"
+          label="Verfication Code"
+          type="text"
+        />
+
+        <Button width="w-full">Verify Email</Button>
       </form>
     </div>
   );

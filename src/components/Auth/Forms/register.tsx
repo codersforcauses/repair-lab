@@ -8,6 +8,7 @@ import VerificationForm from "@/components/Auth/Forms/verification";
 import Separator from "@/components/Auth/separator";
 import Button from "@/components/Button";
 import SignInOAuthButton from "@/components/Button/sign-in-oauth";
+import FieldInput from "@/components/Form Fields/field-input";
 import Logo from "@/components/UI/logoSvg";
 
 export interface RegisterFormValues {
@@ -30,12 +31,7 @@ const RegisterForm = () => {
 
   if (isSignedIn) router.push("/");
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    watch
-  } = useForm<RegisterFormValues>();
+  const { control, handleSubmit, watch } = useForm<RegisterFormValues>();
 
   const registerHandler = async (data: RegisterFormValues) => {
     const { emailAddress, password } = data;
@@ -57,6 +53,7 @@ const RegisterForm = () => {
       // change the UI to our pending section.
       setPendingVerification(true);
       setRegisterErrMsg("");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setRegisterError(true);
       setRegisterErrMsg(err.errors[0].longMessage);
@@ -83,88 +80,51 @@ const RegisterForm = () => {
                 <span className="text-red-500">{registerErrorMsg}</span>
               </div>
             )}
-            <div className="relative mb-4">
-              <label
-                htmlFor="emailAddress"
-                className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-              >
-                <span className="text-red-500">*</span> Email Address
-              </label>
-              <input
-                id="emailAddress"
-                type="email"
-                {...register("emailAddress", {
-                  required: "Email is required",
+            <div className="flex flex-col gap-4">
+              <FieldInput
+                name="emailAddress"
+                control={control}
+                rules={{
+                  required: "This field is required",
                   validate: {
                     matchPattern: (v) =>
                       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
                       "Email address must be a valid address"
                   }
-                })}
-                placeholder="Email Address"
-                className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                  errors.emailAddress ? "border-red-500" : ""
-                }`}
+                }}
+                placeholder="Enter email address"
+                label="Email Address"
+                icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
               />
-              {errors.emailAddress && (
-                <span className="text-red-500">
-                  {errors.emailAddress.message}
-                </span>
-              )}
-            </div>
 
-            <div className="relative mb-4">
-              <label
-                htmlFor="password"
-                className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-              >
-                <span className="text-red-500">*</span> Password
-              </label>
-              <input
-                id="password"
+              <FieldInput
+                name="password"
+                control={control}
+                rules={{
+                  required: "This field is required"
+                }}
+                placeholder="Enter password"
+                label="Password"
                 type="password"
-                {...register("password", {
-                  required: "Password is required"
-                })}
-                placeholder="Password"
-                className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                  errors.password ? "border-red-500" : ""
-                }`}
               />
-              {errors.password && (
-                <span className="text-red-500">{errors.password.message}</span>
-              )}
-            </div>
 
-            <div className="relative mb-4">
-              <label
-                htmlFor="confirmPassword"
-                className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-              >
-                <span className="text-red-500">*</span> Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                {...register("confirmPassword", {
-                  required: "Confirm password is required",
+              <FieldInput
+                name="confirmPassword"
+                control={control}
+                rules={{
+                  required: "This field is required",
                   validate: (val: string) => {
                     if (watch("password") != val) {
                       return "Passwords do not match";
                     }
                   }
-                })}
-                placeholder="Confirm Password"
-                className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                  errors.confirmPassword ? "border-red-500" : ""
-                }`}
+                }}
+                placeholder="Confirm password"
+                label="Confirm Password"
+                type="password"
               />
-              {errors.confirmPassword && (
-                <span className="text-red-500">
-                  {errors.confirmPassword.message}
-                </span>
-              )}
             </div>
+
             <div className="m-4 text-center">
               <Link href="/login">
                 <span className="text-xs text-gray-400 underline">
@@ -172,11 +132,7 @@ const RegisterForm = () => {
                 </span>
               </Link>
             </div>
-            <div className="w-full">
-              <div className="flex justify-center">
-                <Button width="w-full">Sign Up</Button>
-              </div>
-            </div>
+            <Button width="w-full">Sign Up</Button>
           </form>
         </>
       )}

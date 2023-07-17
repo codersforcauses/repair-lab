@@ -4,6 +4,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
+import FieldInput from "@/components/Form Fields/field-input";
 
 interface ForgotPasswordFormValues {
   email: string;
@@ -12,7 +13,7 @@ interface ForgotPasswordFormValues {
   confirmPassword: string;
 }
 
-const ForgotPassword = () =>  {
+const ForgotPassword = () => {
   const [successfulCreation, setSuccessfulCreation] = useState(false);
   const [complete, setComplete] = useState(false);
   const [secondFactor, setSecondFactor] = useState(false);
@@ -20,12 +21,7 @@ const ForgotPassword = () =>  {
   const [resetPasswordError, setResetPasswordError] = useState(false);
   const [resetPasswordErrMsg, setResetPasswordErrMsg] = useState(false);
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    watch
-  } = useForm<ForgotPasswordFormValues>();
+  const { control, handleSubmit, watch } = useForm<ForgotPasswordFormValues>();
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     const { email, password, code } = data;
@@ -47,9 +43,8 @@ const ForgotPassword = () =>  {
           } else if (result.status === "complete") {
             setActive({ session: result.createdSessionId });
             setComplete(true);
-          } else {
-            console.log(result);
           }
+
           setResetPasswordError(false);
         })
         .catch((err) => {
@@ -75,14 +70,7 @@ const ForgotPassword = () =>  {
   };
 
   return (
-    <form
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1em"
-      }}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       {!successfulCreation && !complete && (
         <>
           {resetPasswordError && (
@@ -90,38 +78,25 @@ const ForgotPassword = () =>  {
               <span className="text-red-500">{resetPasswordErrMsg}</span>
             </div>
           )}
-          <span className="text-gray-400">Please provide identifier:</span>
-          <div className="relative mb-4">
-            <label
-              htmlFor="email"
-              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-            >
-              <span className="text-red-500">*</span> Email Address
-            </label>
-            <input
-              id="email"
-              type="text"
-              {...register("email", {
-                required: "Email is required",
+          <div className="flex flex-col gap-4">
+            <FieldInput
+              name="email"
+              control={control}
+              rules={{
+                required: "This field is required",
                 validate: {
                   matchPattern: (v) =>
                     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
                     "Email address must be a valid address"
                 }
-              })}
-              placeholder="Email Address"
-              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              }}
+              placeholder="Enter email address"
+              label="Email Address"
+              icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
             />
-            {errors.email && (
-              <span className="text-red-500">{errors.email.message}</span>
-            )}
           </div>
-    
-          <div className="w-full">
-            <Button>Change Password</Button>
-          </div>
+
+          <Button width="w-full">Reset Password</Button>
         </>
       )}
 
@@ -132,81 +107,46 @@ const ForgotPassword = () =>  {
               <span className="text-red-500">{resetPasswordErrMsg}</span>
             </div>
           )}
-          <div className="relative mb-4">
-            <label
-              htmlFor="password"
-              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-            >
-              <span className="text-red-500">*</span> Password
-            </label>
-            <input
-              id="password"
+          <div className="flex flex-col gap-4">
+            <FieldInput
+              name="password"
+              control={control}
+              rules={{
+                required: "This field is required"
+              }}
+              placeholder="Enter password"
+              label="Password"
               type="password"
-              {...register("password", {
-                required: "Password is required"
-              })}
-              placeholder="Password"
-              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                errors.password ? "border-red-500" : ""
-              }`}
             />
-            {errors.password && (
-              <span className="text-red-500">{errors.password.message}</span>
-            )}
-          </div>
-    
-          <div className="relative mb-4">
-            <label
-              htmlFor="confirmPassword"
-              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-            >
-              <span className="text-red-500">*</span> Confirm Password
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              {...register("confirmPassword", {
-                required: "Confirm password is required",
+
+            <FieldInput
+              name="confirmPassword"
+              control={control}
+              rules={{
+                required: "This field is required",
                 validate: (val: string) => {
                   if (watch("password") != val) {
                     return "Passwords do not match";
                   }
                 }
-              })}
-              placeholder="Confirm Password"
-              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                errors.confirmPassword ? "border-red-500" : ""
-              }`}
+              }}
+              placeholder="Confirm password"
+              label="Confirm Password"
+              type="password"
             />
-            {errors.confirmPassword && (
-              <span className="text-red-500">{errors.confirmPassword.message}</span>
-            )}
-          </div>
-    
-          <div className="relative mb-4">
-            <label
-              htmlFor="code"
-              className="absolute left-1 top-0 -mt-2 bg-white px-1 text-sm font-bold"
-            >
-              <span style={{ color: "red" }}>*</span>Reset Password Code
-            </label>
-            <input
-              id="code"
-              type="text"
-              {...register("code")}
-              placeholder="Reset Password Code"
-              className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none ${
-                errors.code ? "border-red-500" : ""
-              }`}
+
+            <FieldInput
+              name="code"
+              control={control}
+              rules={{
+                required: "This field is required"
+              }}
+              placeholder="Reset password code"
+              label="Reset Password Code"
             />
-            {errors.code && (
-              <span className="text-red-500">{errors.code.message}</span>
-            )}
           </div>
-    
-          <div className="w-full">
-            <Button>Reset Password</Button>
-          </div>
+
+          <Button width="w-full">Reset Password Code</Button>
         </>
       )}
 
@@ -215,14 +155,19 @@ const ForgotPassword = () =>  {
           <span className="text-gray-400">
             You successfully changed your password
           </span>
-          <div className="w-full">
-            <Button width="w-full" onClick={() => {router.push("/login")}}>Sign In</Button>
-          </div>
+          <Button
+            width="w-full"
+            onClick={() => {
+              router.push("/login");
+            }}
+          >
+            Sign In
+          </Button>
         </>
       )}
       {secondFactor && "2FA is required, this UI does not handle that"}
-      </form>
+    </form>
   );
-}
+};
 
 export default ForgotPassword;
