@@ -1,7 +1,7 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
 import { RepairRequest } from "@prisma/client";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import endpoint, { config } from "@/pages/api/repair-request";
 
@@ -37,6 +37,12 @@ describe("POST /api/repair-request", () => {
         startDate: new Date(),
         endDate: new Date()
       }
+    });
+
+    vi.mock("@clerk/nextjs/server", () => {
+      return {
+        getAuth: vi.fn().mockReturnValue({ userId: "Test" })
+      };
     });
   });
 
