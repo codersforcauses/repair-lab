@@ -78,7 +78,7 @@ const LoginForm = () => {
         <div className="flex flex-col gap-4">
           <FieldInput
             name="emailAddress"
-            placeholder="Enter Email Address"
+            placeholder="Enter email address"
             control={control}
             rules={{
               required: "This field is required",
