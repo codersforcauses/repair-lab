@@ -13,8 +13,8 @@ type FormData = {
   eventId: string;
   name: string;
   location: string;
-  startDate: Date; 
-  endDate: Date; 
+  startDate: Date;
+  endDate: Date;
   eventType: string;
   volunteers: string[];
 };
