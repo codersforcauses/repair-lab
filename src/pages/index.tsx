@@ -17,9 +17,8 @@ export default function Home() {
         <Image
           src="/images/repair_lab_logo.png"
           alt="Greyscale picture of water animal"
-          width={500}
-          height={500}
-          className="h-28 w-28"
+          width={112}
+          height={112}
         />
       </div>
       <div className="mb-16">
@@ -41,23 +40,20 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
         <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
         <div className="flex flex-col">
-          <div>
-            <Image
-              src="/images/event_details.jpg"
-              alt="Large white bowl of fresh potato goodness"
-              width={500}
-              height={500}
-              className="h-auto w-auto justify-center rounded-t-lg"
-            />
-          </div>
+          <Image
+            src="/images/event_details.jpg"
+            alt="Large white bowl of fresh potato goodness"
+            width={500}
+            height={500}
+            className="rounded-t-lg"
+          />
           <div className="rounded-b-lg bg-grey-100 pt-2 text-center text-xl">
             <span className="pb-10 font-bold"> Event Name </span>
             <div className="pt-2 text-sm">
               <h1 className="font-bold">National Potato Chip Day </h1>
               <h2>Date: March 14th</h2>
               <p className="pb-3 pl-10 pr-10 pt-2">
-                {" "}
-                Lots of Potato Chip Eating, Potato merch, Baby Potatoes{" "}
+                Lots of Potato Chip Eating, Potato merch, Baby Potatoes
               </p>
             </div>
           </div>
