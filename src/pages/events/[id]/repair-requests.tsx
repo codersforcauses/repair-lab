@@ -83,6 +83,11 @@ export default function RepairRequest() {
       /* empty */
     }
   }, [eventId]);
+
+  function newEvent() {
+    alert("test");
+  }
+
   return (
     <Sidebar>
       <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
@@ -101,8 +106,13 @@ export default function RepairRequest() {
           </div>
           <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
             {RepairContent()}
-            <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
-              <CiCirclePlus color="#d9d9d9" size={100} />
+            <div
+              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-2xl transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              role="presentation"
+              onClick={newEvent}
+              onKeyDown={newEvent}
+            >
+              <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
           </div>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
