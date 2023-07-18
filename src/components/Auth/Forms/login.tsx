@@ -61,7 +61,7 @@ const LoginForm = () => {
       <div className="w-full">
         <SignInOAuthButton
           strategy="oauth_google"
-          label="Sign in with google"
+          label="Continue with Google"
           icon={googleIcon}
         />
       </div>
