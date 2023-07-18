@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { faChevronDown, faChevronUp, faSearch, faCog, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { HiCheck, HiChevronDown } from "react-icons/hi";
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaSearch,
+  FaCog,
+  FaTimes
+} from "react-icons/fa";
+// import { faChevronDown, faChevronUp, faSearch, faCog, faXmark } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Event } from "@prisma/client";
 import { useRouter } from "next/router";
 
 import { useForm } from "react-hook-form";
 
-import { Dialog } from '@headlessui/react'
-
-
+import { Dialog } from "@headlessui/react";
 
 function Table() {
   const [formData, setFormData] = useState<Partial<Event>>({
@@ -19,14 +25,13 @@ function Table() {
     location: "",
     startDate: undefined,
     eventType: "",
-    status: undefined,
+    status: undefined
   });
 
   const router = useRouter();
 
-  const [modalActive, toggleModal] = useState(false)
-  const onSubmit = handleSubmit(data => console.log(data));
-
+  const [modalActive, toggleModal] = useState(false);
+  const onSubmit = handleSubmit((data) => console.log(data));
 
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
@@ -41,7 +46,6 @@ function Table() {
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
-
 
   // The label is what users see, the key is what the server uses
   const headers: { key: string; label: string }[] = [
@@ -61,9 +65,9 @@ function Table() {
   // Whenever the sortKey or sortMethod changes, the useEffect hook will run
   useEffect(() => {
     const params = new URLSearchParams();
-    params.append('sortKey', sortKey);
-    params.append('sortMethod', sortMethod);
-  
+    params.append("sortKey", sortKey);
+    params.append("sortMethod", sortMethod);
+
     fetch(`/api/get_events?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
@@ -71,14 +75,12 @@ function Table() {
       });
   }, [sortKey, sortMethod]);
 
-
   //will toggle modal visibility for editing events
 
   function openOptions(selectedEvent: Event) {
     setFormData(selectedEvent);
     toggleModal(true);
   }
-  
 
   function handleButtonClick(key: string) {
     if (expandedButton === key) {
@@ -97,21 +99,20 @@ function Table() {
     }
   }
 
-    // takes form values and posts them to DB
+  // takes form values and posts them to DB
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     console.log("in function");
     //event.preventDefault();
-  
-    try {
 
+    try {
       const response = await fetch("/api/edit_event", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
-  
+
       if (response.ok) {
         const updatedEvent = await response.json();
         // Do something with the updated event, if needed
@@ -142,37 +143,37 @@ function Table() {
   // formats input data before passing it on
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-  
+
     // Convert startDate to a Date object before assigning it
     if (name === "startDate") {
       const formattedDate = new Date(value);
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: formattedDate,
+        [name]: formattedDate
       }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: value,
+        [name]: value
       }));
     }
   }
 
-
-  function ToggleChevron(column: string){
+  function ToggleChevron(column: string) {
     const columnInt = parseInt(column.column);
-    return(
-      <button
-        onClick={() => handleButtonClick(headers[columnInt].key)}> {headers[columnInt].key === expandedButton ? (
-          <FontAwesomeIcon icon={faChevronUp} />
+    return (
+      <button onClick={() => handleButtonClick(headers[columnInt].key)}>
+        {" "}
+        {headers[columnInt].key === expandedButton ? (
+          <FaChevronUp />
         ) : (
-          <FontAwesomeIcon icon={faChevronDown} />
+          <FaChevronDown />
         )}
       </button>
     );
   }
 
-  function EditForm(column: string){
+  function EditForm(column: string) {
     //const key = row.key;
     //const label = row.label;
 
@@ -189,16 +190,17 @@ function Table() {
       <form onSubmit={handleSubmit} className="flow-root">
         {headers.map((row) => (
           <div key={row.key}>
-            <label className="font-light text-sm pl-10 float-left">
+            <label className="float-left pl-10 text-sm font-light">
               {row.label}
             </label>
-            <input className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right"
+            <input
+              className="float-right m-1 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
               type="text"
               name={row.key}
               value={formData[row.key as keyof Partial<Event>]}
               onChange={handleInputChange}
             />
-            <br/>
+            <br />
           </div>
         ))}
       </form>
@@ -224,67 +226,76 @@ function Table() {
     );
   }
 
-
-
   return (
     <div>
-
       {/*HEADER BAR*/}
-      <div className=" w-full flex flex-row p-5 pb-2 border-slate-300 border-b-[2px] ">
-        <Image className=""
+      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 p-5 pb-2 ">
+        <Image
+          className=""
           src="/images/repair_lab_logo.jpg"
           alt="logo"
           width="90"
           height="90"
         />
-        <h1 className="ml-20 text-slate-600 text-3xl font-semibold mt-10"> Event Listings</h1>
+        <h1 className="ml-20 mt-10 text-3xl font-semibold text-slate-600">
+          {" "}
+          Event Listings
+        </h1>
 
         {/*ACCOUNT AREA*/}
-        <div className="self-center justify-self-end absolute right-10">
-          <span className="text-slate-600 font-light mr-2"> Account Name </span>
-          <button className="w-12 h-12 bg-slate-800 rounded-full">
-            O
-          </button>
+        <div className="absolute right-10 self-center justify-self-end">
+          <span className="mr-2 font-light text-slate-600"> Account Name </span>
+          <button className="h-12 w-12 rounded-full bg-slate-800">O</button>
         </div>
       </div>
 
-       {/*options modal*/}
+      {/*options modal*/}
 
-      <div className=" flex justify-center items-center">
-          <Dialog open={modalActive} onClose={() => toggleModal(false)}
-          className="flex justify-center p-4 text-center sm:items-center sm:p-0 inset-0 absolute">
+      <div className=" flex items-center justify-center">
+        <Dialog
+          open={modalActive}
+          onClose={() => toggleModal(false)}
+          className="absolute inset-0 flex justify-center p-4 text-center sm:items-center sm:p-0"
+        >
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-              <Dialog.Title className=" flow-root border-slate-300 p-4 bg-lightAqua-300 font-semibold">
-                <span className="float-left"> Edit Event Details </span>
-                <button onClick={() => toggleModal(false)} className="hover:bg-lightAqua-500 rounded-full items-center w-6 h-6 float-right">
-                  <FontAwesomeIcon className="align-middle text-xl align-text-top" icon={faXmark} />
-                </button>
-
-              </Dialog.Title>
-              <Dialog.Description  className="p-3 font-light">
-                Select each field below to change their contents
-              </Dialog.Description >
-              <EditForm column="0"/>
-              <Dialog.Description className=" border-t-[2px] border-slate-200 align-bottom mt-3">
-                <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
-                  Accept
-                </button>
-                <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
-                  Cancel
-                </button>
-              </Dialog.Description>
-            </Dialog.Panel>
-          </Dialog>
+          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
+              <span className="float-left"> Edit Event Details </span>
+              <button
+                onClick={() => toggleModal(false)}
+                className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
+              >
+                <FaTimes className="align-middle align-text-top text-xl" />
+              </button>
+            </Dialog.Title>
+            <Dialog.Description className="p-3 font-light">
+              Select each field below to change their contents
+            </Dialog.Description>
+            <EditForm column="0" />
+            <Dialog.Description className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
+              <button
+                onClick={() => toggleModal(false)}
+                className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => toggleModal(false)}
+                className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
+              >
+                Cancel
+              </button>
+            </Dialog.Description>
+          </Dialog.Panel>
+        </Dialog>
       </div>
 
       {/* Basic functionality for sorting, styling incomplete */}
 
       <div className="flex justify-center">
-        <div className="w-5/12 p-4 relative">
-
+        <div className="relative w-5/12 p-4">
           <input
-            className="w-full h-10 px-5 py-2 rounded-3xl bg-gray-100 border-none text-sm focus:shadow-md focus:outline-none "
+            className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"
@@ -292,15 +303,14 @@ function Table() {
             style={{ backgroundColor: "rgb(239, 239, 239)" }}
           />
           <button
-            className="absolute right-8 top-2/4 transform -translate-y-2/4 text-gray-500 cursor-pointer"
+            className="absolute right-8 top-2/4 -translate-y-2/4 transform cursor-pointer text-gray-500"
             onClick={() => {
               // Handle search submit action here
               console.log("Search submitted");
             }}
           >
-            <FontAwesomeIcon icon={faSearch} />
+            <FaSearch />
           </button>
-
         </div>
       </div>
 
@@ -308,14 +318,32 @@ function Table() {
       <div className="flex justify-center">
         <div className="container ">
           <table className="table-auto">
-          <thead>
+            <thead>
               <tr className="pb-10 text-left">
-                <th className="pl-5"> {headers[0].label} <ToggleChevron column="0"/> </th>
-                <th> {headers[1].label} <ToggleChevron column="1"/> </th>
-                <th> {headers[2].label} <ToggleChevron column="2"/> </th>
-                <th > {headers[3].label} <ToggleChevron column="3"/> </th>
-                <th> {headers[4].label} <ToggleChevron column="4"/> </th>
-                <th> {headers[5].label} <ToggleChevron column="5"/> </th>
+                <th className="pl-5">
+                  {" "}
+                  {headers[0].label} <ToggleChevron column="0" />{" "}
+                </th>
+                <th>
+                  {" "}
+                  {headers[1].label} <ToggleChevron column="1" />{" "}
+                </th>
+                <th>
+                  {" "}
+                  {headers[2].label} <ToggleChevron column="2" />{" "}
+                </th>
+                <th>
+                  {" "}
+                  {headers[3].label} <ToggleChevron column="3" />{" "}
+                </th>
+                <th>
+                  {" "}
+                  {headers[4].label} <ToggleChevron column="4" />{" "}
+                </th>
+                <th>
+                  {" "}
+                  {headers[5].label} <ToggleChevron column="5" />{" "}
+                </th>
 
                 {/* {headers.map((row) => (
                   <th key={row.key}>
@@ -336,25 +364,36 @@ function Table() {
                   </th>
 
                 ))}*/}
-                
-                <th className="text-justify w-10"> Edit </th>
+
+                <th className="w-10 text-justify"> Edit </th>
               </tr>
             </thead>
-
 
             <tbody>
               {eventData.map((event: Event) => {
                 return (
-                  <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-100">
+                  <tr
+                    key={event.name}
+                    className="first:ml-50 last:mr-10 hover:bg-slate-100"
+                  >
                     <td className="pl-5">
-                      <button onClick={() => router.push("/event-form/" + event.id)}>{event.name}</button>
+                      <button
+                        onClick={() => router.push("/event-form/" + event.id)}
+                      >
+                        {event.name}
+                      </button>
                     </td>
                     <td>{event.createdBy}</td>
                     <td>{event.location}</td>
                     <td>{formatDate(String(event.startDate))}</td>
                     <td>{event.eventType}</td>
                     <td>{event.status}</td>
-                    <td className="ml-0 text-center pl-0 align-center " ><button onClick={() => toggleModal(true)}> <FontAwesomeIcon icon={faCog} /> </button></td>
+                    <td className="align-center ml-0 pl-0 text-center ">
+                      <button onClick={() => toggleModal(true)}>
+                        {" "}
+                        <FaCog />{" "}
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
