@@ -5,7 +5,9 @@ export const repairRequestPostSchema = z.object({
   description: z.string().nonempty().min(5), // ? Have a min number of words for description?
   itemType: z.string().nonempty(),
   itemBrand: z.string().nonempty(),
-  images: z.string().array().optional()
+  images: z.string().array().optional(),
+  comment: z.string().nonempty(),
+  thumbnailImage: z.string().nonempty()
 });
 
 const preprocessBooleanInput = (input: unknown) => {

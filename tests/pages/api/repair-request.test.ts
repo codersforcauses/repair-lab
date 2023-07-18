@@ -86,7 +86,9 @@ describe("POST PATCH /api/repair-request", () => {
             eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
             itemType: "Laptop",
             description: "My Macbook screen came off",
-            itemBrand: "Apple"
+            itemBrand: "Apple",
+            comment: "Help please.",
+            thumbnailImage: "https://i.imgur.com/3f3r8hm.jpg"
           })
         });
 
@@ -110,6 +112,10 @@ describe("POST PATCH /api/repair-request", () => {
           "My Macbook screen came off"
         );
         expect(expectedRepairRequest?.itemBrand).equals("Apple");
+        expect(expectedRepairRequest?.comment).equals("Help please.");
+        expect(expectedRepairRequest?.thumbnailImage).equals(
+          "https://i.imgur.com/3f3r8hm.jpg"
+        );
       }
     });
   });

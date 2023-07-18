@@ -1,315 +1,172 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import { PrismaClient } from "@prisma/client";
-
+import { faker } from "@faker-js/faker";
+import {
+  Brand,
+  Event,
+  ItemType,
+  PrismaClient,
+  RepairRequest
+} from "@prisma/client";
 const prisma = new PrismaClient();
 
+async function deleteAllData() {
+  const tablenames = await prisma.$queryRaw<
+    Array<{ tablename: string }>
+  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+
+  const tables = tablenames
+    .map(({ tablename }) => tablename)
+    .filter((name) => name !== "_prisma_migrations")
+    .map((name) => `"public"."${name}"`)
+    .join(", ");
+
+  try {
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`);
+  } catch (error) {
+    console.log({ error });
+  }
+}
+
+async function createItemTypes(itemTypeNames: string[]) {
+  const itemTypes: ItemType[] = [];
+
+  for (const name of itemTypeNames) {
+    const itemType = await prisma.itemType.create({
+      data: { name }
+    });
+
+    itemTypes.push(itemType);
+    console.log(itemType);
+  }
+
+  return itemTypes;
+}
+
+async function createBrands(brandNames: string[]) {
+  const brands: Brand[] = [];
+
+  for (const name of brandNames) {
+    const brand = await prisma.brand.create({
+      data: { name }
+    });
+
+    brands.push(brand);
+    console.log(brand);
+  }
+
+  return brands;
+}
+
+async function createRandomEvents(count: number, itemTypes: ItemType[]) {
+  const events: Event[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const date = faker.date.future();
+
+    const startDate = new Date(date);
+    startDate.setHours(faker.number.int({ min: 8, max: 12 }));
+
+    const endDate = new Date(date);
+    endDate.setHours(faker.number.int({ min: 13, max: 17 }));
+
+    const event = await prisma.event.create({
+      data: {
+        createdBy: faker.person.fullName(),
+        name: faker.commerce.productName(),
+        location: faker.location.street(),
+        description: faker.lorem.sentence(),
+        volunteers: [
+          faker.person.fullName(),
+          faker.person.fullName(),
+          faker.person.fullName(),
+          faker.person.fullName(),
+          faker.person.fullName()
+        ],
+        event: {
+          connect: { name: faker.helpers.arrayElement(itemTypes).name }
+        },
+        startDate: startDate,
+        endDate: endDate
+      }
+    });
+
+    events.push(event);
+    console.log(event);
+  }
+
+  return events;
+}
+
+async function createRandomRepairRequests(
+  count: number,
+  events: Event[],
+  itemTypes: ItemType[],
+  brands: Brand[]
+) {
+  const repairRequests: RepairRequest[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const repairRequest = await prisma.repairRequest.create({
+      data: {
+        createdBy: faker.person.fullName(),
+        assignedTo: faker.person.fullName(),
+        event: {
+          connect: { id: faker.helpers.arrayElement(events).id }
+        },
+        status: "PENDING",
+        description: faker.lorem.sentence(),
+        comment: faker.lorem.sentence(),
+        itemBrand: faker.helpers.arrayElement(brands).name,
+        itemMaterial: faker.word.noun(),
+        requestDate: faker.date.past(),
+        updatedAt: faker.date.recent(),
+        item: {
+          connect: { name: faker.helpers.arrayElement(itemTypes).name }
+        },
+        thumbnailImage: faker.image.urlPlaceholder({ width: 640, height: 480 }),
+        repairComment: faker.lorem.sentence(),
+        spareParts: faker.lorem.sentence(),
+        images: {
+          create: [
+            {
+              s3Key: faker.image.urlPlaceholder({ width: 640, height: 480 })
+            },
+            {
+              s3Key: faker.image.urlPlaceholder({ width: 640, height: 480 })
+            }
+          ]
+        }
+      }
+    });
+
+    repairRequests.push(repairRequest);
+    console.log(repairRequest);
+  }
+
+  return repairRequests;
+}
+
 async function main() {
-  // repairRequestImage(s) created by default user(s)
-  await prisma.repairRequestImage.deleteMany({
-    where: {
-      repairRequest: {
-        OR: [
-          { createdBy: "Alice" },
-          { createdBy: "Charlie" },
-          { createdBy: "David" },
-          { createdBy: "Greg" },
-          { createdBy: "Ivan" },
-          { createdBy: "Larry" }
-        ]
-      }
-    }
-  });
+  const fakerSeed = 0;
+  const itemTypeNames: string[] = ["Clock", "Bike", "Computer"];
+  const brandNames: string[] = ["Seiko", "Giant Bicycles", "Alienware"];
+  const eventCount = 10;
+  const repairRequestCount = 50;
 
-  // delete repairRequest(s) created by default user(s)
-  // possibly linked to default event(s)
-  await prisma.repairRequest.deleteMany({
-    where: {
-      OR: [
-        { createdBy: "Alice" },
-        { createdBy: "Charlie" },
-        { createdBy: "David" },
-        { createdBy: "Greg" },
-        { createdBy: "Ivan" },
-        { createdBy: "Larry" }
-      ]
-    }
-  });
-  console.log("Deleted default RepairRequest records.");
-
-  // create default itemType(s)
-  const clockItemType = await prisma.itemType.upsert({
-    where: { name: "Clock" },
-    create: { name: "Clock" },
-    update: {}
-  });
-  console.log(clockItemType);
-
-  const bikeItemType = await prisma.itemType.upsert({
-    where: { name: "Bike" },
-    create: { name: "Bike" },
-    update: {}
-  });
-  console.log(bikeItemType);
-
-  // create default brand(s)
-  const wonderlandBrand = await prisma.brand.upsert({
-    where: { name: "Wonderland" },
-    create: { name: "Wonderland" },
-    update: {}
-  });
-  console.log(wonderlandBrand);
-
-  const OtherBikeBrand = await prisma.brand.upsert({
-    where: { name: "OtherBikeBrand" },
-    create: { name: "OtherBikeBrand" },
-    update: {}
-  });
-  console.log(OtherBikeBrand);
-
-  const BikeBrand = await prisma.brand.upsert({
-    where: { name: "BikeBrand" },
-    create: { name: "BikeBrand" },
-    update: {}
-  });
-  console.log(BikeBrand);
-
-  // create default event(s)
-  const event1 = await prisma.event.upsert({
-    where: { name: "Can Bob Fix It?" },
-    create: {
-      createdBy: "Bob (The) Builder",
-      name: "Can Bob Fix It?",
-      location: "Bobsville",
-      description:
-        "A general contractor from Bobsville provides his services in Bobsville.",
-      volunteers: ["Cheshire Cat"],
-      event: {
-        connect: { name: "Clock" }
-      },
-      startDate: new Date(2023, 5, 28, 15, 30, 0, 0),
-      endDate: new Date(2023, 6, 1, 15, 30, 0, 0)
-    },
-    update: {}
-  });
-  console.log({ event1 });
-
-  // create default repairRequest(s)
-  const repairRequest1 = await prisma.repairRequest.create({
-    data: {
-      id: "40e22917-5649-4dca-aae5-c2bb3d20303a",
-      createdBy: "Alice",
-      assignedTo: "Cheshire Cat",
-      event: {
-        connect: { id: event1.id }
-      },
-      status: "PENDING",
-      description: "Clock stopped ticking",
-      comment: "Clock starts to tick for 3 seconds after it has been shaken.",
-      itemBrand: "Wonderland",
-      requestDate: new Date(),
-      updatedAt: new Date(),
-      item: {
-        connect: { name: "Clock" }
-      },
-      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
-      images: {
-        create: [
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          },
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          }
-        ]
-      }
-    }
-  });
-
-  console.log(repairRequest1);
-
-  const repairRequest2 = await prisma.repairRequest.create({
-    data: {
-      id: "f7dc6714-043a-4a7e-9639-a43d3e5ad2cc",
-      createdBy: "Charlie",
-      assignedTo: "Cheshire Cat",
-      event: {
-        connect: { id: event1.id }
-      },
-      status: "PENDING",
-      description: "Clock Shattered",
-      comment: "The clock was dropped and glass shattered.",
-      requestDate: new Date(),
-      updatedAt: new Date(),
-      item: {
-        connect: { name: "Clock" }
-      },
-      itemBrand: "Wonderland",
-      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
-      images: {
-        create: [
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          },
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          }
-        ]
-      }
-    }
-  });
-  console.log(repairRequest2);
-
-  const repairRequest3 = await prisma.repairRequest.create({
-    data: {
-      id: "3de8cb33-7406-4317-962c-83617095b9b1",
-      createdBy: "David",
-      assignedTo: "Cheshire Cat",
-      event: {
-        connect: { id: event1.id }
-      },
-      status: "PENDING",
-      description: "Clock blew up",
-      comment: "The clock exploded.",
-      requestDate: new Date(),
-      updatedAt: new Date(),
-      item: {
-        connect: { name: "Clock" }
-      },
-      itemBrand: "Wonderland",
-      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
-      images: {
-        create: [
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          },
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          }
-        ]
-      }
-    }
-  });
-  console.log(repairRequest3);
-
-  const event2 = await prisma.event.upsert({
-    where: { name: "Evans' Repair Warehouse" },
-    create: {
-      id: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb",
-      createdBy: "Evans",
-      name: "Evans' Repair Warehouse",
-      location: "The big warehouse on 5th st",
-      description: "Evans fixes bikes & trikes",
-      volunteers: ["Fred", "Gerald", "Harold"],
-      event: {
-        connect: { name: "Bike" }
-      },
-      startDate: new Date(2023, 8, 12, 15, 30, 0, 0),
-      endDate: new Date(2023, 8, 15, 15, 30, 0, 0)
-    },
-    update: {}
-  });
-  console.log(event2);
-
-  const repairRequest4 = await prisma.repairRequest.create({
-    data: {
-      id: "42fdbf91-e066-49be-8b60-86439f5c97a5",
-      createdBy: "Greg",
-      assignedTo: "Fred",
-      event: {
-        connect: { id: event2.id }
-      },
-      status: "PENDING",
-      description: "My bike chain came out",
-      comment: "Pls fix it for me Evan!",
-      requestDate: new Date(),
-      updatedAt: new Date(),
-      item: {
-        connect: { name: "Bike" }
-      },
-      itemBrand: "Wonderland",
-      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
-      images: {
-        create: [
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          },
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          }
-        ]
-      }
-    }
-  });
-  console.log(repairRequest4);
-
-  const repairRequest5 = await prisma.repairRequest.create({
-    data: {
-      id: "2e38f35a-7a16-4bd5-bbb9-b511def55ffe",
-      createdBy: "Ivan",
-      assignedTo: "Gerald",
-      event: {
-        connect: { id: event2.id }
-      },
-      status: "PENDING",
-      description: "Brake is not working",
-      comment: "Please repair my brakes m8.",
-      requestDate: new Date(),
-      updatedAt: new Date(),
-      item: {
-        connect: { name: "Bike" }
-      },
-      itemBrand: "OtherBikeBrand",
-      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
-      images: {
-        create: [
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          },
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          }
-        ]
-      }
-    }
-  });
-  console.log(repairRequest5);
-
-  const repairRequest6 = await prisma.repairRequest.create({
-    data: {
-      id: "594ea3f3-4091-438b-8495-0724be3d9060",
-      createdBy: "Larry",
-      assignedTo: "Harold",
-      event: {
-        connect: { id: event2.id }
-      },
-      status: "PENDING",
-      description: "Cant adjust seat height",
-      comment: "Idk how to adjust seat height",
-      requestDate: new Date(),
-      updatedAt: new Date(),
-      item: {
-        connect: { name: "Bike" }
-      },
-      itemBrand: "BikeBrand",
-      thumbnailImage: "https://tinyurl.com/broken-clock-sad",
-      images: {
-        create: [
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          },
-          {
-            s3Key: "https://tinyurl.com/broken-clock-sad"
-          }
-        ]
-      }
-    }
-  });
-  console.log(repairRequest6);
-
-  // TODO: Explore generating fake data with faker (Automated Approach)
-  // TODO: Add fake data to seed.ts
-  // OR, Manually:
-  // TODO: Create 1 extra event (At least 2 events)[DONE]
+  faker.seed(fakerSeed);
+  await deleteAllData();
+  const itemTypes: ItemType[] = await createItemTypes(itemTypeNames);
+  const brands: Brand[] = await createBrands(brandNames);
+  const events: Event[] = await createRandomEvents(eventCount, itemTypes);
+  // const repairRequests: RepairRequest[] =
+  await createRandomRepairRequests(
+    repairRequestCount,
+    events,
+    itemTypes,
+    brands
+  );
 }
 
 main()
