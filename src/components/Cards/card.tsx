@@ -23,7 +23,7 @@ export default function Card({ props }: { props: CardProps }) {
       onClick={handleClick}
       onKeyDown={handleClick}
       role="presentation"
-      className="col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-slate-200 shadow-2xl transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-slate-100"
+      className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-2xl transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
     >
       <div className="flex justify-center">
         <Image

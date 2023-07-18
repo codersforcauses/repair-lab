@@ -8,7 +8,7 @@ type Props = {
 
 export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
   return (
-    <div className="rounded-lg bg-slate-300 p-2">
+    <div className="rounded-lg bg-grey-200 p-2">
       <div>
         <div className="flex flex-row gap-2">
           <Image
