@@ -78,7 +78,7 @@ describe("POST /api/repair-request", () => {
             description: "My Macbook screen came off",
             itemBrand: "Apple",
             comment: "Help please.",
-            thumbnailImage: "https://i.imgur.com/3f3r8hm.jpg",
+            thumbnailImage: "https://i.imgur.com/3f3r8hm.jpg"
           })
         });
 
@@ -102,6 +102,10 @@ describe("POST /api/repair-request", () => {
           "My Macbook screen came off"
         );
         expect(expectedRepairRequest?.itemBrand).equals("Apple");
+        expect(expectedRepairRequest?.comment).equals("Help please.");
+        expect(expectedRepairRequest?.thumbnailImage).equals(
+          "https://i.imgur.com/3f3r8hm.jpg"
+        );
       }
     });
   });
