@@ -9,6 +9,9 @@ interface Props {
   children?: ReactNode;
 }
 
+const sidebarTabStyle =
+  "my-4 inline-flex w-full cursor-pointer rounded-lg bg-gray-100 p-3 transition hover:bg-primary-500 hover:text-white";
+
 const Sidebar = ({ children }: Props) => {
   const router = useRouter();
   const { id } = router.query;
@@ -37,19 +40,19 @@ const Sidebar = ({ children }: Props) => {
             Back to Events
           </Link>
           <Link href={`/events/${id}/repair-requests`}>
-            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
+            <div className={sidebarTabStyle}>
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair requests</p>
             </div>
           </Link>
           <Link href={`/events/${id}/volunteers`}>
-            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
+            <div className={sidebarTabStyle}>
               <RxPerson size={30} />
               <p className="px-4 text-lg">Volunteers</p>
             </div>
           </Link>
           <Link href="/">
-            <div className="my-4 inline-flex cursor-pointer rounded-lg bg-gray-100 p-3 hover:bg-gray-200">
+            <div className={sidebarTabStyle}>
               <RxImage size={30} />
               <p className="px-4 text-lg">Images</p>
             </div>
