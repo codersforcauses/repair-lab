@@ -45,7 +45,9 @@ describe("POST PATCH /api/repair-request", () => {
         eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
         description: "My laptop is broken",
         itemType: "Laptop",
-        itemBrand: "Apple"
+        itemBrand: "Apple",
+        comment: "Some comment",
+        thumbnailImage: ""
       }
     });
   });
