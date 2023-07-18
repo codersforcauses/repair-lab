@@ -35,8 +35,8 @@ export const repairRequestPatchSchema = z.object({
       })
       .positive({ message: "Time in hours must be a positive number" })
   ),
-  isRepaired: z.preprocess(preprocessBooleanInput, z.boolean()),
-  isSparePartsNeeded: z.preprocess(preprocessBooleanInput, z.boolean()),
+  isRepaired: z.string(),
+  isSparePartsNeeded: z.string(),
   spareParts: z.string().optional(),
   repairComment: z
     .string()

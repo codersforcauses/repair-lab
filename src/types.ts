@@ -6,4 +6,4 @@ import {
 } from "@/schema/repair-request";
 
 export type RepairRequest = z.infer<typeof repairRequestPostSchema>;
-export type RepairAttempt = z.infer<typeof repairRequestPatchSchema>;
+export type GeneralRepairAttempt = z.infer<typeof repairRequestPatchSchema>;

@@ -67,6 +67,7 @@ const updateRepairRequest = async (
       itemMaterial,
       hoursWorked,
       isRepaired,
+      isSparePartsNeeded,
       spareParts,
       repairComment
     } = parseResult.data;
@@ -75,8 +76,8 @@ const updateRepairRequest = async (
       id: id,
       itemMaterial: itemMaterial,
       hoursWorked: hoursWorked,
-      itemStatus: isRepaired ? "REPAIRED" : "FAILED",
-      spareParts: spareParts,
+      itemStatus: isRepaired === "true" ? "REPAIRED" : "FAILED",
+      spareParts: isSparePartsNeeded === "true" ? spareParts : "",
       repairComment: repairComment
     });
     return res.status(200).json(repairAttempt);

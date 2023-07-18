@@ -1,28 +1,24 @@
-import { useState } from "react";
 import { Inter } from "next/font/google";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import Button from "@/components/Button";
 import FieldInput from "@/components/Form Fields/field-input";
 import FieldRadio from "@/components/Form Fields/field-radio";
 import FieldTextArea from "@/components/Form Fields/field-text-area";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
-import type { RepairAttempt } from "@/types";
+import type { GeneralRepairAttempt } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttempt() {
-  const [display, setdisplay] = useState<string>("hidden");
-
-  const { control, handleSubmit } = useForm<RepairAttempt>({
+  const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
       id: "",
       item: "",
       itemBrand: "",
       itemMaterial: "",
-      hoursWorked: undefined,
+      hoursWorked: 1,
       isRepaired: undefined,
       isSparePartsNeeded: undefined,
       spareParts: "",
@@ -30,8 +26,10 @@ export default function RepairAttempt() {
     }
   });
 
-  const onSubmit: SubmitHandler<RepairAttempt> = async (data) => {
-    console.log(JSON.stringify(data));
+  const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
+
+  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
+    // console.log(JSON.stringify(data));
     const response = await fetch(`/api/repair-request`, {
       method: "PATCH",
       headers: {
@@ -106,23 +104,21 @@ export default function RepairAttempt() {
               name="isSparePartsNeeded"
               control={control}
               label="Spare parts needed?"
-              onChange={(e) => {
-                e.target.value === "true"
-                  ? setdisplay("")
-                  : setdisplay("hidden");
-              }}
               rules={{ required: true }}
             />
           </div>
 
-          <FieldInput
-            name="spareParts"
-            label="Parts needed"
-            placeholder="e.g. 2x screws"
-            control={control}
-            display={display}
-            rules={{ required: display === "hidden" ? false : true }}
-          />
+          {watchIsSparePartsNeeded === "true" && (
+            <FieldInput
+              name="spareParts"
+              label="Parts needed"
+              placeholder="e.g. 2x screws"
+              control={control}
+              rules={{
+                required: watchIsSparePartsNeeded === "true" ? true : false
+              }}
+            />
+          )}
 
           {/* Job Description */}
           <FieldTextArea
