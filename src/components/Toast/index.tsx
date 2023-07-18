@@ -1,18 +1,10 @@
 import { toast, Toaster, ToastBar } from "react-hot-toast";
 import { HiOutlineX } from "react-icons/hi";
 
-type ToastProps = {
-  position?:
-    | "top-left"
-    | "top-center"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-center"
-    | "bottom-right";
-};
+interface ToastProps extends React.ComponentProps<typeof Toaster> {}
 
-const Toast = ({ position, ...props }: ToastProps) => (
-  <Toaster position={position} toastOptions={{ style: { minWidth: "200px" } }}>
+const Toast = ({ ...props }: ToastProps) => (
+  <Toaster toastOptions={{ style: { minWidth: "200px" } }} {...props}>
     {(t) => (
       <ToastBar toast={t}>
         {({ icon, message }) => (

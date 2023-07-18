@@ -62,7 +62,7 @@ export default function ToastTest() {
       >
         Promise
       </Button>
-      <Toast />
+      <Toast position="bottom-center" />
     </main>
   );
 }
