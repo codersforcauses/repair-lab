@@ -1,13 +1,16 @@
 import { z } from "zod";
 
 export const repairRequestPostSchema = z.object({
-  eventId: z.string().uuid(),
-  description: z.string().nonempty().min(5), // ? Have a min number of words for description?
-  itemType: z.string().nonempty(),
-  itemBrand: z.string().nonempty(),
-  images: z.string().array().optional(),
-  comment: z.string().nonempty(),
-  thumbnailImage: z.string().nonempty()
+  eventId: z.string().nonempty({ message: "Event is required" }),
+  description: z
+    .string()
+    .nonempty({ message: "A description of the item is required" })
+    .min(5, {
+      message: "Description of the item must be at least 5 characters long"
+    }),
+  itemType: z.string().nonempty({ message: "Item type is required" }),
+  itemBrand: z.string().nonempty({ message: "Item brand is required" }),
+  images: z.string().array().optional()
 });
 
 const preprocessBooleanInput = (input: unknown) => {

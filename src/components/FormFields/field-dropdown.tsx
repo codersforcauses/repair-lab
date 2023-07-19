@@ -12,7 +12,7 @@ import Error from "@/components/FormFields/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
-  options: { id: number; text: string }[];
+  options: { id: number | string; text: string }[];
   width?: string;
   placeholder?: string;
   label?: string;
