@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
+
 import prisma from "../../lib/prisma";
-import { Event } from "@prisma/client";
 
 export default async function handler(
   req: NextApiRequest,

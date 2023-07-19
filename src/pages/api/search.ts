@@ -1,4 +1,4 @@
-//need to figure out how to search without regards to the capitalisation
+// need to figure out how to search without regards to the capitalisation
 // how would u
 
 import { NextApiRequest, NextApiResponse } from "next";

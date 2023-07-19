@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronUp,
-  faSearch,
   faPencil,
-  faXmark,
-  faPlus
+  faPlus,
+  faSearch,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Event } from "@prisma/client";
-import { useRouter } from "next/router";
-
-import { useForm } from "react-hook-form";
-
 import { Dialog } from "@headlessui/react";
+import { Event, EventStatus } from "@prisma/client";
 
 function Table() {
   const router = useRouter();
+
+  const upcoming: EventStatus = "UPCOMING";
+  const ongoing: EventStatus = "ONGOING";
+  const completed: EventStatus = "COMPLETED";
 
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
@@ -73,7 +74,7 @@ function Table() {
       });
   }, []);
 
-  //will toggle modal visibility for editing events
+  // will toggle modal visibility for editing events
 
   function handleEditEvent(selectedEvent: Event) {
     setShowCreateForm(false);
@@ -145,7 +146,7 @@ function Table() {
     }
   }
 
-  //handles searching
+  // handles searching
   useEffect(() => {
     const params = new URLSearchParams();
     params.append("sortKey", sortKey);
@@ -233,7 +234,7 @@ function Table() {
               </button>
             </Dialog.Title>
 
-            {/*main form*/}
+            {/* main form*/}
             {children}
           </Dialog.Panel>
         </Dialog>
@@ -262,7 +263,7 @@ function Table() {
 
   return (
     <div>
-      {/*HEADER BAR*/}
+      {/* HEADER BAR*/}
       <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
         <Image
           className="m-10 mb-5 mt-5"
@@ -276,7 +277,7 @@ function Table() {
           Event Listings
         </h1>
 
-        {/*ACCOUNT AREA*/}
+        {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
           <span className="mr-2 font-light text-slate-600"> Account Name </span>
           <button
@@ -288,7 +289,7 @@ function Table() {
         </div>
       </div>
 
-      {/*options modal*/}
+      {/* options modal*/}
       <div className=" flex items-center justify-center">
         <Dialog
           open={modalActive}
@@ -298,7 +299,11 @@ function Table() {
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
           <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
-              <span className="float-left"> { showCreateForm && "Create Event" } { !showCreateForm && "Edit Event Details"} </span>
+              <span className="float-left">
+                {" "}
+                {showCreateForm && "Create Event"}{" "}
+                {!showCreateForm && "Edit Event Details"}{" "}
+              </span>
               <button
                 onClick={() => toggleModal(false)}
                 className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
@@ -313,49 +318,93 @@ function Table() {
               Select each field below to change their contents
             </Dialog.Description>
 
-        {/*main form*/}
-            <form onSubmit={ showCreateForm === true ? ( addEvents ) : ( handleSubmit ) }>
-                <div key={headers[0].key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[0].label}</label>
-                  <input type="text" name={headers[0].key} value={formData[headers[0].key as keyof Partial<Event>]} onChange={handleInputChange}
-                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
-                </div>
+            {/* main form*/}
+            <form onSubmit={showCreateForm === true ? addEvents : handleSubmit}>
+              <div key={headers[0].key} className="flow-root">
+                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                  {" "}
+                  {headers[0].label}
+                </label>
+                <input
+                  type="text"
+                  name={headers[0].key}
+                  value={formData[headers[0].key as keyof Partial<Event>]}
+                  onChange={handleInputChange}
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+                />
+              </div>
 
-                <div key={headers[1].key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[1].label}</label>
-                  <input type="text" name={headers[1].key} value={formData[headers[1].key as keyof Partial<Event>]} onChange={handleInputChange}
-                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
-                </div>
+              <div key={headers[1].key} className="flow-root">
+                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                  {" "}
+                  {headers[1].label}
+                </label>
+                <input
+                  type="text"
+                  name={headers[1].key}
+                  value={formData[headers[1].key as keyof Partial<Event>]}
+                  onChange={handleInputChange}
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+                />
+              </div>
 
-                <div key={headers[2].key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[2].label}</label>
-                  <input type="text" name={headers[2].key} value={formData[headers[2].key as keyof Partial<Event>]} onChange={handleInputChange}
-                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
-                </div>
+              <div key={headers[2].key} className="flow-root">
+                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                  {" "}
+                  {headers[2].label}
+                </label>
+                <input
+                  type="text"
+                  name={headers[2].key}
+                  value={formData[headers[2].key as keyof Partial<Event>]}
+                  onChange={handleInputChange}
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+                />
+              </div>
 
-                <div key={headers[3].key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[3].label}</label>
-                  <input type="datetime-local" name={headers[3].key}  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
-                </div>
+              <div key={headers[3].key} className="flow-root">
+                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                  {" "}
+                  {headers[3].label}
+                </label>
+                <input
+                  type="datetime-local"
+                  name={headers[3].key}
+                  onChange={handleInputChange}
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+                />
+              </div>
 
-                <div key={headers[4].key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[4].label}</label>
-                  <input type="text" name={headers[4].key} value={formData[headers[4].key as keyof Partial<Event>]} onChange={handleInputChange}
-                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
-                </div>
+              <div key={headers[4].key} className="flow-root">
+                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                  {" "}
+                  {headers[4].label}
+                </label>
+                <input
+                  type="text"
+                  name={headers[4].key}
+                  value={formData[headers[4].key as keyof Partial<Event>]}
+                  onChange={handleInputChange}
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+                />
+              </div>
 
-                <div key={headers[5].key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[5].label}</label>
-                  <select name={headers[5].key} className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 bg-white w-48">
-                    <option value="UPCOMING"> UPCOMING </option>
-                    <option value="ONGOING"> ONGOING </option>
-                    <option value="COMPLETED"> COMPLETED </option>
-                  </select>
-                </div>
+              <div key={headers[5].key} className="flow-root">
+                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                  {" "}
+                  {headers[5].label}
+                </label>
+                <select
+                  name={headers[5].key}
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
+                >
+                  <option value={upcoming}> UPCOMING </option>
+                  <option value={ongoing}> ONGOING </option>
+                  <option value={completed}> COMPLETED </option>
+                </select>
+              </div>
 
-
-              {/*Bottom button row*/}
+              {/* Bottom button row*/}
               <div className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
                 <button
                   type="submit"
@@ -380,7 +429,7 @@ function Table() {
       <div className="flex justify-center">
         <div className="relative w-5/12 p-4">
           <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none bg-gray-200 "
+            className="h-10 w-full rounded-3xl border-none bg-gray-100 bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"
@@ -397,16 +446,18 @@ function Table() {
           </button>
         </div>
 
-        {/*Add event button*/}
-        <div className=" text-center p-4 ">
-          <button className="focus:shadow-md h-10 w-10 rounded-full bg-gray-200 text-gray-500" onClick={() => handleAddEvent()}>
+        {/* Add event button*/}
+        <div className=" p-4 text-center ">
+          <button
+            className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
+            onClick={() => handleAddEvent()}
+          >
             <FontAwesomeIcon icon={faPlus} />
-          </button> 
+          </button>
         </div>
-
       </div>
 
-      {/*main table*/}
+      {/* main table*/}
       <div className="flex justify-center">
         <div className="container ">
           <table className="table-auto">

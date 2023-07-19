@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
+
 import prisma from "../../lib/prisma";
-import { Event } from "@prisma/client";
 
 // still need to add what to do if the value inputed is not a valid input for the data, still ned to figure out date
 
