@@ -4,13 +4,14 @@ import {
   UseControllerProps
 } from "react-hook-form";
 
-import Label from "@/components/Form Fields/box-label";
-import Error from "@/components/Form Fields/error-msg";
+import Label from "@/components/FormFields/box-label";
+import Error from "@/components/FormFields/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   id?: string;
   label?: string;
+  width?: string;
 }
 
 /*
@@ -25,18 +26,24 @@ Output:
 export default function FieldRadio<T extends FieldValues = FieldValues>({
   id,
   label,
+  width = "w-full",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const errorStyle = !fieldState.invalid
-    ? "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow"
-    : "relative mb-2 flex h-10 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow";
+  const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const errorBorderStyle = `border-red-500`;
+  const normalBorderStyle = `border-grey-300`;
+  const radioStyle = `my-auto flex flex-row items-start gap-4 text-xs`;
 
   return (
-    <div className={errorStyle}>
+    <div
+      className={`${baseStyle} ${
+        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
+      }`}
+    >
       <Label label={!label ? props.name : label} {...props} />
-      <div className="my-auto flex flex-row items-start gap-4 text-xs">
+      <div className={radioStyle}>
         <label htmlFor={`${props.name}-y`} className="flex gap-1">
           <input
             {...field}

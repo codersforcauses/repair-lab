@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import Field_Input from "@/components/Form Fields/field-input";
-import Field_Radio from "@/components/Form Fields/field-radio";
-import Field_Text_Area from "@/components/Form Fields/field-text-area";
+import DropDown from "@/components/FormFields/field-dropdown";
+import Field_Input from "@/components/FormFields/field-input";
+import Field_Radio from "@/components/FormFields/field-radio";
+import Field_Text_Area from "@/components/FormFields/field-text-area";
 
 /**
  * This is a sample form page using React Hook Form for testing purposes
@@ -21,6 +22,7 @@ type RepairData = {
   parts: string;
   desc: string;
   comments: string;
+  dropdown: string;
 };
 
 export default function Repair() {
@@ -35,7 +37,8 @@ export default function Repair() {
       spare: "",
       parts: "",
       desc: "",
-      comments: ""
+      comments: "",
+      dropdown: ""
     },
     mode: "onChange"
   });
@@ -45,7 +48,6 @@ export default function Repair() {
   });
 
   const lineStyle = "mb-2 flex items-start gap-6";
-
   return (
     <section className="mx-3">
       <h1 className="mb-2 block text-xl text-red-500">General Repairs</h1>
@@ -115,6 +117,51 @@ export default function Repair() {
             rules={{ required: true }}
           />
         </div>
+
+        <div className={lineStyle}>
+          <DropDown
+            name="dropdown"
+            control={control}
+            placeholder="Select an Item"
+            label="header"
+            rules={{ required: true }}
+            options={[
+              {
+                id: 0,
+                text: "Option1"
+              },
+              {
+                id: 1,
+                text: "Option2"
+              },
+              {
+                id: 2,
+                text: "Option3"
+              },
+              {
+                id: 3,
+                text: "LongerOption4"
+              },
+              {
+                id: 4,
+                text: "EvenLongerOption5"
+              },
+              {
+                id: 5,
+                text: "Option6"
+              },
+              {
+                id: 6,
+                text: "Option7"
+              },
+              {
+                id: 7,
+                text: "A really really long option for the purpose of testing"
+              }
+            ]}
+          />
+        </div>
+
         {/* Comments */}
         <div className={lineStyle}>
           <Field_Text_Area
