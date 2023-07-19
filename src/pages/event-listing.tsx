@@ -75,13 +75,15 @@ function Table() {
 
   //will toggle modal visibility for editing events
 
-  function openOptions(selectedEvent: Event) {
+  function handleEditEvent(selectedEvent: Event) {
+    setShowCreateForm(false);
     setFormData(selectedEvent);
     toggleModal(true);
   }
 
   function handleAddEvent() {
     setShowCreateForm(true);
+    toggleModal(true);
     setFormData({
       id: undefined,
       name: "",
@@ -93,7 +95,7 @@ function Table() {
     });
   }
 
-  async function AddEvent(event: React.FormEvent<HTMLFormElement>) {
+  async function addEvents(event: React.FormEvent<HTMLFormElement>) {
     console.log("in add function");
 
     try {
@@ -107,11 +109,11 @@ function Table() {
 
       if (response.ok) {
         const addEvent = await response.json();
-        setShowForm(false);
+        toggleModal(false);
         router.reload();
       }
     } catch (error) {
-      console.error("Failed");
+      console.error("Failed to add event");
     }
   }
 
@@ -207,7 +209,7 @@ function Table() {
     );
   }
 
-  // modal component, will need to be adjusted to not refresh using maps
+  // modal component, will need to be adjusted to not refresh whenever the onChange function is called
   function Modal({ children, title }) {
     return (
       <div className=" flex items-center justify-center">
@@ -287,85 +289,92 @@ function Table() {
       </div>
 
       {/*options modal*/}
-      <Modal title="Edit Event Details">
-        <Dialog.Description className="p-3 font-light">
-          Select each field below to change their contents
-        </Dialog.Description>
+      <div className=" flex items-center justify-center">
+        <Dialog
+          open={modalActive}
+          onClose={() => toggleModal(false)}
+          className="absolute inset-0 flex justify-center p-4 text-center sm:items-center sm:p-0"
+        >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
+              <span className="float-left"> { showCreateForm && "Create Event" } { !showCreateForm && "Edit Event Details"} </span>
+              <button
+                onClick={() => toggleModal(false)}
+                className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
+              >
+                <FontAwesomeIcon
+                  className="align-middle align-text-top text-xl"
+                  icon={faXmark}
+                />
+              </button>
+            </Dialog.Title>
+            <Dialog.Description className="p-3 font-light">
+              Select each field below to change their contents
+            </Dialog.Description>
 
         {/*main form*/}
-        <form onSubmit={handleSubmit}>
-            <div key={headers[0].key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[0].label}</label>
-              <input type="text" name={headers[0].key} value={formData[headers[0].key as keyof Partial<Event>]} onSubmit={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
-            </div>
+            <form onSubmit={ showCreateForm === true ? ( addEvents ) : ( handleSubmit ) }>
+                <div key={headers[0].key} className="flow-root">
+                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[0].label}</label>
+                  <input type="text" name={headers[0].key} value={formData[headers[0].key as keyof Partial<Event>]} onChange={handleInputChange}
+                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
+                </div>
 
-            <div key={headers[1].key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[1].label}</label>
-              <input type="text" name={headers[1].key} value={formData[headers[1].key as keyof Partial<Event>]} onSubmit={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
-            </div>
+                <div key={headers[1].key} className="flow-root">
+                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[1].label}</label>
+                  <input type="text" name={headers[1].key} value={formData[headers[1].key as keyof Partial<Event>]} onChange={handleInputChange}
+                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
+                </div>
 
-            <div key={headers[2].key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[2].label}</label>
-              <input type="text" name={headers[2].key} value={formData[headers[2].key as keyof Partial<Event>]} onSubmit={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
-            </div>
+                <div key={headers[2].key} className="flow-root">
+                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[2].label}</label>
+                  <input type="text" name={headers[2].key} value={formData[headers[2].key as keyof Partial<Event>]} onChange={handleInputChange}
+                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
+                </div>
 
-            <div key={headers[3].key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[3].label}</label>
-              <input type="text" name={headers[3].key} value={formData[headers[3].key as keyof Partial<Event>]} onSubmit={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
-            </div>
+                <div key={headers[3].key} className="flow-root">
+                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[3].label}</label>
+                  <input type="datetime-local" name={headers[3].key}  onChange={handleInputChange}
+                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
+                </div>
 
-            <div key={headers[4].key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[4].label}</label>
-              <input type="text" name={headers[4].key} value={formData[headers[4].key as keyof Partial<Event>]} onSubmit={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
-            </div>
+                <div key={headers[4].key} className="flow-root">
+                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[4].label}</label>
+                  <input type="text" name={headers[4].key} value={formData[headers[4].key as keyof Partial<Event>]} onChange={handleInputChange}
+                  className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 w-48"/>
+                </div>
 
-            <div key={headers[5].key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[5].label}</label>
-              <input type="text" name={headers[5].key} value={formData[headers[5].key as keyof Partial<Event>]} onSubmit={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
-            </div>
+                <div key={headers[5].key} className="flow-root">
+                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[5].label}</label>
+                  <select name={headers[5].key} className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600 bg-white w-48">
+                    <option value="UPCOMING"> UPCOMING </option>
+                    <option value="ONGOING"> ONGOING </option>
+                    <option value="COMPLETED"> COMPLETED </option>
+                  </select>
+                </div>
 
 
+              {/*Bottom button row*/}
+              <div className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
+                <button
+                  type="submit"
+                  className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
+                >
+                  Submit
+                </button>
 
-          {/*{headers.map((row) => (
-            <div key={row.key} className="flow-root">
-              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                {row.label}
-              </label>
-              <input
-                type="text"
-                name={row.key}
-                value={formData[row.key as keyof Partial<Event>]}
-                onChange={handleInputChange}
-                className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-              />
-            </div>
-          ))}*/}
-
-          {/*Bottom button row*/}
-
-          <div className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
-            <button
-              type="submit"
-              className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
-            >
-              Submit
-            </button>
-
-            <button
-              onClick={() => toggleModal(false)}
-              className="m-2 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </Modal>
+                <button
+                  onClick={() => toggleModal(false)}
+                  className="m-2 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </Dialog.Panel>
+        </Dialog>
+      </div>
 
       {/* Search bar above table */}
       <div className="flex justify-center">
@@ -390,8 +399,8 @@ function Table() {
 
         {/*Add event button*/}
         <div className=" text-center p-4 ">
-          <button className="focus:shadow-md h-10 w-10 rounded-full bg-gray-200 text-gray-500">
-           <FontAwesomeIcon icon={faPlus} />
+          <button className="focus:shadow-md h-10 w-10 rounded-full bg-gray-200 text-gray-500" onClick={() => handleAddEvent()}>
+            <FontAwesomeIcon icon={faPlus} />
           </button> 
         </div>
 
@@ -453,7 +462,7 @@ function Table() {
                     <td className="font-light">{event.eventType}</td>
                     <td className="font-light">{event.status}</td>
                     <td className="align-center ml-0 pl-0 text-center ">
-                      <button onClick={() => openOptions(event)}>
+                      <button onClick={() => handleEditEvent(event)}>
                         <FontAwesomeIcon icon={faPencil} />
                       </button>
                     </td>
