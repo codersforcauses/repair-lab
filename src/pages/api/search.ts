@@ -1,5 +1,5 @@
-//need to figure out how to search without regards to the capitalisation 
-// how would u 
+//need to figure out how to search without regards to the capitalisation
+// how would u
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { Event } from "@prisma/client";
@@ -19,12 +19,16 @@ export default async function get_events(
   const events = await prisma.event.findMany({
     where: {
       OR: [
-        { name: { contains: searchWord as string } },
-        { location: { contains: searchWord as string } },
+        { name: { 
+          contains: searchWord as string,
+          mode: 'insensitive' } },
+        { location: { 
+          contains: searchWord as string,
+          mode: 'insensitive' } }
         // Add more fields to search if necessary
-      ],
+      ]
     },
-    orderBy: sortObj,
+    orderBy: sortObj
   });
 
   res.status(200).json(events);

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { FaChevronDown, FaChevronUp, FaSearch, FaCog } from "react-icons/fa";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronDown,
+  faChevronUp,
+  faSearch,
+  faCog
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Event } from "@prisma/client";
 import { useRouter } from "next/router";
 
@@ -32,6 +37,7 @@ function Table() {
     startDate: undefined,
     eventType: "",
     status: undefined
+    status: undefined
   });
 
   // The label is what users see, the key is what the server uses
@@ -54,6 +60,9 @@ function Table() {
     params.append("sortKey", sortKey);
     params.append("sortMethod", sortMethod);
 
+    params.append("sortKey", sortKey);
+    params.append("sortMethod", sortMethod);
+
     fetch(`/api/get_events?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
@@ -66,6 +75,7 @@ function Table() {
     setShowForm(true);
   }
 
+  function handleAddEvent() {
   function handleAddEvent() {
     setShowCreateForm(true);
     setFormData({
@@ -81,7 +91,10 @@ function Table() {
 
   async function AddEvent(event: React.FormEvent<HTMLFormElement>) {
     console.log("in add function");
+  async function AddEvent(event: React.FormEvent<HTMLFormElement>) {
+    console.log("in add function");
 
+    try {
     try {
       const response = await fetch("api/add_event", {
         method: "POST",
@@ -227,15 +240,17 @@ function Table() {
             onChange={(e) => setSearchWord(e.target.value)}
             style={{ backgroundColor: "rgb(239, 239, 239)" }}
           />
-          <div className="absolute right-8 top-2/4 -translate-y-2/4 transform cursor-pointer text-gray-500">
-            <FaSearch />
+          <div
+            className="absolute right-8 top-2/4 transform -translate-y-2/4 text-gray-500 cursor-pointer"
+          >
+            <FontAwesomeIcon icon={faSearch} />
           </div>
         </div>
       </div>
 
       <div className="flex justify-center">
         <div className="container">
-          <table>
+          <table className="table-auto">
             <thead>
               <tr>
                 {headers.map((row) => (

@@ -2,14 +2,16 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 import { Event } from "@prisma/client";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === "POST") {
     try {
       const { name, createdBy, location, eventType, status } = req.body;
       const description = "description abc";
       const endDate = "2023-12-31T23:59:59.999Z";
       const startDate = "2023-10-31T23:59:59.999Z";
-      
 
       const newEvent = await prisma.event.create({
         data: {
@@ -24,8 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           status,
           description,
-          endDate,
-        },
+          endDate
+        }
       });
 
       res.status(201).json(newEvent);
