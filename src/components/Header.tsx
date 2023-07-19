@@ -1,4 +1,4 @@
-import React from "react";
+import FormatDate from "@/components/utils/format-date";
 
 export interface HeaderProps {
   name: string;
@@ -9,13 +9,6 @@ export interface HeaderProps {
 }
 
 export default function Header({ props }: { props: HeaderProps }) {
-  function formatDate(dateString: string): string {
-    const actualDate = new Date(dateString);
-    const day = actualDate.getDate().toString().padStart(2, "0");
-    const month = (actualDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = actualDate.getFullYear().toString();
-    return `${day}/${month}/${year}`;
-  }
   return (
     <>
       <div className="header-component sticky top-0 z-50 flex justify-between gap-4 px-5 pb-8 pt-6 ">
@@ -32,7 +25,7 @@ export default function Header({ props }: { props: HeaderProps }) {
         <div>
           <h1 className="text-right text-xl text-zinc-600">
             Location: {props.location} <br />
-            Date: {formatDate(String(props.startDate))}
+            Date: {FormatDate(String(props.startDate))}
             <br />
             Time: {String(props.startDate).slice(12, 16)}-
             {String(props.endDate).slice(12, 16)}

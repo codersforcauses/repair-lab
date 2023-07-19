@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
@@ -16,7 +15,7 @@ export default function Volunteers() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  const [eventId, setEventId] = useState<string>("" as string);
+  const [eventId, setEventId] = useState<string>("");
 
   const router = useRouter();
   useEffect(() => {

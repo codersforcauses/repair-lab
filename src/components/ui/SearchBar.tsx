@@ -1,6 +1,6 @@
 import { AiOutlineSearch } from "react-icons/ai";
 
-export default function SortBy() {
+export default function SearchBar() {
   return (
     <div className="sd:w-auto relative w-full p-4 text-gray-600">
       <input

@@ -1,11 +1,8 @@
-/* eslint-disable unused-imports/no-unused-imports */
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
-import { RxAvatar } from "react-icons/rx";
 
 import Card, { CardProps } from "@/components/Cards/card";
 import { HeaderProps } from "@/components/Header";
@@ -22,7 +19,7 @@ export default function RepairRequest() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  const [eventId, setEventId] = useState<string>("" as string);
+  const [eventId, setEventId] = useState<string>("");
 
   const router = useRouter();
   useEffect(() => {
@@ -33,24 +30,42 @@ export default function RepairRequest() {
   }, [router.isReady, router.query.id]);
 
   function RepairContent() {
-    const content = [];
+    const content: JSX.Element[] = [];
 
-    for (let i = 0; i < repairRequests.length; i++) {
+    repairRequests.map((item) => {
       const props: CardProps = {
-        title: repairRequests[i].id,
+        title: item.id,
         image: "/images/broken-clock-sad.jpg",
-        description: repairRequests[i].description,
-        status: repairRequests[i].status,
-        firstName: repairRequests[i].assignedTo,
+        description: item.description,
+        status: item.status,
+        firstName: item.assignedTo,
         lastName: "",
         avatar: "/images/repair_lab_logo.jpg"
       };
+      console.log(repairRequests);
       content.push(
-        <div key={i}>
+        <div key={item.id}>
           <Card props={props} />
         </div>
       );
-    }
+    });
+
+    // for (let i = 0; i < repairRequests.length; i++) {
+    //   const props: CardProps = {
+    //     title: repairRequests[i].id,
+    //     image: "/images/broken-clock-sad.jpg",
+    //     description: repairRequests[i].description,
+    //     status: repairRequests[i].status,
+    //     firstName: repairRequests[i].assignedTo,
+    //     lastName: "",
+    //     avatar: "/images/repair_lab_logo.jpg"
+    //   };
+    //   content.push(
+    //     <div key={i}>
+    //       <Card props={...props} />
+    //     </div>
+    //   );
+    // }
     return content;
   }
 
