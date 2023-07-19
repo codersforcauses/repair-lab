@@ -1,3 +1,4 @@
+import axios from "axios"; // Assuming you have installed Axios or another HTTP client
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
@@ -11,8 +12,26 @@ interface FormData {
 export default function Test() {
   const { control, handleSubmit } = useForm<FormData>();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // Create a FormData object to handle file uploads
+      const formData = new FormData();
+      formData.append("file", data.single); // Assuming your API expects a 'file' field for single file uploads
+      data.multiple.forEach((file) => formData.append("files", file)); // Assuming your API expects 'files' field for multiple file uploads
+
+      // Make the API request to your API route for S3 uploads
+      const response = await axios.post("/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data" // Set the appropriate content type for file uploads
+        }
+      });
+
+      // Handle the response from the API if needed
+      console.log("File uploaded successfully. Response:", response.data);
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error("Error uploading file:", error);
+    }
   });
 
   return (
@@ -26,7 +45,9 @@ export default function Test() {
           <h2 className="text-xl font-bold">Test Multiple</h2>
           <FieldImageUpload name="multiple" control={control} multiple />
         </div>
-        <Button width="w-full">Submit</Button>
+        <Button width="w-full" type="submit">
+          Submit
+        </Button>
       </form>
     </section>
   );
