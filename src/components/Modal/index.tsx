@@ -9,15 +9,22 @@ import Button from "@/components/Button";
 type ModalProps = {
   showModal: boolean;
   setShowPopup: Dispatch<SetStateAction<boolean>>;
+  width?: string;
+  height?: string;
 };
 
-const Modal = ({ showModal, setShowPopup }: ModalProps) => {
+const Modal = ({
+  showModal,
+  setShowPopup,
+  width = "w-full sm:max-w-lg md:max-w-2xl",
+  height = "h-full"
+}: ModalProps) => {
   return (
     <>
       <Transition appear show={showModal} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10"
+          className="relative z-10 "
           open={showModal}
           onClose={() => setShowPopup(false)}
         >
@@ -44,7 +51,9 @@ const Modal = ({ showModal, setShowPopup }: ModalProps) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#FFFFFF] p-6 text-left align-middle shadow-xl transition-all sm:max-w-lg md:max-w-2xl">
+                <Dialog.Panel
+                  className={`${width} ${height} transform overflow-hidden rounded-2xl bg-[#FFFFFF] p-6 text-left align-middle shadow-xl transition-all`}
+                >
                   {/* <div className="text-gray-300 p-5 text-center text-2xl font-medium leading-6"></div> */}
                   <Dialog.Title
                     as="h3"
