@@ -107,7 +107,7 @@ export default function RepairRequest() {
           <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
             {RepairContent()}
             <div
-              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-2xl transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
               role="presentation"
               onClick={newEvent}
               onKeyDown={newEvent}

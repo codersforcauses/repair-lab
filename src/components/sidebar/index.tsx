@@ -18,7 +18,7 @@ const Sidebar = ({ children }: Props) => {
 
   return (
     <div className="flex">
-      <div className="fixed flex h-screen w-80 flex-col border-r-[1px] bg-white p-4">
+      <div className="fixed flex h-screen w-74 flex-col border-r-[1px] bg-white p-4">
         <div className="flex flex-col items-center">
           <Link href="/">
             <div className="grid-element">
