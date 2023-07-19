@@ -15,17 +15,16 @@ table {
 }
 
 thead tr {
-  background-color: #A6DCDB;
+  background-color: #a6dcdb;
   /* Header row color */
   color: white;
   /* Text color for header row */
 }
 
 tbody {
-  background-color: #F9FEFD;
+  background-color: #f9fefd;
   /* Background color for rows */
   border: 1px solid rgba(255, 255, 255, 0.3);
-
 }
 
 th,
@@ -37,4 +36,3 @@ td {
   color: black;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add border-bottom for lines between rows */
 }
-

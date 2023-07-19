@@ -11,11 +11,10 @@ export default async function get_events(
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 
-
-    const events = await prisma.event.findMany({
-      orderBy: sortObj,
-    });
-    res.status(200).json(events);
+  const events = await prisma.event.findMany({
+    orderBy: sortObj
+  });
+  res.status(200).json(events);
 }
 
 export const config = {};
