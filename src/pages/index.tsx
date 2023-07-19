@@ -142,7 +142,7 @@ export default function Home() {
                 <AiFillInstagram className="text-2xl" color="teal" />
               </a>
 
-              <a href="repairlab.perth@gmail.com">
+              <a href="mailto:repairlab.perth@gmail.com">
                 <AiFillMail className="text-2xl" color="teal" />
               </a>
             </div>
