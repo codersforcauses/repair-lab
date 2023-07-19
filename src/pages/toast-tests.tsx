@@ -9,7 +9,7 @@ export default function ToastTest() {
   const myPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve("Success!");
-    }, 2000);
+    }, 5000);
   });
   return (
     <main className={`mt-96 flex flex-row ${inter.className}`}>

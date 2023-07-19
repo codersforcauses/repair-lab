@@ -7,10 +7,15 @@ import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
+import toast from "react-hot-toast";
+import Toast from "@/components/Toast";
+import useToast from "@/hooks/useToast";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttempt() {
+  useToast();
+
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
@@ -29,7 +34,7 @@ export default function RepairAttempt() {
   const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
 
   const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
-    // console.log(JSON.stringify(data));
+    const loadingToastId = toast.loading("Submitting data...");
     const response = await fetch(`/api/repair-request`, {
       method: "PATCH",
       headers: {
@@ -37,10 +42,11 @@ export default function RepairAttempt() {
       },
       body: JSON.stringify(data)
     });
+    toast.dismiss(loadingToastId);
     if (response.ok) {
-      alert("Data submitted");
+      toast.success("Data submitted!");
     } else {
-      alert(`Error! ${response.statusText}`);
+      toast.error(`Error! ${response.statusText}`);
     }
   };
 
@@ -142,6 +148,7 @@ export default function RepairAttempt() {
           </Button>
         </div>
       </form>
+      <Toast />
     </main>
   );
 }
