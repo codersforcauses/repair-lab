@@ -11,7 +11,7 @@ const useToast = () => {
       .filter((tt) => tt.visible)
       .filter((_, i) => i >= toastLimit)
       .forEach((tt) => t.dismiss(tt.id));
-  }, [toasts]);
+  }, [toastLimit, toasts]);
 
   const toast = {
     ...t,

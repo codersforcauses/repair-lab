@@ -1,21 +1,19 @@
 import { Inter } from "next/font/google";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
+import Toast from "@/components/Toast";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
-import toast from "react-hot-toast";
-import Toast from "@/components/Toast";
-import useToast from "@/hooks/useToast";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttempt() {
-  useToast();
-
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
