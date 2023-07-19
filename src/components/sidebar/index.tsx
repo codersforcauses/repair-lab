@@ -51,7 +51,7 @@ const Sidebar = ({ children }: Props) => {
               <p className="px-4 text-lg">Volunteers</p>
             </div>
           </Link>
-          <Link href="/">
+          <Link href={`/events/${id}/public-images`}>
             <div className={sidebarTabStyle}>
               <RxImage size={30} />
               <p className="px-4 text-lg">Images</p>
