@@ -2,9 +2,9 @@ import { Inter } from "next/font/google";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/components/Button";
-import FieldInput from "@/components/Form Fields/field-input";
-import FieldRadio from "@/components/Form Fields/field-radio";
-import FieldTextArea from "@/components/Form Fields/field-text-area";
+import FieldInput from "@/components/FormFields/field-input";
+import FieldRadio from "@/components/FormFields/field-radio";
+import FieldTextArea from "@/components/FormFields/field-text-area";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 

@@ -40,7 +40,7 @@ describe("POST PATCH /api/repair-request", () => {
     });
     await prisma.repairRequest.create({
       data: {
-        id: "acf5ed50-19a2-11ee-be56-0242ac120002",
+        id: "56005d72-2614-11ee-be56-0242ac120002",
         createdBy: "mock user",
         eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
         description: "My laptop is broken",
@@ -139,8 +139,8 @@ describe("POST PATCH /api/repair-request", () => {
             itemBrand: "Wonderland",
             itemMaterial: "Plastic",
             hoursWorked: 1.5,
-            isRepaired: true,
-            isSparePartsNeeded: true,
+            isRepaired: "true",
+            isSparePartsNeeded: "true",
             spareParts: "battery",
             repairComment: "Fixed"
           })
@@ -162,13 +162,13 @@ describe("POST PATCH /api/repair-request", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            id: "acf5ed50-19a2-11ee-be56-0242ac120002",
+            id: "56005d72-2614-11ee-be56-0242ac120002",
             item: "Laptop",
             itemBrand: "Apple",
             itemMaterial: "Metal",
             hoursWorked: 9.9,
-            isRepaired: true,
-            isSparePartsNeeded: true,
+            isRepaired: "true",
+            isSparePartsNeeded: "true",
             spareParts: "new brain x1",
             repairComment: "nice brain. fixed!"
           })
