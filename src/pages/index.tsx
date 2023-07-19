@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AiFillFacebook, AiFillInstagram, AiFillMail } from "react-icons/ai";
 
 import Button from "@/components/Button/index";
 
@@ -22,15 +23,16 @@ export default function Home() {
         />
       </div>
       <div className="mb-16">
-        <div className="mb-8 mt-5 text-center text-3xl font-bold">About Us</div>
+        <div className="mb-8 mt-6 text-center text-3xl font-bold">About Us</div>
         <div className="text-ml flex flex-col pl-10 pr-10">
           <div className="flex flex-col justify-center">
             <div className="relative flex w-full justify-center">
               <Image
                 src="/images/generalToy.jpeg"
-                alt="box of sewing equipment"
+                alt="toy repair"
                 width={400}
                 height={300}
+                className="rounded-lg"
               />
             </div>
 
@@ -51,47 +53,10 @@ export default function Home() {
                 but also learning repair skills and enjoy doing so.
               </li>
 
-              <li className="border-b-2 border-darkAqua-600 pb-8">
+              <li>
                 We hope that there will be many Repair Labs in Perth and the
                 rest of WA following after our pilot in October 2017.
               </li>
-            </ul>
-
-            <div className="relative mt-8 flex w-full justify-center">
-              <Image
-                src="/images/Repair_Lab_bikerepair.jpg"
-                alt="bike repair"
-                width={400}
-                height={300}
-              />
-            </div>
-
-            <ul className="tlex grid list-none justify-center gap-y-2 pr-4">
-              <li className="mt-6">
-                We are always on the lookout for more volunteers.
-              </li>
-
-              <li>
-                Especially people with electrical knowledge are on high demand.
-              </li>
-
-              <li>
-                But also people who can repair toys, bikes, furniture, clothing,
-                jewellery, curtains, household items, garden tools, etc. etc.
-              </li>
-
-              <li>
-                Sometimes it is not only repair skills as well as care
-                instructions. Maybe you can teach others how to keep your tools
-                in mint condition, or how to crochet.
-              </li>
-
-              <li>
-                If you are handy or have a good repair skills and eager to share
-                them with your community, please contact us.
-              </li>
-
-              <li>Wilma & Flavia</li>
             </ul>
           </div>
         </div>
@@ -100,8 +65,8 @@ export default function Home() {
         <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
         <div className="flex flex-col">
           <Image
-            src="/images/event_details.jpg"
-            alt="Large white bowl of fresh potato goodness"
+            src="/images/jeans_repair.jpg"
+            alt="A person repairing jeans"
             width={500}
             height={500}
             className="rounded-t-lg"
@@ -109,22 +74,80 @@ export default function Home() {
           <div className="rounded-b-lg bg-grey-100 pt-2 text-center text-xl">
             <span className="pb-10 font-bold"> Event Name </span>
             <div className="pt-2 text-sm">
-              <h1 className="font-bold">National Potato Chip Day </h1>
+              <h1 className="font-bold"> Clothing Repair Workshop </h1>
               <h2>Date: March 14th</h2>
               <p className="pb-3 pl-10 pr-10 pt-2">
-                Lots of Potato Chip Eating, Potato merch, Baby Potatoes
+                Have any torned clothes? Bring them to our clothing repair!
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="mb-16 h-auto bg-white">
-        <div className="pb-5 pt-16 text-center text-2xl font-bold">
-          Submit item for repair
+
+      <div className="mb-16 h-auto bg-white p-3">
+        <div className="pb-5 pt-12 text-center text-2xl font-bold">
+          Submit item for Repair
         </div>
-        <div className="h-30 mb-10 mt-5 pl-10 pr-10">
+        <div className="h-30 mb-10 mt-5 pb-3 pl-10 pr-10">
           <Button aria-label="button"> New Request </Button>
         </div>
+      </div>
+
+      <div className="flex flex-col items-center justify-center bg-lightAqua-100">
+        <span className="pb-6 text-2xl font-bold"> Contact Us </span>
+
+        <div className="relative mt-1 flex w-full justify-center pl-10 pr-10">
+          <Image
+            src="/images/Repair_Lab_bikerepair.jpg"
+            alt="bike repair"
+            width={400}
+            height={300}
+            className="rounded-lg"
+          />
+        </div>
+
+        <ul className="tlex grid list-none justify-center gap-y-2 pb-10 pl-8 pr-8">
+          <li className="mt-6">
+            We are always on the lookout for more volunteers.
+          </li>
+
+          <li>
+            Especially people with electrical knowledge are on high demand.
+          </li>
+
+          <li>
+            But also people who can repair toys, bikes, furniture, clothing,
+            jewellery, curtains, household items, garden tools, etc.
+          </li>
+
+          <li>
+            Sometimes it is not only repair skills as well as care instructions.
+            Maybe you can teach others how to keep your tools in mint condition,
+            or how to crochet.
+          </li>
+
+          <li className="mb-4">
+            If you are handy or have a good repair skills and eager to share
+            them with your community, please contact us.
+          </li>
+
+          <li className="text-ml font-bold">
+            Wilma & Flavia
+            <div className="flex flex-row">
+              <a href="https://www.facebook.com/RepairLabPerth/">
+                <AiFillFacebook className="text-2xl" color="teal" />
+              </a>
+
+              <a href="https://www.instagram.com/repair_lab_perth/">
+                <AiFillInstagram className="text-2xl" color="teal" />
+              </a>
+
+              <a href="repairlab.perth@gmail.com">
+                <AiFillMail className="text-2xl" color="teal" />
+              </a>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   );
