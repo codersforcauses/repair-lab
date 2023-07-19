@@ -4,14 +4,16 @@ import {
   UseControllerProps
 } from "react-hook-form";
 
-import Label from "@/components/Form Fields/box-label";
-import Error from "@/components/Form Fields/error-msg";
+import Label from "@/components/FormFields/box-label";
+import Error from "@/components/FormFields/error-msg";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   id?: string;
   label?: string;
   placeholder?: string;
   icon?: string;
+  width?: string;
+  height?: string;
 }
 
 /*
@@ -26,22 +28,26 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
   id,
   label,
   placeholder,
+  width = "w-full",
+  height = "h-36",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const errorStyle = !fieldState.invalid
-    ? "relative mb-2 flex h-36 w-full flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow"
-    : "relative mb-2 flex h-36 w-full flex-row items-center justify-between rounded-lg border border-red-500 px-3 shadow";
-
-  !placeholder ? (placeholder = `Enter ${props.name}`) : "";
-  !label ? (label = props.name) : "";
+  const baseStyle = `relative mb-2 flex ${height} ${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`;
+  const errorBorderStyle = `border-red-500`;
+  const normalBorderStyle = `border-grey-300`;
+  const textAreaStyle = `overflow-wrap:break-text h-4/5 w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
 
   return (
-    <div className={errorStyle}>
+    <div
+      className={`${baseStyle} ${
+        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
+      }`}
+    >
       <Label label={!label ? props.name : label} {...props} />
       <textarea
-        className="overflow-wrap:break-text h-4/5 w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0"
+        className={textAreaStyle}
         placeholder={!placeholder ? `Enter ${props.name}` : placeholder}
         id={!id ? props.name : id}
         {...field}

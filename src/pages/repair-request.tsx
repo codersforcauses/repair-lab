@@ -16,7 +16,7 @@ type FormValues = {
   description: string;
   images: [];
   eventId: string;
-  tncAccepted: false;
+  tncAccepted: boolean;
 };
 
 const Home = () => {
