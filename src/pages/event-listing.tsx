@@ -305,7 +305,7 @@ function Table() {
             onChange={(e) => handleSearch(e.target.value)}
             style={{ backgroundColor: "rgb(239, 239, 239)" }}
           />
-          <div
+          <button
             className="absolute right-8 top-2/4 transform -translate-y-2/4 text-gray-500 cursor-pointer"
             onClick={() => {
               // Handle search submit action here
@@ -313,7 +313,7 @@ function Table() {
             }}
           >
             <FontAwesomeIcon icon={faSearch} />
-          </div>
+          </button>
 
         </div>
       </div>
@@ -331,7 +331,7 @@ function Table() {
                 <th> {headers[4].label} <ToggleChevron column="4"/> </th>
                 <th> {headers[5].label} <ToggleChevron column="5"/> </th>
 
-                {/*{headers.map((row) => (
+                {/* {headers.map((row) => (
                   <th key={row.key}>
                     {row.label}
                     <button
@@ -360,7 +360,9 @@ function Table() {
               {eventData.map((event: Event) => {
                 return (
                   <tr key={event.name} className="first:ml-50 last:mr-10 hover:bg-slate-100">
-                    <td className="pl-5">{event.name}</td>
+                    <td className="pl-5">
+                      <button onClick={() => router.push("/event-form/" + event.id)}>{event.name}</button>
+                    </td>
                     <td>{event.createdBy}</td>
                     <td>{event.location}</td>
                     <td>{formatDate(String(event.startDate))}</td>
