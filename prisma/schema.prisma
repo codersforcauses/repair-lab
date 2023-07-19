@@ -63,11 +63,16 @@ model RepairRequest {
   eventId String
 
   status Status @default(PENDING)
-
   description String
-  comment     String     @default("") //comment for repairer to document repair process
-  spareParts  String     @default("") //this should be filled out later by volunteer
-  itemStatus  ItemStatus @default(UNFINISHED)
+  comment     String //comment for client
+  thumbnailImage String //s3 key to compressed image of object
+
+
+  repairComment String @default("") //comment for volunteer to document process
+  spareParts String @default("") //this should be filled out later by volunteer
+  itemStatus ItemStatus @default(UNFINISHED)
+  hoursWorked Decimal @db.Decimal(10, 2) @default(0.00)
+
 
   requestDate DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -83,7 +88,7 @@ model RepairRequest {
 model ItemType {
   name           String          @id
   repairRequests RepairRequest[]
-  Event          Event[]
+  events         Event[]
 }
 
 model Brand {
@@ -105,3 +110,4 @@ model EventImage {
   repairEvent   Event  @relation(fields: [repairEventId], references: [id])
   repairEventId String
 }
+
