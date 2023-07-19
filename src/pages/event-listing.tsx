@@ -170,46 +170,35 @@ function Table() {
     );
   }
 
-
-  // deprecated form component (didn't work because of react auto refreshing components)
-  function EditForm() {
+  // modal component, will need to be adjusted to not refresh using maps
+  function Modal({ props }) {
     return (
-      <form onSubmit={handleSubmit}>
-        {headers.map((row) => (
-          <div key={row.key} className="flow-root">
-            <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-              {row.label}
-            </label>
-            <input
-              type="text"
-              name={row.key}
-              value={formData[row.key as keyof Partial<Event>]}
-              onChange={handleInputChange}
-              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-            />
-          </div>
-        ))}
+      <div className=" flex items-center justify-center">
+        <Dialog
+          open={modalActive}
+          onClose={() => toggleModal(false)}
+          className="absolute inset-0 flex justify-center p-4 text-center sm:items-center sm:p-0"
+        >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
+              <span className="float-left"> Edit Event Details </span>
+              <button
+                onClick={() => toggleModal(false)}
+                className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
+              >
+                <FontAwesomeIcon
+                  className="align-middle align-text-top text-xl"
+                  icon={faXmark}
+                />
+              </button>
+            </Dialog.Title>
 
-        {/*<div className="float-left flex flex-col">
-          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[0].label}:</label>
-          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[1].label}:</label>
-          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[2].label}:</label>
-          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[3].label}:</label>
-          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[4].label}:</label>
-          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[5].label}:</label>
-        </div>
-
-        <div className="float-right">
-          <input  onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
-          <input  onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
-          <input  onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
-          <input  onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
-          <input  onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
-          <input  onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
-        </div>*/}
-
-        <input type="submit" id="submit-form" class="hidden" />
-      </form>
+            {/*main form*/}
+            {children}
+          </Dialog.Panel>
+        </Dialog>
+      </div>
     );
   }
 
@@ -237,7 +226,7 @@ function Table() {
       {/*HEADER BAR*/}
       <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
         <Image
-          className="m-10 mt-5 mb-5"
+          className="m-10 mb-5 mt-5"
           src="/images/repair_lab_logo.jpg"
           alt="logo"
           width="90"
@@ -261,6 +250,7 @@ function Table() {
       </div>
 
       {/*options modal*/}
+
       <div className=" flex items-center justify-center">
         <Dialog
           open={modalActive}
@@ -386,7 +376,7 @@ function Table() {
                 return (
                   <tr
                     key={event.name}
-                    className="first:ml-50 last:mr-10 hover:bg-slate-200 even:bg-slate-100"
+                    className="first:ml-50 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
                   >
                     <td className="pl-5 font-light">
                       <button
@@ -397,7 +387,9 @@ function Table() {
                     </td>
                     <td className="font-light">{event.createdBy}</td>
                     <td className="font-light">{event.location}</td>
-                    <td className="font-light">{formatDate(String(event.startDate))}</td>
+                    <td className="font-light">
+                      {formatDate(String(event.startDate))}
+                    </td>
                     <td className="font-light">{event.eventType}</td>
                     <td className="font-light">{event.status}</td>
                     <td className="align-center ml-0 pl-0 text-center ">

@@ -19,12 +19,18 @@ export default async function get_events(
   const events = await prisma.event.findMany({
     where: {
       OR: [
-        { name: { 
-          contains: searchWord as string,
-          mode: 'insensitive' } },
-        { location: { 
-          contains: searchWord as string,
-          mode: 'insensitive' } }
+        {
+          name: {
+            contains: searchWord as string,
+            mode: "insensitive"
+          }
+        },
+        {
+          location: {
+            contains: searchWord as string,
+            mode: "insensitive"
+          }
+        }
         // Add more fields to search if necessary
       ]
     },
