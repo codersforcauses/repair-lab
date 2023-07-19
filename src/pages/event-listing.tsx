@@ -5,7 +5,8 @@ import {
   faChevronUp,
   faSearch,
   faPencil,
-  faXmark
+  faXmark,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Event } from "@prisma/client";
@@ -33,6 +34,7 @@ function Table() {
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
   const [modalActive, toggleModal] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const [formData, setFormData] = useState<Partial<Event>>({
     id: undefined,
@@ -76,6 +78,41 @@ function Table() {
   function openOptions(selectedEvent: Event) {
     setFormData(selectedEvent);
     toggleModal(true);
+  }
+
+  function handleAddEvent() {
+    setShowCreateForm(true);
+    setFormData({
+      id: undefined,
+      name: "",
+      createdBy: "",
+      location: "",
+      startDate: undefined,
+      eventType: "",
+      status: undefined
+    });
+  }
+
+  async function AddEvent(event: React.FormEvent<HTMLFormElement>) {
+    console.log("in add function");
+
+    try {
+      const response = await fetch("api/add_event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const addEvent = await response.json();
+        setShowForm(false);
+        router.reload();
+      }
+    } catch (error) {
+      console.error("Failed");
+    }
   }
 
   // takes form values and posts them to DB
@@ -171,7 +208,7 @@ function Table() {
   }
 
   // modal component, will need to be adjusted to not refresh using maps
-  function Modal({ props }) {
+  function Modal({ children, title }) {
     return (
       <div className=" flex items-center justify-center">
         <Dialog
@@ -182,7 +219,7 @@ function Table() {
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
           <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
-              <span className="float-left"> Edit Event Details </span>
+              <span className="float-left"> {title} </span>
               <button
                 onClick={() => toggleModal(false)}
                 className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
@@ -250,80 +287,95 @@ function Table() {
       </div>
 
       {/*options modal*/}
+      <Modal title="Edit Event Details">
+        <Dialog.Description className="p-3 font-light">
+          Select each field below to change their contents
+        </Dialog.Description>
 
-      <div className=" flex items-center justify-center">
-        <Dialog
-          open={modalActive}
-          onClose={() => toggleModal(false)}
-          className="absolute inset-0 flex justify-center p-4 text-center sm:items-center sm:p-0"
-        >
-          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
-              <span className="float-left"> Edit Event Details </span>
-              <button
-                onClick={() => toggleModal(false)}
-                className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
-              >
-                <FontAwesomeIcon
-                  className="align-middle align-text-top text-xl"
-                  icon={faXmark}
-                />
-              </button>
-            </Dialog.Title>
-            <Dialog.Description className="p-3 font-light">
-              Select each field below to change their contents
-            </Dialog.Description>
+        {/*main form*/}
+        <form onSubmit={handleSubmit}>
+            <div key={headers[0].key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[0].label}</label>
+              <input type="text" name={headers[0].key} value={formData[headers[0].key as keyof Partial<Event>]} onSubmit={handleInputChange}
+              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
+            </div>
 
-            {/*main form*/}
-            <form onSubmit={handleSubmit}>
-              {headers.map((row) => (
-                <div key={row.key} className="flow-root">
-                  <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                    {row.label}
-                  </label>
-                  <input
-                    type="text"
-                    name={row.key}
-                    value={formData[row.key as keyof Partial<Event>]}
-                    onChange={handleInputChange}
-                    className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                  />
-                </div>
-              ))}
+            <div key={headers[1].key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[1].label}</label>
+              <input type="text" name={headers[1].key} value={formData[headers[1].key as keyof Partial<Event>]} onSubmit={handleInputChange}
+              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
+            </div>
 
-              {/*Bottom button row*/}
+            <div key={headers[2].key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[2].label}</label>
+              <input type="text" name={headers[2].key} value={formData[headers[2].key as keyof Partial<Event>]} onSubmit={handleInputChange}
+              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
+            </div>
 
-              <div className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
-                <button
-                  type="submit"
-                  className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
-                >
-                  Submit
-                </button>
+            <div key={headers[3].key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[3].label}</label>
+              <input type="text" name={headers[3].key} value={formData[headers[3].key as keyof Partial<Event>]} onSubmit={handleInputChange}
+              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
+            </div>
 
-                <button
-                  onClick={() => toggleModal(false)}
-                  className="m-2 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </Dialog.Panel>
-        </Dialog>
-      </div>
+            <div key={headers[4].key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[4].label}</label>
+              <input type="text" name={headers[4].key} value={formData[headers[4].key as keyof Partial<Event>]} onSubmit={handleInputChange}
+              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
+            </div>
+
+            <div key={headers[5].key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light"> {headers[5].label}</label>
+              <input type="text" name={headers[5].key} value={formData[headers[5].key as keyof Partial<Event>]} onSubmit={handleInputChange}
+              className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"/>
+            </div>
+
+
+
+          {/*{headers.map((row) => (
+            <div key={row.key} className="flow-root">
+              <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
+                {row.label}
+              </label>
+              <input
+                type="text"
+                name={row.key}
+                value={formData[row.key as keyof Partial<Event>]}
+                onChange={handleInputChange}
+                className="float-right m-1 mr-10 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+              />
+            </div>
+          ))}*/}
+
+          {/*Bottom button row*/}
+
+          <div className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
+            <button
+              type="submit"
+              className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
+            >
+              Submit
+            </button>
+
+            <button
+              onClick={() => toggleModal(false)}
+              className="m-2 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* Search bar above table */}
       <div className="flex justify-center">
         <div className="relative w-5/12 p-4">
           <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
+            className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none bg-gray-200 "
             type="search"
             name="search"
             placeholder="Search"
             onChange={(e) => setSearchWord(e.target.value)}
-            style={{ backgroundColor: "rgb(239, 239, 239)" }}
           />
           <button
             className="absolute right-8 top-2/4 -translate-y-2/4 transform cursor-pointer text-gray-500"
@@ -335,6 +387,14 @@ function Table() {
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
+
+        {/*Add event button*/}
+        <div className=" text-center p-4 ">
+          <button className="focus:shadow-md h-10 w-10 rounded-full bg-gray-200 text-gray-500">
+           <FontAwesomeIcon icon={faPlus} />
+          </button> 
+        </div>
+
       </div>
 
       {/*main table*/}
