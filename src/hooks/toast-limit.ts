@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import t, { useToasterStore } from "react-hot-toast";
 
-const useToast = () => {
+const useToast = (limit: number | undefined) => {
   const { toasts } = useToasterStore();
 
-  const [toastLimit, setToastLimit] = useState<number>(3);
+  const [toastLimit, setToastLimit] = useState<number>(limit ?? 3);
 
   useEffect(() => {
     toasts

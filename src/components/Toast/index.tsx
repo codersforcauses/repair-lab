@@ -3,9 +3,12 @@ import { HiOutlineX } from "react-icons/hi";
 
 import useToast from "@/hooks/toast-limit";
 
-type ToastProps = React.ComponentProps<typeof Toaster>;
-const Toast = ({ ...props }: ToastProps) => {
-  useToast();
+interface ToastProps extends React.ComponentProps<typeof Toaster> {
+  limit?: number;
+}
+
+const Toast = ({ limit, ...props }: ToastProps) => {
+  useToast(limit);
   return (
     <Toaster toastOptions={{ style: { minWidth: "200px" } }} {...props}>
       {(t) => (
