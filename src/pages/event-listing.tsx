@@ -4,7 +4,7 @@ import {
   faChevronDown,
   faChevronUp,
   faSearch,
-  faCog,
+  faPencil,
   faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -170,6 +170,8 @@ function Table() {
     );
   }
 
+
+  // deprecated form component (didn't work because of react auto refreshing components)
   function EditForm() {
     return (
       <form onSubmit={handleSubmit}>
@@ -233,15 +235,15 @@ function Table() {
   return (
     <div>
       {/*HEADER BAR*/}
-      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 p-5 pb-2 ">
+      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
         <Image
-          className=""
+          className="m-10 mt-5 mb-5"
           src="/images/repair_lab_logo.jpg"
           alt="logo"
           width="90"
           height="90"
         />
-        <h1 className="ml-20 mt-10 text-3xl font-semibold text-slate-600">
+        <h1 className="mt-[50px] text-3xl font-semibold text-slate-600">
           {" "}
           Event Listings
         </h1>
@@ -384,23 +386,23 @@ function Table() {
                 return (
                   <tr
                     key={event.name}
-                    className="first:ml-50 last:mr-10 hover:bg-slate-100"
+                    className="first:ml-50 last:mr-10 hover:bg-slate-200 even:bg-slate-100"
                   >
-                    <td className="pl-5">
+                    <td className="pl-5 font-light">
                       <button
                         onClick={() => router.push("/event-form/" + event.id)}
                       >
                         {event.name}
                       </button>
                     </td>
-                    <td>{event.createdBy}</td>
-                    <td>{event.location}</td>
-                    <td>{formatDate(String(event.startDate))}</td>
-                    <td>{event.eventType}</td>
-                    <td>{event.status}</td>
+                    <td className="font-light">{event.createdBy}</td>
+                    <td className="font-light">{event.location}</td>
+                    <td className="font-light">{formatDate(String(event.startDate))}</td>
+                    <td className="font-light">{event.eventType}</td>
+                    <td className="font-light">{event.status}</td>
                     <td className="align-center ml-0 pl-0 text-center ">
                       <button onClick={() => openOptions(event)}>
-                        <FontAwesomeIcon icon={faCog} />
+                        <FontAwesomeIcon icon={faPencil} />
                       </button>
                     </td>
                   </tr>
