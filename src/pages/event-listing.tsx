@@ -24,6 +24,8 @@ function Table() {
 
   const router = useRouter();
 
+  const { register, setValue, formState: { errors } } = useForm<FormData>();
+
   const [modalActive, toggleModal] = useState(false)
   const onSubmit = handleSubmit(data => console.log(data));
 
@@ -186,23 +188,31 @@ function Table() {
     // );
 
     return (
-      <form onSubmit={handleSubmit} className="flow-root">
-        {headers.map((row) => (
-          <div key={row.key}>
-            <label className="font-light text-sm pl-10 float-left">
-              {row.label}
-            </label>
-            <input className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right"
-              type="text"
-              name={row.key}
-              value={formData[row.key as keyof Partial<Event>]}
-              onChange={handleInputChange}
-            />
-            <br/>
-          </div>
-        ))}
+      <form onSubmit={handleSubmit} className="flow-root flex flex-col">
+        
+        
+
+        <div className="float-left flex flex-col">
+          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[0].label}:</label>
+          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[1].label}:</label>
+          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[2].label}:</label>
+          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[3].label}:</label>
+          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[4].label}:</label>
+          <label className="font-light text-sm m-1 pb-[10px] pl-10 float-left">{headers[5].label}:</label>
+        </div>
+
+        <div className="float-right">
+          <input {...register(headers[0].key)} onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+          <input {...register(headers[1].key)} onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+          <input {...register(headers[2].key)} onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+          <input {...register(headers[3].key)} onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+          <input {...register(headers[4].key)} onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+          <input {...register(headers[5].key)} onChange={handleInputChange} className="rounded-md border-slate-400 border text-sm p-1 m-1 font-light text-slate-600 float-right mr-10" /> <br/>
+        </div>
+
+        <input type="submit" id="submit-form" class="hidden" />
       </form>
-    );
+      );
   }
 
   function handleSort(key: string) {
@@ -242,7 +252,7 @@ function Table() {
         {/*ACCOUNT AREA*/}
         <div className="self-center justify-self-end absolute right-10">
           <span className="text-slate-600 font-light mr-2"> Account Name </span>
-          <button className="w-12 h-12 bg-slate-800 rounded-full">
+          <button className="w-12 h-12 bg-slate-800 rounded-full" onClick={() => toggleModal(true)}>
             O
           </button>
         </div>
@@ -265,12 +275,16 @@ function Table() {
               <Dialog.Description  className="p-3 font-light">
                 Select each field below to change their contents
               </Dialog.Description >
+
+              {/*main form*/}
               <EditForm column="0"/>
+
               <Dialog.Description className=" border-t-[2px] border-slate-200 align-bottom mt-3">
-                <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
-                  Accept
-                </button>
-                <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">
+                <label for="submit-form" tabindex="0" className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-[6px] px-2 border border-lightAqua-500 hover:border-transparent rounded m-2 text-sm">Submit</label>
+                {/*<button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-1 text-sm">*/}
+                
+                {/*</button>*/}
+                <button onClick={() => toggleModal(false)} className="bg-transparent hover:bg-lightAqua-500 text-lightAqua-500 font-light hover:text-white py-1 px-2 border border-lightAqua-500 hover:border-transparent rounded m-2 text-sm">
                   Cancel
                 </button>
               </Dialog.Description>
