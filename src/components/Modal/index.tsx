@@ -1,33 +1,26 @@
 // reusable modal component
 
-import { Fragment, useState } from "react";
+import { Dispatch, Fragment, SetStateAction } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { BsXCircle } from "react-icons/bs";
 
 import Button from "@/components/Button";
 
-const Modal = () => {
-  const [showPopup, setShowPopup] = useState(false);
-  const handleshowPopupChange = () => {
-    setShowPopup((prevState) => !prevState);
-  };
+type ModalProps = {
+  showModal: boolean;
+  setShowPopup: Dispatch<SetStateAction<boolean>>;
+};
 
+const Modal = ({ showModal, setShowPopup }: ModalProps) => {
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center">
-        <span className="pl-3"></span>
-        <button
-          type="button"
-          onClick={handleshowPopupChange}
-          className="rounded-md border border-darkAqua-400 bg-darkAqua-400 p-2 pl-1.5 text-black hover:bg-darkAqua-200"
+      <Transition appear show={showModal} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          open={showModal}
+          onClose={() => setShowPopup(false)}
         >
-          Modal Demo
-        </button>
-        <span></span>
-      </div>
-
-      <Transition appear show={showPopup} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -75,13 +68,13 @@ const Modal = () => {
                   <div className="md-1 mt-5 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"></div>
 
                   <div className="md-1 mt-5 flex justify-end">
-                    <Button onClick={handleshowPopupChange} width="w-1/4">
+                    <Button onClick={() => setShowPopup(false)} width="w-1/4">
                       Submit
                     </Button>
                   </div>
 
                   <button
-                    onClick={handleshowPopupChange}
+                    onClick={() => setShowPopup(false)}
                     className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
                   >
                     <BsXCircle className="text-lightAqua-300 hover:text-gray-600 " />
