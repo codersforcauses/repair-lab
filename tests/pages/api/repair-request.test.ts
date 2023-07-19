@@ -12,7 +12,7 @@ import prisma from "../../../src/lib/prisma";
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
 handler.config = config;
 
-describe("POST /api/repair-request", () => {
+describe("POST PATCH /api/repair-request", () => {
   beforeAll(async () => {
     await cleanup();
     await prisma.brand.create({
@@ -36,6 +36,18 @@ describe("POST /api/repair-request", () => {
         volunteers: ["Justin", "Spongebob"],
         startDate: new Date(),
         endDate: new Date()
+      }
+    });
+    await prisma.repairRequest.create({
+      data: {
+        id: "56005d72-2614-11ee-be56-0242ac120002",
+        createdBy: "mock user",
+        eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
+        description: "My laptop is broken",
+        itemType: "Laptop",
+        itemBrand: "Apple",
+        comment: "Some comment",
+        thumbnailImage: ""
       }
     });
   });
@@ -105,6 +117,81 @@ describe("POST /api/repair-request", () => {
         expect(expectedRepairRequest?.comment).equals("Help please.");
         expect(expectedRepairRequest?.thumbnailImage).equals(
           "https://i.imgur.com/3f3r8hm.jpg"
+        );
+      }
+    });
+  });
+
+  // PATCH
+  it("should return 404 status code on invalid fields", async () => {
+    await testApiHandler({
+      handler,
+      url: "/",
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: "NONEXISTENT_ID",
+            item: "Clock",
+            itemBrand: "Wonderland",
+            itemMaterial: "Plastic",
+            hoursWorked: 1.5,
+            isRepaired: "true",
+            isSparePartsNeeded: "true",
+            spareParts: "battery",
+            repairComment: "Fixed"
+          })
+        });
+
+        expect(res.status).toBe(404);
+      }
+    });
+  });
+
+  it("should be able to update a repair request", async () => {
+    await testApiHandler({
+      handler,
+      url: "/",
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: "56005d72-2614-11ee-be56-0242ac120002",
+            item: "Laptop",
+            itemBrand: "Apple",
+            itemMaterial: "Metal",
+            hoursWorked: 9.9,
+            isRepaired: "true",
+            isSparePartsNeeded: "true",
+            spareParts: "new brain x1",
+            repairComment: "nice brain. fixed!"
+          })
+        });
+
+        expect(res.status).toBe(200);
+
+        const result = await res.json();
+        const repairRequestId = result.id;
+
+        const expectedRepairRequest: RepairRequest | null =
+          await prisma.repairRequest.findUnique({
+            where: {
+              id: repairRequestId
+            }
+          });
+
+        expect(expectedRepairRequest?.itemMaterial).equals("Metal");
+        expect(expectedRepairRequest?.hoursWorked.toNumber()).equals(9.9);
+        expect(expectedRepairRequest?.itemStatus).equals("REPAIRED");
+        expect(expectedRepairRequest?.spareParts).equals("new brain x1");
+        expect(expectedRepairRequest?.repairComment).equals(
+          "nice brain. fixed!"
         );
       }
     });
