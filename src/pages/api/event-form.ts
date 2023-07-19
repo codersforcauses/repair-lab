@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import { repairRequestPostSchema } from "@/schema/repair-request";
-import RepairRequestService from "@/services/repair-request";
+import { eventFormPostSchema } from "@/schema/event-form";
+import EventFormService from "@/services/event-form";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +12,7 @@ export default async function handler(
       res.status(405).json("Not yet implemented!");
       break;
     case "POST":
-      await createRepairRequest(req, res);
+      await createEventForm(req, res);
       break;
     default:
       return res.status(405).json({
@@ -21,26 +21,23 @@ export default async function handler(
   }
 }
 
-const createRepairRequest = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const createEventForm = async (req: NextApiRequest, res: NextApiResponse) => {
   // TODO: Get userID from middleware.
-  const requestBody = repairRequestPostSchema.safeParse(req.body);
+  const requestBody = eventFormPostSchema.safeParse(req.body);
   if (!requestBody.success) {
     const { errors } = requestBody.error;
     return res.status(400).json({ error: errors });
   }
 
   try {
-    const repairRequestService = new RepairRequestService();
-    const repairRequest = await repairRequestService.insert({
+    const eventFormService = new EventFormService();
+    const eventForm = await eventFormService.insert({
       ...requestBody.data,
       createdBy: "mock_user" // TODO: change this once we get userID
     });
 
     return res.status(200).json({
-      id: repairRequest.id
+      id: eventForm.id
     });
   } catch (error) {
     return res.status(500).json("Error inserting into database!");
