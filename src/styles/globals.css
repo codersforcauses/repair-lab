@@ -36,3 +36,25 @@ td {
   color: black;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add border-bottom for lines between rows */
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #858c94;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #858c94;
+  border-radius: 5px;
+}
