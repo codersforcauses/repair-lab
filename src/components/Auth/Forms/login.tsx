@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import Separator from "@/components/Auth/separator";
 import Button from "@/components/Button";
 import SignInOAuthButton from "@/components/Button/sign-in-oauth";
-import FieldInput from "@/components/Form Fields/field-input";
+import FieldInput from "@/components/FormFields/field-input";
 import Logo from "@/components/UI/logoSvg";
 
 interface LoginFormValues {

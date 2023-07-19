@@ -4,7 +4,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldInput from "@/components/Form Fields/field-input";
+import FieldInput from "@/components/FormFields/field-input";
 
 interface ForgotPasswordFormValues {
   email: string;
