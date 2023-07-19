@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { BiImageAdd } from "react-icons/bi";
 
-import ImageChip from "@/components/Form Fields/field-image-upload/image-chip";
+import ImageChip from "@/components/FormFields/field-image-upload/image-chip";
 
 export interface FieldUploadProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
