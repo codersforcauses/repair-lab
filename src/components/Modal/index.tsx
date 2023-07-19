@@ -1,23 +1,25 @@
 // reusable modal component
 
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Dispatch, Fragment, ReactNode, SetStateAction } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { BsXCircle } from "react-icons/bs";
-
-import Button from "@/components/Button";
 
 type ModalProps = {
   showModal: boolean;
   setShowPopup: Dispatch<SetStateAction<boolean>>;
+  title?: string;
   width?: string;
   height?: string;
+  children?: ReactNode;
 };
 
 const Modal = ({
   showModal,
   setShowPopup,
+  title,
   width = "w-full sm:max-w-lg md:max-w-2xl",
-  height = "h-full"
+  height = "h-full",
+  children
 }: ModalProps) => {
   return (
     <>
@@ -59,28 +61,9 @@ const Modal = ({
                     as="h3"
                     className="mt-0 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"
                   >
-                    Modal Demo
+                    {title ? `${title}` : "Please put in a title"}
                   </Dialog.Title>
-
-                  <div className="mt-2">
-                    <p className="text-m text-gray-500">
-                      <p className="m-6 gap-y-4 pl-10 pr-10 text-center text-xl font-bold text-red-600">
-                        *Notice:......*{" "}
-                      </p>
-
-                      <ol className="pl-full grid list-decimal justify-center gap-y-4 pr-10">
-                        <li>Demo.........</li>
-                        <li>Demo.........</li>
-                      </ol>
-                    </p>
-                  </div>
-                  <div className="md-1 mt-5 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"></div>
-
-                  <div className="md-1 mt-5 flex justify-end">
-                    <Button onClick={() => setShowPopup(false)} width="w-1/4">
-                      Submit
-                    </Button>
-                  </div>
+                  <div>{children}</div>
 
                   <button
                     onClick={() => setShowPopup(false)}
