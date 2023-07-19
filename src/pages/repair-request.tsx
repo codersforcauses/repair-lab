@@ -3,7 +3,7 @@
 import { ChangeEvent, useState } from "react";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import { useBrands } from "@/hooks/brands";
 import { useItemTypes } from "@/hooks/item-types";
@@ -16,12 +16,11 @@ type FormValues = {
   description: string;
   images: [];
   eventId: string;
-  tncAccepted: false;
+  tncAccepted: boolean;
 };
 
 const Home = () => {
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors }
@@ -223,30 +222,23 @@ const Home = () => {
           </div>
 
           {/* Terms and Conditions Checkbox */}
+
           <div className="h-6 items-center">
-            <Controller
-              control={control}
-              name="tncAccepted"
-              render={({ field: { value, onChange } }) => (
-                <input
-                  className={`${
-                    errors.tncAccepted &&
-                    "border-red-500 focus:border-red-500 focus:ring-red-500"
-                  }`}
-                  type="checkbox"
-                  checked={value}
-                  {...register("tncAccepted", {
-                    required: "*Accept terms and conditions to submit."
-                  })}
-                  onChange={(e) => {
-                    onChange(e.target.checked);
-                  }}
-                />
-              )}
-            />
-            <span className="pl-2 text-sm">
-              I accept the Terms and Conditions.
-            </span>
+            <label>
+              <input
+                className={`${
+                  errors.tncAccepted &&
+                  "border-red-500 focus:border-red-500 focus:ring-red-500"
+                }`}
+                type="checkbox"
+                {...register("tncAccepted", {
+                  required: "*Accept terms and conditions to submit."
+                })}
+              />
+              <span className="select-none pl-2 text-sm">
+                I accept the Terms and Conditions.
+              </span>
+            </label>
             <p className="text-red-600"> {errors.tncAccepted?.message} </p>
           </div>
 
