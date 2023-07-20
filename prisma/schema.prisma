@@ -62,17 +62,15 @@ model RepairRequest {
   event   Event  @relation(fields: [eventId], references: [id]) //relation field (many repair_requests to one event)
   eventId String
 
-  status Status @default(PENDING)
-  description String
-  comment     String //comment for client
+  status         Status @default(PENDING)
+  description    String
+  comment        String //comment for client
   thumbnailImage String //s3 key to compressed image of object
 
-
-  repairComment String @default("") //comment for volunteer to document process
-  spareParts String @default("") //this should be filled out later by volunteer
-  itemStatus ItemStatus @default(UNFINISHED)
-  hoursWorked Decimal @db.Decimal(10, 2) @default(0.00)
-
+  repairComment String     @default("") //comment for volunteer to document process
+  spareParts    String     @default("") //this should be filled out later by volunteer
+  itemStatus    ItemStatus @default(UNFINISHED)
+  hoursWorked   Decimal    @default(0.00) @db.Decimal(10, 2)
 
   requestDate DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -110,4 +108,3 @@ model EventImage {
   repairEvent   Event  @relation(fields: [repairEventId], references: [id])
   repairEventId String
 }
-
