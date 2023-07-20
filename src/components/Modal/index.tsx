@@ -24,8 +24,7 @@ const Modal = ({
   return (
     <>
       <Transition appear show={showModal} as={Fragment}>
-        <Dialog
-          as="div"
+        <Dialog as="div"
           className="relative z-10 "
           open={showModal}
           onClose={() => setShowPopup(false)}
@@ -54,14 +53,13 @@ const Modal = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${width} ${height} transform overflow-hidden rounded-2xl bg-[#FFFFFF] p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${width} ${height} transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
                 >
-                  {/* <div className="text-gray-300 p-5 text-center text-2xl font-medium leading-6"></div> */}
                   <Dialog.Title
                     as="h3"
                     className="mt-0 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"
                   >
-                    {title ? `${title}` : "Please put in a title"}
+                    {title ?? "Please put in a title"}
                   </Dialog.Title>
                   <div>{children}</div>
 
