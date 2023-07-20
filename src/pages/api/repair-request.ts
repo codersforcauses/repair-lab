@@ -43,6 +43,7 @@ const createRepairRequest = async (
     const repairRequestService = new RepairRequestService();
     const repairRequest = await repairRequestService.insert({
       ...requestBody.data,
+      thumbnailImage: "Fake S3 Key", // TODO: Change this once image upload works.
       createdBy: "mock_user" // TODO: change this once we get userID
     });
 

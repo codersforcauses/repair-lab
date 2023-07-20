@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
 import DropDown from "@/components/FormFields/field-dropdown";
+import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { useBrands } from "@/hooks/brands";
@@ -65,26 +66,27 @@ const Home = () => {
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center gap-4 ${inter.className}`}
-    >
-      {/* Logo of Repair Lab, which links to the main website. */}
+    <div className="flex items-center justify-center p-4">
+      <div className="flex w-screen flex-col justify-center gap-4 md:w-3/6 lg:w-4/12">
+        {/* Logo of Repair Lab, which links to the main website. */}
 
-      <picture>
-        <a href="https://repairlab.myfreesites.net/" target="_blank">
-          <Image
-            src="/images/repair_lab_logo.jpg"
-            alt="Repair Labs Logo"
-            width={80}
-            height={80}
-          />
-        </a>
-      </picture>
+        <picture className="flex justify-center">
+          <a href="https://repairlab.myfreesites.net/" target="_blank">
+            <Image
+              src="/images/repair_lab_logo.jpg"
+              alt="Repair Labs Logo"
+              width={80}
+              height={80}
+            />
+          </a>
+        </picture>
 
-      {/* Heading of the Page */}
+        {/* Heading of the Page */}
 
-      <h1 className="text-xl font-bold"> Submit a Repair Request</h1>
-      <div>
+        <h1 className="flex justify-center text-xl font-bold">
+          {" "}
+          Submit a Repair Request
+        </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Input field for Brand of Item */}
 
@@ -120,21 +122,7 @@ const Home = () => {
             rules={{ required: true }}
           />
 
-          {/* Input field for Images */}
-          <div>
-            <label htmlFor="image">Image:</label>
-            <div className="flex">
-              <input
-                className={`h-36 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10 ${
-                  errors.images &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                }`}
-                type="file"
-                {...register("images", { required: "*Required" })}
-              />
-            </div>
-            <p className="text-red-600"> {errors.images?.message} </p>
-          </div>
+          <FieldImageUpload multiple={true} name="images" control={control} />
 
           {/* Input field for Event Date */}
           <DropDown
@@ -161,19 +149,17 @@ const Home = () => {
             rules={{ required: true }}
           />
 
-          <div className="my-5 flex flex-row">
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              height="h-9"
-              width="w-1/3"
-              textSize="text-base"
-            >
-              Submit
-            </Button>
-          </div>
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            height="h-9"
+            width="w-full"
+            textSize="text-base"
+          >
+            Submit
+          </Button>
         </form>
       </div>
-    </main>
+    </div>
   );
 };
 
