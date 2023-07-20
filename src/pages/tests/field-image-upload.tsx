@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldImageUpload from "@/components/Form Fields/field-image-upload";
+import FieldImageUpload from "@/components/FormFields/field-image-upload";
 
 interface FormData {
   single: File;
