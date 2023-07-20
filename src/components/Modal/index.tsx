@@ -25,7 +25,7 @@ const Modal = ({
     <>
       <Transition appear show={showModal} as={Fragment}>
         <Dialog as="div"
-          className="relative z-10 "
+          className="relative z-10"
           open={showModal}
           onClose={() => setShowPopup(false)}
         >
@@ -67,7 +67,7 @@ const Modal = ({
                     onClick={() => setShowPopup(false)}
                     className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
                   >
-                    <BsXCircle className="text-lightAqua-300 hover:text-gray-600 " />
+                    <BsXCircle className="text-lightAqua-300 hover:text-gray-600" />
                   </button>
                 </Dialog.Panel>
               </Transition.Child>
