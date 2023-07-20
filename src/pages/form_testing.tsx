@@ -5,7 +5,7 @@ import DropDown from "@/components/FormFields/field-dropdown";
 import Field_Input from "@/components/FormFields/field-input";
 import Field_Radio from "@/components/FormFields/field-radio";
 import Field_Text_Area from "@/components/FormFields/field-text-area";
-import MultiSelect from "@/components/FormFields/multi-select";
+import MultiSelect from "@/components/FormFields/field-multi-select";
 
 /**
  * This is a sample form page using React Hook Form for testing purposes
@@ -172,7 +172,44 @@ export default function Repair() {
             icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
           />
         </div>
-        <MultiSelect />
+        <div className={lineStyle}>
+          <MultiSelect
+            options={[
+              {
+                id: 0,
+                text: "Option1"
+              },
+              {
+                id: 1,
+                text: "Option2"
+              },
+              {
+                id: 2,
+                text: "Option3"
+              },
+              {
+                id: 3,
+                text: "LongerOption4"
+              },
+              {
+                id: 4,
+                text: "EvenLongerOption5"
+              },
+              {
+                id: 5,
+                text: "Option6"
+              },
+              {
+                id: 6,
+                text: "Option7"
+              },
+              {
+                id: 7,
+                text: "A really really long option for the purpose of testing"
+              }
+            ]}
+          />
+        </div>
         {/* Submit */}
         <input type="submit" value="Submit" className="submit"></input>
       </form>

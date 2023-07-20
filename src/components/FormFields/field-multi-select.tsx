@@ -2,6 +2,14 @@ import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { HiCheck } from "react-icons/hi";
 import { BsChevronExpand } from "react-icons/bs";
+import {
+  FieldValues,
+  useController,
+  UseControllerProps
+} from "react-hook-form";
+
+import Label from "@/components/FormFields/box-label";
+import Error from "@/components/FormFields/error-msg";
 
 const people = [
   { name: "Wade Cooper" },
@@ -12,10 +20,26 @@ const people = [
   { name: "Hellen Schmidt" }
 ];
 
+interface Props {
+  options: { id: number; text: string }[];
+  width?: string;
+  placeholder?: string;
+  label?: string;
+}
 
-
-export default function MultiSelect() {
-  const [selectedGroup, setSelectedGroup] = useState([people[0], people[1]] );
+export default function MultiSelect({
+  options,
+  width = "w-full",
+  label,
+  ...props
+}: Props) {
+  const [selectedGroup, setSelectedGroup] = useState<
+    { id: number; text: string }[]
+  >([]);
+  const sampleOptionsOn: boolean = true;
+  const baseStyle = `flex h-10 ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
+  const normalBorderStyle = `ring-grey-300`;
+  const errorBorderStyle = `ring-red-500`;
 
   return (
     <div className="fixed top-16 w-72">
@@ -25,11 +49,14 @@ export default function MultiSelect() {
             className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
             placeholder="select"
           >
+            <Label label={!label ? props.name : label} {...props} />
             <span className="block truncate">
-              {selectedGroup.length !== 0 ? (
-                selectedGroup.map((person) => person.name).join(", ")
+              {selectedGroup.length === 0 ? (
+                <div className="text-grey-500">
+                  select multiple eg. Option1, Option2
+                </div>
               ) : (
-                <div className="text-grey-500">-- select multiple --</div>
+                selectedGroup.map((option) => option.text).join(", ")
               )}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -46,9 +73,9 @@ export default function MultiSelect() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {people.map((person, personIdx) => (
+              {options.map((option, optionIdx) => (
                 <Listbox.Option
-                  key={personIdx}
+                  key={optionIdx}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
                       active
@@ -56,7 +83,7 @@ export default function MultiSelect() {
                         : "text-grey-900"
                     }`
                   }
-                  value={person}
+                  value={option}
                 >
                   {({ selected }) => (
                     <>
@@ -65,7 +92,7 @@ export default function MultiSelect() {
                           selected ? "font-medium" : "font-normal"
                         }`}
                       >
-                        {person.name}
+                        {option.text}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-lightAqua-600">
