@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import AssigneeBade from "@/components/Cards/assignee-badge";
+import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
 
 export type CardProps = {
@@ -11,6 +11,7 @@ export type CardProps = {
   firstName?: string;
   lastName?: string;
   avatar?: string;
+  handleClick?: () => void;
 };
 
 export default function Card({ props }: { props: CardProps }) {
@@ -20,8 +21,8 @@ export default function Card({ props }: { props: CardProps }) {
 
   return (
     <div
-      onClick={handleClick}
-      onKeyDown={handleClick}
+      onClick={props.handleClick ? props.handleClick : handleClick}
+      onKeyDown={props.handleClick ? props.handleClick : handleClick}
       role="presentation"
       className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
     >
@@ -51,7 +52,7 @@ export default function Card({ props }: { props: CardProps }) {
           </p>
         </div>
         <div className="m-2 mt-0 flex justify-end">
-          <AssigneeBade
+          <AssigneeBadge
             firstName={props.firstName}
             lastName={props.lastName}
             avatar={props.avatar}
