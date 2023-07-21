@@ -40,7 +40,13 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
 
   return (
     <div className={`relative mb-2 text-left ${width}`}>
-      <Listbox value={selectedGroup} onChange={setSelectedGroup} multiple>
+      <Listbox
+        value={field}
+        onChange={(e) => {
+          field.onChange(e);
+        }}
+        multiple
+      >
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
