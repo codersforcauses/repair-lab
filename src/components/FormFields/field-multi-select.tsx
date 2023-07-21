@@ -1,12 +1,12 @@
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { HiCheck } from "react-icons/hi";
-import { BsChevronExpand } from "react-icons/bs";
 import {
   FieldValues,
   useController,
   UseControllerProps
 } from "react-hook-form";
+import { BsChevronExpand } from "react-icons/bs";
+import { HiCheck } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
@@ -39,11 +39,15 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
   const errorBorderStyle = `ring-red-500`;
 
   return (
-    <div className={`relative mb-2 text-left ${width}`}>
+    <div
+      className={`relative mb-2 text-left ${width}`}
+      onChange={field.onChange}
+    >
       <Listbox
-        value={field}
+        value={selectedGroup}
         onChange={(e) => {
           field.onChange(e);
+          setSelectedGroup(e);
         }}
         multiple
       >
