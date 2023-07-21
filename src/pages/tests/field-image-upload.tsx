@@ -14,9 +14,13 @@ export default function Test() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
+      console.log("Attempted submit");
+
       // Create a FormData object to handle file uploads
       const formData = new FormData();
+
       formData.append("file", data.single); // Assuming your API expects a 'file' field for single file uploads
+
       data.multiple.forEach((file) => formData.append("files", file)); // Assuming your API expects 'files' field for multiple file uploads
 
       // Make the API request to your API route for S3 uploads
