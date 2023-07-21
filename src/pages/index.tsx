@@ -1,9 +1,12 @@
 import Image from "next/image";
+import { useClerk } from "@clerk/nextjs";
 import { AiFillFacebook, AiFillInstagram, AiFillMail } from "react-icons/ai";
 
 import Button from "@/components/Button/index";
 
 export default function Home() {
+  const { signOut } = useClerk();
+
   return (
     <div className="bg-lightAqua-100">
       <div className="relative h-44 w-full">
@@ -149,6 +152,7 @@ export default function Home() {
           </li>
         </ul>
       </div>
+      <Button onClick={() => signOut()}>Logout</Button>
     </div>
   );
 }
