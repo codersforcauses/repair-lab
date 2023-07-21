@@ -34,30 +34,37 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
   const [selectedGroup, setSelectedGroup] = useState<
     { id: number; text: string }[]
   >([]);
-  const sampleOptionsOn: boolean = true;
   const baseStyle = `flex h-10 ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
 
   return (
-    <div className="relative mb-2 w-full text-left">
+    <div className={`relative mb-2 text-left ${width}`}>
       <Listbox value={selectedGroup} onChange={setSelectedGroup} multiple>
         <div className="relative mt-1">
           <Listbox.Button
-            className={`relative ${width} h-10 cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow hover:shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-300 sm:text-sm`}
-            placeholder="select"
+            className={classNames(
+              `${baseStyle}`,
+              `text-left`,
+              fieldState.invalid
+                ? `${errorBorderStyle}`
+                : `${normalBorderStyle}`
+            )}
           >
             <Label label={!label ? props.name : label} {...props} />
-            <span className="block truncate">
+            {fieldState.invalid && <Error {...props} />}
+            <span className="truncate">
               {selectedGroup.length === 0 ? (
-                <div className="text-grey-500">Select Multiple</div>
+                <span className="text-gray-500">
+                  {!placeholder ? `Select Items` : `${placeholder}`}
+                </span>
               ) : (
                 selectedGroup.map((option) => option.text).join(", ")
               )}
             </span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <span className="pointer-events-none inset-y-0 right-0 flex items-center pr-0">
               <BsChevronExpand
-                className="h-5 w-5 text-grey-600"
+                className=" h-5 w-5 text-grey-700"
                 aria-hidden="true"
               />
             </span>
@@ -68,7 +75,7 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none sm:text-sm">
               {options.map((option, optionIdx) => (
                 <Listbox.Option
                   key={optionIdx}

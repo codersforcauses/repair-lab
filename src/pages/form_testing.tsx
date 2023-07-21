@@ -124,6 +124,7 @@ export default function Repair() {
         <div className={lineStyle}>
           <DropDown
             name="dropdown"
+            // width="w-96"
             control={control}
             placeholder="Select an Item"
             label="header"
@@ -177,7 +178,7 @@ export default function Repair() {
         <div className={lineStyle}>
           <MultiSelect
             name="multiselect"
-            width="w-96"
+            // width="w-96"
             control={control}
             rules={{ required: true }}
             options={[

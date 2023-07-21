@@ -46,7 +46,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
   return (
-    <div className="relative mb-2 inline-block w-full text-left">
+    <div className={`relative mb-2 inline-block ${width} text-left`}>
       <Menu>
         <div>
           <Menu.Button
@@ -78,11 +78,11 @@ export default function DropDown<T extends FieldValues = FieldValues>({
           enter="transition ease-out duration-100"
           enterFrom="transform opacity-0 scale-95"
           enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
+          leave="transition ease-in duration-100"
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-full min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-grey-100 focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
             <div className="py-1">
               {options.map((option) => (
                 <Menu.Item key={option.id}>
@@ -99,7 +99,10 @@ export default function DropDown<T extends FieldValues = FieldValues>({
                     >
                       {option.text === field.value ? (
                         <span className="relative left-0 flex">
-                          <HiCheck className="h-5 w-5" aria-hidden="true" />
+                          <HiCheck
+                            className="h-5 w-5 text-darkAqua-600"
+                            aria-hidden="true"
+                          />
                           <span className="pl-2 font-medium">
                             {option.text}
                           </span>
