@@ -25,20 +25,6 @@ export default function Volunteers() {
     }
   }, [router.isReady, router.query.id]);
 
-  function Volunteers() {
-    const content = [];
-    // TODO: Include more volunteer info from clerk (email, avatar, etc) */}
-
-    for (let i = 0; i < volunteers.length; i++) {
-      content.push(
-        <div key={i}>
-          <AssigneeBadge firstName={volunteers[i]} />
-        </div>
-      );
-    }
-    return content;
-  }
-
   useEffect(() => {
     if (!router.isReady || !eventId) return;
     const params = new URLSearchParams();
@@ -69,7 +55,11 @@ export default function Volunteers() {
             <div className="flex justify-end"></div>
           </div>
           <div className="grid gap-4 p-4 lg:grid-cols-5 ">
-            {Volunteers()}
+            {volunteers.map((item) => (
+              <div key={item}>
+                <AssigneeBadge firstName={item} />
+              </div>
+            ))}
             <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
               <CiCirclePlus color="#d9d9d9" size={100} />
             </div>

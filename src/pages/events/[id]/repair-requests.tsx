@@ -1,10 +1,10 @@
-import { JSX, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
-import Card, { CardProps } from "@/components/Cards/card";
+import Card from "@/components/Cards/card";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
@@ -28,46 +28,6 @@ export default function RepairRequest() {
       setEventId(router.query.id as string);
     }
   }, [router.isReady, router.query.id]);
-
-  function RepairContent() {
-    const content: JSX.Element[] = [];
-
-    repairRequests.map((item) => {
-      const props: CardProps = {
-        title: item.id,
-        image: "/images/broken-clock-sad.jpg",
-        description: item.description,
-        status: item.status,
-        firstName: item.assignedTo,
-        lastName: "",
-        avatar: "/images/repair_lab_logo.jpg"
-      };
-      console.log(repairRequests);
-      content.push(
-        <div key={item.id}>
-          <Card props={props} />
-        </div>
-      );
-    });
-
-    // for (let i = 0; i < repairRequests.length; i++) {
-    //   const props: CardProps = {
-    //     title: repairRequests[i].id,
-    //     image: "/images/broken-clock-sad.jpg",
-    //     description: repairRequests[i].description,
-    //     status: repairRequests[i].status,
-    //     firstName: repairRequests[i].assignedTo,
-    //     lastName: "",
-    //     avatar: "/images/repair_lab_logo.jpg"
-    //   };
-    //   content.push(
-    //     <div key={i}>
-    //       <Card props={...props} />
-    //     </div>
-    //   );
-    // }
-    return content;
-  }
 
   // Getting the repair requests for this event
   useEffect(() => {
@@ -120,7 +80,21 @@ export default function RepairRequest() {
             </div>
           </div>
           <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
-            {RepairContent()}
+            {repairRequests.map((item) => (
+              <div key={item.id}>
+                <Card
+                  props={{
+                    title: item.id,
+                    image: "/images/broken-clock-sad.jpg",
+                    description: item.description,
+                    status: item.status,
+                    firstName: item.assignedTo,
+                    lastName: "",
+                    avatar: "/images/repair_lab_logo.jpg"
+                  }}
+                />
+              </div>
+            ))}
             <div
               className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
               role="presentation"
