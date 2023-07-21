@@ -82,7 +82,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-full min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-grey-300 focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 w-full min-w-min origin-top overflow-auto rounded-md bg-grey-50 shadow-lg ring-1 ring-grey-100 focus:outline-none">
             <div className="py-1">
               {options.map((option) => (
                 <Menu.Item key={option.id}>
@@ -91,20 +91,18 @@ export default function DropDown<T extends FieldValues = FieldValues>({
                       href="#"
                       onClick={() => field.onChange(option.text)}
                       className={classNames(
-                        active ? "bg-darkAqua-400 text-white" : "text-grey-800",
+                        active
+                          ? "bg-lightAqua-100 text-grey-900"
+                          : "text-grey-900",
                         "block py-2 pl-2 pr-4 text-sm"
                       )}
                     >
                       {option.text === field.value ? (
                         <span className="relative left-0 flex">
-                          <HiCheck
-                            className={classNames(
-                              "h-5 w-5",
-                              active ? "text-white" : "text-darkAqua-600"
-                            )}
-                            aria-hidden="true"
-                          />
-                          <span className="pl-2">{option.text}</span>
+                          <HiCheck className="h-5 w-5" aria-hidden="true" />
+                          <span className="pl-2 font-medium">
+                            {option.text}
+                          </span>
                         </span>
                       ) : (
                         <span className="pl-7">{option.text}</span>

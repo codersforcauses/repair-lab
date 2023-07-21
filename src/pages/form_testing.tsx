@@ -24,6 +24,7 @@ type RepairData = {
   desc: string;
   comments: string;
   dropdown: string;
+  multiselect: string;
 };
 
 export default function Repair() {
@@ -39,7 +40,8 @@ export default function Repair() {
       parts: "",
       desc: "",
       comments: "",
-      dropdown: ""
+      dropdown: "",
+      multiselect: ""
     },
     mode: "onChange"
   });
@@ -174,6 +176,10 @@ export default function Repair() {
         </div>
         <div className={lineStyle}>
           <MultiSelect
+            name="multiselect"
+            width="w-96"
+            control={control}
+            rules={{ required: true }}
             options={[
               {
                 id: 0,

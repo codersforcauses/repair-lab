@@ -11,28 +11,26 @@ import {
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
 
-const people = [
-  { name: "Wade Cooper" },
-  { name: "Arlene Mccoy" },
-  { name: "Devon Webb" },
-  { name: "Tom Cook" },
-  { name: "Tanya Fox" },
-  { name: "Hellen Schmidt" }
-];
-
-interface Props {
+export interface FormProps<T extends FieldValues = FieldValues>
+  extends UseControllerProps<T> {
   options: { id: number; text: string }[];
   width?: string;
   placeholder?: string;
   label?: string;
 }
 
-export default function MultiSelect({
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
+export default function MultiSelect<T extends FieldValues = FieldValues>({
   options,
-  width = "w-full",
+  placeholder,
   label,
+  width = "w-full",
   ...props
-}: Props) {
+}: FormProps<T>) {
+  const { field, fieldState } = useController(props);
   const [selectedGroup, setSelectedGroup] = useState<
     { id: number; text: string }[]
   >([]);
@@ -42,26 +40,24 @@ export default function MultiSelect({
   const errorBorderStyle = `ring-red-500`;
 
   return (
-    <div className="fixed top-16 w-72">
+    <div className="relative mb-2 w-full text-left">
       <Listbox value={selectedGroup} onChange={setSelectedGroup} multiple>
         <div className="relative mt-1">
           <Listbox.Button
-            className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+            className={`relative ${width} h-10 cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow hover:shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-300 sm:text-sm`}
             placeholder="select"
           >
             <Label label={!label ? props.name : label} {...props} />
             <span className="block truncate">
               {selectedGroup.length === 0 ? (
-                <div className="text-grey-500">
-                  select multiple eg. Option1, Option2
-                </div>
+                <div className="text-grey-500">Select Multiple</div>
               ) : (
                 selectedGroup.map((option) => option.text).join(", ")
               )}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <BsChevronExpand
-                className="h-5 w-5 text-grey-400"
+                className="h-5 w-5 text-grey-600"
                 aria-hidden="true"
               />
             </span>
