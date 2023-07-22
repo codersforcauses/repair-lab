@@ -15,6 +15,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   options: { id: number; text: string }[];
   width?: string;
+  height?: string;
   placeholder?: string;
   label?: string;
 }
@@ -23,11 +24,25 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+/*
+This is a component for a multiselect dropdown menu
+Will display a multiselect dropdown displaying options inputted
+Input:
+  options: { id: number; text: string }[]; // array of objects with option text and id number
+  placeholder?: string; // placeholder string before any option is selected
+  label?: string; // text on border of button
+  width?: string; // custom width of component
+  height?: string; // custom height of component
+Output:
+  A multiselect dropdown that is compatible w/ React-hook-forms 
+*/
+
 export default function MultiSelect<T extends FieldValues = FieldValues>({
   options,
   placeholder,
   label,
   width = "w-full",
+  height = "h-10",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
@@ -40,7 +55,7 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
 
   return (
     <div
-      className={`relative mb-2 text-left ${width}`}
+      className={`relative mb-2 text-left ${width} ${height}`}
       onChange={field.onChange}
     >
       <Listbox

@@ -14,6 +14,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
   options: { id: number; text: string }[];
   width?: string;
+  height?: string;
   placeholder?: string;
   label?: string;
 }
@@ -38,11 +39,12 @@ export default function DropDown<T extends FieldValues = FieldValues>({
   placeholder,
   label,
   width = "w-full",
+  height = "h-10",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `flex h-10 ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
+  const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
   return (
