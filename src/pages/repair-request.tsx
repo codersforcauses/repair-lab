@@ -8,42 +8,34 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import DropDown from "@/components/FormFields/field-dropdown";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
-import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { useBrands } from "@/hooks/brands";
+import { useEventOptions } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import { repairRequestPostSchema } from "@/schema/repair-request";
 import { RepairRequest } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
-type FormValues = RepairRequest & {
-  tncAccepted: boolean;
-};
+type FormValues = RepairRequest;
 
 const Home = () => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(repairRequestPostSchema),
     defaultValues: {
       itemBrand: "",
       itemType: "",
       description: "",
       images: [],
-      eventId: "",
-      tncAccepted: false
+      eventId: ""
     }
   });
 
   const itemTypeList = useItemTypes();
   const brandList = useBrands();
+  const eventOptions = useEventOptions();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     const response = await fetch(`/api/repair-request`, {
       method: "POST",
       headers: {
@@ -130,23 +122,9 @@ const Home = () => {
             control={control}
             placeholder="Select an event"
             label="Event"
-            options={[
-              {
-                id: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb",
-                text: "6b3e0cca-d636-472d-8c6e-1cc63bde6ceb"
-              },
-              {
-                id: "a6a73c2e-7937-4705-8a40-d6399c69f3bc",
-                text: "Can Bob Fix It?"
-              }
-            ]}
-          />
-
-          <FieldRadio
-            name="tncAccepted"
-            label="I accept the Terms and Conditions."
-            control={control}
-            rules={{ required: true }}
+            options={eventOptions.map((event) => {
+              return { id: event.id, text: event.name };
+            })}
           />
 
           <Button
