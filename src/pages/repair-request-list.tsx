@@ -1,14 +1,28 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import Card from "@/components/Cards/card";
-
-type FormValues = {
+type RepairRequest = {
+  id: string;
   itemBrand: string;
-  itemType: string;
+  item: string;
   description: string;
 };
 
 export default function RepairReqList() {
+  const [repairReqList, setRepairReqList] = useState([] as RepairRequest[]);
+
+  async function fetchData() {
+    const response = await fetch(`/api/repair-request`, {
+      method: "GET"
+    });
+    const data = await response.json();
+    setRepairReqList(data);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center gap-4">
       {/* Logo of Repair Lab, which links to the main website. */}
@@ -28,7 +42,16 @@ export default function RepairReqList() {
 
       {/* get the request list from the database and display it here*/}
 
-      <Card title="title" description="description" />
+      {repairReqList.map((repairReq) => (
+        <div className="border bg-primary-400" key={repairReq.id}>
+          <div className="flex flex-col items-center">
+            <h1>{repairReq.itemBrand}</h1>
+            <p>{repairReq.item}</p>
+
+            <p>{repairReq.description}</p>
+          </div>
+        </div>
+      ))}
     </main>
   );
 }

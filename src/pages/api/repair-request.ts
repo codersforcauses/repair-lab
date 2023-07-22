@@ -14,7 +14,8 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      res.status(405).json("Not yet implemented!");
+      // res.status(405).json("Not yet implemented!");
+      await getAllRepairRequests(req, res);
       break;
     case "POST":
       await createRepairRequest(req, res);
@@ -94,6 +95,21 @@ const updateRepairRequest = async (
     return res.status(500).json({ message: { error } });
   }
 };
+
+const getAllRepairRequests = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  try {
+    const repairRequestService = new RepairRequestService();
+    const repairRequests = await repairRequestService.fetchAll();
+    return res.status(200).json(repairRequests);
+  } catch (error) {
+    return res.status(500).json("Error fetching from database!");
+  }
+};
+
+
 
 export const config: PageConfig = {
   api: {
