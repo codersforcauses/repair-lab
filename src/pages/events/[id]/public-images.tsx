@@ -17,10 +17,6 @@ export default function Images() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-
-  const {
-    query: { id: eventId }
-  } = useRouter();
   
   function Images() {
     const content = [];
@@ -36,14 +32,20 @@ export default function Images() {
     return content;
   }
 
+  
+  const {
+    query: { id: eventId }
+  } = useRouter();
+
   useEffect(() => {
     if (!eventId) return;
     const params = new URLSearchParams();
     params.append("event", eventId as string);
-    fetch(`/api/dashboard/get-event?${params.toString()}`)
+    fetch(`/api/events/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
-        setImages(event.images); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
+        setImages(event.images);
+        console.log("HIHIHI") 
         setHeaderValues({
           name: event.name,
           location: event.location,
@@ -67,8 +69,11 @@ export default function Images() {
           </div>
           <div className="grid gap-4 p-4 lg:grid-cols-5 ">
             {Images()}
-            <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
-              <CiCirclePlus color="#d9d9d9" size={100} />
+            <div
+              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              role="presentation"
+            >
+              <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
           </div>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
