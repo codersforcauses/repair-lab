@@ -17,7 +17,7 @@ export default function Images() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  
+
   function Images() {
     const content = [];
     // TODO: extract image from s3*/}
@@ -32,7 +32,6 @@ export default function Images() {
     return content;
   }
 
-  
   const {
     query: { id: eventId }
   } = useRouter();
@@ -45,7 +44,7 @@ export default function Images() {
       .then((res) => res.json())
       .then((event) => {
         setImages(event.images);
-        console.log("HIHIHI") 
+        console.log("HIHIHI");
         setHeaderValues({
           name: event.name,
           location: event.location,

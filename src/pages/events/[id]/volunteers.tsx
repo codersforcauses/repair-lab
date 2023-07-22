@@ -15,7 +15,7 @@ export default function Volunteers() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  
+
   const {
     query: { id: eventId }
   } = useRouter();
@@ -62,7 +62,6 @@ export default function Volunteers() {
             >
               <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
-            
           </div>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
         </div>
