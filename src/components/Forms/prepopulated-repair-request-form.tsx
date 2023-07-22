@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RepairRequest } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
@@ -11,19 +12,19 @@ import type { GeneralRepairAttempt } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RepairAttempt() {
+export default function RepairAttempt({ props }: { props: RepairRequest }) {
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
-      id: "",
-      item: "",
-      itemBrand: "",
-      itemMaterial: "",
-      hoursWorked: 1,
-      isRepaired: undefined,
+      id: props.id,
+      item: props.itemType,
+      itemBrand: props.itemBrand,
+      itemMaterial: props.itemMaterial,
+      hoursWorked: props.hoursWorked,
+      isRepaired: props.itemStatus,
       isSparePartsNeeded: undefined,
       spareParts: "",
-      repairComment: ""
+      repairComment: props.comment
     }
   });
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import { RepairRequest } from "@prisma/client";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
@@ -15,6 +16,7 @@ export type CardProps = {
   lastName?: string;
   avatar?: string;
   handleClick?: () => void;
+  repairRequestProps: RepairRequest;
 };
 
 export default function Card({ props }: { props: CardProps }) {
@@ -38,7 +40,7 @@ export default function Card({ props }: { props: CardProps }) {
             {props.title} <StatusPill status={props.status} />
           </h2>
           <div>
-            <RepairAttempt></RepairAttempt>
+            <RepairAttempt props={props.repairRequestProps}></RepairAttempt>
           </div>
         </div>
       </Modal>

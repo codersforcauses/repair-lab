@@ -86,7 +86,8 @@ export default function RepairRequest() {
                     status: item.status,
                     firstName: item.assignedTo,
                     lastName: "",
-                    avatar: "/images/repair_lab_logo.jpg"
+                    avatar: "/images/repair_lab_logo.jpg",
+                    repairRequestProps: item
                   }}
                 />
               </div>
