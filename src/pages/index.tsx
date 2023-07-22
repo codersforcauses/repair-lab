@@ -93,9 +93,9 @@ export default function Home() {
           Submit item for Repair
         </div>
         <div className="h-30 mb-10 mt-5 pb-3 pl-10 pr-10">
-        <Link href="/repair-request">
-          <Button aria-label="button"> New Request </Button>
-        </Link>
+          <Link href="/repair-request">
+            <Button aria-label="button"> New Request </Button>
+          </Link>
         </div>
       </div>
 
