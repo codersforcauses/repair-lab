@@ -209,38 +209,6 @@ function Table() {
     );
   }
 
-  // modal component, will need to be adjusted to not refresh whenever the onChange function is called
-  function Modal({ children, title }) {
-    return (
-      <div className=" flex items-center justify-center">
-        <Dialog
-          open={modalActive}
-          onClose={() => toggleModal(false)}
-          className="absolute inset-0 flex justify-center p-4 text-center sm:items-center sm:p-0"
-        >
-          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
-              <span className="float-left"> {title} </span>
-              <button
-                onClick={() => toggleModal(false)}
-                className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
-              >
-                <FontAwesomeIcon
-                  className="align-middle align-text-top text-xl"
-                  icon={faXmark}
-                />
-              </button>
-            </Dialog.Title>
-
-            {/* main form*/}
-            {children}
-          </Dialog.Panel>
-        </Dialog>
-      </div>
-    );
-  }
-
   function handleSort(key: string) {
     setSortKey(key);
   }
@@ -395,6 +363,10 @@ function Table() {
                 </label>
                 <select
                   name={headers[5].key}
+                  onChange={handleInputChange}
+                  defaultValue={
+                    formData[headers[5].key as keyof Partial<Event>]
+                  }
                   className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
                 >
                   <option value={upcoming}> UPCOMING </option>

@@ -11,7 +11,6 @@ export default async function handler(
   if (req.method === "POST") {
     const { id, name, createdBy, location, startDate, eventType, status } =
       req.body;
-    console.log("in hereeeeeeeeee");
 
     try {
       // Check if the event already exists in the database
