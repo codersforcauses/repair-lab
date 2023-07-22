@@ -6,8 +6,7 @@ type FormValues = {
   itemBrand: string;
   itemType: string;
   description: string;
-}
-
+};
 
 export default function RepairReqList() {
   return (
@@ -29,12 +28,7 @@ export default function RepairReqList() {
 
       {/* get the request list from the database and display it here*/}
 
-      <Card 
-        title = "title" 
-        description = "description"/>
-
+      <Card title="title" description="description" />
     </main>
   );
 }
-
-

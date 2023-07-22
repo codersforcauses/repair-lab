@@ -39,3 +39,6 @@ public/
 
 # docker
 docker-compose.yml
+
+# vitest
+coverage/
