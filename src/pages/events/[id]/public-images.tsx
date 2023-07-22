@@ -1,16 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
-import AssigneeBadge from "@/components/Cards/assignee-badge";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
-import Image from "next/image";
 
-//TODO: clean this up this is a place holder for now
+// TODO: clean this up this is a place holder for now
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Images() {
@@ -18,16 +17,11 @@ export default function Images() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  const [eventId, setEventId] = useState<string>("" as string);
 
-  const router = useRouter();
-  useEffect(() => {
-    if (router.isReady) {
-      // ensures that the router query parameters are ready
-      setEventId(router.query.id as string);
-    }
-  }, [router.isReady, router.query.id]);
-
+  const {
+    query: { id: eventId }
+  } = useRouter();
+  
   function Images() {
     const content = [];
     // TODO: extract image from s3*/}
@@ -43,9 +37,9 @@ export default function Images() {
   }
 
   useEffect(() => {
-    if (!router.isReady || !eventId) return;
+    if (!eventId) return;
     const params = new URLSearchParams();
-    params.append("event", eventId);
+    params.append("event", eventId as string);
     fetch(`/api/dashboard/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
@@ -58,7 +52,7 @@ export default function Images() {
           createdBy: event.createdBy // TODO: Later get name from clerk, given userID
         });
       });
-  }, [eventId, router.isReady]);
+  }, [eventId]);
 
   return (
     <Sidebar>

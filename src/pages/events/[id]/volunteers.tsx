@@ -15,20 +15,16 @@ export default function Volunteers() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  const [eventId, setEventId] = useState<string>("");
-
-  const router = useRouter();
-  useEffect(() => {
-    if (router.isReady) {
-      // ensures that the router query parameters are ready
-      setEventId(router.query.id as string);
-    }
-  }, [router.isReady, router.query.id]);
+  
+  const {
+    query: { id: eventId }
+  } = useRouter();
 
   useEffect(() => {
-    if (!router.isReady || !eventId) return;
+    if (!eventId) return;
+
     const params = new URLSearchParams();
-    params.append("event", eventId);
+    params.append("event", eventId as string);
     fetch(`/api/events/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
@@ -41,7 +37,7 @@ export default function Volunteers() {
           createdBy: event.createdBy // TODO: Later get name from clerk, given userID
         });
       });
-  }, [eventId, router.isReady]);
+  }, [eventId]);
 
   return (
     <Sidebar>
@@ -60,9 +56,13 @@ export default function Volunteers() {
                 <AssigneeBadge firstName={item} />
               </div>
             ))}
-            <div className="flex w-full items-center justify-center rounded-lg border bg-white p-4">
-              <CiCirclePlus color="#d9d9d9" size={100} />
+            <div
+              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              role="presentation"
+            >
+              <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
+            
           </div>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
         </div>
