@@ -4,7 +4,7 @@ import { RepairRequest } from "@prisma/client";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
-import RepairAttempt from "@/components/Forms/prepopulated-repair-request-form";
+import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal/index";
 
 export type CardProps = {
@@ -40,7 +40,9 @@ export default function Card({ props }: { props: CardProps }) {
             {props.title} <StatusPill status={props.status} />
           </h2>
           <div>
-            <RepairAttempt props={props.repairRequestProps}></RepairAttempt>
+            <PrepopulatedRepairAttemptForm
+              props={props.repairRequestProps}
+            ></PrepopulatedRepairAttemptForm>
           </div>
         </div>
       </Modal>

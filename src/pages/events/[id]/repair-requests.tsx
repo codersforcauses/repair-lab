@@ -5,8 +5,10 @@ import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Card from "@/components/Cards/card";
+import RepairAttemptForm from "@/components/Forms/repair-request-form";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
+import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import SearchBar from "@/components/ui/SearchBar";
 import SortBy from "@/components/ui/SortBy";
@@ -55,8 +57,10 @@ export default function RepairRequest() {
     }
   }, [eventId]);
 
+  const [eventModal, showEventModal] = useState(false);
+
   function newEvent() {
-    alert("test");
+    showEventModal(true);
   }
 
   return (
@@ -100,6 +104,15 @@ export default function RepairRequest() {
             >
               <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
+            <Modal showModal={eventModal} setShowPopup={showEventModal}>
+              {" "}
+              <div className="text-center">
+                <h1 className="text-xl font-bold">New Event Form</h1>
+                <div>
+                  <RepairAttemptForm></RepairAttemptForm>
+                </div>
+              </div>
+            </Modal>
           </div>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
         </div>
