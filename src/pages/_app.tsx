@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <StrictMode>
-      <ClerkProvider {...pageProps}>
+      <ClerkProvider clerkJSVariant="headless" {...pageProps}>
         <main className={inter.className}>
           <Component {...pageProps} />
         </main>
