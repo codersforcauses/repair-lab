@@ -14,36 +14,32 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairRequest() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
-  const [repairRequestCounter, setRepairRequestCounter] = useState<number>(0);
 
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
-  const [eventId, setEventId] = useState<string>("");
 
-  const router = useRouter();
-  useEffect(() => {
-    if (router.isReady) {
-      // ensures that the router query parameters are ready
-      setEventId(router.query.id as string);
-    }
-  }, [router.isReady, router.query.id]);
+  const {
+    query: { id: eventId }
+  } = useRouter();
 
   // Getting the repair requests for this event
   useEffect(() => {
+    if (!eventId) return;
+
     const params = new URLSearchParams();
-    params.append("event", eventId);
+    params.append("event", eventId as string);
+
     try {
       // Getting the repair requests for this event
       fetch(`/api/events/repair-request?${params.toString()}`)
         .then((res) => res.json())
         .then((data) => {
-          setRepairRequestCounter(data.length);
           setRepairRequests(data);
         });
 
       // Getting the event information
-      fetch(`/api/dashboard/get-event?${params.toString()}`)
+      fetch(`/api/events/get-event?${params.toString()}`)
         .then((res) => res.json())
         .then((event) => {
           setHeaderValues({
@@ -71,7 +67,7 @@ export default function RepairRequest() {
           <div className="container mx-auto items-center">
             <div className="flex justify-between">
               <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-                <span>Repair Requests ({repairRequestCounter})</span>
+                <span>Repair Requests ({repairRequests.length})</span>
               </div>
               <div className="flex justify-end">
                 <SortBy />

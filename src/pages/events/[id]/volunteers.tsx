@@ -29,7 +29,7 @@ export default function Volunteers() {
     if (!router.isReady || !eventId) return;
     const params = new URLSearchParams();
     params.append("event", eventId);
-    fetch(`/api/dashboard/get-event?${params.toString()}`)
+    fetch(`/api/events/get-event?${params.toString()}`)
       .then((res) => res.json())
       .then((event) => {
         setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk

@@ -34,9 +34,9 @@ export default function Images() {
 
     for (let i = 0; i < Images.length; i++) {
       content.push(
-       <div>
-        <Image src={images[i]} alt="event image" width={300} height={300} />
-       </div>
+        <div>
+          <Image src={images[i]} alt="event image" width={300} height={300} />
+        </div>
       );
     }
     return content;
