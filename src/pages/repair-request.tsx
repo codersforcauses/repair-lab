@@ -5,12 +5,13 @@ import { Inter } from "next/font/google";
 import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { TermsAndConditions } from "@/components/terms-and-conditions";
 import { useBrands } from "@/hooks/brands";
 import { useItemTypes } from "@/hooks/item-types";
 
 const inter = Inter({ subsets: ["latin"] });
 
-type FormValues = {
+export type FormValues = {
   itemBrand: string;
   itemType: string;
   description: string;
@@ -22,6 +23,7 @@ type FormValues = {
 const Home = () => {
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors }
   } = useForm<FormValues>({
@@ -222,25 +224,7 @@ const Home = () => {
           </div>
 
           {/* Terms and Conditions Checkbox */}
-
-          <div className="h-6 items-center">
-            <label>
-              <input
-                className={`${
-                  errors.tncAccepted &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                }`}
-                type="checkbox"
-                {...register("tncAccepted", {
-                  required: "*Accept terms and conditions to submit."
-                })}
-              />
-              <span className="select-none pl-2 text-sm">
-                I accept the Terms and Conditions.
-              </span>
-            </label>
-            <p className="text-red-600"> {errors.tncAccepted?.message} </p>
-          </div>
+          <TermsAndConditions control={control} />
 
           <input
             className="m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-teal-600 text-center text-lg text-white hover:bg-teal-500"

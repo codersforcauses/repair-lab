@@ -2,20 +2,20 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useController } from "react-hook-form";
+import { Control, useController } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
+import { FormValues } from "@/pages/repair-request";
 
-type FormValues = {
-  tncAccepted: boolean;
-};
-
-export const TermsAndConditions = ({ control }) => {
+interface TermsAndConditionsProps {
+  control: Control<FormValues>;
+}
+export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
   const { field, fieldState } = useController({
     control,
     name: "tncAccepted",
-    rules: { required: "Please accept the house rules" }
+    rules: { required: "*Please accept the house rules." }
   });
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
@@ -49,7 +49,9 @@ export const TermsAndConditions = ({ control }) => {
         </div>
         <span>.</span>
       </label>
-      {fieldState.invalid && <p>{fieldState.error?.message}</p>}
+      {fieldState.invalid && (
+        <p className="text-red-500">{fieldState.error?.message}</p>
+      )}
 
       <Transition appear show={showPopup} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
