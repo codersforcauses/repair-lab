@@ -6,37 +6,6 @@
   justify-content: center;
 }
 
-table {
-  margin: 0 auto;
-  width: 100%;
-  table-layout: fixed;
-  border-radius: 10px;
-  overflow: hidden; /* Ensure content stays within the rounded borders */
-}
-
-thead tr {
-  background-color: #a6dcdb;
-  /* Header row color */
-  color: white;
-  /* Text color for header row */
-}
-
-tbody {
-  background-color: #f9fefd;
-  /* Background color for rows */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-th,
-td {
-  padding: 10px 0px;
-  text-align: left;
-  font-weight: 500;
-  font-size: 15px;
-  color: black;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Add border-bottom for lines between rows */
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 6px;

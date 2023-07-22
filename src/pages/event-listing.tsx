@@ -119,7 +119,7 @@ function Table() {
   }
 
   // takes form values and posts them to DB
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function editEvents(event: React.FormEvent<HTMLFormElement>) {
     console.log("in function");
     event.preventDefault();
 
@@ -198,6 +198,7 @@ function Table() {
 
   function ToggleChevron(column: string) {
     const columnInt = parseInt(column.column);
+    console.log(columnInt)
     return (
       <button onClick={() => handleButtonClick(headers[columnInt].key)}>
         {" "}
@@ -247,7 +248,7 @@ function Table() {
   }
 
   function SortOptions() {
-    // Basic functionality for sorting, styling incomplete
+    // Basic functionality for sorting
     return (
       <div>
         <select onChange={(e) => setSortMethod(e.target.value)}>
@@ -319,7 +320,7 @@ function Table() {
             </Dialog.Description>
 
             {/* main form*/}
-            <form onSubmit={showCreateForm === true ? addEvents : handleSubmit}>
+            <form onSubmit={showCreateForm === true ? addEvents : editEvents}>
               <div key={headers[0].key} className="flow-root">
                 <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
                   {" "}
@@ -396,7 +397,7 @@ function Table() {
                 </label>
                 <select
                   name={headers[5].key}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
+                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600 h-8"
                 >
                   <option value={upcoming}> UPCOMING </option>
                   <option value={ongoing}> ONGOING </option>
@@ -459,60 +460,67 @@ function Table() {
 
       {/* main table*/}
       <div className="flex justify-center">
-        <div className="container ">
-          <table className="table-auto">
+        <div className="container overflow-hidden">
+          <table className="table-auto w-10/12 rounded-lg overflow-hidden">
             <thead>
-              <tr className="pb-10 text-left">
-                <th className="pl-5">
+              <tr className="pb-10 text-left bg-lightAqua-200 border-b ">
+                {/*{headers.map((column) => (
+                  <th key={column.key}>
+                    {" "}
+                    {column.label} <ToggleChevron column={column.label} />{" "}
+                  </th>
+                ))}*/}
+                <th className="pl-5 font-normal p-2.5">
                   {" "}
                   {headers[0].label} <ToggleChevron column="0" />{" "}
                 </th>
-                <th>
+                <th className="font-normal ">
                   {" "}
                   {headers[1].label} <ToggleChevron column="1" />{" "}
                 </th>
-                <th>
+                <th className="font-normal">
                   {" "}
                   {headers[2].label} <ToggleChevron column="2" />{" "}
                 </th>
-                <th>
+                <th className="font-normal">
                   {" "}
                   {headers[3].label} <ToggleChevron column="3" />{" "}
                 </th>
-                <th>
+                <th className="font-normal">
                   {" "}
                   {headers[4].label} <ToggleChevron column="4" />{" "}
                 </th>
-                <th>
+                <th className="font-normal">
                   {" "}
                   {headers[5].label} <ToggleChevron column="5" />{" "}
                 </th>
-                <th className="w-10 text-justify"> Edit </th>
+                <th className="w-10 text-justify font-normal p-2.5"> Edit </th>
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className="bg-secondary-50">
               {eventData.map((event: Event) => {
                 return (
                   <tr
                     key={event.name}
-                    className="first:ml-50 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
+                    className="first:ml-50 last:mr-10 even:bg-slate-100 hover:bg-slate-200 border-b p-2.5"
                   >
                     <td className="pl-5 font-light">
                       <button
+                        className="text-sm"
                         onClick={() => router.push("/event-form/" + event.id)}
                       >
                         {event.name}
                       </button>
                     </td>
-                    <td className="font-light">{event.createdBy}</td>
-                    <td className="font-light">{event.location}</td>
-                    <td className="font-light">
+                    <td className="font-light text-sm p-2.5">{event.createdBy}</td>
+                    <td className="font-light text-sm">{event.location}</td>
+                    <td className="font-light text-sm">
                       {formatDate(String(event.startDate))}
                     </td>
-                    <td className="font-light">{event.eventType}</td>
-                    <td className="font-light">{event.status}</td>
-                    <td className="align-center ml-0 pl-0 text-center ">
+                    <td className="font-light text-sm">{event.eventType}</td>
+                    <td className="font-light text-sm">{event.status}</td>
+                    <td className="align-center ml-0 pl-0 text-center p-2.5">
                       <button onClick={() => handleEditEvent(event)}>
                         <FontAwesomeIcon icon={faPencil} />
                       </button>
