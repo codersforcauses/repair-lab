@@ -197,12 +197,12 @@ function Table() {
   }
 
   function ToggleChevron(column: string) {
-    const columnInt = parseInt(column.column);
-    console.log(columnInt)
+    const key = column.key;
+    const label = column.label;
     return (
-      <button onClick={() => handleButtonClick(headers[columnInt].key)}>
+      <button onClick={() => handleButtonClick(key)}>
         {" "}
-        {headers[columnInt].key === expandedButton ? (
+        {key === expandedButton ? (
           <FontAwesomeIcon icon={faChevronUp} />
         ) : (
           <FontAwesomeIcon icon={faChevronDown} />
@@ -372,7 +372,7 @@ function Table() {
                   type="datetime-local"
                   name={headers[3].key}
                   onChange={handleInputChange}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
+                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
                 />
               </div>
 
@@ -397,7 +397,7 @@ function Table() {
                 </label>
                 <select
                   name={headers[5].key}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600 h-8"
+                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
                 >
                   <option value={upcoming}> UPCOMING </option>
                   <option value={ongoing}> ONGOING </option>
@@ -461,40 +461,16 @@ function Table() {
       {/* main table*/}
       <div className="flex justify-center">
         <div className="container overflow-hidden">
-          <table className="table-auto w-10/12 rounded-lg overflow-hidden">
+          <table className="w-10/12 table-auto overflow-hidden rounded-lg">
             <thead>
-              <tr className="pb-10 text-left bg-lightAqua-200 border-b ">
-                {/*{headers.map((column) => (
-                  <th key={column.key}>
+              <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
+                {headers.map((column) => (
+                  <th key={column.key} className="p-2.5 pl-5 font-normal">
                     {" "}
-                    {column.label} <ToggleChevron column={column.label} />{" "}
+                    {column.label} <ToggleChevron column={column} />{" "}
                   </th>
-                ))}*/}
-                <th className="pl-5 font-normal p-2.5">
-                  {" "}
-                  {headers[0].label} <ToggleChevron column="0" />{" "}
-                </th>
-                <th className="font-normal ">
-                  {" "}
-                  {headers[1].label} <ToggleChevron column="1" />{" "}
-                </th>
-                <th className="font-normal">
-                  {" "}
-                  {headers[2].label} <ToggleChevron column="2" />{" "}
-                </th>
-                <th className="font-normal">
-                  {" "}
-                  {headers[3].label} <ToggleChevron column="3" />{" "}
-                </th>
-                <th className="font-normal">
-                  {" "}
-                  {headers[4].label} <ToggleChevron column="4" />{" "}
-                </th>
-                <th className="font-normal">
-                  {" "}
-                  {headers[5].label} <ToggleChevron column="5" />{" "}
-                </th>
-                <th className="w-10 text-justify font-normal p-2.5"> Edit </th>
+                ))}
+                <th className="w-10 p-2.5 text-justify font-normal"> Edit </th>
               </tr>
             </thead>
 
@@ -503,7 +479,7 @@ function Table() {
                 return (
                   <tr
                     key={event.name}
-                    className="first:ml-50 last:mr-10 even:bg-slate-100 hover:bg-slate-200 border-b p-2.5"
+                    className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
                   >
                     <td className="pl-5 font-light">
                       <button
@@ -513,14 +489,16 @@ function Table() {
                         {event.name}
                       </button>
                     </td>
-                    <td className="font-light text-sm p-2.5">{event.createdBy}</td>
-                    <td className="font-light text-sm">{event.location}</td>
-                    <td className="font-light text-sm">
+                    <td className="p-2.5 text-sm font-light">
+                      {event.createdBy}
+                    </td>
+                    <td className="text-sm font-light">{event.location}</td>
+                    <td className="text-sm font-light">
                       {formatDate(String(event.startDate))}
                     </td>
-                    <td className="font-light text-sm">{event.eventType}</td>
-                    <td className="font-light text-sm">{event.status}</td>
-                    <td className="align-center ml-0 pl-0 text-center p-2.5">
+                    <td className="text-sm font-light">{event.eventType}</td>
+                    <td className="text-sm font-light">{event.status}</td>
+                    <td className="align-center ml-0 p-2.5 pl-0 text-center">
                       <button onClick={() => handleEditEvent(event)}>
                         <FontAwesomeIcon icon={faPencil} />
                       </button>
