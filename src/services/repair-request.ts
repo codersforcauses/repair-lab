@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { RepairRequest } from "@prisma/client";
+import { ItemStatus } from "@prisma/client";
 
 import prisma from "@/lib/prisma";
 
@@ -11,10 +12,22 @@ interface RepairRequestCreateInput {
   itemType: string;
   eventId: string;
   images?: string[];
+  comment: string;
+  thumbnailImage: string;
+}
+
+interface RepairRequestUpdateInput {
+  id: string;
+  itemMaterial: string;
+  hoursWorked: number;
+  itemStatus: ItemStatus;
+  spareParts?: string | undefined;
+  repairComment: string;
 }
 
 interface IRepairRequestService {
   insert(details: RepairRequestCreateInput): Promise<RepairRequest>;
+  update(details: RepairRequestUpdateInput): Promise<RepairRequest>;
 }
 
 class RepairRequestService implements IRepairRequestService {
@@ -31,6 +44,16 @@ class RepairRequestService implements IRepairRequestService {
           })
         }
       }
+    });
+
+    return repairRequest;
+  }
+
+  async update(details: RepairRequestUpdateInput): Promise<RepairRequest> {
+    const { id, ...rest } = details;
+    const repairRequest = await prisma.repairRequest.update({
+      where: { id },
+      data: rest
     });
 
     return repairRequest;
