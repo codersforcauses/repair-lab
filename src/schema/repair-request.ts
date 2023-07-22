@@ -10,7 +10,8 @@ export const repairRequestPostSchema = z.object({
     }),
   itemType: z.string().nonempty({ message: "Item type is required" }),
   itemBrand: z.string().nonempty({ message: "Item brand is required" }),
-  images: z.string().array().optional()
+  images: z.string().array().optional(),
+  comment: z.string().optional()
 });
 
 const preprocessBooleanInput = (input: unknown) => {

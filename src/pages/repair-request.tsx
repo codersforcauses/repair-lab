@@ -27,7 +27,8 @@ const Home = () => {
       itemType: "",
       description: "",
       images: [],
-      eventId: ""
+      eventId: "",
+      comment: ""
     }
   });
 
@@ -45,7 +46,8 @@ const Home = () => {
         eventId: data.eventId,
         itemBrand: data.itemBrand,
         itemType: data.itemType,
-        description: data.description
+        description: data.description,
+        comment: data.comment
       })
     });
     ` `;
@@ -125,6 +127,14 @@ const Home = () => {
             options={eventOptions.map((event) => {
               return { id: event.id, text: event.name };
             })}
+          />
+
+          <FieldTextArea
+            name="comment"
+            label="Additional Comment"
+            placeholder="Enter additional comments"
+            control={control}
+            rules={{ required: false }}
           />
 
           <Button

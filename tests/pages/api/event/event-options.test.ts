@@ -15,7 +15,7 @@ describe("GET /api/event/options", () => {
   beforeAll(async () => {
     await cleanup();
     await prisma.itemType.createMany({
-      data: [{name: "Laptop"}, {name: "Bicycle"}]
+      data: [{ name: "Laptop" }, { name: "Bicycle" }]
     });
 
     await prisma.event.createMany({
@@ -28,7 +28,8 @@ describe("GET /api/event/options", () => {
           eventType: "Laptop",
           startDate: new Date(),
           endDate: new Date()
-        }, {
+        },
+        {
           createdBy: "Peppa Pig",
           name: "Another Repair Event",
           location: "Perth CBD",
@@ -36,8 +37,9 @@ describe("GET /api/event/options", () => {
           eventType: "Bicycle",
           startDate: new Date(),
           endDate: new Date()
-        }]
-    })
+        }
+      ]
+    });
   });
 
   it("should return event options", async () => {
