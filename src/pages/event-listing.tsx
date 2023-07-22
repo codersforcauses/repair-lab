@@ -197,12 +197,10 @@ function Table() {
   }
 
   function ToggleChevron(column: string) {
-    const key = column.key;
-    const label = column.label;
     return (
-      <button onClick={() => handleButtonClick(key)}>
+      <button onClick={() => handleButtonClick(column)}>
         {" "}
-        {key === expandedButton ? (
+        {column === expandedButton ? (
           <FontAwesomeIcon icon={faChevronUp} />
         ) : (
           <FontAwesomeIcon icon={faChevronDown} />
@@ -464,10 +462,10 @@ function Table() {
           <table className="w-10/12 table-auto overflow-hidden rounded-lg">
             <thead>
               <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
-                {headers.map((column) => (
-                  <th key={column.key} className="p-2.5 pl-5 font-normal">
+                {headers.map((col) => (
+                  <th key={col.key} className="p-2.5 pl-5 font-normal">
                     {" "}
-                    {column.label} <ToggleChevron column={column} />{" "}
+                    {col.label} {ToggleChevron(col.key)}{" "}
                   </th>
                 ))}
                 <th className="w-10 p-2.5 text-justify font-normal"> Edit </th>
