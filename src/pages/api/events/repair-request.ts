@@ -8,9 +8,9 @@ export default async function handler(
   res: NextApiResponse<RepairRequest[]>
 ) {
   if (req.method == "GET") {
-    const eventName = req.query.event as string; // TODO: Later use event id from dynamic route
+    const eventId = req.query.event as string;
     const repairRequests = await prisma.repairRequest.findMany({
-      where: { event: { id: eventName } }
+      where: { event: { id: eventId } }
     });
     return res.status(200).json(repairRequests);
   }
