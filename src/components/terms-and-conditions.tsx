@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Controller, useForm } from "react-hook-form";
+import { useController } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
@@ -11,13 +11,12 @@ type FormValues = {
   tncAccepted: boolean;
 };
 
-export const TermsAndConditions = () => {
-  const { control, register } = useForm<FormValues>({
-    defaultValues: {
-      tncAccepted: false
-    }
+export const TermsAndConditions = ({ control }) => {
+  const { field, fieldState } = useController({
+    control,
+    name: "tncAccepted",
+    rules: { required: "Please accept the house rules" }
   });
-
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
@@ -30,22 +29,12 @@ export const TermsAndConditions = () => {
 
   return (
     <>
-      <div className="static flex justify-center">
-        <Controller
-          control={control}
-          name="tncAccepted"
-          render={({ field: { onChange } }) => (
-            <input
-              type="checkbox"
-              checked={Accepted}
-              {...register("tncAccepted", {
-                required: "*Accept terms and conditions to submit."
-              })}
-              onChange={(e) => {
-                onChange(e.target.checked);
-              }}
-            />
-          )}
+      <label htmlFor="tncAccepted" className="static flex justify-center">
+        <input
+          id="tncAccepted"
+          type="checkbox"
+          checked={Accepted}
+          onChange={field.onChange}
         />
 
         <div className="space-x-1.5">
@@ -59,7 +48,8 @@ export const TermsAndConditions = () => {
           </button>
         </div>
         <span>.</span>
-      </div>
+      </label>
+      {fieldState.invalid && <p>{fieldState.error?.message}</p>}
 
       <Transition appear show={showPopup} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
