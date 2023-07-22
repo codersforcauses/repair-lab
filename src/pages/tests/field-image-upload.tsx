@@ -5,7 +5,7 @@ import Button from "@/components/Button";
 import FieldImageUpload from "@/components/Form Fields/field-image-upload";
 
 interface FormData {
-  single: File;
+  single: File[];
   multiple: File[];
 }
 
@@ -19,16 +19,14 @@ export default function Test() {
       // Create a FormData object to handle file uploads
       const formData = new FormData();
 
-      formData.append("file", data.single); // Assuming your API expects a 'file' field for single file uploads
+      formData.append("file", data.single[0]); // Assuming your API expects a 'file' field for single file uploads
+      console.log("Single file:", data.single[0] instanceof Blob);
 
       data.multiple.forEach((file) => formData.append("files", file)); // Assuming your API expects 'files' field for multiple file uploads
+      console.log("Multiple files:", data.multiple);
 
       // Make the API request to your API route for S3 uploads
-      const response = await axios.post("/api/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data" // Set the appropriate content type for file uploads
-        }
-      });
+      const response = await axios.post("/api/upload", formData);
 
       // Handle the response from the API if needed
       console.log("File uploaded successfully. Response:", response.data);
