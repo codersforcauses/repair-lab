@@ -103,61 +103,71 @@ const UserPage = () => {
 
   return (
     <div className="p-6">
-      <div className="flex items-center mb-2">
-        <div className="flex items-center mr-4">
-        <Image
-          src="/images/repair_lab_logo.jpg"
-          alt="logo"
-          width={80}
-          height={80}
-        />
+      <div className="mb-2 flex items-center">
+        <div className="mr-4 flex items-center">
+          <Image
+            src="/images/repair_lab_logo.jpg"
+            alt="logo"
+            width={80}
+            height={80}
+          />
+        </div>
+        <h1 className="ml-3 text-2xl font-semibold">User List</h1>
       </div>
-      <h1 className="text-2xl font-semibold ml-3">User List</h1>
-      </div>
-      <div className="flex items-center justify-end mb-4">
-       <select value={searchCriteria} onChange={handleSearchCriteriaChange}  className="border  rounded px-2 py-1">
+      <div className="m-4 flex justify-end">
+        <select
+          value={searchCriteria}
+          onChange={handleSearchCriteriaChange}
+          className="rounded  border px-2 py-1"
+        >
           <option value={SearchCriteria.All}>Search By</option>
           <option value={SearchCriteria.FirstName}>Search by First Name</option>
           <option value={SearchCriteria.LastName}>Search by Last Name</option>
           <option value={SearchCriteria.Email}>Search by Email</option>
           <option value={SearchCriteria.Role}>Search by Role</option>
         </select>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={handleSearchQueryChange}
-          className="border rounded-md px-2 py-1"
-        />
+        <div className="ml-3">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchQueryChange}
+            className="rounded-md border py-1 pl-3"
+          />
+        </div>
       </div>
 
       <div className="m-4 flex items-center">
-      <div className="flex-1 border-t-1 border border-primary-600"></div>
+        <div className="border-t-1 flex-1 border border-primary-600"></div>
       </div>
-      <div className="max-w-6xl mx-auto overflow-x-auto">
-      <table className="table-auto w-full">
-        <thead>
-          <tr className="mb-8 bg-lightAqua-300">
-            <th className="px-4 py-2">First Name</th>
-            <th className="px-4 py-2">Last Name</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map((user,index) => (
-         <tr key={user.id} 
-         className={`${index % 2 === 0 ? "even:bg-lightAqua-300" : "odd:bg-white"} border-b hover:bg-gray-100`}>
-          <td> {user.firstName}</td>
-          <td> {user.lastName}</td>
-          <td> {user.emailAddresses[0]?.emailAddress}</td>
-          <td> {user.privateMetadata.role || "-"}</td>
-        </tr>
-      ))}
-        </tbody>
-      </table>
+      <div className="mx-auto max-w-6xl overflow-x-auto">
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="h-6 bg-lightAqua-300">
+              <th className="px-4 py-2">First Name</th>
+              <th className="px-4 py-2">Last Name</th>
+              <th className="px-4 py-2">Email</th>
+              <th className="px-4 py-2">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user, index) => (
+              <tr
+                key={user.id}
+                className={`${
+                  index % 2 === 0 ? "bg-white" : "bg-secondary-50"
+                } h-8 border-b hover:bg-gray-100`}
+              >
+                <td> {user.firstName}</td>
+                <td> {user.lastName}</td>
+                <td> {user.emailAddresses[0]?.emailAddress}</td>
+                <td> {user.privateMetadata.role || "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
   );
 };
 
