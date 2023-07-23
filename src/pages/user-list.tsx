@@ -22,7 +22,7 @@ const UserPage = () => {
   };
 
   const isMatchingSearchQuery = (value: string, searchQueryLower: string) => {
-    return value.toLowerCase().includes(searchQueryLower);
+    return value && value.toLowerCase().includes(searchQueryLower);
   };
 
   const filteredUsers = users.filter((user) => {
@@ -140,7 +140,7 @@ const UserPage = () => {
             ))}
           </tbody>
           {filteredUsers.length === 0 && (
-            <div className="text-center py-4">No users found.</div>
+            <div className="py-4 text-center">No users found.</div>
           )}
         </table>
       </div>
