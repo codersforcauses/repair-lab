@@ -28,6 +28,8 @@
     "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.374.0",
+    "@aws-sdk/s3-request-presigner": "^3.375.0",
     "@clerk/nextjs": "^4.21.3",
     "@headlessui/react": "^1.7.15",
     "@prisma/client": "^4.15.0",
