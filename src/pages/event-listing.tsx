@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
@@ -295,7 +295,9 @@ function Table() {
                 <input
                   type="text"
                   name={headers[0].key}
-                  value={formData[headers[0].key as keyof Partial<Event>]}
+                  value={
+                    formData[headers[0].key as keyof Partial<Event>] as string
+                  }
                   onChange={handleInputChange}
                   className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
                 />
@@ -309,7 +311,9 @@ function Table() {
                 <input
                   type="text"
                   name={headers[1].key}
-                  value={formData[headers[1].key as keyof Partial<Event>]}
+                  value={
+                    formData[headers[1].key as keyof Partial<Event>] as string
+                  }
                   onChange={handleInputChange}
                   className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
                 />
@@ -323,7 +327,9 @@ function Table() {
                 <input
                   type="text"
                   name={headers[2].key}
-                  value={formData[headers[2].key as keyof Partial<Event>]}
+                  value={
+                    formData[headers[2].key as keyof Partial<Event>] as string
+                  }
                   onChange={handleInputChange}
                   className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
                 />
@@ -350,7 +356,9 @@ function Table() {
                 <input
                   type="text"
                   name={headers[4].key}
-                  value={formData[headers[4].key as keyof Partial<Event>]}
+                  value={
+                    formData[headers[4].key as keyof Partial<Event>] as string
+                  }
                   onChange={handleInputChange}
                   className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
                 />
@@ -363,9 +371,9 @@ function Table() {
                 </label>
                 <select
                   name={headers[5].key}
-                  onChange={handleInputChange}
+                  onChange={handleInputChange as ChangeEventHandler}
                   defaultValue={
-                    formData[headers[5].key as keyof Partial<Event>]
+                    formData[headers[5].key as keyof Partial<Event>] as string
                   }
                   className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
                 >
