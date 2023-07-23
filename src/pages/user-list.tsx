@@ -1,51 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
-interface EmailAddress {
-  id: string;
-  emailAddress: string;
-}
-
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  emailAddresses: EmailAddress[];
-  privateMetadata: {
-    role?: string;
-  };
-}
-
-enum SearchCriteria {
-  FirstName = "firstName",
-  LastName = "lastName",
-  Email = "email",
-  Role = "role",
-  All = "all" // Default
-}
+import useUsers from "../hooks/useUsers";
+import { SearchCriteria } from "../types";
 
 const UserPage = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const { users, error } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchCriteria, setSearchCriteria] = useState(SearchCriteria.All);
-
-  // Function to fetch all users
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch("/api/user");
-      if (!response.ok) {
-        throw new Error("Network response was not ok.");
-      }
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   const handleSearchQueryChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -59,43 +21,51 @@ const UserPage = () => {
     setSearchCriteria(event.target.value as SearchCriteria);
   };
 
-  const isMatchingSearchQuery = (
-    value: string | undefined,
-    searchQueryLower: string
-  ) => {
-    if (!value) {
-      return !searchQuery;
-    }
+  const isMatchingSearchQuery = (value: string, searchQueryLower: string) => {
     return value.toLowerCase().includes(searchQueryLower);
   };
 
   const filteredUsers = users.filter((user) => {
-    const firstName = user.firstName ? user.firstName.toLowerCase() : "";
-    const lastName = user.lastName ? user.lastName.toLowerCase() : "";
-    const email = user.emailAddresses[0]?.emailAddress
-      ? user.emailAddresses[0]?.emailAddress.toLowerCase()
-      : "";
-    const role = user.privateMetadata.role?.toLowerCase();
     const searchQueryLower = searchQuery.toLowerCase();
 
     switch (searchCriteria) {
       case SearchCriteria.FirstName:
-        return isMatchingSearchQuery(firstName, searchQueryLower);
+        return isMatchingSearchQuery(user.firstName, searchQueryLower);
       case SearchCriteria.LastName:
-        return isMatchingSearchQuery(lastName, searchQueryLower);
+        return isMatchingSearchQuery(user.lastName, searchQueryLower);
       case SearchCriteria.Email:
-        return isMatchingSearchQuery(email, searchQueryLower);
+        return isMatchingSearchQuery(
+          user.emailAddresses[0]?.emailAddress || "",
+          searchQueryLower
+        );
       case SearchCriteria.Role:
-        return isMatchingSearchQuery(role, searchQueryLower);
+        return isMatchingSearchQuery(
+          user.privateMetadata.role || "",
+          searchQueryLower
+        );
       default:
         return (
-          isMatchingSearchQuery(firstName, searchQueryLower) ||
-          isMatchingSearchQuery(lastName, searchQueryLower) ||
-          isMatchingSearchQuery(email, searchQueryLower) ||
-          isMatchingSearchQuery(role, searchQueryLower)
+          isMatchingSearchQuery(user.firstName, searchQueryLower) ||
+          isMatchingSearchQuery(user.lastName, searchQueryLower) ||
+          isMatchingSearchQuery(
+            user.emailAddresses[0]?.emailAddress || "",
+            searchQueryLower
+          ) ||
+          isMatchingSearchQuery(
+            user.privateMetadata.role || "",
+            searchQueryLower
+          )
         );
     }
   });
+
+  if (error) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div>Error: {error}</div>
+      </div>
+    );
+  }
 
   if (users.length === 0) {
     return (
@@ -165,10 +135,13 @@ const UserPage = () => {
                 <td> {user.firstName}</td>
                 <td> {user.lastName}</td>
                 <td> {user.emailAddresses[0]?.emailAddress}</td>
-                <td> {user.privateMetadata.role || "-"}</td>
+                <td> {user.privateMetadata.role || "N/A"}</td>
               </tr>
             ))}
           </tbody>
+          {filteredUsers.length === 0 && (
+            <div className="text-center py-4">No users found.</div>
+          )}
         </table>
       </div>
     </div>
