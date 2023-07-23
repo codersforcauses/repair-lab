@@ -11,7 +11,6 @@ export default async function get_events(
   res: NextApiResponse<Event[]>
 ) {
   const { sortKey, sortMethod, searchWord } = req.query; // Include 'search' query parameter
-  console.log("Search word:", searchWord);
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 

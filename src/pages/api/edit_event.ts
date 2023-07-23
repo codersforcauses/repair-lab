@@ -35,7 +35,7 @@ export default async function handler(
         res.status(200).json(updatedEvent);
       }
     } catch (error) {
-      console.error(error);
+      console.error("An error occurred while updating the event:", error);
       res
         .status(500)
         .json({ error: "An error occurred while updating the event." });

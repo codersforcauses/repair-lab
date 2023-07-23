@@ -7,12 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    try {
-      const { name, createdBy, location, eventType, status } = req.body;
-      const description = "description abc";
-      const endDate = "2023-12-31T23:59:59.999Z";
-      const startDate = "2023-10-31T23:59:59.999Z";
+    const { name, createdBy, location, startDate, eventType, status } =
+      req.body;
+    const description = "description abc";
+    const endDate = "2003-08-04T18:24:00.000Z";
 
+    try {
       const newEvent = await prisma.event.create({
         data: {
           name,
@@ -30,10 +30,12 @@ export default async function handler(
         }
       });
 
-      res.status(201).json(newEvent);
+      res.status(200).json(newEvent);
     } catch (error) {
       console.error("An error occurred while adding the event:", error);
-      res.status(500).json({ error: "Failed to add the event." });
+      res
+        .status(500)
+        .json({ error: "An error occurred while adding the event." });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });

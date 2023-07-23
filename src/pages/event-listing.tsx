@@ -97,10 +97,10 @@ function Table() {
   }
 
   async function addEvents(event: React.FormEvent<HTMLFormElement>) {
-    console.log("in add function");
+    event.preventDefault();
 
     try {
-      const response = await fetch("api/add_event", {
+      const response = await fetch("/api/add_event", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -118,9 +118,7 @@ function Table() {
     }
   }
 
-  // takes form values and posts them to DB
   async function editEvents(event: React.FormEvent<HTMLFormElement>) {
-    console.log("in function");
     event.preventDefault();
 
     try {
@@ -134,12 +132,8 @@ function Table() {
 
       if (response.ok) {
         const updatedEvent = await response.json();
-        // Do something with the updated event, if needed
-        console.log(updatedEvent);
         toggleModal(false);
         router.reload(); // Reload the page to update the event data
-      } else {
-        console.error("Failed to update event");
       }
     } catch (error) {
       console.error("An error occurred while updating the event:", error);
