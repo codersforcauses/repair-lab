@@ -2,22 +2,21 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Controller, useForm } from "react-hook-form";
+import { Control, useController } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
+import { FormValues } from "@/pages/repair-request";
 
-type FormValues = {
-  tncAccepted: boolean;
-};
-
-export const TermsAndConditions = () => {
-  const { control, register } = useForm<FormValues>({
-    defaultValues: {
-      tncAccepted: false
-    }
+interface TermsAndConditionsProps {
+  control: Control<FormValues>;
+}
+export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
+  const { fieldState } = useController({
+    control,
+    name: "tncAccepted",
+    rules: { required: "*Please read through and accept the house rules." }
   });
-
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
@@ -30,23 +29,8 @@ export const TermsAndConditions = () => {
 
   return (
     <>
-      <div className="static flex justify-center">
-        <Controller
-          control={control}
-          name="tncAccepted"
-          render={({ field: { onChange } }) => (
-            <input
-              type="checkbox"
-              checked={Accepted}
-              {...register("tncAccepted", {
-                required: "*Accept terms and conditions to submit."
-              })}
-              onChange={(e) => {
-                onChange(e.target.checked);
-              }}
-            />
-          )}
-        />
+      <label htmlFor="tncAccepted" className="static flex justify-center">
+        <input id="tncAccepted" type="checkbox" checked={Accepted} />
 
         <div className="space-x-1.5">
           <span className="pl-2">I have read and accept the</span>
@@ -59,7 +43,12 @@ export const TermsAndConditions = () => {
           </button>
         </div>
         <span>.</span>
-      </div>
+      </label>
+      {!Accepted && (
+        <p className="-mt-4 text-xs text-red-500">
+          {fieldState.error?.message}
+        </p>
+      )}
 
       <Transition appear show={showPopup} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
