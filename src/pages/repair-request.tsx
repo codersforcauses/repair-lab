@@ -4,11 +4,13 @@ import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { z } from "zod";
 
 import Button from "@/components/Button";
 import DropDown from "@/components/FormFields/field-dropdown";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import FieldTextArea from "@/components/FormFields/field-text-area";
+import { TermsAndConditions } from "@/components/terms-and-conditions";
 import Toast from "@/components/Toast";
 import { useBrands } from "@/hooks/brands";
 import { useEventOptions } from "@/hooks/events";
@@ -16,18 +18,25 @@ import { useItemTypes } from "@/hooks/item-types";
 import { repairRequestPostSchema } from "@/schema/repair-request";
 import { RepairRequest } from "@/types";
 
-type FormValues = RepairRequest;
+export interface FormValues extends RepairRequest {
+  tncAccepted: boolean;
+}
+
+const repairRequestFormSchema = repairRequestPostSchema.extend({
+  tncAccepted: z.literal(true)
+});
 
 const Home = () => {
   const { control, handleSubmit } = useForm<FormValues>({
-    resolver: zodResolver(repairRequestPostSchema),
+    resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
       itemBrand: "",
       itemType: "",
       description: "",
       images: [],
       eventId: "",
-      comment: ""
+      comment: "",
+      tncAccepted: false
     }
   });
 
@@ -135,6 +144,8 @@ const Home = () => {
             control={control}
             rules={{ required: false }}
           />
+
+          <TermsAndConditions control={control} />
 
           <Button
             onClick={handleSubmit(onSubmit)}
