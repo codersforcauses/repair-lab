@@ -98,13 +98,17 @@ const UserPage = () => {
   });
 
   if (users.length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div>Loading...</div>
+      </div>
+    );
   }
 
   return (
     <div className="p-6">
-      <div className="mb-2 flex items-center">
-        <div className="mr-4 flex items-center">
+      <div className="flex items-center">
+        <div className="mr-4">
           <Image
             src="/images/repair_lab_logo.jpg"
             alt="logo"
@@ -118,9 +122,9 @@ const UserPage = () => {
         <select
           value={searchCriteria}
           onChange={handleSearchCriteriaChange}
-          className="rounded  border px-2 py-1"
+          className="rounded border px-2 py-1"
         >
-          <option value={SearchCriteria.All}>Search By</option>
+          <option value={SearchCriteria.All}>Search by</option>
           <option value={SearchCriteria.FirstName}>Search by First Name</option>
           <option value={SearchCriteria.LastName}>Search by Last Name</option>
           <option value={SearchCriteria.Email}>Search by Email</option>
@@ -137,11 +141,11 @@ const UserPage = () => {
         </div>
       </div>
 
-      <div className="m-4 flex items-center">
-        <div className="border-t-1 flex-1 border border-primary-600"></div>
+      <div className="m-4">
+        <div className="border border-primary-600"></div>
       </div>
-      <div className="mx-auto max-w-6xl overflow-x-auto">
-        <table className="w-full table-auto">
+      <div className="mx-auto max-w-6xl">
+        <table className="w-full">
           <thead>
             <tr className="h-6 bg-lightAqua-300">
               <th className="px-4 py-2">First Name</th>
