@@ -12,10 +12,10 @@ interface TermsAndConditionsProps {
   control: Control<FormValues>;
 }
 export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
-  const { field, fieldState } = useController({
+  const { fieldState } = useController({
     control,
     name: "tncAccepted",
-    rules: { required: "*Please accept the house rules." }
+    rules: { required: "*Please read through and accept the house rules." }
   });
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
@@ -30,12 +30,7 @@ export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
   return (
     <>
       <label htmlFor="tncAccepted" className="static flex justify-center">
-        <input
-          id="tncAccepted"
-          type="checkbox"
-          checked={Accepted}
-          onChange={field.onChange}
-        />
+        <input id="tncAccepted" type="checkbox" checked={Accepted} />
 
         <div className="space-x-1.5">
           <span className="pl-2">I have read and accept the</span>
@@ -49,8 +44,10 @@ export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
         </div>
         <span>.</span>
       </label>
-      {fieldState.invalid && (
-        <p className="text-red-500">{fieldState.error?.message}</p>
+      {!Accepted && (
+        <p className="-mt-4 text-xs text-red-500">
+          {fieldState.error?.message}
+        </p>
       )}
 
       <Transition appear show={showPopup} as={Fragment}>
