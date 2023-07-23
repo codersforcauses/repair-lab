@@ -100,7 +100,7 @@ function Table() {
     event.preventDefault();
 
     try {
-      const response = await fetch("/api/add_event", {
+      const response = await fetch("/api/event", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -122,8 +122,8 @@ function Table() {
     event.preventDefault();
 
     try {
-      const response = await fetch("/api/edit_event", {
-        method: "POST",
+      const response = await fetch("/api/event", {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json"
         },

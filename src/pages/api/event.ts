@@ -6,38 +6,96 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
-    const { name, createdBy, location, startDate, eventType, status } =
-      req.body;
-    const description = "description abc";
-    const endDate = "2003-08-04T18:24:00.000Z";
+  switch (req.method) {
+    case "GET":
+      await getEvents(req, res);
+      break;
+    case "POST":
+      await createEvent(req, res);
+      break;
+    case "PATCH":
+      await updateEvent(req, res);
+      break;
+    default:
+      return res.status(405).json({
+        error: { message: `Method ${req.method} not allowed` }
+      });
+  }
+}
 
-    try {
-      const newEvent = await prisma.event.create({
+const getEvents = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { sortKey, sortMethod } = req.query; // Use req.query instead of req.body to access query parameters
+  const sortObj: { [key: string]: "asc" | "desc" } = {};
+  sortObj[sortKey as string] = sortMethod as "asc" | "desc";
+
+  const events = await prisma.event.findMany({
+    orderBy: sortObj
+  });
+  res.status(200).json(events);
+};
+
+const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { name, createdBy, location, startDate, eventType, status } = req.body;
+  const description = "description abc";
+  const endDate = "2003-08-04T18:24:00.000Z";
+
+  try {
+    const newEvent = await prisma.event.create({
+      data: {
+        name,
+        createdBy,
+        location,
+        startDate,
+        event: {
+          connect: {
+            name: eventType
+          }
+        },
+        status,
+        description,
+        endDate
+      }
+    });
+
+    res.status(200).json(newEvent);
+  } catch (error) {
+    console.error("An error occurred while adding the event:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding the event." });
+  }
+};
+
+const updateEvent = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { id, name, createdBy, location, startDate, eventType, status } =
+    req.body;
+
+  try {
+    // Check if the event already exists in the database
+    const existingEvent = await prisma.event.findUnique({
+      where: { id }
+    });
+
+    if (existingEvent) {
+      // Event exists, update the row
+      const updatedEvent = await prisma.event.update({
+        where: { id },
         data: {
           name,
           createdBy,
           location,
           startDate,
-          event: {
-            connect: {
-              name: eventType
-            }
-          },
-          status,
-          description,
-          endDate
+          eventType,
+          status
         }
       });
 
-      res.status(200).json(newEvent);
-    } catch (error) {
-      console.error("An error occurred while adding the event:", error);
-      res
-        .status(500)
-        .json({ error: "An error occurred while adding the event." });
+      res.status(200).json(updatedEvent);
     }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
+  } catch (error) {
+    console.error("An error occurred while updating the event:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the event." });
   }
-}
+};
