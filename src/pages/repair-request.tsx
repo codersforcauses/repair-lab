@@ -1,21 +1,20 @@
 // Page for submitting a repair request
 
-import { Inter } from "next/font/google";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 import Button from "@/components/Button";
 import DropDown from "@/components/FormFields/field-dropdown";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import FieldTextArea from "@/components/FormFields/field-text-area";
+import Toast from "@/components/Toast";
 import { useBrands } from "@/hooks/brands";
 import { useEventOptions } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import { repairRequestPostSchema } from "@/schema/repair-request";
 import { RepairRequest } from "@/types";
-
-const inter = Inter({ subsets: ["latin"] });
 
 type FormValues = RepairRequest;
 
@@ -53,9 +52,9 @@ const Home = () => {
     ` `;
 
     if (response.ok) {
-      alert("Data submitted");
+      toast.success("Repair request submitted!");
     } else {
-      alert(`Error! ${response.statusText}`);
+      toast.error(`Error! ${response.statusText}`);
     }
   };
 
@@ -147,6 +146,7 @@ const Home = () => {
           </Button>
         </form>
       </div>
+      <Toast position="bottom-center" />
     </div>
   );
 };
