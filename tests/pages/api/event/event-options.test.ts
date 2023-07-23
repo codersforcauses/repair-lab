@@ -21,6 +21,7 @@ describe("GET /api/event/options", () => {
     await prisma.event.createMany({
       data: [
         {
+          id: "56005d72-2614-11ee-be56-0242ac120002",
           createdBy: "Bob the Builder",
           name: "Some Repair Event",
           location: "UWA",
@@ -30,6 +31,7 @@ describe("GET /api/event/options", () => {
           endDate: new Date()
         },
         {
+          id: "acf5ed50-19a2-11ee-be56-0242ac120002",
           createdBy: "Peppa Pig",
           name: "Another Repair Event",
           location: "Perth CBD",
@@ -58,7 +60,9 @@ describe("GET /api/event/options", () => {
         const result = await res.json();
         expect(result.length).equals(2);
         expect(result[0].name).equals("Some Repair Event");
+        expect(result[0].id).equals("56005d72-2614-11ee-be56-0242ac120002");
         expect(result[1].name).equals("Another Repair Event");
+        expect(result[1].id).equals("acf5ed50-19a2-11ee-be56-0242ac120002");
       }
     });
   });
