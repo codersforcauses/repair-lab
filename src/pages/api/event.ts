@@ -24,13 +24,32 @@ export default async function handler(
 }
 
 const getEvents = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { sortKey, sortMethod } = req.query; // Use req.query instead of req.body to access query parameters
+  const { sortKey, sortMethod, searchWord } = req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 
+  // Use 'search' query parameter to filter events
   const events = await prisma.event.findMany({
+    where: {
+      OR: [
+        {
+          name: {
+            contains: searchWord as string,
+            mode: "insensitive"
+          }
+        },
+        {
+          location: {
+            contains: searchWord as string,
+            mode: "insensitive"
+          }
+        }
+        // Add more fields to search if necessary
+      ]
+    },
     orderBy: sortObj
   });
+
   res.status(200).json(events);
 };
 

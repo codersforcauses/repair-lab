@@ -68,7 +68,9 @@ function Table() {
     params.append("sortMethod", sortMethod);
     params.append("searchWord", searchWord);
 
-    fetch(`/api/search?${params.toString()}`)
+    fetch(`/api/event?${params.toString()}`, {
+      method: "GET"
+    })
       .then((res) => res.json())
       .then((data) => {
         setEventData(data);
@@ -148,7 +150,9 @@ function Table() {
     params.append("sortMethod", sortMethod);
     params.append("searchWord", searchWord);
 
-    fetch(`/api/search?${params.toString()}`)
+    fetch(`/api/event?${params.toString()}`, {
+      method: "GET"
+    })
       .then((res) => res.json())
       .then((data) => {
         setEventData(data);
