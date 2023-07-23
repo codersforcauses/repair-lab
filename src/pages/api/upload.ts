@@ -1,56 +1,60 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import S3 from "aws-sdk/clients/s3";
-import formidable from "formidable";
+import { NextRequest, NextResponse } from "next/server";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export const config = {
-  api: {
-    bodyParser: false
-  }
+  runtime: "edge"
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+// const Files = z.object({
+//   files: z.instanceof(File)
+// });
+
+export default async function handler(req: NextRequest) {
   // switch (req.method) {
   // case "POST":
   try {
     console.log("##########");
-    // console.log(req.body);
+    const data = await req.formData();
 
-    // Use Formidable to parse and read the request body FormData type object
-    const form = formidable({ keepExtensions: true });
-    const formData = await new Promise(function (resolve, reject) {
-      form.parse(req, (err, fields, files) => {
-        if (err) reject({ err });
-        resolve({ err, fields, files });
-      });
-    });
+    console.dir(data.getAll("files"));
 
-    const { files } = await formData;
+    // const filesArray = req.body.files as File[];
+    // const filesArray = files.files as File[];
 
-    console.log(files.file[0]);
-    console.log(files.files);
+    const files = data.getAll("files");
 
     // TODO: Check files have been passed as an array
-    if (!Array.isArray(req.body.files)) {
+    if (!Array.isArray(files)) {
       console.log("files are not in array");
-      return res.status(400).json({ error: "Files must be an array" });
+      return NextResponse.json({
+        status: 400,
+        error: "Files must be an array"
+      });
     }
 
-    const filess: File[] = req.body.files;
-    for (const file of filess) {
+    const signedUrls: string[] = [];
+    for (const file of files) {
       // TODO send to bucket
-      await sendToBucket(file);
+      const signedUrl = await sendToBucket(file);
+      signedUrls.push(signedUrl);
     }
+
     console.log("sent each file to bucket");
     console.log("sent each file to bucket");
     console.log("Uploaded images!");
 
-    res.status(200).json({ message: "Images uploaded successfully" });
+    return NextResponse.json({
+      status: 200,
+      signedUrls: signedUrls,
+      message: "Images uploaded successfully"
+    });
   } catch (err) {
     console.log("Error in uploading images!", err);
-    res.status(500).json({ error: "Failed to upload images" });
+    return NextResponse.json({
+      status: 400,
+      error: "Files must be an array"
+    });
   }
 }
 
@@ -61,17 +65,27 @@ async function sendToBucket(file: File) {
     const fileParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: file.name,
-      ContentType: file.type
+      ContentType: file.type,
+      Body: file
     };
     console.log("new S3 object");
-    const s3 = new S3({
+    const s3 = new S3Client({
       region: "ap-southeast-2",
-      accessKeyId: process.env.AWS_ACCESS_KEY,
-      secretAccessKey: process.env.AWS_SECRET_KEY,
-      signatureVersion: "v4"
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY as string,
+        secretAccessKey: process.env.AWS_SECRET_KEY as string
+      }
     });
     console.log("signed url promise");
-    const url = await s3.getSignedUrlPromise("putObject", fileParams);
+    const command = new PutObjectCommand(fileParams);
+    await s3.send(command);
+    let url;
+    try {
+      url = await getSignedUrl(s3, command);
+    } catch (err) {
+      console.log("Error in getting signed url!");
+      console.log(err);
+    }
 
     console.log("url", url as string);
     return url;
