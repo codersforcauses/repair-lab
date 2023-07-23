@@ -66,13 +66,14 @@ function Table() {
     const params = new URLSearchParams();
     params.append("sortKey", sortKey);
     params.append("sortMethod", sortMethod);
+    params.append("searchWord", searchWord);
 
-    fetch(`/api/get_events?${params.toString()}`)
+    fetch(`/api/search?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setEventData(data);
       });
-  }, []);
+  }, [sortKey, sortMethod, searchWord]);
 
   // will toggle modal visibility for editing events
 
