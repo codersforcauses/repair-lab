@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import {
+  PutObjectCommand,
+  PutObjectCommandInputType,
+  PutObjectOutput,
+  S3Client
+} from "@aws-sdk/client-s3";
 
 export const config = {
   runtime: "edge"
@@ -11,64 +15,50 @@ export const config = {
 // });
 
 export default async function handler(req: NextRequest) {
-  // switch (req.method) {
-  // case "POST":
-  try {
-    console.log("##########");
-    const data = await req.formData();
+  switch (req.method) {
+    case "POST":
+      try {
+        const data = await req.formData();
+        const files = data.getAll("files") as File[];
 
-    console.dir(data.getAll("files"));
+        if (!Array.isArray(files)) {
+          return NextResponse.json({
+            status: 400,
+            error: "Files must be an array"
+          });
+        }
 
-    // const filesArray = req.body.files as File[];
-    // const filesArray = files.files as File[];
+        const responds: PutObjectOutput[] = [];
+        for (const file of files) {
+          const respond = await sendToBucket(file);
+          responds.push(respond);
+        }
 
-    const files = data.getAll("files");
-
-    // TODO: Check files have been passed as an array
-    if (!Array.isArray(files)) {
-      console.log("files are not in array");
-      return NextResponse.json({
-        status: 400,
-        error: "Files must be an array"
-      });
-    }
-
-    const signedUrls: string[] = [];
-    for (const file of files) {
-      // TODO send to bucket
-      const signedUrl = await sendToBucket(file);
-      signedUrls.push(signedUrl);
-    }
-
-    console.log("sent each file to bucket");
-    console.log("sent each file to bucket");
-    console.log("Uploaded images!");
-
-    return NextResponse.json({
-      status: 200,
-      signedUrls: signedUrls,
-      message: "Images uploaded successfully"
-    });
-  } catch (err) {
-    console.log("Error in uploading images!", err);
-    return NextResponse.json({
-      status: 400,
-      error: "Files must be an array"
-    });
+        return NextResponse.json({
+          status: 200,
+          message: "Images uploaded successfully",
+          responds: responds
+        });
+      } catch (err) {
+        console.error("Error in uploading images!", err);
+        return NextResponse.json({
+          status: 400,
+          error: "Error in uploading images!"
+        });
+      }
   }
 }
 
 async function sendToBucket(file: File) {
   try {
-    console.log("sendToBucket");
-    console.log("fileParams");
-    const fileParams = {
-      Bucket: process.env.AWS_BUCKET_NAME,
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const fileParams: PutObjectCommandInputType = {
+      Bucket: process.env.AWS_BUCKET_NAME as string,
       Key: file.name,
       ContentType: file.type,
-      Body: file
+      Body: buffer
     };
-    console.log("new S3 object");
     const s3 = new S3Client({
       region: "ap-southeast-2",
       credentials: {
@@ -76,21 +66,11 @@ async function sendToBucket(file: File) {
         secretAccessKey: process.env.AWS_SECRET_KEY as string
       }
     });
-    console.log("signed url promise");
     const command = new PutObjectCommand(fileParams);
-    await s3.send(command);
-    let url;
-    try {
-      url = await getSignedUrl(s3, command);
-    } catch (err) {
-      console.log("Error in getting signed url!");
-      console.log(err);
-    }
-
-    console.log("url", url as string);
-    return url;
+    const respond = await s3.send(command);
+    return respond;
   } catch (err) {
-    console.log("Error in uploading image!");
+    console.error("Error in uploading image!", err);
     throw err;
   }
 }
