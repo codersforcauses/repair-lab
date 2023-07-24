@@ -5,6 +5,7 @@ import {
   PutObjectOutput,
   S3Client
 } from "@aws-sdk/client-s3";
+import { getAuth } from "@clerk/nextjs/server";
 import { z } from "zod";
 
 export const config = {
@@ -29,6 +30,13 @@ export default async function handler(req: NextRequest) {
   switch (req.method) {
     case "POST":
       try {
+        const { userId } = getAuth(req);
+        if (!userId) {
+          return NextResponse.json({
+            status: 401,
+            error: "Unauthorised"
+          });
+        }
         const contentType = req.headers.get("content-type");
         if (!contentType || !contentType.startsWith("multipart/form-data")) {
           return NextResponse.json({
@@ -70,7 +78,6 @@ export default async function handler(req: NextRequest) {
 
 async function sendToBucket(file: File) {
   try {
-    console.log(typeof file);
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const fileParams: PutObjectCommandInputType = {
