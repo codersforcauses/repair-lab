@@ -124,7 +124,7 @@ const Home = () => {
             rules={{ required: true }}
           />
 
-          <FieldImageUpload multiple={true} name="images" control={control} />
+          <FieldImageUpload multiple name="images" control={control} />
 
           {/* Input field for Event Date */}
           <DropDown
