@@ -54,12 +54,6 @@ export default function PrepopulatedRepairAttemptForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
-        <FieldInput
-          name="id"
-          control={control}
-          label="ID"
-          rules={{ required: true }}
-        />
         <FieldInput name="item" control={control} rules={{ required: true }} />
 
         {/* Brand, Material */}
