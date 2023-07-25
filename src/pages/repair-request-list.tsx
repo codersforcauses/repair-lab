@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-type RepairRequest = {
+type RepairAttemptList = {
   id: string;
   itemBrand: string;
-  item: string;
+  itemType: string;
   description: string;
 };
 
 export default function RepairReqList() {
-  const [repairReqList, setRepairReqList] = useState([] as RepairRequest[]);
+  const [repairReqList, setRepairReqList] = useState([] as RepairAttemptList[]);
 
   async function fetchData() {
     const response = await fetch(`/api/repair-request`, {
@@ -46,8 +46,7 @@ export default function RepairReqList() {
         <div className="border bg-primary-400" key={repairReq.id}>
           <div className="flex flex-col items-center">
             <h1>{repairReq.itemBrand}</h1>
-            <p>{repairReq.item}</p>
-
+            <p>{repairReq.itemType}</p>
             <p>{repairReq.description}</p>
           </div>
         </div>

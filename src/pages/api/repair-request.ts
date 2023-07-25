@@ -14,8 +14,7 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      // res.status(405).json("Not yet implemented!");
-      await getAllRepairRequests(req, res);
+      await getAllRepairRequestsByVolunteer(req, res);
       break;
     case "POST":
       await createRepairRequest(req, res);
@@ -96,20 +95,21 @@ const updateRepairRequest = async (
   }
 };
 
-const getAllRepairRequests = async (
+const getAllRepairRequestsByVolunteer = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   try {
     const repairRequestService = new RepairRequestService();
-    const repairRequests = await repairRequestService.fetchAll();
+
+    const repairRequests = await repairRequestService.fetchAllByVolunteer(
+      req.query.id as string
+    );
     return res.status(200).json(repairRequests);
   } catch (error) {
-    return res.status(500).json("Error fetching from database!");
+    return res.status(500).json("Error getting repair requests from database!");
   }
 };
-
-
 
 export const config: PageConfig = {
   api: {

@@ -28,7 +28,7 @@ interface RepairRequestUpdateInput {
 interface IRepairRequestService {
   insert(details: RepairRequestCreateInput): Promise<RepairRequest>;
   update(details: RepairRequestUpdateInput): Promise<RepairRequest>;
-  fetchAll(): Promise<RepairRequest[]>;
+  fetchAllByVolunteer(assignedTo: string): Promise<RepairRequest[]>;
 }
 
 class RepairRequestService implements IRepairRequestService {
@@ -60,8 +60,12 @@ class RepairRequestService implements IRepairRequestService {
     return repairRequest;
   }
 
-  async fetchAll(): Promise<RepairRequest[]> {
-    const repairRequests = await prisma.repairRequest.findMany();
+  async fetchAllByVolunteer(assignedTo: string): Promise<RepairRequest[]> {
+    const repairRequests = await prisma.repairRequest.findMany({
+      where: {
+        assignedTo
+      }
+    });
 
     return repairRequests;
   }
