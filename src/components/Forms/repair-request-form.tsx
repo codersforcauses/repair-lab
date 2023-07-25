@@ -20,7 +20,7 @@ export default function RepairAttemptForm() {
       item: "",
       itemBrand: "",
       itemMaterial: "",
-      hoursWorked: "",
+      hoursWorked: undefined,
       isRepaired: undefined,
       isSparePartsNeeded: undefined,
       spareParts: "",
