@@ -14,6 +14,21 @@ export default function PrepopulatedRepairAttemptForm({
 }: {
   props: RepairRequest;
 }) {
+  let itemStatus;
+  switch (props.itemStatus) {
+    case "REPAIRED":
+      itemStatus = "true";
+      break;
+    case "FAILED":
+    case "UNFINISHED":
+      itemStatus = "false";
+  }
+
+  let isSparePartsNeeded;
+  props.spareParts == ""
+    ? (isSparePartsNeeded = "false")
+    : (isSparePartsNeeded = "true");
+
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
@@ -22,9 +37,9 @@ export default function PrepopulatedRepairAttemptForm({
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
       hoursWorked: Number(props.hoursWorked),
-      isRepaired: props.itemStatus,
-      isSparePartsNeeded: undefined,
-      spareParts: "",
+      isRepaired: itemStatus,
+      isSparePartsNeeded: isSparePartsNeeded,
+      spareParts: props.spareParts,
       repairComment: props.comment
     }
   });

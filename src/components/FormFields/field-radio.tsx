@@ -50,6 +50,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
             type="radio"
             value="true"
             id={!id ? `${props.name}-y` : `${id}-y`}
+            checked={field.value == "true" ? true : false}
           />
           Yes
         </label>
@@ -60,6 +61,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
             type="radio"
             value="false"
             id={!id ? `${props.name}-n` : `${id}-n`}
+            checked={field.value == "false" ? true : false}
           />
           No
         </label>
