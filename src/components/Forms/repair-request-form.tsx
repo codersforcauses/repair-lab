@@ -1,5 +1,4 @@
 import React from "react";
-import { Inter } from "next/font/google";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -9,8 +8,6 @@ import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttemptForm() {
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
