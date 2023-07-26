@@ -14,7 +14,7 @@ import SearchBar from "@/components/ui/SearchBar";
 import SortBy from "@/components/ui/SortBy";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RepairRequest() {
+export default function RepairRequests() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
 
   const [headerValues, setHeaderValues] = useState<HeaderProps>(

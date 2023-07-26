@@ -44,7 +44,6 @@ export default function Images() {
       .then((res) => res.json())
       .then((event) => {
         setImages(event.images);
-        console.log("HIHIHI");
         setHeaderValues({
           name: event.name,
           location: event.location,
