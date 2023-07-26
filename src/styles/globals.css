@@ -1,10 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.container {
-  display: flex;
-  justify-content: center;
-}
 
 /* width */
 ::-webkit-scrollbar {
@@ -26,4 +22,44 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #858c94;
   border-radius: 5px;
+}
+@layer components {
+  /* This won't be included in your compiled CSS unless you actually use it */
+  .header-component {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+.bon {
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .bon {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+  .bon {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+  .bon {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+  .bon {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1536px) {
+  .bon {
+    max-width: 1536px;
+  }
 }
