@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
+import { toast } from "react-hot-toast";
+
 import Button from "@/components/Button";
 import Toast from "@/components/Toast";
-import { toast } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
