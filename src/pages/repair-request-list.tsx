@@ -66,22 +66,25 @@ export default function RepairReqList() {
       {/* get the request list from the database and display it here*/}
 
       {repairReqList.map((repairReq) => (
-        <div className="border bg-primary-400" key={repairReq.id}>
+        <div className="border bg-gray-200 max-w-lg max-h-lg p-5 rounded-md" key={repairReq.id}>
           <div className="flex flex-col items-center">
-            <h1>ID: {repairReq.id}</h1>
-            <h1>ItemBrand: {repairReq.itemBrand}</h1>
-            <p>ItemType: {repairReq.itemType}</p>
-            <p>Description: {repairReq.description}</p>
+              <div>
+                <h1 className="p-1">ID: {repairReq.id}</h1>
+                <h1 className="p-1">ItemBrand: {repairReq.itemBrand}</h1>
+                <p className="p-1">ItemType: {repairReq.itemType}</p>
+                <p className="p-1">Description: <div className="border bg-white w-full max-h-lg p-4">{repairReq.description}</div></p>
+              </div>
+              <div className="flex flex-row space-x-4 p-1">
+                {/* Button to display images */}
+                <Button onClick={() => handleOpenImageModal(repairReq.images)} width="w-40">
+                  View Images
+                </Button>
 
-            {/* Button to display images */}
-            <Button onClick={() => handleOpenImageModal(repairReq.images)}>
-              View Images
-            </Button>
-
-            {/* Button to update request */}
-            <Link href="/repair-attempt/">
-              <Button>Update Details</Button>
-            </Link>
+                {/* Button to update request */}
+                <Link href="/repair-attempt/">
+              <Button width="w-40">Update Details</Button>
+                </Link>
+              </div>
           </div>
         </div>
       ))}
