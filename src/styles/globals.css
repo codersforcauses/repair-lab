@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.container {
+  display: flex;
+  justify-content: center;
+}
 
 /* width */
 ::-webkit-scrollbar {
