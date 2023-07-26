@@ -10,10 +10,11 @@ import { HiCheck } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import { Option } from "@/types";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
-  options: { id: number; text: string }[];
+  options: Option[];
   width?: string;
   height?: string;
   placeholder?: string;
@@ -46,9 +47,7 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-  const [selectedGroup, setSelectedGroup] = useState<
-    { id: number; text: string }[]
-  >([]);
+  const [selectedGroup, setSelectedGroup] = useState<Option[]>([]);
   const baseStyle = `flex h-10 ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;

@@ -1,11 +1,10 @@
-import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import DropDown from "@/components/FormFields/field-dropdown";
 import Field_Input from "@/components/FormFields/field-input";
-import Field_Radio from "@/components/FormFields/field-radio";
-import Field_Text_Area from "@/components/FormFields/field-text-area";
 import MultiSelect from "@/components/FormFields/field-multi-select";
+import Field_Radio from "@/components/FormFields/field-radio";
+import DropDown from "@/components/FormFields/field-single-select";
+import Field_Text_Area from "@/components/FormFields/field-text-area";
 
 /**
  * This is a sample form page using React Hook Form for testing purposes

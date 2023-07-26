@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 import {
-  repairRequestPostSchema,
-  repairRequestPatchSchema
+  repairRequestPatchSchema,
+  repairRequestPostSchema
 } from "@/schema/repair-request";
 
 export type RepairRequest = z.infer<typeof repairRequestPostSchema>;
 export type GeneralRepairAttempt = z.infer<typeof repairRequestPatchSchema>;
+export type Option = { id: number; text: string };

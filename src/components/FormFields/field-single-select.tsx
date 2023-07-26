@@ -9,10 +9,11 @@ import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import { Option } from "@/types";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
-  options: { id: number; text: string }[];
+  options: Option[];
   width?: string;
   height?: string;
   placeholder?: string;
