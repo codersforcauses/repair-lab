@@ -69,6 +69,7 @@ class RepairRequestService implements IRepairRequestService {
 
     return repairRequests;
   }
+
 }
 
 export default RepairRequestService;
