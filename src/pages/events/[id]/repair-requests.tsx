@@ -8,9 +8,9 @@ import RepairAttemptForm from "@/components/Forms/repair-request-form";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
+import SearchBar from "@/components/Search/SearchBar";
+import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
-import SearchBar from "@/components/ui/SearchBar";
-import SortBy from "@/components/ui/SortBy";
 
 export default function RepairRequests() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
