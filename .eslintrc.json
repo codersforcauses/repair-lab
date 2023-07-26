@@ -19,7 +19,7 @@
     "plugin:jsx-a11y/recommended"
   ],
   "rules": {
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "no-console": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "spaced-comment": "warn",
