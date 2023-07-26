@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { RepairRequest } from "@prisma/client";
+import { RepairRequest, RepairRequestImage } from "@prisma/client";
 import { ItemStatus } from "@prisma/client";
 
 import prisma from "@/lib/prisma";
@@ -32,6 +32,9 @@ interface IRepairRequestService {
 }
 
 class RepairRequestService implements IRepairRequestService {
+  fetchAllByVolunteer(assignedTo: string): Promise<RepairRequest[]> {
+    throw new Error("Method not implemented.");
+  }
   async insert(details: RepairRequestCreateInput): Promise<RepairRequest> {
     const { images, ...rest } = details;
     const repairRequest = await prisma.repairRequest.create({
@@ -60,16 +63,15 @@ class RepairRequestService implements IRepairRequestService {
     return repairRequest;
   }
 
-  async fetchAllByVolunteer(assignedTo: string): Promise<RepairRequest[]> {
+  async fetchAllByEvent(eventId: string): Promise<RepairRequest[]> {
     const repairRequests = await prisma.repairRequest.findMany({
-      where: {
-        assignedTo
+      where: { eventId },
+      include: {
+        images: true
       }
     });
-
     return repairRequests;
   }
-
 }
 
 export default RepairRequestService;
