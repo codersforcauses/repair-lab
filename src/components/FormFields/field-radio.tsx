@@ -8,7 +8,8 @@ import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
-  extends UseControllerProps<T> {
+  extends UseControllerProps<T>,
+    Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
   id?: string;
   label?: string;
   width?: string;
