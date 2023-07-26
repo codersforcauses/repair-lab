@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Inter } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
@@ -10,7 +9,6 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 
 // TODO: clean this up this is a place holder for now
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Images() {
   const [images, setImages] = useState([]);
@@ -56,7 +54,7 @@ export default function Images() {
 
   return (
     <Sidebar>
-      <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
+      <main className="ml-80 min-h-screen w-full p-4">
         <Header props={headerValues} />
         <div className="container">
           <div className="w-auto p-4 text-2xl font-bold text-zinc-400">

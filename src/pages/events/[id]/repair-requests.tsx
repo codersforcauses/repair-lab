@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
@@ -12,7 +11,6 @@ import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import SearchBar from "@/components/ui/SearchBar";
 import SortBy from "@/components/ui/SortBy";
-const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairRequests() {
   const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
@@ -65,7 +63,7 @@ export default function RepairRequests() {
 
   return (
     <Sidebar>
-      <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
+      <main className="ml-80 min-h-screen w-full p-4">
         <Header props={headerValues} />
         <div className="container">
           <div className="container mx-auto items-center">

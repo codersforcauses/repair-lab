@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
@@ -7,8 +6,6 @@ import AssigneeBadge from "@/components/Cards/assignee-badge";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
@@ -41,7 +38,7 @@ export default function Volunteers() {
 
   return (
     <Sidebar>
-      <main className={`ml-80 min-h-screen w-full p-4 ${inter.className}`}>
+      <main className="ml-80 min-h-screen w-full p-4">
         <Header props={headerValues} />
         <div className="container">
           <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
