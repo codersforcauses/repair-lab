@@ -23,11 +23,13 @@ export interface FormValues extends RepairRequest {
 }
 
 const repairRequestFormSchema = repairRequestPostSchema.extend({
-  tncAccepted: z.literal(true)
+  tncAccepted: z.boolean().refine((val) => !!val, {
+    message: "Please read through and accept the house rules."
+  })
 });
 
 const Home = () => {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, setValue } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
       itemBrand: "",
@@ -58,7 +60,6 @@ const Home = () => {
         comment: data.comment
       })
     });
-    ` `;
 
     if (response.ok) {
       toast.success("Repair request submitted!");
@@ -145,10 +146,10 @@ const Home = () => {
             rules={{ required: false }}
           />
 
-          <TermsAndConditions control={control} />
+          <TermsAndConditions setValue={setValue} control={control} />
 
           <Button
-            onClick={handleSubmit(onSubmit)}
+            type="submit"
             height="h-9"
             width="w-full"
             textSize="text-base"
