@@ -12,7 +12,7 @@ interface RepairRequestCreateInput {
   itemType: string;
   eventId: string;
   images?: string[];
-  comment: string;
+  comment?: string;
   thumbnailImage: string;
 }
 
