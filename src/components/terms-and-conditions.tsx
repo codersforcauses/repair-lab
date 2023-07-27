@@ -32,7 +32,7 @@ export const TermsAndConditions = ({
 
   return (
     <>
-      <label htmlFor="tncAccepted" className="flex justify-center">
+      <label htmlFor="tncAccepted" className="flex">
         <input
           readOnly
           id="tncAccepted"
