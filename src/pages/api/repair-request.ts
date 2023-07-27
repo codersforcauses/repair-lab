@@ -102,7 +102,7 @@ const getAllRepairRequestsByEvent = async (
   try {
     const repairRequestService = new RepairRequestService();
     const repairRequests = await repairRequestService.fetchAllByEvent(
-      req.query.eventId as string
+      req.query.event as string
     );
     return res.status(200).json(repairRequests);
   } catch (error: unknown) {
