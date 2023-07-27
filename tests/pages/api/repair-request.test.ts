@@ -96,7 +96,7 @@ describe("POST PATCH /api/repair-request", () => {
             description: "My Macbook screen came off",
             itemBrand: "Apple",
             comment: "Help please.",
-            thumbnailImage: "https://i.imgur.com/3f3r8hm.jpg"
+            thumbnailImage: "Fake S3 Key" // TODO: Change this once image upload works.
           })
         });
 
@@ -122,7 +122,7 @@ describe("POST PATCH /api/repair-request", () => {
         expect(expectedRepairRequest?.itemBrand).equals("Apple");
         expect(expectedRepairRequest?.comment).equals("Help please.");
         expect(expectedRepairRequest?.thumbnailImage).equals(
-          "https://i.imgur.com/3f3r8hm.jpg"
+          "Fake S3 Key" // TODO: Change this once image upload works.
         );
       }
     });
