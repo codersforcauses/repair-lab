@@ -43,7 +43,7 @@ export const RepairRequestEmail = ({
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
-            <Section className="mt-[32px] text-center flex justify-center">
+            <Section className="mt-[32px] flex justify-center text-center">
               <Img
                 src="https://repair-lab-images.s3.ap-southeast-2.amazonaws.com/repair.png"
                 width="100"
