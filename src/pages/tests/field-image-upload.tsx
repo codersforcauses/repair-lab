@@ -13,19 +13,13 @@ export default function Test() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log("Attempted submit");
-
       // Create a FormData object to handle file uploads
       const formData = new FormData();
 
       data.multiple.forEach((file) => formData.append("files", file)); // Assuming your API expects 'files' field for multiple file uploads
-      console.log("Multiple files:", data.multiple);
 
       // Make the API request to your API route for S3 uploads
-      const response = await axios.post("/api/upload", formData);
-
-      // Handle the response from the API if needed
-      console.log("File uploaded successfully. Response:", response.data);
+      const _ = await axios.post("/api/upload", formData);
     } catch (error) {
       // Handle any errors that occur during the API request
       console.error("Error uploading file:", error);
