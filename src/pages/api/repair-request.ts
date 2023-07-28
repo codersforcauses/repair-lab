@@ -79,7 +79,7 @@ const updateRepairRequest = async (
       id: id,
       itemMaterial: itemMaterial,
       hoursWorked: hoursWorked,
-      itemStatus: isRepaired === "true" ? "REPAIRED" : "FAILED",
+      status: isRepaired === "true" ? "REPAIRED" : "FAILED",
       spareParts: isSparePartsNeeded === "true" ? spareParts : "",
       repairComment: repairComment
     });

@@ -194,7 +194,7 @@ describe("POST PATCH /api/repair-request", () => {
 
         expect(expectedRepairRequest?.itemMaterial).equals("Metal");
         expect(expectedRepairRequest?.hoursWorked.toNumber()).equals(9.9);
-        expect(expectedRepairRequest?.itemStatus).equals("REPAIRED");
+        expect(expectedRepairRequest?.status).equals("REPAIRED");
         expect(expectedRepairRequest?.spareParts).equals("new brain x1");
         expect(expectedRepairRequest?.repairComment).equals(
           "nice brain. fixed!"

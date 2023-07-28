@@ -44,14 +44,9 @@ enum Status {
   PENDING
   ACCEPTED
   REJECTED
-  COMPLETED
   CANCELLED
-}
-
-enum ItemStatus {
   REPAIRED
   FAILED
-  UNFINISHED
 }
 
 model RepairRequest {
@@ -67,10 +62,9 @@ model RepairRequest {
   comment        String @default("") //comment for client
   thumbnailImage String //s3 key to compressed image of object
 
-  repairComment String     @default("") //comment for volunteer to document process
-  spareParts    String     @default("") //this should be filled out later by volunteer
-  itemStatus    ItemStatus @default(UNFINISHED)
-  hoursWorked   Decimal    @default(0.00) @db.Decimal(10, 2)
+  repairComment String  @default("") //comment for volunteer to document process
+  spareParts    String  @default("") //this should be filled out later by volunteer
+  hoursWorked   Decimal @default(0.00) @db.Decimal(10, 2)
 
   requestDate DateTime @default(now())
   updatedAt   DateTime @updatedAt
