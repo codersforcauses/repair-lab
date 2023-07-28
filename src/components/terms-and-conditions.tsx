@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Control, useController } from "react-hook-form";
+import { Control, useController, UseFormSetValue } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
@@ -10,27 +10,37 @@ import { FormValues } from "@/pages/repair-request";
 
 interface TermsAndConditionsProps {
   control: Control<FormValues>;
+  setValue: UseFormSetValue<FormValues>;
 }
-export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
-  const { fieldState } = useController({
+export const TermsAndConditions = ({
+  control,
+  setValue
+}: TermsAndConditionsProps) => {
+  const { field, fieldState } = useController({
     control,
     name: "tncAccepted",
-    rules: { required: "*Please read through and accept the house rules." }
+    rules: { required: true }
   });
   const [showPopup, setShowPopup] = useState(false);
   const handleshowPopupChange = () => {
     setShowPopup((prevState) => !prevState);
   };
 
-  const [Accepted, setAccepted] = useState(false);
   const handleAcceptedChange = () => {
-    setAccepted((prevState) => !prevState);
+    setValue(field.name, true);
   };
 
   return (
     <>
-      <label htmlFor="tncAccepted" className="static flex justify-center">
-        <input id="tncAccepted" type="checkbox" checked={Accepted} />
+      <label htmlFor="tncAccepted" className="flex">
+        <input
+          readOnly
+          id="tncAccepted"
+          type="checkbox"
+          ref={field.ref}
+          name={field.name}
+          checked={field.value}
+        />
 
         <div className="space-x-1.5">
           <span className="pl-2">I have read and accept the</span>
@@ -44,11 +54,7 @@ export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
         </div>
         <span>.</span>
       </label>
-      {!Accepted && (
-        <p className="-mt-4 text-xs text-red-500">
-          {fieldState.error?.message}
-        </p>
-      )}
+      <p className="-mt-4 text-xs text-red-500">{fieldState.error?.message}</p>
 
       <Transition appear show={showPopup} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
@@ -88,79 +94,74 @@ export const TermsAndConditions = ({ control }: TermsAndConditionsProps) => {
                   >
                     House Rules
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-m text-gray-500">
-                      <ol className="tlex grid list-decimal justify-center gap-y-4 pl-10 pr-10">
-                        <li className="mt-4">
-                          Workshop participants carry out the repair themselves
-                          whenever possible, and repair volunteers are on site
-                          to help or provide advice, if necessary.
-                        </li>
-                        <li>
-                          The work carried out in Repair Lab by repair
-                          volunteers is performed free of charge on a voluntary
-                          basis.
-                        </li>
-                        <li>
-                          The fact that the repairs are being performed by
-                          unpaid volunteers reflects the allocation of risks and
-                          limitation of liability: neither the organisers of
-                          Repair Lab nor the repair volunteers are liable:
-                          <ol className="ml-4 list-disc">
-                            <li>
-                              for any loss that may result from advice or
-                              instructions concerning repairs,
-                            </li>
-                            <li>
-                              for the loss of items handed over for repair,
-                            </li>
-                            <li>for indirect or consequential loss,</li>
-                            <li>
-                              for any other kind of loss resulting from work
-                              performed at Repair Lab.
-                            </li>
-                          </ol>
-                        </li>
-                        <li>
-                          A voluntary donation is always appreciated, to help
-                          fund future Repair Labs.
-                        </li>
-                        <li>
-                          Any use of new materials such as leads, plugs, fuses,
-                          etc. will be paid for separately.
-                        </li>
-                        <li>
-                          Visitors offering broken items for repair do so at
-                          their own risk.
-                        </li>
-                        <li>
-                          Volunteer Mending Mentors offer no guarantee for the
-                          repairs carried out with their help and are not liable
-                          if objects that are repaired at Repair Lab turn out
-                          not to work properly at home.
-                        </li>
-                        <li>
-                          Repair Volunteers are entitled to refuse to repair
-                          certain objects.
-                        </li>
-                        <li>
-                          Repair Volunteers are not obliged to reassemble
-                          disassembled appliances that cannot be repaired.
-                        </li>
-                        <li>
-                          Participants at Repair Lab are solely responsible for
-                          the tidy removal of broken objects that could not be
-                          repaired.
-                        </li>
-                        <li>
-                          Photographs or videos are taken during repair sessions
-                          and may be used for online or in-print news and
-                          promotional materials. If you do not wish to have your
-                          photograph used, please advise the volunteer taking
-                          the photos or the organizers.
-                        </li>
-                      </ol>
-                    </p>
+                  <div className="mt-2 text-gray-500">
+                    <ol className="tlex grid list-decimal justify-center gap-y-4 pl-10 pr-10">
+                      <li className="mt-4">
+                        Workshop participants carry out the repair themselves
+                        whenever possible, and repair volunteers are on site to
+                        help or provide advice, if necessary.
+                      </li>
+                      <li>
+                        The work carried out in Repair Lab by repair volunteers
+                        is performed free of charge on a voluntary basis.
+                      </li>
+                      <li>
+                        The fact that the repairs are being performed by unpaid
+                        volunteers reflects the allocation of risks and
+                        limitation of liability: neither the organisers of
+                        Repair Lab nor the repair volunteers are liable:
+                        <ol className="ml-4 list-disc">
+                          <li>
+                            for any loss that may result from advice or
+                            instructions concerning repairs,
+                          </li>
+                          <li>for the loss of items handed over for repair,</li>
+                          <li>for indirect or consequential loss,</li>
+                          <li>
+                            for any other kind of loss resulting from work
+                            performed at Repair Lab.
+                          </li>
+                        </ol>
+                      </li>
+                      <li>
+                        A voluntary donation is always appreciated, to help fund
+                        future Repair Labs.
+                      </li>
+                      <li>
+                        Any use of new materials such as leads, plugs, fuses,
+                        etc. will be paid for separately.
+                      </li>
+                      <li>
+                        Visitors offering broken items for repair do so at their
+                        own risk.
+                      </li>
+                      <li>
+                        Volunteer Mending Mentors offer no guarantee for the
+                        repairs carried out with their help and are not liable
+                        if objects that are repaired at Repair Lab turn out not
+                        to work properly at home.
+                      </li>
+                      <li>
+                        Repair Volunteers are entitled to refuse to repair
+                        certain objects.
+                      </li>
+                      <li>
+                        Repair Volunteers are not obliged to reassemble
+                        disassembled appliances that cannot be repaired.
+                      </li>
+                      <li>
+                        Participants at Repair Lab are solely responsible for
+                        the tidy removal of broken objects that could not be
+                        repaired.
+                      </li>
+                      <li>
+                        Photographs or videos are taken during repair sessions
+                        and may be used for online or in-print news and
+                        promotional materials. If you do not wish to have your
+                        photograph used, please advise the volunteer taking the
+                        photos or the organizers.
+                      </li>
+                    </ol>
                   </div>
 
                   <div className="mt-8 flex justify-center">
