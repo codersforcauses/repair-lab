@@ -24,7 +24,10 @@ const fileSchema = z
   )
   .refine((file) => file.name.length != 0, "File name must not be empty");
 
-const reqSchema = z.array(fileSchema);
+const reqSchema = z.object({
+  files: z.array(fileSchema),
+  repairId: z.string().uuid()
+});
 
 export default async function handler(req: NextRequest) {
   switch (req.method) {
@@ -48,13 +51,18 @@ export default async function handler(req: NextRequest) {
         const data = await req.formData();
         const rawFiles = data.getAll("files");
 
-        const files = reqSchema.parse(rawFiles);
+        const { files, repairId } = reqSchema.parse(rawFiles);
 
         const responses: PutObjectOutput[] = [];
-        for (const file of files) {
-          const response = await sendToBucket(file);
+        files.map(async (file, index) => {
+          const response = await sendToBucket(
+            file,
+            userId,
+            repairId,
+            index.toString()
+          );
           responses.push(response);
-        }
+        });
 
         return NextResponse.json({
           status: 200,
@@ -62,7 +70,6 @@ export default async function handler(req: NextRequest) {
           responds: responses
         });
       } catch (err) {
-        console.error("Error in uploading images!", err);
         return NextResponse.json({
           status: 400,
           error: `Error in uploading images!, ${err}`
@@ -76,28 +83,28 @@ export default async function handler(req: NextRequest) {
   }
 }
 
-async function sendToBucket(file: File) {
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const fileParams: PutObjectCommandInputType = {
-      Bucket: process.env.AWS_BUCKET_NAME as string,
-      Key: file.name,
-      ContentType: file.type,
-      Body: buffer
-    };
-    const s3 = new S3Client({
-      region: "ap-southeast-2",
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY as string,
-        secretAccessKey: process.env.AWS_SECRET_KEY as string
-      }
-    });
-    const command = new PutObjectCommand(fileParams);
-    const respond = await s3.send(command);
-    return respond;
-  } catch (err) {
-    console.error("Error in uploading image!", err);
-    throw err;
-  }
+async function sendToBucket(
+  file: File,
+  userId: string,
+  repaidId: string,
+  filename: string
+) {
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const fileParams: PutObjectCommandInputType = {
+    Bucket: process.env.AWS_BUCKET_NAME as string,
+    Key: `users/${userId}/repair_items/${repaidId}/${filename}`,
+    ContentType: file.type,
+    Body: buffer
+  };
+  const s3 = new S3Client({
+    region: "ap-southeast-2",
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY as string,
+      secretAccessKey: process.env.AWS_SECRET_KEY as string
+    }
+  });
+  const command = new PutObjectCommand(fileParams);
+  const respond = await s3.send(command);
+  return respond;
 }
