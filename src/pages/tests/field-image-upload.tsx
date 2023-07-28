@@ -2,7 +2,7 @@ import axios from "axios"; // Assuming you have installed Axios or another HTTP 
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldImageUpload from "@/components/Form Fields/field-image-upload";
+import FieldImageUpload from "@/components/FormFields/field-image-upload";
 
 interface FormData {
   multiple: File[];
