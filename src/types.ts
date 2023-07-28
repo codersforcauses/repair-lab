@@ -8,3 +8,26 @@ import {
 export type RepairRequest = z.infer<typeof repairRequestPostSchema>;
 export type GeneralRepairAttempt = z.infer<typeof repairRequestPatchSchema>;
 export type Option = { id: number; text: string };
+
+export interface EmailAddress {
+  id: string;
+  emailAddress: string;
+}
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  emailAddresses: EmailAddress[];
+  privateMetadata: {
+    role?: string;
+  };
+}
+
+export enum SearchCriteria {
+  FirstName = "firstName",
+  LastName = "lastName",
+  Email = "email",
+  Role = "role",
+  All = "all"
+}
