@@ -79,14 +79,14 @@ function Table() {
   }, [sortKey, sortMethod, searchWord]);
 
   useEffect(() => {
-    fetch('/api/events/get-itemtype', {
+    fetch("/api/events/get-itemtype", {
       method: "GET"
     })
       .then((res) => res.json())
-      .then ((data) => {
+      .then((data) => {
         setItemTypes(data);
       });
-  }, [])
+  }, []);
 
   // will toggle modal visibility for editing events
 
@@ -372,7 +372,10 @@ function Table() {
                   className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
                 >
                   {itemTypes.map((type) => (
-                    <option value={type.name} key={type.name}> {type.name} </option>
+                    <option value={type.name} key={type.name}>
+                      {" "}
+                      {type.name}{" "}
+                    </option>
                   ))}
                 </select>
               </div>
