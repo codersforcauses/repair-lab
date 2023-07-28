@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Field_Input from "@/components/FormFields/field-input";
 import MultiSelect from "@/components/FormFields/field-multi-select";
 import Field_Radio from "@/components/FormFields/field-radio";
-import DropDown from "@/components/FormFields/field-single-select";
+import SingleSelect from "@/components/FormFields/field-single-select";
 import Field_Text_Area from "@/components/FormFields/field-text-area";
 
 /**
@@ -22,8 +22,8 @@ type RepairData = {
   parts: string;
   desc: string;
   comments: string;
-  dropdown: string;
-  multiselect: string;
+  singleSelect: string;
+  multiSelect: string;
 };
 
 export default function Repair() {
@@ -39,8 +39,8 @@ export default function Repair() {
       parts: "",
       desc: "",
       comments: "",
-      dropdown: "",
-      multiselect: ""
+      singleSelect: "",
+      multiSelect: ""
     },
     mode: "onChange"
   });
@@ -121,8 +121,8 @@ export default function Repair() {
         </div>
 
         <div className={lineStyle}>
-          <DropDown
-            name="dropdown"
+          <SingleSelect
+            name="singleSelect"
             // width="w-96"
             control={control}
             placeholder="Select an Item"
@@ -176,7 +176,7 @@ export default function Repair() {
         </div>
         <div className={lineStyle}>
           <MultiSelect
-            name="multiselect"
+            name="multiSelect"
             // width="w-96"
             control={control}
             rules={{ required: true }}
