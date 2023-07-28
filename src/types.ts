@@ -30,3 +30,9 @@ export enum SearchCriteria {
   Role = "role",
   All = "all"
 }
+
+export enum UserRole {
+  VOLUNTEER = "volunteer",
+  EVENT_MANAGER = "event_manager",
+  ADMIN = "admin"
+}

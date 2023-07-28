@@ -1,4 +1,5 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { isClerkAPIResponseError } from "@clerk/nextjs";
 
 import UserService from "@/services/user";
 
@@ -19,8 +20,8 @@ export default async function handler(
 
 const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-  const { id } = req.query;
-  const userService = new UserService();
+    const { id } = req.query;
+    const userService = new UserService();
     const user = await userService.getUser(id as string);
 
     return res.status(200).json(user);
@@ -28,13 +29,5 @@ const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
     if (isClerkAPIResponseError(e)) {
       return res.status(e.status).json({ error: e.message });
     }
-
-    return res.status(500);
-  }
-};
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
   }
 };
