@@ -43,11 +43,11 @@ export const RepairRequestEmail = ({
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
-            <Section className="mt-[32px] text-center">
+            <Section className="mt-[32px] text-center flex justify-center">
               <Img
                 src="https://repair-lab-images.s3.ap-southeast-2.amazonaws.com/repair.png"
-                width="32"
-                height="32"
+                width="100"
+                height="100"
                 alt="Logo"
               />
             </Section>
@@ -63,28 +63,28 @@ export const RepairRequestEmail = ({
               it promptly.
             </Text>
             <Section>
-              <Text className="text-[14px] font-bold leading-[24px] text-black">
+              <Text className="text-[12px] font-bold leading-[24px] text-black">
                 Repair Request Details:
               </Text>
-              <Text className="text-[14px] leading-[24px] text-black">
+              <Text className="text-[12px] leading-[24px] text-black">
                 Request ID: {requestId}
               </Text>
-              <Text className="text-[14px] leading-[24px] text-black">
+              <Text className="text-[12px] leading-[24px] text-black">
                 Date of Request: {date}
               </Text>
-              <Text className="text-[14px] leading-[24px] text-black">
+              <Text className="text-[12px] leading-[24px] text-black">
                 Product/Item: {itemName}
               </Text>
-              <Text className="text-[14px] leading-[24px] text-black">
+              <Text className="text-[12px] leading-[24px] text-black">
                 Issue Description: {issueDescription}
               </Text>
-              <Text className="text-[14px] leading-[24px] text-black">
+              <Text className="text-[12px] leading-[24px] text-black">
                 Estimated Repair Date: {estimatedDate} (please note that this
                 date is subject to change based on the nature and complexity of
                 the issue)
               </Text>
             </Section>
-            <Text className="mt-[32px] text-[14px] leading-[24px] text-black">
+            <Text className="mt-[32px] text-[13px] leading-[24px] text-black">
               For updates on your repair request, or if you have any further
               questions, please feel free to get in touch with us via our
               <Link href={facebookLink} className="text-blue-600 no-underline">
