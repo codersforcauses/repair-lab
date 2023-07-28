@@ -39,7 +39,19 @@ const getEvents = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         },
         {
+          createdBy: {
+            contains: searchWord as string,
+            mode: "insensitive"
+          }
+        },
+        {
           location: {
+            contains: searchWord as string,
+            mode: "insensitive"
+          }
+        },
+        {
+          eventType: {
             contains: searchWord as string,
             mode: "insensitive"
           }
