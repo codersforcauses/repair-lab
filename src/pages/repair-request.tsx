@@ -1,60 +1,50 @@
 // Page for submitting a repair request
 
-import { ChangeEvent, useState } from "react";
-import { Inter } from "next/font/google";
 import Image from "next/image";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { z } from "zod";
 
+import Button from "@/components/Button";
+import DropDown from "@/components/FormFields/field-dropdown";
+import FieldImageUpload from "@/components/FormFields/field-image-upload";
+import FieldTextArea from "@/components/FormFields/field-text-area";
+import { TermsAndConditions } from "@/components/terms-and-conditions";
+import Toast from "@/components/Toast";
 import { useBrands } from "@/hooks/brands";
+import { useEventOptions } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
+import { repairRequestPostSchema } from "@/schema/repair-request";
+import { RepairRequest } from "@/types";
 
-const inter = Inter({ subsets: ["latin"] });
-
-type FormValues = {
-  itemBrand: string;
-  itemType: string;
-  description: string;
-  images: [];
-  eventId: string;
+export interface FormValues extends RepairRequest {
   tncAccepted: boolean;
-};
+}
+
+const repairRequestFormSchema = repairRequestPostSchema.extend({
+  tncAccepted: z.boolean().refine((val) => !!val, {
+    message: "Please read through and accept the house rules."
+  })
+});
 
 const Home = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<FormValues>({
+  const { control, handleSubmit, setValue } = useForm<FormValues>({
+    resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
       itemBrand: "",
       itemType: "",
       description: "",
       images: [],
       eventId: "",
+      comment: "",
       tncAccepted: false
     }
   });
 
   const itemTypeList = useItemTypes();
   const brandList = useBrands();
-
-  // Brand dropdown
-  const [brand, setBrand] = useState("");
-  const handleBrandChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setBrand(event.target.value);
-  };
-
-  // Item Types Dropdown
-  const [itemType, setItemType] = useState("");
-  const handleItemTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setItemType(event.target.value);
-  };
-
-  // Events Dropdown
-  const [event, setEvent] = useState("");
-  const handleEventChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setEvent(event.target.value);
-  };
+  const eventOptions = useEventOptions();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const response = await fetch(`/api/repair-request`, {
@@ -66,189 +56,110 @@ const Home = () => {
         eventId: data.eventId,
         itemBrand: data.itemBrand,
         itemType: data.itemType,
-        description: data.description
+        description: data.description,
+        comment: data.comment
       })
     });
-    ` `;
 
     if (response.ok) {
-      alert("Data submitted");
+      toast.success("Repair request submitted!");
     } else {
-      alert(`Error! ${response.statusText}`);
+      toast.error(`Error! ${response.statusText}`);
     }
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center gap-4 ${inter.className}`}
-    >
-      {/* Logo of Repair Lab, which links to the main website. */}
+    <div className="flex items-center justify-center p-4">
+      <div className="flex w-screen flex-col justify-center gap-4 md:w-3/6 lg:w-4/12">
+        {/* Logo of Repair Lab, which links to the main website. */}
 
-      <picture>
-        <a href="https://repairlab.myfreesites.net/" target="_blank">
-          <Image
-            src="/images/repair_lab_logo.jpg"
-            alt="Repair Labs Logo"
-            width={80}
-            height={80}
-          />
-        </a>
-      </picture>
+        <picture className="flex justify-center">
+          <a href="https://repairlab.myfreesites.net/" target="_blank">
+            <Image
+              src="/images/repair_lab_logo.jpg"
+              alt="Repair Labs Logo"
+              width={80}
+              height={80}
+            />
+          </a>
+        </picture>
 
-      {/* Heading of the Page */}
+        {/* Heading of the Page */}
 
-      <h1 className="text-xl font-bold"> Submit a Repair Request</h1>
-
-      <div>
+        <h1 className="flex justify-center text-xl font-bold">
+          {" "}
+          Submit a Repair Request
+        </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Input field for Brand of Item */}
-          <div>
-            <label htmlFor="brand">Brand:</label>
-            <div className="flex">
-              <select
-                id="brand"
-                className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
-                  errors.itemBrand &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                } `}
-                {...register("itemBrand", {
-                  required: "*Please select an option."
-                })}
-                placeholder="Brand"
-                value={brand}
-                onChange={handleBrandChange}
-              >
-                <option value="" disabled selected>
-                  Select an option
-                </option>
-                {brandList.map((brand: string, index: number) => {
-                  return <option key={index}>{brand}</option>;
-                })}
-              </select>
-            </div>
-            <p className="text-red-600"> {errors.itemBrand?.message} </p>
-          </div>
 
-          {/* Input field for Item Type */}
-          <div>
-            <label htmlFor="itemType">Item Type:</label>
-            <div className="flex">
-              <select
-                id="itemType"
-                className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
-                  errors.itemType &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                } `}
-                {...register("itemType", {
-                  required: "*Please select an option."
-                })}
-                placeholder="ItemType"
-                value={itemType}
-                onChange={handleItemTypeChange}
-              >
-                <option value="" disabled selected>
-                  Select an option
-                </option>
-                {itemTypeList.map((itemType: string, index: number) => {
-                  return <option key={index}>{itemType}</option>;
-                })}
-              </select>
-            </div>
-            <p className="text-red-600"> {errors.itemType?.message} </p>
-          </div>
+          <DropDown
+            name="itemBrand"
+            control={control}
+            placeholder="Select a brand"
+            label="Brand"
+            rules={{ required: true }}
+            options={brandList.map((brand) => {
+              return { id: brand, text: brand };
+            })}
+          />
+
+          <DropDown
+            name="itemType"
+            control={control}
+            placeholder="Select an item type"
+            label="Item Type"
+            rules={{ required: true }}
+            options={itemTypeList.map((itemType) => {
+              return { id: itemType, text: itemType };
+            })}
+          />
 
           {/* Input field for Description of Item */}
-          <div>
-            <label htmlFor="description">Item Description:</label>
-            <div className="flex">
-              <textarea
-                id="description"
-                className={`h-20 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
-                  errors.description &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                }`}
-                {...register("description", { required: "*Required" })}
-                placeholder="Description of Item"
-              />
-            </div>
-            <p className="text-red-600"> {errors.description?.message} </p>
-          </div>
 
-          {/* Input field for Images */}
-          <div>
-            <label htmlFor="image">Image:</label>
-            <div className="flex">
-              <input
-                className={`h-36 w-80 border-spacing-0.5 justify-center rounded-md border border-solid p-10 ${
-                  errors.images &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                }`}
-                type="file"
-                {...register("images", { required: "*Required" })}
-              />
-            </div>
-            <p className="text-red-600"> {errors.images?.message} </p>
-          </div>
+          <FieldTextArea
+            name="description"
+            label="Description"
+            placeholder="Enter a description"
+            control={control}
+            rules={{ required: true }}
+          />
+
+          <FieldImageUpload multiple name="images" control={control} />
 
           {/* Input field for Event Date */}
-          <div>
-            <label htmlFor="event">Event:</label>
-            <div className="flex">
-              <select
-                id="event"
-                className={`h-10 w-80 border-spacing-0.5 rounded-md border border-solid pl-3 ${
-                  errors.eventId &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                } `}
-                {...register("eventId", {
-                  required: "*Please select an option."
-                })}
-                placeholder="Event"
-                value={event}
-                onChange={handleEventChange}
-              >
-                <option value="" disabled selected>
-                  Select an option
-                </option>
-                <option value="6b3e0cca-d636-472d-8c6e-1cc63bde6ceb">
-                  Evans&apos; Repair Warehouse
-                </option>
-                <option value="a6a73c2e-7937-4705-8a40-d6399c69f3bc">
-                  Can Bob Fix It?
-                </option>
-              </select>
-            </div>
-            <p className="text-red-600"> {errors.eventId?.message} </p>
-          </div>
-
-          {/* Terms and Conditions Checkbox */}
-
-          <div className="h-6 items-center">
-            <label>
-              <input
-                className={`${
-                  errors.tncAccepted &&
-                  "border-red-500 focus:border-red-500 focus:ring-red-500"
-                }`}
-                type="checkbox"
-                {...register("tncAccepted", {
-                  required: "*Accept terms and conditions to submit."
-                })}
-              />
-              <span className="select-none pl-2 text-sm">
-                I accept the Terms and Conditions.
-              </span>
-            </label>
-            <p className="text-red-600"> {errors.tncAccepted?.message} </p>
-          </div>
-
-          <input
-            className="m-auto flex h-12 w-60 border-spacing-0.5 justify-center self-center rounded-md border border-solid bg-teal-600 text-center text-lg text-white hover:bg-teal-500"
-            type="submit"
+          <DropDown
+            name="eventId"
+            control={control}
+            placeholder="Select an event"
+            label="Event"
+            options={eventOptions.map((event) => {
+              return { id: event.id, text: event.name };
+            })}
           />
+
+          <FieldTextArea
+            name="comment"
+            label="Additional Comment"
+            placeholder="Enter additional comments"
+            control={control}
+            rules={{ required: false }}
+          />
+
+          <TermsAndConditions setValue={setValue} control={control} />
+
+          <Button
+            type="submit"
+            height="h-9"
+            width="w-full"
+            textSize="text-base"
+          >
+            Submit
+          </Button>
         </form>
       </div>
-    </main>
+      <Toast position="bottom-center" />
+    </div>
   );
 };
 

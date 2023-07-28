@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "prisma": {
-    "seed": " ts-node --esm prisma/seed.ts"
+    "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
   "scripts": {
     "dev": "next dev",
@@ -30,6 +30,8 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.370.0",
     "@clerk/nextjs": "^4.21.3",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.15",
     "@prisma/client": "^4.15.0",
     "@react-email/components": "^0.0.7",

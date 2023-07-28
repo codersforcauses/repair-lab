@@ -5,21 +5,21 @@ type Props = {
 export default function StatusPill({ status }: Props) {
   let bgColor;
   switch (status) {
-    case "good":
+    case "COMPLETED":
       bgColor = "bg-green-500";
       break;
-    case "meh":
+    case "PENDING":
       bgColor = "bg-yellow-500";
       break;
-    case "bad":
+    case "CANCELLED":
       bgColor = "bg-red-500";
   }
 
   return (
     <button
-      className={`${bgColor} right-0 rounded-full px-2 text-xs font-semibold text-white`}
+      className={`${bgColor} right-0 rounded-full px-2 text-sm font-semibold text-white`}
     >
-      Press Me
+      {status}
     </button>
   );
 }

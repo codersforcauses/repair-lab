@@ -45,6 +45,7 @@ const createRepairRequest = async (
     const repairRequestService = new RepairRequestService();
     const repairRequest = await repairRequestService.insert({
       ...requestBody.data,
+      thumbnailImage: "Fake S3 Key", // TODO: Change this once image upload works.
       createdBy: userId as string
     });
 
@@ -78,7 +79,7 @@ const updateRepairRequest = async (
       id: id,
       itemMaterial: itemMaterial,
       hoursWorked: hoursWorked,
-      itemStatus: isRepaired === "true" ? "REPAIRED" : "FAILED",
+      status: isRepaired === "true" ? "REPAIRED" : "FAILED",
       spareParts: isSparePartsNeeded === "true" ? spareParts : "",
       repairComment: repairComment
     });
