@@ -451,7 +451,7 @@ function Table() {
 
       {/* main table*/}
       <div className="flex justify-center">
-        <div className="container overflow-hidden">
+        <div className="container flex w-full justify-center overflow-hidden">
           <table className="w-10/12 table-auto overflow-hidden rounded-lg">
             <thead>
               <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
@@ -475,7 +475,11 @@ function Table() {
                     <td className="pl-5 font-light">
                       <button
                         className="text-sm"
-                        onClick={() => router.push("/event-form/" + event.id)}
+                        onClick={() =>
+                          router.push(
+                            "/events/" + event.id + "/repair-requests"
+                          )
+                        }
                       >
                         {event.name}
                       </button>
