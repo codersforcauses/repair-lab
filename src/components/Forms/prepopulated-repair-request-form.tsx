@@ -22,7 +22,7 @@ export default function PrepopulatedRepairAttemptForm({
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
       hoursWorked: Number(props.hoursWorked),
-      isRepaired: props.itemStatus,
+      isRepaired: props.status,
       isSparePartsNeeded: undefined,
       spareParts: "",
       repairComment: props.comment

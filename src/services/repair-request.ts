@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { RepairRequest } from "@prisma/client";
-import { ItemStatus } from "@prisma/client";
+import { Status } from "@prisma/client";
 
 import prisma from "@/lib/prisma";
 
@@ -12,7 +12,7 @@ interface RepairRequestCreateInput {
   itemType: string;
   eventId: string;
   images?: string[];
-  comment: string;
+  comment?: string;
   thumbnailImage: string;
 }
 
@@ -20,7 +20,7 @@ interface RepairRequestUpdateInput {
   id: string;
   itemMaterial: string;
   hoursWorked: number;
-  itemStatus: ItemStatus;
+  status: Status;
   spareParts?: string | undefined;
   repairComment: string;
 }
