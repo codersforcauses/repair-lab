@@ -18,11 +18,19 @@ export default async function handler(
 }
 
 const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
   const { id } = req.query;
   const userService = new UserService();
-  const users = await userService.getUser(id as string);
+    const user = await userService.getUser(id as string);
 
-  return res.status(200).json(users);
+    return res.status(200).json(user);
+  } catch (e) {
+    if (isClerkAPIResponseError(e)) {
+      return res.status(e.status).json({ error: e.message });
+    }
+
+    return res.status(500);
+  }
 };
 
 export const config: PageConfig = {
