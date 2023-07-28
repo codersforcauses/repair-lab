@@ -461,7 +461,11 @@ function Table() {
                     <td className="pl-5 font-light">
                       <button
                         className="text-sm"
-                        onClick={() => router.push("/event-form/" + event.id)}
+                        onClick={() =>
+                          router.push(
+                            "/events/" + event.id + "/repair-requests"
+                          )
+                        }
                       >
                         {event.name}
                       </button>
