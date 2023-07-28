@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
-import { Event, EventStatus } from "@prisma/client";
+import { Event, EventStatus, ItemType } from "@prisma/client";
 
 function Table() {
   const router = useRouter();
@@ -29,6 +29,7 @@ function Table() {
     return `${day}/${month}/${year}`;
   }
 
+  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
   const [eventData, setEventData] = useState<Event[]>([]);
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
@@ -76,6 +77,16 @@ function Table() {
         setEventData(data);
       });
   }, [sortKey, sortMethod, searchWord]);
+
+  useEffect(() => {
+    fetch('/api/events/get-itemtype', {
+      method: "GET"
+    })
+      .then((res) => res.json())
+      .then ((data) => {
+        setItemTypes(data);
+      });
+  }, [])
 
   // will toggle modal visibility for editing events
 
@@ -352,15 +363,18 @@ function Table() {
                   {" "}
                   {headers[4].label}
                 </label>
-                <input
-                  type="text"
+                <select
                   name={headers[4].key}
-                  value={
+                  onChange={handleInputChange as ChangeEventHandler}
+                  defaultValue={
                     formData[headers[4].key as keyof Partial<Event>] as string
                   }
-                  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                />
+                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
+                >
+                  {itemTypes.map((type) => (
+                    <option value={type}> {type} </option>
+                  ))}
+                </select>
               </div>
 
               <div key={headers[5].key} className="flow-root">
