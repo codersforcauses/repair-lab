@@ -10,7 +10,10 @@ interface IUserService {
 
 class UserService implements IUserService {
   async getAll(): Promise<User[]> {
-    return await clerkClient.users.getUserList();
+    return await clerkClient.users.getUserList({
+      limit: 100,
+      orderBy: "-created_at"
+    });
   }
 
   async getUser(userId: string): Promise<User> {
