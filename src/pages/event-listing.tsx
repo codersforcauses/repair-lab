@@ -372,7 +372,7 @@ function Table() {
                   className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
                 >
                   {itemTypes.map((type) => (
-                    <option value={type}> {type} </option>
+                    <option value={type.name} key={type.name}> {type.name} </option>
                   ))}
                 </select>
               </div>
