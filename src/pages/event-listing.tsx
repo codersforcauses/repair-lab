@@ -12,6 +12,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
 import { Event, EventStatus, ItemType } from "@prisma/client";
+import { SubmitHandler } from "react-hook-form";
+
+import PrepopulatedEventForm from "@/components/Forms/event-form";
+import Modal from "@/components/Modal";
 
 function Table() {
   const router = useRouter();
@@ -37,6 +41,9 @@ function Table() {
   const [expandedButton, setExpandedButton] = useState<string>("");
   const [modalActive, toggleModal] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const [formData, setFormData] = useState<Partial<Event>>({
     id: undefined,
@@ -90,27 +97,15 @@ function Table() {
 
   // will toggle modal visibility for editing events
 
-  function handleEditEvent(selectedEvent: Event) {
-    setShowCreateForm(false);
-    setFormData(selectedEvent);
-    toggleModal(true);
+  function handleEditEvent() {
+    setShowEditModal(true);
   }
 
   function handleAddEvent() {
-    setShowCreateForm(true);
-    toggleModal(true);
-    setFormData({
-      id: undefined,
-      name: "",
-      createdBy: "",
-      location: "",
-      startDate: undefined,
-      eventType: "",
-      status: undefined
-    });
+    setShowAddModal(true);
   }
 
-  async function addEvents(event: React.FormEvent<HTMLFormElement>) {
+  const addEvents: SubmitHandler<Event> = async (formData: any) => {
     event.preventDefault();
 
     try {
@@ -130,9 +125,9 @@ function Table() {
     } catch (error) {
       console.error("Failed to add event");
     }
-  }
+  };
 
-  async function editEvents(event: React.FormEvent<HTMLFormElement>) {
+  const editEvents: SubmitHandler<Event> = async (formData: any) => {
     event.preventDefault();
 
     try {
@@ -152,7 +147,7 @@ function Table() {
     } catch (error) {
       console.error("An error occurred while updating the event:", error);
     }
-  }
+  };
 
   // handles searching
   useEffect(() => {
@@ -238,6 +233,12 @@ function Table() {
     );
   }
 
+  function handleSubmit(
+    editEvents: SubmitHandler<Event>
+  ): import("react").FormEventHandler<HTMLFormElement> | undefined {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div>
       {/* HEADER BAR*/}
@@ -296,7 +297,7 @@ function Table() {
             </Dialog.Description>
 
             {/* main form*/}
-            <form onSubmit={showCreateForm === true ? addEvents : editEvents}>
+            <form>
               <div key={headers[0].key} className="flow-root">
                 <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
                   {" "}
@@ -449,6 +450,9 @@ function Table() {
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
+          <Modal setShowPopup={setShowAddModal} showModal={showAddModal}>
+            <PrepopulatedEventForm />
+          </Modal>
         </div>
       </div>
 
