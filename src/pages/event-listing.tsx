@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronUp,
-  faPencil,
   faPlus,
   faSearch,
   faXmark
@@ -14,7 +13,8 @@ import { Dialog } from "@headlessui/react";
 import { Event, EventStatus, ItemType } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
-import PrepopulatedEventForm from "@/components/Forms/event-form";
+import EventFormEditButton from "@/components/Button/event-form-edit-button";
+import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 
 function Table() {
@@ -42,7 +42,6 @@ function Table() {
   const [modalActive, toggleModal] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
 
   const [formData, setFormData] = useState<Partial<Event>>({
@@ -96,10 +95,6 @@ function Table() {
   }, []);
 
   // will toggle modal visibility for editing events
-
-  function handleEditEvent() {
-    setShowEditModal(true);
-  }
 
   function handleAddEvent() {
     setShowAddModal(true);
@@ -450,8 +445,12 @@ function Table() {
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
-          <Modal setShowPopup={setShowAddModal} showModal={showAddModal}>
-            <PrepopulatedEventForm />
+          <Modal
+            setShowPopup={setShowAddModal}
+            showModal={showAddModal}
+            height="h-3/4"
+          >
+            <EventForm itemTypes={itemTypes} />
           </Modal>
         </div>
       </div>
@@ -474,6 +473,9 @@ function Table() {
 
             <tbody className="bg-secondary-50">
               {eventData.map((event: Event) => {
+                function handleEditEvent() {
+                  setShowEditModal(true);
+                }
                 return (
                   <tr
                     key={event.name}
@@ -501,9 +503,10 @@ function Table() {
                     <td className="text-sm font-light">{event.eventType}</td>
                     <td className="text-sm font-light">{event.status}</td>
                     <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                      <button onClick={() => handleEditEvent(event)}>
-                        <FontAwesomeIcon icon={faPencil} />
-                      </button>
+                      <EventFormEditButton
+                        props={event}
+                        itemTypes={itemTypes}
+                      />
                     </td>
                   </tr>
                 );

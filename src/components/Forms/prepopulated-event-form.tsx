@@ -6,15 +6,21 @@ import Button from "@/components/Button";
 import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
 
-export default function EventForm({ itemTypes }: { itemTypes: ItemType[] }) {
+export default function PrepopulatedEventForm({
+  props,
+  itemTypes
+}: {
+  props: Event;
+  itemTypes: ItemType[];
+}) {
   const { control, handleSubmit } = useForm<Event>({
     defaultValues: {
-      id: "",
-      name: "",
-      createdBy: "",
-      startDate: undefined,
-      eventType: "",
-      status: undefined
+      id: props.id,
+      name: props.name,
+      createdBy: props.createdBy,
+      startDate: props.startDate,
+      eventType: props.eventType,
+      status: props.status
     }
   });
 
@@ -36,7 +42,7 @@ export default function EventForm({ itemTypes }: { itemTypes: ItemType[] }) {
 
   return (
     <>
-      <h1 className="mb-3 text-center text-2xl">Add a New Event</h1>
+      <h1 className="mb-3 text-center text-2xl">Edit an Event</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 space-y-3">
