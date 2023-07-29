@@ -3,6 +3,20 @@
 import { clerkClient } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server/clerkClient";
 
+import {
+  buildPaginationResponse,
+  PaginationOptions,
+  PaginationResponse
+} from "@/lib/pagination";
+
+type ClerkOrderBy =
+  | "created_at"
+  | "updated_at"
+  | "+created_at"
+  | "+updated_at"
+  | "-created_at"
+  | "-updated_at";
+
 interface UserResponse {
   id: string;
   firstName: string | null;
@@ -12,19 +26,34 @@ interface UserResponse {
 }
 
 interface IUserService {
-  getAll(): Promise<UserResponse[]>;
+  getMany(
+    options: PaginationOptions
+  ): Promise<PaginationResponse<UserResponse>>;
   getUser(userId: string): Promise<UserResponse>;
   updateRole(userId: string, role: string): void;
+  getCount(): Promise<number>;
 }
 
 class UserService implements IUserService {
-  async getAll(): Promise<UserResponse[]> {
-    const users = await clerkClient.users.getUserList({
-      limit: 100,
-      orderBy: "-created_at"
-    });
+  getCount(): Promise<number> {
+    throw new Error("Method not implemented.");
+  }
+  async getMany(
+    options: PaginationOptions
+  ): Promise<PaginationResponse<UserResponse>> {
+    const { orderBy, ...rest } = options;
 
-    return users.map((user) => this.toResponse(user));
+    const users = await clerkClient.users.getUserList({
+      orderBy: orderBy as ClerkOrderBy,
+      ...rest
+    });
+    const totalCount = await clerkClient.users.getCount();
+
+    return buildPaginationResponse<UserResponse>(
+      users.map((user) => this.toResponse(user)),
+      options,
+      totalCount
+    );
   }
 
   async getUser(userId: string): Promise<UserResponse> {
