@@ -10,9 +10,11 @@ import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
-  props
+  props,
+  onSubmit
 }: {
   props: RepairRequest;
+  onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
   let status;
   switch (props.status) {
@@ -45,22 +47,6 @@ export default function PrepopulatedRepairAttemptForm({
   });
 
   const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
-
-  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
-    // console.log(JSON.stringify(data));
-    const response = await fetch(`/api/repair-request`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    if (response.ok) {
-      alert("Data submitted");
-    } else {
-      alert(`Error! ${response.statusText}`);
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
