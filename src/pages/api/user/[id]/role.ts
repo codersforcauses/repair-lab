@@ -25,13 +25,17 @@ const updateUserRole = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id: userId } = req.query;
     const { role } = req.body;
 
-    validateRole(role, res);
+    const parsedRole = validateRole(role);
 
     const userService = new UserService();
-    await userService.updateRole(userId as string, role);
+    await userService.updateRole(userId as string, parsedRole);
 
     return res.status(204).end();
   } catch (e) {
+    if (e instanceof z.ZodError) {
+      return res.status(400).json({ error: e.issues });
+    }
+
     if (isClerkAPIResponseError(e)) {
       return res.status(e.status).json({ error: e.message });
     }
@@ -40,12 +44,9 @@ const updateUserRole = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const validateRole = (role: string, res: NextApiResponse) => {
+const validateRole = (role: string) => {
   const roleSchema = z.nativeEnum(UserRole);
-  const parsedData = roleSchema.safeParse(role);
+  const parsedData = roleSchema.parse(role);
 
-  if (!parsedData.success) {
-    const { errors } = parsedData.error;
-    return res.status(400).json({ error: errors });
-  }
+  return parsedData;
 };

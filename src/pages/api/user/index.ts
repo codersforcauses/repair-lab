@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { z } from "zod";
 
 import { paginationSchema } from "@/lib/pagination";
 import UserService from "@/services/user";
@@ -19,16 +20,20 @@ export default async function handler(
 }
 
 const getUsers = async (req: NextApiRequest, res: NextApiResponse) => {
-  const parsedQuery = paginationSchema.safeParse(req.query);
-  if (!parsedQuery.success) {
-    const { errors } = parsedQuery.error;
-    return res.status(400).json({ error: errors });
+  try {
+    const parsedQuery = paginationSchema.parse(req.query);
+
+    const userService = new UserService();
+    const users = await userService.getMany(parsedQuery);
+
+    return res.status(200).json(users);
+  } catch (e) {
+    if (e instanceof z.ZodError) {
+      return res.status(400).json({ error: e.issues });
+    }
+
+    return res.status(500).end();
   }
-
-  const userService = new UserService();
-  const users = await userService.getMany(parsedQuery.data);
-
-  return res.status(200).json(users);
 };
 
 export const config: PageConfig = {

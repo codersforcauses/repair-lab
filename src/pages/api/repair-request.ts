@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { getAuth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
+import { z } from "zod";
 
 import {
   repairRequestPatchSchema,
@@ -33,18 +34,14 @@ const createRepairRequest = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const requestBody = repairRequestPostSchema.safeParse(req.body);
-  if (!requestBody.success) {
-    const { errors } = requestBody.error;
-    return res.status(400).json({ error: errors });
-  }
-
-  const { userId } = getAuth(req);
-
   try {
+    const parsedData = repairRequestPostSchema.parse(req.body);
+
+    const { userId } = getAuth(req);
+
     const repairRequestService = new RepairRequestService();
     const repairRequest = await repairRequestService.insert({
-      ...requestBody.data,
+      ...parsedData,
       thumbnailImage: "Fake S3 Key", // TODO: Change this once image upload works.
       createdBy: userId as string
     });
@@ -52,7 +49,11 @@ const createRepairRequest = async (
     return res.status(200).json({
       id: repairRequest.id
     });
-  } catch (error) {
+  } catch (e) {
+    if (e instanceof z.ZodError) {
+      return res.status(400).json({ error: e.issues });
+    }
+
     return res.status(500).json("Error inserting into database!");
   }
 };
