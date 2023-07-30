@@ -6,7 +6,13 @@ import Button from "@/components/Button";
 import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
 
-export default function EventForm({ itemTypes }: { itemTypes: ItemType[] }) {
+export default function EventForm({
+  itemTypes,
+  onSubmit
+}: {
+  itemTypes: ItemType[];
+  onSubmit: SubmitHandler<Event>;
+}) {
   const { control, handleSubmit } = useForm<Event>({
     defaultValues: {
       id: "",
@@ -17,22 +23,6 @@ export default function EventForm({ itemTypes }: { itemTypes: ItemType[] }) {
       status: undefined
     }
   });
-
-  const onSubmit: SubmitHandler<Event> = async (data) => {
-    // console.log(JSON.stringify(data));
-    const response = await fetch(`/api/repair-request`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    if (response.ok) {
-      alert("Data submitted");
-    } else {
-      alert(`Error! ${response.statusText}`);
-    }
-  };
 
   return (
     <>

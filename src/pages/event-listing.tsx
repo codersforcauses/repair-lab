@@ -42,8 +42,6 @@ function Table() {
   const [modalActive, toggleModal] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  const [showAddModal, setShowAddModal] = useState(false);
-
   const [formData, setFormData] = useState<Partial<Event>>({
     id: undefined,
     name: "",
@@ -95,14 +93,9 @@ function Table() {
   }, []);
 
   // will toggle modal visibility for editing events
-
-  function handleAddEvent() {
-    setShowAddModal(true);
-  }
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const addEvents: SubmitHandler<Event> = async (formData: any) => {
-    event.preventDefault();
-
     try {
       const response = await fetch("/api/event", {
         method: "POST",
@@ -114,17 +107,16 @@ function Table() {
 
       if (response.ok) {
         const addEvent = await response.json();
-        toggleModal(false);
+        setShowAddModal(false);
         router.reload();
       }
     } catch (error) {
-      console.error("Failed to add event");
+      alert("Failed to add event");
     }
   };
 
+  // THIS IS NOT USED ANYMORE, it moved to event-form-edit-button.tsx instead
   const editEvents: SubmitHandler<Event> = async (formData: any) => {
-    event.preventDefault();
-
     try {
       const response = await fetch("/api/event", {
         method: "PATCH",
@@ -441,7 +433,7 @@ function Table() {
         <div className=" p-4 text-center ">
           <button
             className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
-            onClick={() => handleAddEvent()}
+            onClick={() => setShowAddModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
@@ -450,7 +442,7 @@ function Table() {
             showModal={showAddModal}
             height="h-3/4"
           >
-            <EventForm itemTypes={itemTypes} />
+            <EventForm itemTypes={itemTypes} onSubmit={addEvents} />
           </Modal>
         </div>
       </div>
@@ -506,6 +498,7 @@ function Table() {
                       <EventFormEditButton
                         props={event}
                         itemTypes={itemTypes}
+                        onsSubmit={editEvents}
                       />
                     </td>
                   </tr>
