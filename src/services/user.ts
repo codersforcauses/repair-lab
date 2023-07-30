@@ -31,13 +31,9 @@ interface IUserService {
   ): Promise<PaginationResponse<UserResponse>>;
   getUser(userId: string): Promise<UserResponse>;
   updateRole(userId: string, role: string): void;
-  getCount(): Promise<number>;
 }
 
 class UserService implements IUserService {
-  getCount(): Promise<number> {
-    throw new Error("Method not implemented.");
-  }
   async getMany(
     options: PaginationOptions
   ): Promise<PaginationResponse<UserResponse>> {
