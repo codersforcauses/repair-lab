@@ -14,14 +14,14 @@ export default function PrepopulatedRepairAttemptForm({
 }: {
   props: RepairRequest;
 }) {
-  let itemStatus;
-  switch (props.itemStatus) {
+  let status;
+  switch (props.status) {
     case "REPAIRED":
-      itemStatus = "true";
+      status = "true";
       break;
     case "FAILED":
-    case "UNFINISHED":
-      itemStatus = "false";
+    case "PENDING":
+      status = "false";
   }
 
   let isSparePartsNeeded;
@@ -37,7 +37,7 @@ export default function PrepopulatedRepairAttemptForm({
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
       hoursWorked: Number(props.hoursWorked),
-      isRepaired: itemStatus,
+      isRepaired: status,
       isSparePartsNeeded: isSparePartsNeeded,
       spareParts: props.spareParts,
       repairComment: props.comment
