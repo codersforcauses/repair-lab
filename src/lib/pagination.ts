@@ -6,6 +6,7 @@ export interface PaginationResponse<T> {
   items: T[];
   meta: PaginationOptions & {
     totalCount: number;
+    lastPage: number;
   };
 }
 
@@ -14,11 +15,13 @@ export async function buildPaginationResponse<T>(
   options: PaginationOptions,
   totalCount: number
 ): Promise<PaginationResponse<T>> {
+  const lastPage = totalCount / options.perPage;
   return {
     items: items,
     meta: {
       ...options,
-      totalCount
+      totalCount,
+      lastPage
     }
   };
 }
@@ -26,18 +29,18 @@ export async function buildPaginationResponse<T>(
 const orderByRegex = /^(\+|-)[A-Za-z0-9_]*/;
 
 export const paginationSchema = z.object({
-  limit: z
+  perPage: z
     .preprocess(
       (val) => Number(val),
-      z.number().positive({ message: "Limit must be more than 0" })
+      z.number().positive({ message: "perPage cannot be less than 1" })
     )
     .default(10),
-  offset: z
+  page: z
     .preprocess(
       (val) => Number(val),
-      z.number().nonnegative({ message: "Offset cannot be less than 0" })
+      z.number().positive({ message: "page cannot be less than 1" })
     )
-    .default(0),
+    .default(1),
   orderBy: z
     .string()
     .regex(orderByRegex, {

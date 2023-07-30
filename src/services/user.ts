@@ -37,11 +37,13 @@ class UserService implements IUserService {
   async getMany(
     options: PaginationOptions
   ): Promise<PaginationResponse<UserResponse>> {
-    const { orderBy, ...rest } = options;
+    const { orderBy, perPage, page, query } = options;
 
     const users = await clerkClient.users.getUserList({
       orderBy: orderBy as ClerkOrderBy,
-      ...rest
+      limit: perPage,
+      offset: (page - 1) * perPage,
+      query
     });
     const totalCount = await clerkClient.users.getCount();
 
