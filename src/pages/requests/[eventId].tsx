@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaImages, FaEdit } from "react-icons/fa";
-import Link from "next/link";
 import { Inter } from "next/font/google";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { useRouter } from "next/router";
-import { RepairRequestImage } from "@prisma/client";
+import { RepairRequest, RepairRequestImage } from "@prisma/client";
+import FormatDate from "@/components/utils/format-date";
+import StatusPill from "@/components/Cards/status-pill";
+import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 
 const inter = Inter({ subsets: ["latin"] });
 const minWidth = 425;
 
-type Request = {
-  id: string;
-  itemBrand: string;
-  itemType: string;
-  description: string;
+type Request = RepairRequest & {
   images: RepairRequestImage[];
 };
 
@@ -38,6 +36,8 @@ export default function RepairReqList() {
   const [eventInfo, setEventInfo] = useState({} as Event);
   const [images, setImages] = useState([] as RepairRequestImage[]);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState({} as RepairRequest);
 
   const {
     query: { eventId: event }
@@ -104,7 +104,7 @@ export default function RepairReqList() {
 
   return (
     <main
-      className={`${inter.className} my-3 flex min-h-screen flex-col items-center gap-2`}
+      className={`rounded-lgpy-2 flex flex-col items-center gap-4 max-[768px]:m-7 md:mx-auto md:my-7 md:w-[768px] ${inter.className}`}
     >
       {/* Logo of Repair Lab, which links to the main website. */}
       <picture>
@@ -120,40 +120,49 @@ export default function RepairReqList() {
 
       {/* Heading of the Page */}
       <h1 className="text-3xl font-bold"> Repair Request List</h1>
-      {/* TODO: need a better way to deal with datetime display */}
       <p className="my-2 text-center text-sm">
         Event:
         <span className="text-primary-600">
           {" " + eventInfo.name} @ {eventInfo.location}
         </span>
         <br />
-        Event Start Date:
-        <span className="text-primary-600">{" " + eventInfo.startDate}</span>
+        Event Start Date:{" "}
+        <span className="text-primary-600">
+          {FormatDate(eventInfo.startDate)}
+        </span>
         <br />
         Total number of repair requests:{" "}
-        <b className="text-primary-600">{requests.length}</b>
+        <span className="font-bold text-primary-600">{requests.length}</span>
       </p>
 
       {/* get the request list from the database and display it here*/}
 
       {requests.map((repairReq) => (
         <div
-          className="mb-2 h-full w-11/12 rounded-md bg-lightAqua-100 p-4"
+          className="mb-2 h-full w-11/12 rounded-md border-2 border-lightAqua-200 bg-lightAqua-100 p-4 shadow-md"
           key={repairReq.id}
         >
-          <div className="flex flex-col items-start">
-            <p className="p-1">ID: {repairReq.id}</p>
-            <p className="p-1">ItemBrand: {repairReq.itemBrand}</p>
-            <p className="p-1">ItemType: {repairReq.itemType}</p>
-            <p className="p-1">Description: </p>
+          <div className="relative flex flex-col items-start">
+            {/* slice ID for simplification */}
+            <p className="pb-1">ID: {repairReq.id.slice(0, 2)}</p>
+            <p className="pb-1">Brand: {repairReq.itemBrand}</p>
+            <p className="pb-1">Item: {repairReq.itemType}</p>
+            <p className="pb-1">Submitted By: {repairReq.createdBy}</p>
+            <p className="pb-1">Description: </p>
             <div className=" w-full bg-white p-3">{repairReq.description}</div>
+
+            <div className="absolute right-0">
+              <StatusPill status={repairReq.status}></StatusPill>
+            </div>
+
             <div className="mt-4 flex w-full justify-center gap-8">
               {/* Button to display images */}
               <div>
                 <Button
-                  width={windowWidth <= minWidth ? "w-11 px-3" : "px-2"}
+                  position="shadow-md"
+                  width={windowWidth <= minWidth ? "w-12 px-2" : "px-2"}
                   height={windowWidth <= minWidth ? "h-11" : "h-12"}
-                  textSize={windowWidth <= minWidth ? "text-lg" : "text-base"}
+                  textSize={windowWidth <= minWidth ? "text-3xl" : "text-base"}
                   onClick={() => handleOpenImageModal(repairReq.images)}
                 >
                   {displayText.displayImage}
@@ -161,15 +170,18 @@ export default function RepairReqList() {
               </div>
 
               {/* Button to update request */}
-              <Link href="/repair-attempt/">
-                <Button
-                  width={windowWidth <= minWidth ? "w-11 px-3" : "px-2"}
-                  height={windowWidth <= minWidth ? "h-11" : "h-12"}
-                  textSize={windowWidth <= minWidth ? "text-lg" : "text-base"}
-                >
-                  {displayText.updateDetails}
-                </Button>
-              </Link>
+              <Button
+                position="shadow-md"
+                width={windowWidth <= minWidth ? "w-12 px-3 pb-1" : "px-2"}
+                height={windowWidth <= minWidth ? "h-11" : "h-12"}
+                textSize={windowWidth <= minWidth ? "text-3xl" : "text-base"}
+                onClick={() => {
+                  setShowRequestModal(true);
+                  setSelectedRequest(repairReq);
+                }}
+              >
+                {displayText.updateDetails}
+              </Button>
             </div>
           </div>
         </div>
@@ -181,7 +193,7 @@ export default function RepairReqList() {
         title="Repair Request Images"
         setShowPopup={setShowImageModal}
       >
-        <div className="flex flex-col items-center gap-4">
+        <div className="mt-3 flex flex-col items-center gap-4">
           {!images && <h2>No images found</h2>}
           {images &&
             images.map((image) => (
@@ -195,6 +207,25 @@ export default function RepairReqList() {
                 />
               </div>
             ))}
+        </div>
+      </Modal>
+
+      {/* Modal to display pre-populated repair request */}
+      <Modal
+        setShowPopup={setShowRequestModal}
+        showModal={showRequestModal}
+        height="h-full"
+      >
+        <div className="text-center">
+          <h1 className="text-xl font-bold">Repair ID:</h1>
+          <h2 className="text-l font-bold">
+            {selectedRequest.id} <StatusPill status={selectedRequest.status} />
+          </h2>
+          <div>
+            <PrepopulatedRepairAttemptForm
+              props={selectedRequest}
+            ></PrepopulatedRepairAttemptForm>
+          </div>
         </div>
       </Modal>
     </main>

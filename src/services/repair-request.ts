@@ -65,7 +65,13 @@ class RepairRequestService implements IRepairRequestService {
 
   async fetchAllByEvent(eventId: string): Promise<RepairRequest[]> {
     const repairRequests = await prisma.repairRequest.findMany({
-      where: { eventId },
+      where: {
+        eventId,
+        status: {
+          // Display only ACCEPTED requests
+          in: ["ACCEPTED", "PENDING"]
+        }
+      },
       include: {
         images: true
       }
