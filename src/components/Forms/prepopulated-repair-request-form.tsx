@@ -42,7 +42,7 @@ export default function PrepopulatedRepairAttemptForm({
       isRepaired: status,
       isSparePartsNeeded: isSparePartsNeeded,
       spareParts: props.spareParts,
-      repairComment: props.comment
+      description: props.description
     }
   });
 
@@ -109,7 +109,7 @@ export default function PrepopulatedRepairAttemptForm({
 
         {/* Job Description */}
         <FieldTextArea
-          name="repairComment"
+          name="description"
           label="Job Description"
           placeholder="Describe the repair job in detail"
           control={control}

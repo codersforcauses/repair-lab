@@ -72,7 +72,7 @@ const updateRepairRequest = async (
       isRepaired,
       isSparePartsNeeded,
       spareParts,
-      repairComment
+      description
     } = parseResult.data;
     const repairRequestService = new RepairRequestService();
     const repairAttempt = await repairRequestService.update({
@@ -81,7 +81,7 @@ const updateRepairRequest = async (
       hoursWorked: hoursWorked,
       status: isRepaired === "true" ? "REPAIRED" : "FAILED",
       spareParts: isSparePartsNeeded === "true" ? spareParts : "",
-      repairComment: repairComment
+      description: description
     });
     return res.status(200).json(repairAttempt);
   } catch (error: unknown) {

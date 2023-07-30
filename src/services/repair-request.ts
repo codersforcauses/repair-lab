@@ -22,7 +22,7 @@ interface RepairRequestUpdateInput {
   hoursWorked: number;
   status: Status;
   spareParts?: string | undefined;
-  repairComment: string;
+  description: string;
 }
 
 interface IRepairRequestService {
