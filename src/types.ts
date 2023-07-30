@@ -7,7 +7,7 @@ import {
 
 export type RepairRequest = z.infer<typeof repairRequestPostSchema>;
 export type GeneralRepairAttempt = z.infer<typeof repairRequestPatchSchema>;
-export type Option = { id: number; text: string };
+export type Option = { id: number | string; text: string };
 
 export interface EmailAddress {
   id: string;

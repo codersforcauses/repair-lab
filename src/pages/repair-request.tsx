@@ -8,6 +8,7 @@ import { z } from "zod";
 
 import Button from "@/components/Button";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
+import SingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
 import Toast from "@/components/Toast";
@@ -92,7 +93,7 @@ const Home = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Input field for Brand of Item */}
 
-          <DropDown
+          <SingleSelect
             name="itemBrand"
             control={control}
             placeholder="Select a brand"
@@ -103,7 +104,7 @@ const Home = () => {
             })}
           />
 
-          <DropDown
+          <SingleSelect
             name="itemType"
             control={control}
             placeholder="Select an item type"
@@ -127,7 +128,7 @@ const Home = () => {
           <FieldImageUpload multiple name="images" control={control} />
 
           {/* Input field for Event Date */}
-          <DropDown
+          <SingleSelect
             name="eventId"
             control={control}
             placeholder="Select an event"
