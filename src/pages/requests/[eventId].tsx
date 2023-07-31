@@ -76,13 +76,8 @@ export default function RepairReqList() {
       setWindowWidth(window.innerWidth);
     };
 
-    // Initial window width
     setWindowWidth(window.innerWidth);
-
-    // Add event listener for window resize
     window.addEventListener("resize", handleResize);
-
-    // Clean up the event listener on unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -106,17 +101,14 @@ export default function RepairReqList() {
     <main
       className={`rounded-lgpy-2 flex flex-col items-center gap-4 max-[768px]:m-7 md:mx-auto md:my-7 md:w-[768px] ${inter.className}`}
     >
-      {/* Logo of Repair Lab, which links to the main website. */}
-      <picture>
-        <a href="https://repairlab.myfreesites.net/" target="_blank">
-          <Image
-            src="/images/repair_lab_logo.jpg"
-            alt="Repair Labs Logo"
-            width={80}
-            height={80}
-          />
-        </a>
-      </picture>
+      <a href="https://repairlab.myfreesites.net/" target="_blank">
+        <Image
+          src="/images/repair_lab_logo.jpg"
+          alt="Repair Labs Logo"
+          width={80}
+          height={80}
+        />
+      </a>
 
       {/* Heading of the Page */}
       <h1 className="text-3xl font-bold"> Repair Request List</h1>
@@ -134,8 +126,6 @@ export default function RepairReqList() {
         Total number of repair requests:{" "}
         <span className="font-bold text-primary-600">{requests.length}</span>
       </p>
-
-      {/* get the request list from the database and display it here*/}
 
       {requests.map((repairReq) => (
         <div
