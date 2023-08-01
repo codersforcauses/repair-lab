@@ -44,14 +44,12 @@ export default function RepairReqList() {
   } = useRouter();
 
   async function fetchData(params: URLSearchParams) {
-    // fetch repair requests
     const reqResponse = await fetch(`/api/repair-request?${params}`, {
       method: "GET"
     });
     const requests = await reqResponse.json();
     setRequests(requests);
 
-    // fetch event details
     const eventResponse = await fetch(`/api/events/get-event?${params}`, {
       method: "GET"
     });
@@ -110,7 +108,6 @@ export default function RepairReqList() {
         />
       </a>
 
-      {/* Heading of the Page */}
       <h1 className="text-3xl font-bold"> Repair Request List</h1>
       <p className="my-2 text-center text-sm">
         Event:
@@ -133,7 +130,7 @@ export default function RepairReqList() {
           key={repairReq.id}
         >
           <div className="relative flex flex-col items-start">
-            {/* slice ID for simplification */}
+            {/* FIXME: remove slice() when id is simplified */}
             <p className="pb-1">ID: {repairReq.id.slice(0, 2)}</p>
             <p className="pb-1">Brand: {repairReq.itemBrand}</p>
             <p className="pb-1">Item: {repairReq.itemType}</p>
@@ -146,7 +143,6 @@ export default function RepairReqList() {
             </div>
 
             <div className="mt-4 flex w-full justify-center gap-8">
-              {/* Button to display images */}
               <div>
                 <Button
                   position="shadow-md"
@@ -159,7 +155,6 @@ export default function RepairReqList() {
                 </Button>
               </div>
 
-              {/* Button to update request */}
               <Button
                 position="shadow-md"
                 width={windowWidth <= minWidth ? "w-12 px-3 pb-1" : "px-2"}
@@ -177,7 +172,6 @@ export default function RepairReqList() {
         </div>
       ))}
 
-      {/* Modal to display images */}
       <Modal
         showModal={showImageModal}
         title="Repair Request Images"
@@ -200,7 +194,6 @@ export default function RepairReqList() {
         </div>
       </Modal>
 
-      {/* Modal to display pre-populated repair request */}
       <Modal
         setShowPopup={setShowRequestModal}
         showModal={showRequestModal}
