@@ -2,7 +2,7 @@ import { useState } from "react";
 import router from "next/router";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ItemType } from "@prisma/client";
+import { Event, ItemType } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
 import PrepopulatedEventForm from "@/components/Forms/prepopulated-event-form";

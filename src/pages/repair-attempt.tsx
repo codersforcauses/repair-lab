@@ -25,7 +25,7 @@ export default function RepairAttempt() {
       isRepaired: undefined,
       isSparePartsNeeded: undefined,
       spareParts: "",
-      repairComment: ""
+      description: ""
     }
   });
 
@@ -126,7 +126,7 @@ export default function RepairAttempt() {
 
           {/* Job Description */}
           <FieldTextArea
-            name="repairComment"
+            name="description"
             label="Job Description"
             placeholder="Describe the repair job in detail"
             control={control}

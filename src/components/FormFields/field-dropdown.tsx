@@ -41,7 +41,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-  const [displayText, setDisplayText] = useState(field.value);
+  const [displayText, setDisplayText] = useState(String(field.value));
 
   const baseStyle = `flex h-10 ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
@@ -91,7 +91,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
                     <a
                       href="#"
                       onClick={() => {
-                        field.onChange(option.id);
+                        field.onChange(option.text);
                         setDisplayText(option.text);
                       }}
                       className={classNames(

@@ -220,12 +220,6 @@ function Table() {
     );
   }
 
-  function handleSubmit(
-    editEvents: SubmitHandler<Event>
-  ): import("react").FormEventHandler<HTMLFormElement> | undefined {
-    throw new Error("Function not implemented.");
-  }
-
   return (
     <div>
       {/* HEADER BAR*/}
@@ -466,7 +460,7 @@ function Table() {
             <tbody className="bg-secondary-50">
               {eventData.map((event: Event) => {
                 function handleEditEvent() {
-                  setShowEditModal(true);
+                  setShowAddModal(true);
                 }
                 return (
                   <tr
@@ -498,7 +492,6 @@ function Table() {
                       <EventFormEditButton
                         props={event}
                         itemTypes={itemTypes}
-                        onsSubmit={editEvents}
                       />
                     </td>
                   </tr>
