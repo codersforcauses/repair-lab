@@ -9,14 +9,13 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
-import type { GeneralRepairAttempt, RepairRequest } from "@/types";
+import type { GeneralRepairAttempt } from "@/types";
 
 export default function RepairAttemptForm({
   itemBrands,
   itemTypes,
   onSubmit
 }: {
-  props: RepairRequest;
   itemBrands?: Brand[];
   itemTypes?: ItemType[];
   onSubmit?: SubmitHandler<GeneralRepairAttempt>;
