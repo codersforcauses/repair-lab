@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RepairRequest } from "@prisma/client";
+import { Brand, ItemType, RepairRequest } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
+import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
@@ -11,9 +12,13 @@ import type { GeneralRepairAttempt } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
   props,
+  itemBrands,
+  itemTypes,
   onSubmit
 }: {
   props: RepairRequest;
+  itemBrands?: Brand[];
+  itemTypes?: ItemType[];
   onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
   let status;
@@ -30,6 +35,30 @@ export default function PrepopulatedRepairAttemptForm({
   props.spareParts == ""
     ? (isSparePartsNeeded = "false")
     : (isSparePartsNeeded = "true");
+
+  let actualItemBrands;
+  itemBrands
+    ? (actualItemBrands = itemBrands.map((type) => ({
+        id: type.name,
+        text: type.name
+      })))
+    : (actualItemBrands = [
+        { id: 0, text: "Alienware" },
+        { id: 1, text: "Giant Bicycles" },
+        { id: 2, text: "Seiko" }
+      ]);
+
+  let actualItemTypes;
+  itemTypes
+    ? (actualItemTypes = itemTypes.map((type) => ({
+        id: type.name,
+        text: type.name
+      })))
+    : (actualItemTypes = [
+        { id: 0, text: "Bike" },
+        { id: 1, text: "Clock" },
+        { id: 2, text: "Computer" }
+      ]);
 
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
@@ -52,14 +81,20 @@ export default function PrepopulatedRepairAttemptForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
-        <FieldInput name="item" control={control} rules={{ required: true }} />
+        <DropDown
+          name="item"
+          control={control}
+          rules={{ required: true }}
+          options={actualItemTypes}
+        />
 
         {/* Brand, Material */}
-        <FieldInput
+        <DropDown
           name="itemBrand"
           label="Brand"
           control={control}
           rules={{ required: true }}
+          options={actualItemBrands}
         />
         <FieldInput
           name="itemMaterial"
