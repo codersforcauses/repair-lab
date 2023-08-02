@@ -13,6 +13,9 @@ export default function StatusPill({ status }: Props) {
       break;
     case "FAILED":
       bgColor = "bg-red-500";
+      break;
+    case "REPAIRED":
+      bgColor = "bg-green-500";
   }
 
   return (
