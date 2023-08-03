@@ -44,7 +44,7 @@ export const repairRequestPatchSchema = z.object({
   isRepaired: z.string(),
   isSparePartsNeeded: z.string(),
   spareParts: z.string().optional(),
-  description: z
+  repairComment: z
     .string()
     .min(5, { message: "Job description must be at least 5 characters long." })
 });
