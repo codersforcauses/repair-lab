@@ -124,10 +124,10 @@ export default function RepairAttempt() {
             />
           )}
 
-          {/* Job Description */}
+          {/* Repair Comment */}
           <FieldTextArea
             name="repairComment"
-            label="Job Description"
+            label="Repair Comment"
             placeholder="Describe the repair job in detail"
             control={control}
             rules={{ required: true }}

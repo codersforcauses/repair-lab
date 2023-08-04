@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { FaImages, FaEdit } from "react-icons/fa";
 import { Inter } from "next/font/google";
-import Button from "@/components/Button";
-import Modal from "@/components/Modal";
-import { useRouter } from "next/router";
+import Image from "next/image";
+import router, { useRouter } from "next/router";
 import { RepairRequest, RepairRequestImage } from "@prisma/client";
-import FormatDate from "@/components/utils/format-date";
+import { SubmitHandler } from "react-hook-form";
+import { FaEdit, FaImages } from "react-icons/fa";
+
+import Button from "@/components/Button";
 import StatusPill from "@/components/Cards/status-pill";
 import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
+import Modal from "@/components/Modal";
+import FormatDate from "@/components/utils/format-date";
+import { GeneralRepairAttempt } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 const minWidth = 425;
@@ -42,6 +45,22 @@ export default function RepairReqList() {
   const {
     query: { eventId: event }
   } = useRouter();
+
+  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
+    const response = await fetch(`/api/repair-request`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (response.ok) {
+      router.reload();
+      setShowRequestModal(false);
+    } else {
+      alert(`Error! ${response.statusText}`);
+    }
+  };
 
   async function fetchData(params: URLSearchParams) {
     const reqResponse = await fetch(`/api/repair-request?${params}`, {
@@ -207,6 +226,7 @@ export default function RepairReqList() {
           <div>
             <PrepopulatedRepairAttemptForm
               props={selectedRequest}
+              onSubmit={onSubmit}
             ></PrepopulatedRepairAttemptForm>
           </div>
         </div>
