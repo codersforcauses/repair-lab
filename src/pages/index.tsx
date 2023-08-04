@@ -5,6 +5,7 @@ import { AiFillFacebook, AiFillInstagram, AiFillMail } from "react-icons/ai";
 
 import Button from "@/components/Button/index";
 
+// #TODO: Refactor this
 export default function Home() {
   const { signOut } = useClerk();
 
@@ -155,7 +156,11 @@ export default function Home() {
           </li>
         </ul>
       </div>
-      <Button onClick={() => signOut()}>Logout</Button>
+      <div className="m-10">
+      <Button width="w-full" onClick={() => signOut()}>Logout</Button>
+      </div>
+      <Link className= "py-4" href="/event-listing"><Button>Admin Dashboard</Button></Link>
+      
     </div>
   );
 }

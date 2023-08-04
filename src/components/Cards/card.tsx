@@ -33,7 +33,7 @@ export default function Card({ props }: { props: CardProps }) {
       role="presentation"
       className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
     >
-      <Modal setShowPopup={setShowModal} showModal={showModal} height="h-full">
+      <Modal setShowPopup={setShowModal} showModal={showModal} height="h-fit">
         <div className="text-center">
           <h1 className="text-xl font-bold">Repair ID:</h1>
           <h2 className="text-l font-bold">
