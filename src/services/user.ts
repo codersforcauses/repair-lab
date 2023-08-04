@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 
 import { clerkClient } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/dist/types/server/clerkClient";
+import { User as ClerkUser } from "@clerk/nextjs/server";
 
 import {
   buildPaginationResponse,
   PaginationOptions,
   PaginationResponse
 } from "@/lib/pagination";
+import { User, UserRole } from "@/types";
 
 type ClerkOrderBy =
   | "created_at"
@@ -17,13 +18,7 @@ type ClerkOrderBy =
   | "-created_at"
   | "-updated_at";
 
-interface UserResponse {
-  id: string;
-  firstName: string | null;
-  lastName: string | null;
-  emailAddress: string;
-  role: string | unknown;
-}
+type UserResponse = User;
 
 interface IUserService {
   getMany(
@@ -39,13 +34,16 @@ class UserService implements IUserService {
   ): Promise<PaginationResponse<UserResponse>> {
     const { orderBy, perPage, page, query } = options;
 
-    const users = await clerkClient.users.getUserList({
+    const searchRequest = {
       orderBy: orderBy as ClerkOrderBy,
       limit: perPage,
       offset: (page - 1) * perPage,
       query
-    });
-    const totalCount = await clerkClient.users.getCount();
+    };
+
+    // getCount requires a search request too so it returns the total query count.
+    const users = await clerkClient.users.getUserList(searchRequest);
+    const totalCount = await clerkClient.users.getCount(searchRequest);
 
     return buildPaginationResponse<UserResponse>(
       users.map((user) => this.toResponse(user)),
@@ -67,9 +65,9 @@ class UserService implements IUserService {
     });
   }
 
-  private toResponse(user: User): UserResponse {
+  private toResponse(user: ClerkUser): UserResponse {
     const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
-    const role = publicMetadata.role;
+    const role = publicMetadata.role ? publicMetadata.role : UserRole.CLIENT;
     const emailAddress = emailAddresses[0].emailAddress;
 
     return {

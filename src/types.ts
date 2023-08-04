@@ -15,12 +15,10 @@ export interface EmailAddress {
 
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
-  emailAddresses: EmailAddress[];
-  privateMetadata: {
-    role?: string;
-  };
+  firstName: string | null;
+  lastName: string | null;
+  emailAddress: string;
+  role: string | unknown;
 }
 
 export enum SearchCriteria {
@@ -34,5 +32,6 @@ export enum SearchCriteria {
 export enum UserRole {
   VOLUNTEER = "volunteer",
   EVENT_MANAGER = "event_manager",
-  ADMIN = "admin"
+  ADMIN = "admin",
+  CLIENT = "client"
 }
