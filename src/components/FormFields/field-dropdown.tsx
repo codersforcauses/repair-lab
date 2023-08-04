@@ -91,7 +91,7 @@ export default function DropDown<T extends FieldValues = FieldValues>({
                     <a
                       href="#"
                       onClick={() => {
-                        field.onChange(option.text);
+                        field.onChange(option.id);
                         setDisplayText(option.text);
                       }}
                       className={classNames(
