@@ -1,8 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RepairRequest } from "@prisma/client";
+import { Brand, ItemType, RepairRequest } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
+import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
@@ -10,10 +11,55 @@ import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
-  props
+  props,
+  itemBrands,
+  itemTypes,
+  onSubmit
 }: {
   props: RepairRequest;
+  itemBrands?: Brand[];
+  itemTypes?: ItemType[];
+  onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
+  let status;
+  switch (props.status) {
+    case "REPAIRED":
+      status = "true";
+      break;
+    case "FAILED":
+    case "PENDING":
+      status = "false";
+  }
+
+  let isSparePartsNeeded;
+  props.spareParts == ""
+    ? (isSparePartsNeeded = "false")
+    : (isSparePartsNeeded = "true");
+
+  let actualItemBrands;
+  itemBrands
+    ? (actualItemBrands = itemBrands.map((type) => ({
+        id: type.name,
+        text: type.name
+      })))
+    : (actualItemBrands = [
+        { id: 0, text: "Alienware" },
+        { id: 1, text: "Giant Bicycles" },
+        { id: 2, text: "Seiko" }
+      ]);
+
+  let actualItemTypes;
+  itemTypes
+    ? (actualItemTypes = itemTypes.map((type) => ({
+        id: type.name,
+        text: type.name
+      })))
+    : (actualItemTypes = [
+        { id: 0, text: "Bike" },
+        { id: 1, text: "Clock" },
+        { id: 2, text: "Computer" }
+      ]);
+
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(repairRequestPatchSchema),
     defaultValues: {
@@ -22,43 +68,33 @@ export default function PrepopulatedRepairAttemptForm({
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
       hoursWorked: Number(props.hoursWorked),
-      isRepaired: props.status,
-      isSparePartsNeeded: undefined,
-      spareParts: "",
+      isRepaired: status,
+      isSparePartsNeeded: isSparePartsNeeded,
+      spareParts: props.spareParts,
       repairComment: props.comment
     }
   });
 
   const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
 
-  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
-    // console.log(JSON.stringify(data));
-    const response = await fetch(`/api/repair-request`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    if (response.ok) {
-      alert("Data submitted");
-    } else {
-      alert(`Error! ${response.statusText}`);
-    }
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
-        <FieldInput name="item" control={control} rules={{ required: true }} />
+        <DropDown
+          name="item"
+          control={control}
+          rules={{ required: true }}
+          options={actualItemTypes}
+        />
 
         {/* Brand, Material */}
-        <FieldInput
+        <DropDown
           name="itemBrand"
           label="Brand"
           control={control}
           rules={{ required: true }}
+          options={actualItemBrands}
         />
         <FieldInput
           name="itemMaterial"

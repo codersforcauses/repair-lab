@@ -11,12 +11,9 @@ export interface HeaderProps {
 export default function Header({ props }: { props: HeaderProps }) {
   return (
     <>
-      <div className="header-component z-20 sticky top-0 flex justify-between gap-4 px-5 pb-8 pt-6 ">
+      <div className="header-component sticky top-0 z-20 flex justify-between gap-4 px-5 pb-8 pt-6 ">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-600">
-            St Catherine’s <br />
-            Repair Event
-          </h1>
+          <h1 className="text-2xl font-bold text-zinc-600">{props.name}</h1>
           <p className="mr-8 text-lg text-[#098D85]">
             Event Manager:{" "}
             <span className="text-zinc-800">{props.createdBy} </span>

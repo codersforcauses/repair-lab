@@ -157,10 +157,13 @@ export default function Home() {
         </ul>
       </div>
       <div className="m-10">
-      <Button width="w-full" onClick={() => signOut()}>Logout</Button>
+        <Button width="w-full" onClick={() => signOut()}>
+          Logout
+        </Button>
       </div>
-      <Link className= "py-4" href="/event-listing"><Button>Admin Dashboard</Button></Link>
-      
+      <Link className="py-4" href="/event-listing">
+        <Button>Admin Dashboard</Button>
+      </Link>
     </div>
   );
 }
