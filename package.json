@@ -28,6 +28,7 @@
     "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.374.0",
     "@clerk/nextjs": "^4.21.3",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
