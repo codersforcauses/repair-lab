@@ -7,7 +7,8 @@ import {
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
 export interface FormProps<T extends FieldValues = FieldValues>
-  extends UseControllerProps<T> {
+  extends UseControllerProps<T>,
+    Omit<React.HTMLAttributes<HTMLTextAreaElement>, "defaultValue"> {
   id?: string;
   label?: string;
   placeholder?: string;
@@ -37,7 +38,7 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
   const baseStyle = `relative mb-2 flex ${height} ${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
-  const textAreaStyle = `overflow-wrap:break-text h-4/5 w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
+  const textAreaStyle = `overflow-wrap:break-text pt-3 h-full w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
 
   return (
     <div
