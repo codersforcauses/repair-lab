@@ -38,7 +38,7 @@ Output:
   A multiselect dropdown that is compatible w/ React-hook-forms 
 */
 
-export default function MultiSelect<T extends FieldValues = FieldValues>({
+export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
   options,
   placeholder,
   label,
@@ -48,9 +48,6 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
   const [selectedGroup, setSelectedGroup] = useState<Option[]>([]);
-  const baseStyle = `flex h-10 ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
-  const normalBorderStyle = `ring-grey-300`;
-  const errorBorderStyle = `ring-red-500`;
 
   return (
     <div
@@ -68,14 +65,12 @@ export default function MultiSelect<T extends FieldValues = FieldValues>({
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
-              `${baseStyle}`,
-              `text-left`,
-              fieldState.invalid
-                ? `${errorBorderStyle}`
-                : `${normalBorderStyle}`
+              "flex h-10 justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-left text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
+              fieldState.invalid ? `ring-grey-300` : `ring-red-500`,
+              width
             )}
           >
-            <Label label={!label ? props.name : label} {...props} />
+            <Label {...props} label={!label ? props.name : label} />
             {fieldState.invalid && <Error {...props} />}
             <span className="truncate">
               {selectedGroup.length === 0 ? (

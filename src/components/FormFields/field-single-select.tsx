@@ -35,7 +35,7 @@ Output:
   A dropdown that is compatible w/ React-hook-forms 
 */
 
-export default function SingleSelect<T extends FieldValues = FieldValues>({
+export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   options,
   placeholder,
   label,
