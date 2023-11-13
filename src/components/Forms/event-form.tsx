@@ -1,10 +1,9 @@
-import React from "react";
 import type { Event, ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
+import FieldMultiSelect from "@/components/FormFields/field-multi-select";
 
 export default function EventForm({
   itemTypes,
@@ -33,15 +32,15 @@ export default function EventForm({
           <FieldInput control={control} name="name"></FieldInput>
           <FieldInput control={control} name="createdBy"></FieldInput>
           <FieldInput control={control} name="startDate"></FieldInput>
-          <DropDown
+          <FieldMultiSelect
             control={control}
             name="eventType"
             options={itemTypes.map((type) => ({
               id: type.name,
               text: type.name
             }))}
-          ></DropDown>
-          <DropDown
+          ></FieldMultiSelect>
+          <FieldMultiSelect
             control={control}
             name="status"
             options={[
@@ -49,7 +48,7 @@ export default function EventForm({
               { id: 1, text: "ONGOING" },
               { id: 2, text: "COMPLETED" }
             ]}
-          ></DropDown>
+          ></FieldMultiSelect>
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">

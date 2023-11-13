@@ -1,9 +1,9 @@
-import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import DropDown from "@/components/FormFields/field-dropdown";
 import Field_Input from "@/components/FormFields/field-input";
+import MultiSelect from "@/components/FormFields/field-multi-select";
 import Field_Radio from "@/components/FormFields/field-radio";
+import SingleSelect from "@/components/FormFields/field-single-select";
 import Field_Text_Area from "@/components/FormFields/field-text-area";
 
 /**
@@ -22,7 +22,8 @@ type RepairData = {
   parts: string;
   desc: string;
   comments: string;
-  dropdown: string;
+  singleSelect: string;
+  multiSelect: string;
 };
 
 export default function Repair() {
@@ -38,7 +39,8 @@ export default function Repair() {
       parts: "",
       desc: "",
       comments: "",
-      dropdown: ""
+      singleSelect: "",
+      multiSelect: ""
     },
     mode: "onChange"
   });
@@ -119,8 +121,9 @@ export default function Repair() {
         </div>
 
         <div className={lineStyle}>
-          <DropDown
-            name="dropdown"
+          <SingleSelect
+            name="singleSelect"
+            // width="w-96"
             control={control}
             placeholder="Select an Item"
             label="header"
@@ -169,6 +172,48 @@ export default function Repair() {
             control={control}
             rules={{ required: true }}
             icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
+          />
+        </div>
+        <div className={lineStyle}>
+          <MultiSelect
+            name="multiSelect"
+            // width="w-96"
+            control={control}
+            rules={{ required: true }}
+            options={[
+              {
+                id: 0,
+                text: "Option1"
+              },
+              {
+                id: 1,
+                text: "Option2"
+              },
+              {
+                id: 2,
+                text: "Option3"
+              },
+              {
+                id: 3,
+                text: "LongerOption4"
+              },
+              {
+                id: 4,
+                text: "EvenLongerOption5"
+              },
+              {
+                id: 5,
+                text: "Option6"
+              },
+              {
+                id: 6,
+                text: "Option7"
+              },
+              {
+                id: 7,
+                text: "A really really long option for the purpose of testing"
+              }
+            ]}
           />
         </div>
         {/* Submit */}
