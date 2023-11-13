@@ -8,7 +8,8 @@ import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
 
 export interface FormProps<T extends FieldValues = FieldValues>
-  extends UseControllerProps<T> {
+  extends UseControllerProps<T>,
+    Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
   id?: string;
   label?: string;
   width?: string;
@@ -50,6 +51,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
             type="radio"
             value="true"
             id={!id ? `${props.name}-y` : `${id}-y`}
+            checked={field.value == "true" ? true : false}
           />
           Yes
         </label>
@@ -60,6 +62,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
             type="radio"
             value="false"
             id={!id ? `${props.name}-n` : `${id}-n`}
+            checked={field.value == "false" ? true : false}
           />
           No
         </label>

@@ -4,14 +4,18 @@ import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronUp,
-  faPencil,
   faPlus,
   faSearch,
   faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
-import { Event, EventStatus } from "@prisma/client";
+import { Event, EventStatus, ItemType } from "@prisma/client";
+import { SubmitHandler } from "react-hook-form";
+
+import EventFormEditButton from "@/components/Button/event-form-edit-button";
+import EventForm from "@/components/Forms/event-form";
+import Modal from "@/components/Modal";
 
 function Table() {
   const router = useRouter();
@@ -29,6 +33,7 @@ function Table() {
     return `${day}/${month}/${year}`;
   }
 
+  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
   const [eventData, setEventData] = useState<Event[]>([]);
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
@@ -77,31 +82,20 @@ function Table() {
       });
   }, [sortKey, sortMethod, searchWord]);
 
+  useEffect(() => {
+    fetch("/api/events/get-itemtype", {
+      method: "GET"
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItemTypes(data);
+      });
+  }, []);
+
   // will toggle modal visibility for editing events
+  const [showAddModal, setShowAddModal] = useState(false);
 
-  function handleEditEvent(selectedEvent: Event) {
-    setShowCreateForm(false);
-    setFormData(selectedEvent);
-    toggleModal(true);
-  }
-
-  function handleAddEvent() {
-    setShowCreateForm(true);
-    toggleModal(true);
-    setFormData({
-      id: undefined,
-      name: "",
-      createdBy: "",
-      location: "",
-      startDate: undefined,
-      eventType: "",
-      status: undefined
-    });
-  }
-
-  async function addEvents(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  const addEvents: SubmitHandler<Event> = async (formData: any) => {
     try {
       const response = await fetch("/api/event", {
         method: "POST",
@@ -113,17 +107,16 @@ function Table() {
 
       if (response.ok) {
         const addEvent = await response.json();
-        toggleModal(false);
+        setShowAddModal(false);
         router.reload();
       }
     } catch (error) {
-      console.error("Failed to add event");
+      alert("Failed to add event");
     }
-  }
+  };
 
-  async function editEvents(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  // THIS IS NOT USED ANYMORE, it moved to event-form-edit-button.tsx instead
+  const editEvents: SubmitHandler<Event> = async (formData: any) => {
     try {
       const response = await fetch("/api/event", {
         method: "PATCH",
@@ -141,7 +134,7 @@ function Table() {
     } catch (error) {
       console.error("An error occurred while updating the event:", error);
     }
-  }
+  };
 
   // handles searching
   useEffect(() => {
@@ -285,7 +278,7 @@ function Table() {
             </Dialog.Description>
 
             {/* main form*/}
-            <form onSubmit={showCreateForm === true ? addEvents : editEvents}>
+            <form>
               <div key={headers[0].key} className="flow-root">
                 <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
                   {" "}
@@ -352,15 +345,21 @@ function Table() {
                   {" "}
                   {headers[4].label}
                 </label>
-                <input
-                  type="text"
+                <select
                   name={headers[4].key}
-                  value={
+                  onChange={handleInputChange as ChangeEventHandler}
+                  defaultValue={
                     formData[headers[4].key as keyof Partial<Event>] as string
                   }
-                  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                />
+                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
+                >
+                  {itemTypes.map((type) => (
+                    <option value={type.name} key={type.name}>
+                      {" "}
+                      {type.name}{" "}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div key={headers[5].key} className="flow-root">
@@ -428,16 +427,23 @@ function Table() {
         <div className=" p-4 text-center ">
           <button
             className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
-            onClick={() => handleAddEvent()}
+            onClick={() => setShowAddModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
+          <Modal
+            setShowPopup={setShowAddModal}
+            showModal={showAddModal}
+            height="h-3/4"
+          >
+            <EventForm itemTypes={itemTypes} onSubmit={addEvents} />
+          </Modal>
         </div>
       </div>
 
       {/* main table*/}
       <div className="flex justify-center">
-        <div className="container overflow-hidden">
+        <div className="container flex w-full justify-center overflow-hidden">
           <table className="w-10/12 table-auto overflow-hidden rounded-lg">
             <thead>
               <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
@@ -453,6 +459,9 @@ function Table() {
 
             <tbody className="bg-secondary-50">
               {eventData.map((event: Event) => {
+                function handleEditEvent() {
+                  setShowAddModal(true);
+                }
                 return (
                   <tr
                     key={event.name}
@@ -461,7 +470,11 @@ function Table() {
                     <td className="pl-5 font-light">
                       <button
                         className="text-sm"
-                        onClick={() => router.push("/event-form/" + event.id)}
+                        onClick={() =>
+                          router.push(
+                            "/events/" + event.id + "/repair-requests"
+                          )
+                        }
                       >
                         {event.name}
                       </button>
@@ -476,9 +489,10 @@ function Table() {
                     <td className="text-sm font-light">{event.eventType}</td>
                     <td className="text-sm font-light">{event.status}</td>
                     <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                      <button onClick={() => handleEditEvent(event)}>
-                        <FontAwesomeIcon icon={faPencil} />
-                      </button>
+                      <EventFormEditButton
+                        props={event}
+                        itemTypes={itemTypes}
+                      />
                     </td>
                   </tr>
                 );

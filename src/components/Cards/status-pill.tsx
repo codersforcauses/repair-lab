@@ -5,14 +5,17 @@ type Props = {
 export default function StatusPill({ status }: Props) {
   let bgColor;
   switch (status) {
-    case "COMPLETED":
-      bgColor = "bg-green-500";
+    case "ACCEPTED":
+      bgColor = "bg-darkAqua-400";
       break;
     case "PENDING":
       bgColor = "bg-yellow-500";
       break;
-    case "CANCELLED":
+    case "FAILED":
       bgColor = "bg-red-500";
+      break;
+    case "REPAIRED":
+      bgColor = "bg-green-500";
   }
 
   return (
