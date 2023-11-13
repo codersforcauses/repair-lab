@@ -1,10 +1,9 @@
-import React from "react";
 import type { Event, ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
+import FieldSingleSelect from "@/components/FormFields/field-single-select";
 
 export default function PrepopulatedEventForm({
   props,
@@ -51,15 +50,15 @@ export default function PrepopulatedEventForm({
           <FieldInput control={control} name="name"></FieldInput>
           <FieldInput control={control} name="createdBy"></FieldInput>
           <FieldInput control={control} name="startDate"></FieldInput>
-          <DropDown
+          <FieldSingleSelect
             control={control}
             name="eventType"
             options={itemTypes.map((type) => ({
               id: type.name,
               text: type.name
             }))}
-          ></DropDown>
-          <DropDown
+          ></FieldSingleSelect>
+          <FieldSingleSelect
             control={control}
             name="status"
             options={[
@@ -67,7 +66,7 @@ export default function PrepopulatedEventForm({
               { id: 1, text: "ONGOING" },
               { id: 2, text: "COMPLETED" }
             ]}
-          ></DropDown>
+          ></FieldSingleSelect>
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">

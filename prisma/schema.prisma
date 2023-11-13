@@ -40,7 +40,7 @@ enum EventStatus {
   COMPLETED
 }
 
-enum Status {
+enum RepairStatus {
   PENDING
   ACCEPTED
   REJECTED
@@ -57,9 +57,9 @@ model RepairRequest {
   event   Event  @relation(fields: [eventId], references: [id]) //relation field (many repair_requests to one event)
   eventId String
 
-  status         Status @default(PENDING)
+  status         RepairStatus @default(PENDING)
   description    String
-  comment        String @default("") //comment for client
+  comment        String       @default("") //comment for client
   thumbnailImage String //s3 key to compressed image of object
 
   repairComment String  @default("") //comment for volunteer to document process
