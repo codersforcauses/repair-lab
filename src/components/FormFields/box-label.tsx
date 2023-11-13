@@ -15,13 +15,13 @@ export default function Label<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   return (
-    <div className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1">
-      <label className="text-xs font-semibold text-black">{label}</label>
+    <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black">
+      {label}
       {props.rules?.required ? (
-        <span className="text-xs font-semibold text-red-500">*</span>
+        <span className="text-xs font-semibold text-red-500"> *</span>
       ) : (
         ""
       )}
-    </div>
+    </label>
   );
 }
