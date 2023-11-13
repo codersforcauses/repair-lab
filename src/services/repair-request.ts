@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { RepairRequest } from "@prisma/client";
-import { Status } from "@prisma/client";
+import { RepairStatus } from "@prisma/client";
 
 import prisma from "@/lib/prisma";
 
@@ -20,7 +20,7 @@ interface RepairRequestUpdateInput {
   id: string;
   itemMaterial: string;
   hoursWorked: number;
-  status: Status;
+  status: RepairStatus;
   spareParts?: string | undefined;
   repairComment: string;
 }
