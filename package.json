@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "src/email"
+  ],
   "prisma": {
     "seed": "node --loader ts-node/esm prisma/seed.ts"
   },
@@ -19,7 +22,7 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "test": "npm run docker:up && prisma db push && vitest --no-threads run",
-    "coverage": "prisma migrate deploy && vitest run --coverage",
+    "coverage": "vitest run --coverage",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
@@ -28,13 +31,13 @@
     "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.374.0",
     "@aws-sdk/client-ses": "^3.370.0",
     "@clerk/nextjs": "^4.21.3",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.15",
     "@prisma/client": "^4.15.0",
-    "@react-email/components": "^0.0.7",
     "@react-email/render": "^0.0.7",
     "@types/chai": "^4.3.5",
     "axios": "^1.4.0",
