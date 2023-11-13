@@ -3,9 +3,9 @@ import { Brand, ItemType, RepairRequest } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import DropDown from "@/components/FormFields/field-dropdown";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
+import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { repairRequestPatchSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
@@ -81,7 +81,7 @@ export default function PrepopulatedRepairAttemptForm({
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
-        <DropDown
+        <FieldSingleSelect
           name="item"
           control={control}
           rules={{ required: true }}
@@ -89,7 +89,7 @@ export default function PrepopulatedRepairAttemptForm({
         />
 
         {/* Brand, Material */}
-        <DropDown
+        <FieldSingleSelect
           name="itemBrand"
           label="Brand"
           control={control}
