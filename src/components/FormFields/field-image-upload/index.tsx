@@ -161,6 +161,7 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
               </p>
               <button
                 className="text-darkAqua-700 hover:text-darkAqua-950 hover:underline"
+                type="button"
                 onClick={onButtonClick}
               >
                 Upload a file

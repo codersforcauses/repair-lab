@@ -11,7 +11,7 @@ export interface HeaderProps {
 export default function Header({ props }: { props: HeaderProps }) {
   return (
     <>
-      <div className="header-component z-5 sticky top-0 flex justify-between gap-4 px-5 pb-8 pt-6 ">
+      <div className="header-component sticky top-0 z-20 flex justify-between gap-4 px-5 pb-8 pt-6 ">
         <div>
           <h1 className="text-2xl font-bold text-zinc-600">{props.name}</h1>
           <p className="mr-8 text-lg text-[#098D85]">
