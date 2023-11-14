@@ -23,7 +23,6 @@ describe("GET /api/item-type", () => {
   it("should return item types", async () => {
     await testApiHandler({
       handler,
-      url: "/",
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",

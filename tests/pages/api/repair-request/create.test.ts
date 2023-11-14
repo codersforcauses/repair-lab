@@ -27,7 +27,6 @@ describe("POST /api/repair-request", () => {
   it("should return 400 status code on invalid fields", async () => {
     await testApiHandler({
       handler,
-      url: "/",
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "POST",
@@ -49,7 +48,6 @@ describe("POST /api/repair-request", () => {
   it("should be able to create a repair request", async () => {
     await testApiHandler({
       handler,
-      url: "/",
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "POST",

@@ -23,7 +23,6 @@ describe("GET /api/brand", () => {
   it("should return brands", async () => {
     await testApiHandler({
       handler,
-      url: "/",
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",
