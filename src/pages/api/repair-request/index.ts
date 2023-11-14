@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { getAuth } from "@clerk/nextjs/server";
+import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
@@ -56,7 +57,10 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (!existingRepairRequest) {
-    throw new ApiError(404, "Repair Request does not exist");
+    throw new ApiError(
+      HttpStatusCode.NotFound,
+      "Repair Request does not exist"
+    );
   }
 
   const repairAttempt = await prisma.repairRequest.update({
