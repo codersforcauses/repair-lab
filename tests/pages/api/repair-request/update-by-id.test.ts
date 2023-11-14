@@ -3,7 +3,7 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { RepairRequest } from "@prisma/client";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import endpoint, { config } from "@/pages/api/repair-request";
+import endpoint, { config } from "@/pages/api/repair-request/[id]";
 
 import prisma from "../../../../src/lib/prisma";
 import { cleanup, seedTestData } from "../../../utils";
@@ -27,7 +27,7 @@ describe("PATCH /api/repair-request/:id", () => {
   it("should return 400 status code on invalid fields", async () => {
     await testApiHandler({
       handler,
-      url: "/",
+      params: { id: "56005d72-2614-11ee-be56-0242ac120002" },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "PATCH",
@@ -35,7 +35,6 @@ describe("PATCH /api/repair-request/:id", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            id: "56005d72-2614-11ee-be56-0242ac120002",
             hoursWorked: "asdfasdf",
             isRepaired: "true",
             isSparePartsNeeded: "true",
@@ -52,7 +51,7 @@ describe("PATCH /api/repair-request/:id", () => {
   it("should return 404 status code for an invalid repair request", async () => {
     await testApiHandler({
       handler,
-      url: "/",
+      params: { id: "NONEXISTENT_ID" },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "PATCH",
@@ -60,7 +59,6 @@ describe("PATCH /api/repair-request/:id", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            id: "NONEXISTENT_ID",
             item: "Clock",
             itemBrand: "Wonderland",
             itemMaterial: "Plastic",
@@ -80,7 +78,7 @@ describe("PATCH /api/repair-request/:id", () => {
   it("should be able to update a repair request", async () => {
     await testApiHandler({
       handler,
-      url: "/",
+      params: { id: "56005d72-2614-11ee-be56-0242ac120002" },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "PATCH",
@@ -88,7 +86,6 @@ describe("PATCH /api/repair-request/:id", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            id: "56005d72-2614-11ee-be56-0242ac120002",
             item: "Laptop",
             itemBrand: "Apple",
             itemMaterial: "Metal",

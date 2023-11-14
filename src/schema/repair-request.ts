@@ -17,7 +17,6 @@ const preprocessBooleanInput = (input: unknown) => {
 };
 
 export const updateRepairRequestSchema = z.object({
-  id: z.string().trim().min(1, { message: "missing" }),
   item: z.string().min(1, { message: "Item name is required" }),
   itemBrand: z.string().min(1, { message: "Brand is required" }),
   itemMaterial: z.string().min(1, { message: "Material is required" }),
