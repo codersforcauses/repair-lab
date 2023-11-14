@@ -7,7 +7,7 @@ import { ZodError } from "zod";
 
 /**
  * Wrapper for the base Next.js API handler to provide default error handling.
- * @param handler Object containing HTTP methods and its implementation.
+ * @param handler Object containing HTTP methods and its handler.
  * @returns
  */
 export default function apiHandler(
