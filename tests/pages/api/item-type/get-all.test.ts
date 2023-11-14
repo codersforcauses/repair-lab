@@ -5,7 +5,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import prisma from "@/lib/prisma";
 import endpoint, { config } from "@/pages/api/item-type";
 
-import { cleanup } from "../../utils";
+import { cleanup } from "../../../utils";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
