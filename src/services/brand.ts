@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Brand } from "@prisma/client";
 
 import prisma from "@/lib/prisma";

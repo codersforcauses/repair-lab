@@ -18,7 +18,7 @@
     "format:check": "prettier -c .",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "test": "npm run docker:up && prisma db push && vitest --no-threads run",
+    "test": "npm run docker:up && prisma db push && vitest --no-threads --reporter verbose run",
     "coverage": "prisma migrate deploy && vitest run --coverage",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",

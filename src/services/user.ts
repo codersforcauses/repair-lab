@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { clerkClient } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server/clerkClient";
 

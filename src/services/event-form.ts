@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Event } from "@prisma/client";
 
 import prisma from "@/lib/prisma";

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-
+import { ApiError } from "next/dist/server/api-utils";
 import { RepairRequest } from "@prisma/client";
 import { Status } from "@prisma/client";
 
@@ -55,6 +54,15 @@ class RepairRequestService implements IRepairRequestService {
 
   async update(details: RepairRequestUpdateInput): Promise<RepairRequest> {
     const { id, ...rest } = details;
+
+    const existingRepairRequest = await prisma.repairRequest.findUnique({
+      where: { id: id }
+    });
+
+    if (!existingRepairRequest) {
+      throw new ApiError(404, "Repair Request does not exist");
+    }
+
     const repairRequest = await prisma.repairRequest.update({
       where: { id },
       data: rest
