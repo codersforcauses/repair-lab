@@ -1,24 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PageConfig } from "next";
 
+import apiHandler from "@/lib/api-handler";
 import EventService from "@/services/event";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    case "GET":
-      getEventOptions(req, res);
-      break;
-    default:
-      return res.status(405).json({
-        error: { message: `Method ${req.method} not allowed` }
-      });
-  }
-}
+export default apiHandler({
+  get: getEventOptions
+});
 
-const getEventOptions = async (req: NextApiRequest, res: NextApiResponse) => {
+async function getEventOptions(req: NextApiRequest, res: NextApiResponse) {
   const eventService = new EventService();
   const events = await eventService.getAll({
     id: true,
@@ -26,7 +16,7 @@ const getEventOptions = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   res.status(200).json(events);
-};
+}
 
 export const config: PageConfig = {
   api: {
