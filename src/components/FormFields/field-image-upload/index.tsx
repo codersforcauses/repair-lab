@@ -49,7 +49,8 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
         !(
           file.type === "image/png" ||
           file.type === "image/jpg" ||
-          file.type === "image/jpeg"
+          file.type === "image/jpeg" ||
+          file.type === "image/webp"
         )
       ) {
         alert("Only images are allowed");
@@ -130,7 +131,7 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
         type="file"
         multiple={multiple}
         onChange={handleChange}
-        accept=".png, .jpeg, .jpg"
+        accept=".png, .jpeg, .jpg, .webp"
       />
       <label
         className={`flex min-h-[12rem] w-full items-center justify-center rounded-lg bg-lightAqua-200 transition hover:bg-lightAqua-300

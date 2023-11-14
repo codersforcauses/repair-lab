@@ -55,7 +55,6 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -63,6 +62,10 @@ jobs:
           node-version: "18"
           cache: "npm"
       - run: npm i
+      - run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgres://postgres:postgres@postgres:5432/test?schema=public
+          DATABASE_URL_DIRECT: postgres://postgres:postgres@postgres:5432/test
       - name: Run API tests
         run: npm run coverage
         env:
