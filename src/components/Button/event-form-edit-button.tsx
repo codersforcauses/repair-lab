@@ -16,7 +16,7 @@ export default function EventFormEditButton({
   itemTypes: ItemType[];
 }) {
   const [showEditModal, setShowEditModal] = useState(false);
-  const handleEditEvent: SubmitHandler<Event> = async (formData: any) => {
+  const handleEditEvent: SubmitHandler<Event> = async (formData) => {
     try {
       const response = await fetch("/api/event", {
         method: "PATCH",

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   PutObjectCommand,
-  PutObjectCommandInputType,
+  PutObjectCommandInput,
   PutObjectOutput,
   S3Client
 } from "@aws-sdk/client-s3";
@@ -91,7 +91,7 @@ async function sendToBucket(
 ) {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const fileParams: PutObjectCommandInputType = {
+  const fileParams: PutObjectCommandInput = {
     Bucket: process.env.AWS_BUCKET_NAME as string,
     Key: `users/${userId}/repair_items/${repaidId}/${filename}`,
     ContentType: file.type,

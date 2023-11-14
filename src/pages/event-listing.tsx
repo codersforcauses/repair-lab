@@ -95,7 +95,7 @@ function Table() {
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const addEvents: SubmitHandler<Event> = async (formData: any) => {
+  const addEvents: SubmitHandler<Event> = async (formData) => {
     try {
       const response = await fetch("/api/event", {
         method: "POST",
@@ -116,7 +116,7 @@ function Table() {
   };
 
   // THIS IS NOT USED ANYMORE, it moved to event-form-edit-button.tsx instead
-  const editEvents: SubmitHandler<Event> = async (formData: any) => {
+  const editEvents: SubmitHandler<Event> = async (formData: unknown) => {
     try {
       const response = await fetch("/api/event", {
         method: "PATCH",
