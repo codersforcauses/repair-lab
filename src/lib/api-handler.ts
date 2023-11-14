@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
@@ -11,7 +10,10 @@ import { ZodError } from "zod";
  * @returns
  */
 export default function apiHandler(
-  handler: Record<string, (req: NextApiRequest, res: NextApiResponse) => any>
+  handler: Record<
+    string,
+    (req: NextApiRequest, res: NextApiResponse) => unknown
+  >
 ): NextApiHandler {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const method = req.method?.toLowerCase();
@@ -30,7 +32,7 @@ export default function apiHandler(
   };
 }
 
-function errorHandler(err: any, res: NextApiResponse) {
+function errorHandler(err: unknown, res: NextApiResponse) {
   if (err instanceof ZodError) {
     return res.status(400).json({ message: err.errors });
   }
