@@ -26,7 +26,7 @@ const Modal = ({
       <Transition appear show={showModal} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10"
+          className="relative z-50"
           open={showModal}
           onClose={() => setShowPopup(false)}
         >
