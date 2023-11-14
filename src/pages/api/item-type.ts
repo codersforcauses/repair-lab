@@ -1,17 +1,16 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
 import apiHandler from "@/lib/api-handler";
-import ItemTypeService from "@/services/item-type";
+import prisma from "@/lib/prisma";
 
 export default apiHandler({
   get: getItemTypes
 });
 
 async function getItemTypes(req: NextApiRequest, res: NextApiResponse) {
-  const itemTypeService = new ItemTypeService();
-  const itemtypes = await itemTypeService.getAll();
+  const itemTypes = await prisma.itemType.findMany({});
 
-  return res.status(200).json(itemtypes);
+  return res.status(200).json(itemTypes);
 }
 
 export const config: PageConfig = {

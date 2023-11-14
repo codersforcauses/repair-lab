@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { clerkClient } from "@clerk/nextjs";
 
 import apiHandler from "@/lib/api-handler";
-import UserService from "@/services/user";
 
 export default apiHandler({
   get: getUser
@@ -9,10 +9,9 @@ export default apiHandler({
 
 async function getUser(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
-  const userService = new UserService();
-  const users = await userService.getUser(id as string);
 
-  return res.status(200).json(users);
+  const user = await clerkClient.users.getUser(id as string);
+  return res.status(200).json(user);
 }
 
 export const config: PageConfig = {

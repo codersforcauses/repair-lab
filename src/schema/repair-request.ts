@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const repairRequestPostSchema = z.object({
+export const createRepairRequestSchema = z.object({
   eventId: z.string().nonempty({ message: "Event is required" }),
   description: z
     .string()
@@ -19,7 +19,7 @@ const preprocessBooleanInput = (input: unknown) => {
   return processedInput.success ? processedInput.data : input;
 };
 
-export const repairRequestPatchSchema = z.object({
+export const updateRepairRequestSchema = z.object({
   id: z.string().trim().nonempty({ message: "missing" }),
   item: z.string().nonempty({ message: "Item name is required" }),
   itemBrand: z.string().nonempty({ message: "Brand is required" }),

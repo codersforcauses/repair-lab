@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 import {
-  repairRequestPatchSchema,
-  repairRequestPostSchema
+  createRepairRequestSchema,
+  updateRepairRequestSchema
 } from "@/schema/repair-request";
 
-export type RepairRequest = z.infer<typeof repairRequestPostSchema>;
-export type GeneralRepairAttempt = z.infer<typeof repairRequestPatchSchema>;
+export type RepairRequest = z.infer<typeof createRepairRequestSchema>;
+export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 export type Option = { id: number | string; text: string };
 
 export interface EmailAddress {

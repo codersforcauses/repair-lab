@@ -1,12 +1,13 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { ApiError } from "next/dist/server/api-utils";
 import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
+import prisma from "@/lib/prisma";
 import {
-  repairRequestPatchSchema,
-  repairRequestPostSchema
+  createRepairRequestSchema,
+  updateRepairRequestSchema
 } from "@/schema/repair-request";
-import RepairRequestService from "@/services/repair-request";
 
 export default apiHandler({
   post: createRepairRequest,
@@ -14,24 +15,31 @@ export default apiHandler({
 });
 
 async function createRepairRequest(req: NextApiRequest, res: NextApiResponse) {
-  const parsedData = repairRequestPostSchema.parse(req.body);
+  const parsedData = createRepairRequestSchema.parse(req.body);
 
   const { userId } = getAuth(req);
 
-  const repairRequestService = new RepairRequestService();
-  const repairRequest = await repairRequestService.insert({
-    ...parsedData,
-    thumbnailImage: "Fake S3 Key", // TODO: Change this once image upload works.
-    createdBy: userId as string
+  const { images, ...rest } = parsedData;
+  const repairRequest = await prisma.repairRequest.create({
+    data: {
+      ...rest,
+      thumbnailImage: "Fake S3 Key", // TODO: change this once image upload works.
+      createdBy: userId as string,
+      images: {
+        create: images?.map((image) => {
+          return {
+            s3Key: image
+          };
+        })
+      }
+    }
   });
 
-  return res.status(200).json({
-    id: repairRequest.id
-  });
+  return res.status(200).json(repairRequest);
 }
 
 async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
-  const parsedData = repairRequestPatchSchema.parse(req.body);
+  const parsedData = updateRepairRequestSchema.parse(req.body);
 
   const {
     id,
@@ -43,14 +51,23 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
     repairComment
   } = parsedData;
 
-  const repairRequestService = new RepairRequestService();
-  const repairAttempt = await repairRequestService.update({
-    id: id,
-    itemMaterial: itemMaterial,
-    hoursWorked: hoursWorked,
-    status: isRepaired === "true" ? "REPAIRED" : "FAILED",
-    spareParts: isSparePartsNeeded === "true" ? spareParts : "",
-    repairComment: repairComment
+  const existingRepairRequest = await prisma.repairRequest.findUnique({
+    where: { id: id }
+  });
+
+  if (!existingRepairRequest) {
+    throw new ApiError(404, "Repair Request does not exist");
+  }
+
+  const repairAttempt = await prisma.repairRequest.update({
+    where: { id },
+    data: {
+      itemMaterial: itemMaterial,
+      hoursWorked: hoursWorked,
+      status: isRepaired === "true" ? "REPAIRED" : "FAILED",
+      spareParts: isSparePartsNeeded === "true" ? spareParts : "",
+      repairComment: repairComment
+    }
   });
 
   return res.status(200).json(repairAttempt);
