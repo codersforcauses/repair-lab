@@ -8,14 +8,14 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import Toast from "@/components/Toast";
-import { repairRequestPatchSchema } from "@/schema/repair-request";
+import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttempt() {
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
-    resolver: zodResolver(repairRequestPatchSchema),
+    resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
       id: "",
       item: "",

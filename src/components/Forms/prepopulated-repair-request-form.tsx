@@ -7,7 +7,7 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
-import { repairRequestPatchSchema } from "@/schema/repair-request";
+import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
@@ -61,7 +61,7 @@ export default function PrepopulatedRepairAttemptForm({
       ]);
 
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
-    resolver: zodResolver(repairRequestPatchSchema),
+    resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
       id: props.id,
       item: props.itemType,
