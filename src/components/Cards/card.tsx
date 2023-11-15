@@ -1,11 +1,14 @@
 import { useState } from "react";
 import Image from "next/image";
+import router from "next/router";
 import { RepairRequest } from "@prisma/client";
+import { SubmitHandler } from "react-hook-form";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
 import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal/index";
+import { GeneralRepairAttempt } from "@/types";
 
 export type CardProps = {
   title?: string;
@@ -25,6 +28,22 @@ export default function Card({ props }: { props: CardProps }) {
   }
 
   const [showModal, setShowModal] = useState(false);
+  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
+    // console.log(JSON.stringify(data));
+    const response = await fetch(`/api/repair-request`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (response.ok) {
+      router.reload();
+      setShowModal(false);
+    } else {
+      alert(`Error! ${response.statusText}`);
+    }
+  };
 
   return (
     <div
@@ -33,7 +52,7 @@ export default function Card({ props }: { props: CardProps }) {
       role="presentation"
       className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
     >
-      <Modal setShowPopup={setShowModal} showModal={showModal} height="h-full">
+      <Modal setShowPopup={setShowModal} showModal={showModal}>
         <div className="text-center">
           <h1 className="text-xl font-bold">Repair ID:</h1>
           <h2 className="text-l font-bold">
@@ -42,6 +61,7 @@ export default function Card({ props }: { props: CardProps }) {
           <div>
             <PrepopulatedRepairAttemptForm
               props={props.repairRequestProps}
+              onSubmit={onSubmit}
             ></PrepopulatedRepairAttemptForm>
           </div>
         </div>

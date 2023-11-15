@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronUp,
-  faPencil,
   faPlus,
   faSearch,
   faXmark
@@ -12,6 +11,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
 import { Event, EventStatus, ItemType } from "@prisma/client";
+import { SubmitHandler } from "react-hook-form";
+
+import EventFormEditButton from "@/components/Button/event-form-edit-button";
+import EventForm from "@/components/Forms/event-form";
+import Modal from "@/components/Modal";
 
 function Table() {
   const router = useRouter();
@@ -89,30 +93,9 @@ function Table() {
   }, []);
 
   // will toggle modal visibility for editing events
+  const [showAddModal, setShowAddModal] = useState(false);
 
-  function handleEditEvent(selectedEvent: Event) {
-    setShowCreateForm(false);
-    setFormData(selectedEvent);
-    toggleModal(true);
-  }
-
-  function handleAddEvent() {
-    setShowCreateForm(true);
-    toggleModal(true);
-    setFormData({
-      id: undefined,
-      name: "",
-      createdBy: "",
-      location: "",
-      startDate: undefined,
-      eventType: "",
-      status: undefined
-    });
-  }
-
-  async function addEvents(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  const addEvents: SubmitHandler<Event> = async (formData) => {
     try {
       const response = await fetch("/api/event", {
         method: "POST",
@@ -124,17 +107,16 @@ function Table() {
 
       if (response.ok) {
         const addEvent = await response.json();
-        toggleModal(false);
+        setShowAddModal(false);
         router.reload();
       }
     } catch (error) {
-      console.error("Failed to add event");
+      alert("Failed to add event");
     }
-  }
+  };
 
-  async function editEvents(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  // THIS IS NOT USED ANYMORE, it moved to event-form-edit-button.tsx instead
+  const editEvents: SubmitHandler<Event> = async (formData: unknown) => {
     try {
       const response = await fetch("/api/event", {
         method: "PATCH",
@@ -152,7 +134,7 @@ function Table() {
     } catch (error) {
       console.error("An error occurred while updating the event:", error);
     }
-  }
+  };
 
   // handles searching
   useEffect(() => {
@@ -296,7 +278,7 @@ function Table() {
             </Dialog.Description>
 
             {/* main form*/}
-            <form onSubmit={showCreateForm === true ? addEvents : editEvents}>
+            <form>
               <div key={headers[0].key} className="flow-root">
                 <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
                   {" "}
@@ -445,10 +427,17 @@ function Table() {
         <div className=" p-4 text-center ">
           <button
             className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
-            onClick={() => handleAddEvent()}
+            onClick={() => setShowAddModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
+          <Modal
+            setShowPopup={setShowAddModal}
+            showModal={showAddModal}
+            height="h-3/4"
+          >
+            <EventForm itemTypes={itemTypes} onSubmit={addEvents} />
+          </Modal>
         </div>
       </div>
 
@@ -470,6 +459,9 @@ function Table() {
 
             <tbody className="bg-secondary-50">
               {eventData.map((event: Event) => {
+                function handleEditEvent() {
+                  setShowAddModal(true);
+                }
                 return (
                   <tr
                     key={event.name}
@@ -497,9 +489,10 @@ function Table() {
                     <td className="text-sm font-light">{event.eventType}</td>
                     <td className="text-sm font-light">{event.status}</td>
                     <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                      <button onClick={() => handleEditEvent(event)}>
-                        <FontAwesomeIcon icon={faPencil} />
-                      </button>
+                      <EventFormEditButton
+                        props={event}
+                        itemTypes={itemTypes}
+                      />
                     </td>
                   </tr>
                 );

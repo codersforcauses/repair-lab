@@ -18,7 +18,7 @@ const Modal = ({
   setShowPopup,
   title,
   width = "w-full sm:max-w-lg md:max-w-2xl",
-  height = "h-full",
+  height = "h-fit",
   children
 }: ModalProps) => {
   return (
@@ -26,7 +26,7 @@ const Modal = ({
       <Transition appear show={showModal} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10"
+          className="relative z-50"
           open={showModal}
           onClose={() => setShowPopup(false)}
         >
