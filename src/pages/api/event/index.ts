@@ -1,6 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
+import { createEventSchema } from "@/schema/event";
 
 import prisma from "../../../lib/prisma";
 
@@ -52,28 +54,31 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function createEvent(req: NextApiRequest, res: NextApiResponse) {
-  const { name, createdBy, location, startDate, eventType, status } = req.body;
+  const { eventType, startDate, endDate, ...rest } = createEventSchema.parse(
+    req.body
+  );
 
-  // TODO: Replace this hardcoded value.
-  const description = "description abc";
-  const endDate = "2003-08-04T18:24:00.000Z";
+  const { userId } = getAuth(req);
 
   const newEvent = await prisma.event.create({
     data: {
-      name,
-      createdBy,
-      location,
-      startDate,
+      ...rest,
+      createdBy: userId as string,
       event: {
         connect: {
           name: eventType
         }
       },
-      status,
-      description,
-      endDate
+      startDate: new Date(startDate),
+      endDate: new Date(endDate)
     }
   });
 
   res.status(200).json(newEvent);
 }
+
+export const config: PageConfig = {
+  api: {
+    externalResolver: true
+  }
+};

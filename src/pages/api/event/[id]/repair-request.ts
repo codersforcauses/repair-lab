@@ -24,5 +24,7 @@ async function getRepairRequests(req: NextApiRequest, res: NextApiResponse) {
     where: { event: { id: id as string } }
   });
 
+  // TODO: Generate GET presigned urls for images in S3.
+
   return res.status(200).json(repairRequests);
 }
