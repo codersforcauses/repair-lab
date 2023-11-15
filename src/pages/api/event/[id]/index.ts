@@ -1,9 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
+import { updateEventSchema } from "@/schema/event";
 
 export default apiHandler({
   get: getEvent,
@@ -25,7 +26,16 @@ async function getEvent(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
-  const { name, createdBy, location, startDate, eventType, status } = req.body;
+  const {
+    name,
+    location,
+    eventType,
+    status,
+    description,
+    disclaimer,
+    startDate,
+    endDate
+  } = updateEventSchema.parse(req.body);
 
   const { id } = req.query;
 
@@ -42,14 +52,22 @@ async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
   const updatedEvent = await prisma.event.update({
     where: { id: id as string },
     data: {
-      name,
-      createdBy,
-      location,
-      startDate,
-      eventType,
-      status
+      name: name ?? existingEvent.name,
+      location: location ?? existingEvent.location,
+      eventType: eventType ?? existingEvent.eventType,
+      startDate: startDate ? new Date(startDate) : existingEvent.startDate,
+      endDate: endDate ? new Date(endDate) : existingEvent.endDate,
+      description: description ?? existingEvent.description,
+      disclaimer: disclaimer ?? existingEvent.disclaimer,
+      status: status ?? existingEvent.status
     }
   });
 
   res.status(200).json(updatedEvent);
 }
+
+export const config: PageConfig = {
+  api: {
+    externalResolver: true
+  }
+};
