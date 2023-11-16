@@ -116,27 +116,6 @@ function Table() {
     }
   };
 
-  // THIS IS NOT USED ANYMORE, it moved to event-form-edit-button.tsx instead
-  const editEvents: SubmitHandler<Event> = async (formData: unknown) => {
-    try {
-      const response = await fetch("/api/event", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        const updatedEvent = await response.json();
-        toggleModal(false);
-        router.reload(); // Reload the page to update the event data
-      }
-    } catch (error) {
-      console.error("An error occurred while updating the event:", error);
-    }
-  };
-
   // handles searching
   useEffect(() => {
     const params = new URLSearchParams();

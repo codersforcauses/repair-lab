@@ -2,11 +2,13 @@ import { useState } from "react";
 import router from "next/router";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Event, ItemType } from "@prisma/client";
+import { ItemType } from "@prisma/client";
+import { Event } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
 import PrepopulatedEventForm from "@/components/Forms/prepopulated-event-form";
 import Modal from "@/components/Modal";
+import { UpdateEvent } from "@/types";
 
 export default function EventFormEditButton({
   props,
@@ -16,19 +18,18 @@ export default function EventFormEditButton({
   itemTypes: ItemType[];
 }) {
   const [showEditModal, setShowEditModal] = useState(false);
-  const handleEditEvent: SubmitHandler<Event> = async (formData) => {
+  const handleEditEvent: SubmitHandler<UpdateEvent> = async (formData) => {
     try {
-      const { id, ...rest } = formData;
-      const response = await fetch(`/api/event/${id}`, {
+      const response = await fetch(`/api/event/${props.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(rest)
+        body: JSON.stringify(formData)
       });
 
       if (response.ok) {
-        const updatedEvent = await response.json();
+        await response.json();
         setShowEditModal(false);
         router.reload(); // Reload the page to update the event data
       }
