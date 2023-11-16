@@ -18,12 +18,13 @@ export default function EventFormEditButton({
   const [showEditModal, setShowEditModal] = useState(false);
   const handleEditEvent: SubmitHandler<Event> = async (formData) => {
     try {
-      const response = await fetch("/api/event", {
+      const { id, ...rest } = formData;
+      const response = await fetch(`/api/event/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(rest)
       });
 
       if (response.ok) {

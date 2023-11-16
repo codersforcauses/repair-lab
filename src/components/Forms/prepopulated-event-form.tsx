@@ -62,9 +62,9 @@ export default function PrepopulatedEventForm({
             control={control}
             name="status"
             options={[
-              { id: 0, text: "UPCOMING" },
-              { id: 1, text: "ONGOING" },
-              { id: 2, text: "COMPLETED" }
+              { id: "UPCOMING", text: "UPCOMING" },
+              { id: "ONGOING", text: "ONGOING" },
+              { id: "COMPLETED", text: "COMPLETED" }
             ]}
           ></FieldSingleSelect>
         </div>

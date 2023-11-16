@@ -16,6 +16,7 @@ import { SubmitHandler } from "react-hook-form";
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
+import { CreateEvent } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -83,7 +84,7 @@ function Table() {
   }, [sortKey, sortMethod, searchWord]);
 
   useEffect(() => {
-    fetch("/api/events/get-itemtype", {
+    fetch("/api/item-type", {
       method: "GET"
     })
       .then((res) => res.json())
@@ -95,7 +96,7 @@ function Table() {
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
 
-  const addEvents: SubmitHandler<Event> = async (formData) => {
+  const addEvents: SubmitHandler<CreateEvent> = async (formData) => {
     try {
       const response = await fetch("/api/event", {
         method: "POST",
@@ -106,7 +107,7 @@ function Table() {
       });
 
       if (response.ok) {
-        const addEvent = await response.json();
+        await response.json();
         setShowAddModal(false);
         router.reload();
       }

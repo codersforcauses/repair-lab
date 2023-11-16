@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { createEventSchema, updateEventSchema } from "@/schema/event";
 import {
   createRepairRequestSchema,
   updateRepairRequestSchema
@@ -7,6 +8,9 @@ import {
 
 export type RepairRequest = z.infer<typeof createRepairRequestSchema>;
 export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
+export type CreateEvent = z.infer<typeof createEventSchema>;
+export type UpdateEvent = z.infer<typeof updateEventSchema>;
+
 export type Option = { id: number | string; text: string };
 
 export interface EmailAddress {
