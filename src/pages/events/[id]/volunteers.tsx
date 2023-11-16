@@ -20,9 +20,7 @@ export default function Volunteers() {
   useEffect(() => {
     if (!eventId) return;
 
-    const params = new URLSearchParams();
-    params.append("event", eventId as string);
-    fetch(`/api/events/get-event?${params.toString()}`)
+    fetch(`/api/event/${eventId}`)
       .then((res) => res.json())
       .then((event) => {
         setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
