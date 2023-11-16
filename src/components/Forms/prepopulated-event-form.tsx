@@ -103,19 +103,7 @@ export default function PrepopulatedEventForm({
             control={control}
             rules={{ required: false }}
           />
-
-          <FieldInput
-            control={control}
-            name="name"
-            label="Event Name"
-          ></FieldInput>
-
-          <FieldInput
-            control={control}
-            name="eventType"
-            label="Event Type"
-          ></FieldInput>
-
+          
           <FieldSingleSelect
             control={control}
             name="status"
