@@ -103,7 +103,7 @@ export default function PrepopulatedEventForm({
             control={control}
             rules={{ required: false }}
           />
-          
+
           <FieldSingleSelect
             control={control}
             name="status"
