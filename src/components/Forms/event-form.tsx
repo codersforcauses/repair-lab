@@ -1,54 +1,90 @@
-import type { Event, ItemType } from "@prisma/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
-import FieldMultiSelect from "@/components/FormFields/field-multi-select";
+import FieldSingleSelect from "@/components/FormFields/field-single-select";
+import FieldTextArea from "@/components/FormFields/field-text-area";
+import { createEventSchema } from "@/schema/event";
+import { CreateEvent } from "@/types";
 
 export default function EventForm({
   itemTypes,
   onSubmit
 }: {
   itemTypes: ItemType[];
-  onSubmit: SubmitHandler<Event>;
+  onSubmit: SubmitHandler<CreateEvent>;
 }) {
-  const { control, handleSubmit } = useForm<Event>({
+  const { control, handleSubmit } = useForm<CreateEvent>({
+    resolver: zodResolver(createEventSchema),
     defaultValues: {
-      id: "",
       name: "",
-      createdBy: "",
-      startDate: undefined,
+      location: "",
+      description: "",
+      startDate: "",
+      endDate: "",
       eventType: "",
-      status: undefined
+      disclaimer: ""
     }
   });
 
+  // TODO: Change the startDate and endDate input fields to use a date picker component.
   return (
     <>
       <h1 className="mb-3 text-center text-2xl">Add a New Event</h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 space-y-3">
-          <FieldInput control={control} name="name"></FieldInput>
-          <FieldInput control={control} name="createdBy"></FieldInput>
-          <FieldInput control={control} name="startDate"></FieldInput>
-          <FieldMultiSelect
+          <FieldInput
+            control={control}
+            name="name"
+            label="Event Name"
+          ></FieldInput>
+
+          <FieldSingleSelect
             control={control}
             name="eventType"
+            label="Event Type"
             options={itemTypes.map((type) => ({
               id: type.name,
               text: type.name
             }))}
-          ></FieldMultiSelect>
-          <FieldMultiSelect
+          ></FieldSingleSelect>
+
+          <FieldTextArea
+            name="description"
+            label="Description"
+            placeholder="Enter a description for the event"
             control={control}
-            name="status"
-            options={[
-              { id: 0, text: "UPCOMING" },
-              { id: 1, text: "ONGOING" },
-              { id: 2, text: "COMPLETED" }
-            ]}
-          ></FieldMultiSelect>
+            rules={{ required: false }}
+          />
+
+          <FieldInput
+            control={control}
+            name="location"
+            label="Location"
+          ></FieldInput>
+
+          <FieldInput
+            control={control}
+            name="startDate"
+            label="Start Date"
+          ></FieldInput>
+
+          <FieldInput
+            control={control}
+            name="endDate"
+            label="End Date"
+          ></FieldInput>
+
+          <FieldTextArea
+            name="disclaimer"
+            label="Disclaimer"
+            placeholder="Enter a disclaimer for the event"
+            control={control}
+            rules={{ required: false }}
+          />
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">

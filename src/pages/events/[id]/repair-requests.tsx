@@ -32,14 +32,14 @@ export default function RepairRequests() {
 
     try {
       // Getting the repair requests for this event
-      fetch(`/api/events/repair-request?${params.toString()}`)
+      fetch(`/api/event/${eventId}/repair-request`)
         .then((res) => res.json())
         .then((data) => {
           setRepairRequests(data);
         });
 
       // Getting the event information
-      fetch(`/api/events/get-event?${params.toString()}`)
+      fetch(`/api/event/${eventId}`)
         .then((res) => res.json())
         .then((event) => {
           setHeaderValues({

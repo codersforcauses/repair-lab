@@ -1,28 +1,17 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import BrandService from "@/services/brand";
+import apiHandler from "@/lib/api-handler";
+import prisma from "@/lib/prisma";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    case "GET":
-      getBrands(req, res);
-      break;
-    default:
-      return res.status(405).json({
-        error: { message: `Method ${req.method} not allowed` }
-      });
-  }
-}
+export default apiHandler({
+  get: getBrands
+});
 
-const getBrands = async (req: NextApiRequest, res: NextApiResponse) => {
-  const brandService = new BrandService();
-  const brands = await brandService.getAll();
+async function getBrands(_req: NextApiRequest, res: NextApiResponse) {
+  const brands = await prisma.brand.findMany();
 
   return res.status(200).json(brands);
-};
+}
 
 export const config: PageConfig = {
   api: {

@@ -1,29 +1,18 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { clerkClient } from "@clerk/nextjs";
 
-import UserService from "@/services/user";
+import apiHandler from "@/lib/api-handler";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    case "GET":
-      getUser(req, res);
-      break;
-    default:
-      return res.status(405).json({
-        error: { message: `Method ${req.method} not allowed` }
-      });
-  }
-}
+export default apiHandler({
+  get: getUser
+});
 
-const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
+async function getUser(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
-  const userService = new UserService();
-  const users = await userService.getUser(id as string);
 
-  return res.status(200).json(users);
-};
+  const user = await clerkClient.users.getUser(id as string);
+  return res.status(200).json(user);
+}
 
 export const config: PageConfig = {
   api: {

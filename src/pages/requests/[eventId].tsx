@@ -62,14 +62,14 @@ export default function RepairReqList() {
     }
   };
 
-  async function fetchData(params: URLSearchParams) {
-    const reqResponse = await fetch(`/api/repair-request?${params}`, {
+  async function fetchData(eventId: string) {
+    const reqResponse = await fetch(`/api/event/${eventId}/repair-request`, {
       method: "GET"
     });
     const requests = await reqResponse.json();
     setRequests(requests);
 
-    const eventResponse = await fetch(`/api/events/get-event?${params}`, {
+    const eventResponse = await fetch(`/api/event`, {
       method: "GET"
     });
     const event = await eventResponse.json();
@@ -78,9 +78,8 @@ export default function RepairReqList() {
 
   useEffect(() => {
     if (!event) return;
-    const params = new URLSearchParams();
-    params.append("event", event as string);
-    fetchData(params);
+
+    fetchData(event as string);
   }, [event]);
 
   const handleOpenImageModal = (images: RepairRequestImage[]) => {

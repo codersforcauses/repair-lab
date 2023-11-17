@@ -30,7 +30,7 @@ export default function Card({ props }: { props: CardProps }) {
   const [showModal, setShowModal] = useState(false);
   const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
     // console.log(JSON.stringify(data));
-    const response = await fetch(`/api/repair-request`, {
+    const response = await fetch(`/api/repair-request/${props.title}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
