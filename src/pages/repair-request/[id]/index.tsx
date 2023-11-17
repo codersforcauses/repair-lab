@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -14,10 +15,13 @@ import type { GeneralRepairAttempt } from "@/types";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RepairAttempt() {
+  const {
+    query: { id }
+  } = useRouter();
+
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
-      id: "",
       item: "",
       itemBrand: "",
       itemMaterial: "",
@@ -33,7 +37,7 @@ export default function RepairAttempt() {
 
   const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
     const loadingToastId = toast.loading("Submitting data...");
-    const response = await fetch(`/api/repair-request`, {
+    const response = await fetch(`/api/repair-request/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -59,12 +63,6 @@ export default function RepairAttempt() {
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* ID, Item */}
         <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
-          <FieldInput
-            name="id"
-            control={control}
-            label="ID"
-            rules={{ required: true }}
-          />
           <FieldInput
             name="item"
             control={control}

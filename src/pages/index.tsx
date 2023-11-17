@@ -161,7 +161,7 @@ export default function Home() {
           Logout
         </Button>
       </div>
-      <Link className="py-4" href="/event-listing">
+      <Link className="py-4" href="/events">
         <Button>Admin Dashboard</Button>
       </Link>
     </div>

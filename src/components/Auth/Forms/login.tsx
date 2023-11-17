@@ -107,14 +107,14 @@ const LoginForm = () => {
 
         <div className="m-4 text-center">
           <div>
-            <Link href="/forgot-password">
+            <Link href="/auth/forgot-password">
               <span className="text-xs text-gray-400 underline">
                 Forgot your password?
               </span>
             </Link>
           </div>
           <div>
-            <Link href="/register">
+            <Link href="/auth/register">
               <span className="text-xs text-gray-400 underline">
                 Do not have an account? Sign up
               </span>
