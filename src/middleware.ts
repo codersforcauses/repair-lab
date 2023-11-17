@@ -2,7 +2,7 @@ import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
   // url routes that don't require login
-  publicRoutes: ["/login", "/sso-callback", "/forgot-password"]
+  publicRoutes: ["/auth/login", "/sso-callback", "/auth/forgot-password"]
 });
 
 export const config = {

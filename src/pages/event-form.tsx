@@ -18,6 +18,7 @@ type FormData = {
   eventType: string;
   volunteers: string[];
 };
+
 export default function EventForm() {
   const { handleSubmit, control } = useForm<FormData>();
   const router = useRouter();

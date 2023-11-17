@@ -15,14 +15,14 @@ import Toast from "@/components/Toast";
 import { useBrands } from "@/hooks/brands";
 import { useEventOptions } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
-import { repairRequestPostSchema } from "@/schema/repair-request";
+import { createRepairRequestSchema } from "@/schema/repair-request";
 import { RepairRequest } from "@/types";
 
 export interface FormValues extends RepairRequest {
   tncAccepted: boolean;
 }
 
-const repairRequestFormSchema = repairRequestPostSchema.extend({
+const repairRequestFormSchema = createRepairRequestSchema.extend({
   tncAccepted: z.boolean().refine((val) => !!val, {
     message: "Please read through and accept the house rules."
   })

@@ -1,28 +1,17 @@
 import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
 
-import ItemTypeService from "@/services/item-type";
+import apiHandler from "@/lib/api-handler";
+import prisma from "@/lib/prisma";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    case "GET":
-      getItemTypes(req, res);
-      break;
-    default:
-      return res.status(405).json({
-        error: { message: `Method ${req.method} not allowed` }
-      });
-  }
+export default apiHandler({
+  get: getItemTypes
+});
+
+async function getItemTypes(req: NextApiRequest, res: NextApiResponse) {
+  const itemTypes = await prisma.itemType.findMany({});
+
+  return res.status(200).json(itemTypes);
 }
-
-const getItemTypes = async (req: NextApiRequest, res: NextApiResponse) => {
-  const itemTypeService = new ItemTypeService();
-  const itemtypes = await itemTypeService.getAll();
-
-  return res.status(200).json(itemtypes);
-};
 
 export const config: PageConfig = {
   api: {

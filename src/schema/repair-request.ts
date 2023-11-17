@@ -1,15 +1,12 @@
 import { z } from "zod";
 
-export const repairRequestPostSchema = z.object({
-  eventId: z.string().nonempty({ message: "Event is required" }),
-  description: z
-    .string()
-    .nonempty({ message: "A description of the item is required" })
-    .min(5, {
-      message: "Description of the item must be at least 5 characters long"
-    }),
-  itemType: z.string().nonempty({ message: "Item type is required" }),
-  itemBrand: z.string().nonempty({ message: "Item brand is required" }),
+export const createRepairRequestSchema = z.object({
+  eventId: z.string().min(1, { message: "Event is required" }),
+  description: z.string().min(5, {
+    message: "Description of the item must be at least 5 characters long"
+  }),
+  itemType: z.string().min(1, { message: "Item type is required" }),
+  itemBrand: z.string().min(1, { message: "Item brand is required" }),
   images: z.string().array().optional(),
   comment: z.string().optional()
 });
@@ -19,11 +16,10 @@ const preprocessBooleanInput = (input: unknown) => {
   return processedInput.success ? processedInput.data : input;
 };
 
-export const repairRequestPatchSchema = z.object({
-  id: z.string().trim().nonempty({ message: "missing" }),
-  item: z.string().nonempty({ message: "Item name is required" }),
-  itemBrand: z.string().nonempty({ message: "Brand is required" }),
-  itemMaterial: z.string().nonempty({ message: "Material is required" }),
+export const updateRepairRequestSchema = z.object({
+  item: z.string().min(1, { message: "Item name is required" }),
+  itemBrand: z.string().min(1, { message: "Brand is required" }),
+  itemMaterial: z.string().min(1, { message: "Material is required" }),
   hoursWorked: z.preprocess(
     (input) => {
       const processedInput = z

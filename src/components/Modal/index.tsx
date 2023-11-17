@@ -54,7 +54,7 @@ const Modal = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${width} ${height} transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${width} ${height} overflow-scroll transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
                 >
                   {title ? (
                     <Dialog.Title

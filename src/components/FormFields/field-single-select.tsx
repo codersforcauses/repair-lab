@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   FieldValues,
@@ -44,6 +45,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
+  const [displayText, setDisplayText] = useState(field.value.toString());
 
   const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
@@ -67,7 +69,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                 {!placeholder ? `Select ${props.name}` : `${placeholder}`}
               </span>
             ) : (
-              <span className="truncate text-grey-900">{field.value}</span>
+              <span className="truncate text-grey-900">{displayText}</span>
             )}
             <HiChevronDown
               className="ml-auto h-6 w-5 text-grey-600"
@@ -92,7 +94,10 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                   {({ active }) => (
                     <a
                       href="#"
-                      onClick={() => field.onChange(option.text)}
+                      onClick={() => {
+                        field.onChange(option.id);
+                        setDisplayText(option.text);
+                      }}
                       className={classNames(
                         active
                           ? "bg-lightAqua-100 text-grey-900"
@@ -100,7 +105,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                         "block py-2 pl-2 pr-4 text-sm"
                       )}
                     >
-                      {option.text === field.value ? (
+                      {option.id === field.value ? (
                         <span className="relative left-0 flex">
                           <HiCheck
                             className="h-5 w-5 text-darkAqua-600"
