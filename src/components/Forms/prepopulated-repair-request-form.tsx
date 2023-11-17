@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Brand, ItemType, RepairRequest } from "@prisma/client";
+import { RepairRequest } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
@@ -7,20 +7,21 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
+import { useBrands } from "@/hooks/brands";
+import { useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
   props,
-  itemBrands,
-  itemTypes,
   onSubmit
 }: {
   props: RepairRequest;
-  itemBrands?: Brand[];
-  itemTypes?: ItemType[];
   onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
+  const itemTypes = useItemTypes();
+  const itemBrands = useBrands();
+
   let status;
   switch (props.status) {
     case "REPAIRED":
@@ -36,34 +37,9 @@ export default function PrepopulatedRepairAttemptForm({
     ? (isSparePartsNeeded = "false")
     : (isSparePartsNeeded = "true");
 
-  let actualItemBrands;
-  itemBrands
-    ? (actualItemBrands = itemBrands.map((type) => ({
-        id: type.name,
-        text: type.name
-      })))
-    : (actualItemBrands = [
-        { id: 0, text: "Alienware" },
-        { id: 1, text: "Giant Bicycles" },
-        { id: 2, text: "Seiko" }
-      ]);
-
-  let actualItemTypes;
-  itemTypes
-    ? (actualItemTypes = itemTypes.map((type) => ({
-        id: type.name,
-        text: type.name
-      })))
-    : (actualItemTypes = [
-        { id: 0, text: "Bike" },
-        { id: 1, text: "Clock" },
-        { id: 2, text: "Computer" }
-      ]);
-
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
-      id: props.id,
       item: props.itemType,
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
@@ -85,7 +61,10 @@ export default function PrepopulatedRepairAttemptForm({
           name="item"
           control={control}
           rules={{ required: true }}
-          options={actualItemTypes}
+          options={itemTypes.map((type) => ({
+            id: type,
+            text: type
+          }))}
         />
 
         {/* Brand, Material */}
@@ -94,7 +73,10 @@ export default function PrepopulatedRepairAttemptForm({
           label="Brand"
           control={control}
           rules={{ required: true }}
-          options={actualItemBrands}
+          options={itemBrands.map((brand) => ({
+            id: brand,
+            text: brand
+          }))}
         />
         <FieldInput
           name="itemMaterial"

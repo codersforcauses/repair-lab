@@ -22,7 +22,6 @@ export default function RepairAttemptForm({
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
-      id: "",
       item: "",
       itemBrand: "",
       itemMaterial: "",
@@ -80,12 +79,6 @@ export default function RepairAttemptForm({
     <form onSubmit={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
-        <FieldInput
-          name="id"
-          control={control}
-          label="ID"
-          rules={{ required: true }}
-        />
         <FieldSingleSelect
           name="item"
           control={control}
