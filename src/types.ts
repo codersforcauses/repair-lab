@@ -6,7 +6,7 @@ import {
   updateRepairRequestSchema
 } from "@/schema/repair-request";
 
-export type RepairRequest = z.infer<typeof createRepairRequestSchema>;
+export type CreateRepairRequest = z.infer<typeof createRepairRequestSchema>;
 export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 export type CreateEvent = z.infer<typeof createEventSchema>;
 export type UpdateEvent = z.infer<typeof updateEventSchema>;

@@ -1,29 +1,22 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
-interface EventOption {
+import httpClient from "@/lib/base-http-client";
+
+export interface EventOption {
   id: string;
   name: string;
 }
 
-export function useEventOptions() {
-  const [events, setEvents] = useState([] as EventOption[]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/event/options`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+export const useEventOptions = () => {
+  const queryFn = async () => {
+    const url = `/event/options`;
+    const response = await httpClient.get(url);
 
-      if (!response.ok) {
-        throw new Error(`Error fetching brands: ${response.status}`);
-      }
-      const events: EventOption[] = await response.json();
-      setEvents(events);
-    };
-    fetchData();
-  }, []);
+    return response.data;
+  };
 
-  return events;
-}
+  return useQuery({
+    queryKey: ["event-options"],
+    queryFn: queryFn
+  });
+};
