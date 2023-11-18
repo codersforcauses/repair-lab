@@ -25,7 +25,7 @@ export default function Card({ props }: { props: CardProps }) {
     setShowModal(true);
   }
 
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest();
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(props.title);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -46,7 +46,7 @@ export default function Card({ props }: { props: CardProps }) {
             <PrepopulatedRepairAttemptForm
               props={props.repairRequestProps}
               onSubmit={(data) => {
-                updateRepairRequest({ ...data, id: props.title! });
+                updateRepairRequest(data);
                 setShowModal(false);
               }}
             ></PrepopulatedRepairAttemptForm>

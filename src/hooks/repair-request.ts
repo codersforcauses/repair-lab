@@ -43,17 +43,18 @@ export const useCreateRepairRequest = () => {
   });
 };
 
-export const useUpdateRepairRequest = () => {
+export const useUpdateRepairRequest = (id: string | undefined) => {
   const queryClient = useQueryClient();
 
-  const mutationFn = async (data: GeneralRepairAttempt & { id: string }) => {
-    const url = `/repair-request/${data.id}`;
+  const mutationFn = async (data: GeneralRepairAttempt) => {
+    const url = `/repair-request/${id}`;
     await httpClient.patch(url, data);
   };
 
   const onSuccess = () => {
     toast.success("Repair request updated!");
     queryClient.invalidateQueries({ queryKey: ["repair-requests"] });
+    queryClient.invalidateQueries({ queryKey: [id] });
   };
 
   const onError = () => {
