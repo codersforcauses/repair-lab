@@ -1,9 +1,23 @@
 import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
-import { useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
 import { CreateRepairRequest, GeneralRepairAttempt } from "@/types";
+
+export const useRepairRequests = () => {
+  const queryFn = async () => {
+    const url = "/repair-request";
+
+    const response = await httpClient.get(url);
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["repair-requests"],
+    queryFn
+  });
+};
 
 export const useCreateRepairRequest = () => {
   const queryClient = useQueryClient();
@@ -32,8 +46,8 @@ export const useCreateRepairRequest = () => {
 export const useUpdateRepairRequest = () => {
   const queryClient = useQueryClient();
 
-  const mutationFn = async (data: GeneralRepairAttempt) => {
-    const url = "/repair-request";
+  const mutationFn = async (data: GeneralRepairAttempt & { id: string }) => {
+    const url = `/repair-request/${data.id}`;
     await httpClient.patch(url, data);
   };
 
@@ -47,7 +61,7 @@ export const useUpdateRepairRequest = () => {
   };
 
   return useMutation({
-    mutationFn,
+    mutationFn: mutationFn,
     onSuccess,
     onError
   });

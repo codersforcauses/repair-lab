@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { RepairRequest } from "@prisma/client";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Card from "@/components/Cards/card";
@@ -11,10 +10,10 @@ import Modal from "@/components/Modal";
 import SearchBar from "@/components/Search/SearchBar";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
+import { useRepairRequests } from "@/hooks/events";
+import { RepairRequest } from "@/types";
 
 export default function RepairRequests() {
-  const [repairRequests, setRepairRequests] = useState<RepairRequest[]>([]);
-
   const [headerValues, setHeaderValues] = useState<HeaderProps>(
     {} as HeaderProps
   );
@@ -22,6 +21,10 @@ export default function RepairRequests() {
   const {
     query: { id: eventId }
   } = useRouter();
+
+  const { isLoading, data: repairRequests } = useRepairRequests(
+    eventId as string
+  );
 
   // Getting the repair requests for this event
   useEffect(() => {
@@ -31,13 +34,6 @@ export default function RepairRequests() {
     params.append("event", eventId as string);
 
     try {
-      // Getting the repair requests for this event
-      fetch(`/api/event/${eventId}/repair-request`)
-        .then((res) => res.json())
-        .then((data) => {
-          setRepairRequests(data);
-        });
-
       // Getting the event information
       fetch(`/api/event/${eventId}`)
         .then((res) => res.json())
@@ -69,7 +65,10 @@ export default function RepairRequests() {
           <div className="container mx-auto items-center">
             <div className="flex justify-between">
               <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-                <span>Repair Requests ({repairRequests.length})</span>
+                <span>
+                  Repair Requests (
+                  {isLoading ? "Loading..." : repairRequests.length})
+                </span>
               </div>
               <div className="flex justify-end">
                 <SortBy />
@@ -78,22 +77,24 @@ export default function RepairRequests() {
             </div>
           </div>
           <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
-            {repairRequests.map((item) => (
-              <div key={item.id}>
-                <Card
-                  props={{
-                    title: item.id,
-                    image: "/images/broken-clock-sad.jpg",
-                    description: item.description,
-                    status: item.status,
-                    firstName: item.assignedTo,
-                    lastName: "",
-                    avatar: "/images/repair_lab_logo.jpg",
-                    repairRequestProps: item
-                  }}
-                />
-              </div>
-            ))}
+            {isLoading
+              ? "Loading..."
+              : repairRequests.map((item: RepairRequest) => (
+                  <div key={item.id}>
+                    <Card
+                      props={{
+                        title: item.id,
+                        image: "/images/broken-clock-sad.jpg",
+                        description: item.description,
+                        status: item.status,
+                        firstName: item.assignedTo,
+                        lastName: "",
+                        avatar: "/images/repair_lab_logo.jpg",
+                        repairRequestProps: item
+                      }}
+                    />
+                  </div>
+                ))}
             <div
               className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
               role="presentation"

@@ -1,14 +1,12 @@
 import { useState } from "react";
 import Image from "next/image";
-import router from "next/router";
 import { RepairRequest } from "@prisma/client";
-import { SubmitHandler } from "react-hook-form";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
 import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal/index";
-import { GeneralRepairAttempt } from "@/types";
+import { useUpdateRepairRequest } from "@/hooks/repair-request";
 
 export type CardProps = {
   title?: string;
@@ -27,23 +25,9 @@ export default function Card({ props }: { props: CardProps }) {
     setShowModal(true);
   }
 
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest();
+
   const [showModal, setShowModal] = useState(false);
-  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
-    // console.log(JSON.stringify(data));
-    const response = await fetch(`/api/repair-request/${props.title}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    if (response.ok) {
-      router.reload();
-      setShowModal(false);
-    } else {
-      alert(`Error! ${response.statusText}`);
-    }
-  };
 
   return (
     <div
@@ -61,7 +45,10 @@ export default function Card({ props }: { props: CardProps }) {
           <div>
             <PrepopulatedRepairAttemptForm
               props={props.repairRequestProps}
-              onSubmit={onSubmit}
+              onSubmit={(data) => {
+                updateRepairRequest({ ...data, id: props.title! });
+                setShowModal(false);
+              }}
             ></PrepopulatedRepairAttemptForm>
           </div>
         </div>

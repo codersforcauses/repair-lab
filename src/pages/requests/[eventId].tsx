@@ -211,7 +211,7 @@ export default function RepairReqList() {
             <PrepopulatedRepairAttemptForm
               props={selectedRequest}
               onSubmit={(data) => {
-                updateRepairRequest(data);
+                updateRepairRequest({ ...data, id: selectedRequest.id });
               }}
             ></PrepopulatedRepairAttemptForm>
           </div>

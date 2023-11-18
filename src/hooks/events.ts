@@ -20,3 +20,17 @@ export const useEventOptions = () => {
     queryFn: queryFn
   });
 };
+
+export const useRepairRequests = (eventId: string | undefined) => {
+  const queryFn = async () => {
+    const url = `event/${eventId}/repair-request`;
+
+    const response = await httpClient.get(url);
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["repair-requests", eventId],
+    queryFn
+  });
+};
