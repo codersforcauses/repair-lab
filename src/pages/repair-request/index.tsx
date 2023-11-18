@@ -10,7 +10,6 @@ import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import SingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
-import Toast from "@/components/Toast";
 import { Brand, useBrands } from "@/hooks/brands";
 import { EventOption, useEventOptions } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
@@ -153,7 +152,6 @@ const Home = () => {
           </Button>
         </form>
       </div>
-      <Toast position="bottom-center" />
     </div>
   );
 };
