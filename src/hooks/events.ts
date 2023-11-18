@@ -71,7 +71,7 @@ export const useCreateEvent = () => {
   });
 };
 
-export const useUpdateEvent = (eventId: string) => {
+export const useUpdateEvent = (eventId: string | undefined) => {
   const queryClient = useQueryClient();
 
   const mutationFn = async (data: UpdateEvent) => {
