@@ -1,23 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Card from "@/components/Cards/card";
 import RepairAttemptForm from "@/components/Forms/repair-request-form";
-import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import SearchBar from "@/components/Search/SearchBar";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import { useRepairRequests } from "@/hooks/events";
+import { useEvent } from "@/hooks/events";
 import { RepairRequest } from "@/types";
 
 export default function RepairRequests() {
-  const [headerValues, setHeaderValues] = useState<HeaderProps>(
-    {} as HeaderProps
-  );
-
   const {
     query: { id: eventId }
   } = useRouter();
@@ -26,30 +22,9 @@ export default function RepairRequests() {
     eventId as string
   );
 
-  // Getting the repair requests for this event
-  useEffect(() => {
-    if (!eventId) return;
-
-    const params = new URLSearchParams();
-    params.append("event", eventId as string);
-
-    try {
-      // Getting the event information
-      fetch(`/api/event/${eventId}`)
-        .then((res) => res.json())
-        .then((event) => {
-          setHeaderValues({
-            name: event.name,
-            location: event.location,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            createdBy: event.createdBy // TODO: Later get creator name from clerk, given userID
-          });
-        });
-    } catch (err) {
-      /* empty */
-    }
-  }, [eventId]);
+  const { isLoading: isEventLoading, data: event } = useEvent(
+    eventId as string
+  );
 
   const [eventModal, showEventModal] = useState(false);
 
@@ -60,7 +35,7 @@ export default function RepairRequests() {
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
-        <Header props={headerValues} />
+        {isEventLoading ? "Loading..." : <Header props={event} />}
         <div className="container">
           <div className="container mx-auto items-center">
             <div className="flex justify-between">

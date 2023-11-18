@@ -34,7 +34,7 @@ const Sidebar = ({ children }: Props) => {
         <div className="items-left flex flex-col px-4 text-zinc-600">
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
           <Link
-            href="/event-listing"
+            href="/events"
             className="p-1 text-center text-lg font-bold text-gray-600"
           >
             Back to Events

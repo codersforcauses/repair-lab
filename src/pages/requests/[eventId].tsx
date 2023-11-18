@@ -41,11 +41,13 @@ export default function RepairReqList() {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState({} as RepairRequest);
 
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest();
-
   const {
     query: { eventId: event }
   } = useRouter();
+
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(
+    event as string
+  );
 
   async function fetchData(eventId: string) {
     const reqResponse = await fetch(`/api/event/${eventId}/repair-request`, {
@@ -211,7 +213,7 @@ export default function RepairReqList() {
             <PrepopulatedRepairAttemptForm
               props={selectedRequest}
               onSubmit={(data) => {
-                updateRepairRequest({ ...data, id: selectedRequest.id });
+                updateRepairRequest(data);
               }}
             ></PrepopulatedRepairAttemptForm>
           </div>
