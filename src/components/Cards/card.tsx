@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import { RepairRequest } from "@prisma/client";
+import { SubmitHandler } from "react-hook-form";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
 import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal/index";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
+import { GeneralRepairAttempt } from "@/types";
 
 export type CardProps = {
   title?: string;
@@ -29,6 +31,14 @@ export default function Card({ props }: { props: CardProps }) {
 
   const [showModal, setShowModal] = useState(false);
 
+  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
+    updateRepairRequest(data, {
+      onSuccess: () => {
+        setShowModal(false);
+      }
+    });
+  };
+
   return (
     <div
       onClick={props.handleClick ? props.handleClick : handleClick}
@@ -45,10 +55,7 @@ export default function Card({ props }: { props: CardProps }) {
           <div>
             <PrepopulatedRepairAttemptForm
               props={props.repairRequestProps}
-              onSubmit={(data) => {
-                updateRepairRequest(data);
-                setShowModal(false);
-              }}
+              onSubmit={onSubmit}
             ></PrepopulatedRepairAttemptForm>
           </div>
         </div>

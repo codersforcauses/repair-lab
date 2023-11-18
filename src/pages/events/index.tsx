@@ -11,13 +11,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
 import { EventStatus } from "@prisma/client";
+import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
-import { Event } from "@/types";
+import { CreateEvent, Event } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -121,6 +122,14 @@ function Table() {
       </button>
     );
   }
+
+  const submitCreateEvent: SubmitHandler<CreateEvent> = async (data) => {
+    createEvent(data, {
+      onSuccess: () => {
+        setShowAddModal(false);
+      }
+    });
+  };
 
   return (
     <div>
@@ -340,13 +349,7 @@ function Table() {
             showModal={showAddModal}
             height="h-3/4"
           >
-            <EventForm
-              itemTypes={itemTypes}
-              onSubmit={(data) => {
-                createEvent(data);
-                setShowAddModal(false);
-              }}
-            />
+            <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
           </Modal>
         </div>
       </div>
