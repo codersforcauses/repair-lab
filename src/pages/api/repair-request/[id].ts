@@ -28,10 +28,7 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (!existingRepairRequest) {
-    throw new ApiError(
-      HttpStatusCode.NotFound,
-      "Repair Request does not exist"
-    );
+    throw new ApiError(HttpStatusCode.NotFound, "Repair Request does not exist");
   }
 
   const repairAttempt = await prisma.repairRequest.update({

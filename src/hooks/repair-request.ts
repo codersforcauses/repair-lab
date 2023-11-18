@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
-import { CreateRepairRequest } from "@/types";
+import { CreateRepairRequest, GeneralRepairAttempt } from "@/types";
 
 export const useCreateRepairRequest = () => {
   const queryClient = useQueryClient();
@@ -29,4 +29,26 @@ export const useCreateRepairRequest = () => {
   });
 };
 
-export const useUpdateRepairRequest = () => {};
+export const useUpdateRepairRequest = () => {
+  const queryClient = useQueryClient();
+
+  const mutationFn = async (data: GeneralRepairAttempt) => {
+    const url = "/repair-request";
+    await httpClient.patch(url, data);
+  };
+
+  const onSuccess = () => {
+    toast.success("Repair request updated!");
+    queryClient.invalidateQueries({ queryKey: ["repair-requests"] });
+  };
+
+  const onError = () => {
+    toast.error("Error occurred while updating repair request");
+  };
+
+  return useMutation({
+    mutationFn,
+    onSuccess,
+    onError
+  });
+};
