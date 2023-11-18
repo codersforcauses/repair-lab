@@ -2,12 +2,8 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "react-query";
 import { useQueryClient } from "react-query";
 
-import httpClient from "@/lib/base-http-client";
+import { httpClient } from "@/lib/base-http-client";
 import { CreateRepairRequest } from "@/types";
-
-export interface ItemType {
-  name: string;
-}
 
 export const useCreateRepairRequest = () => {
   const queryClient = useQueryClient();
@@ -33,6 +29,4 @@ export const useCreateRepairRequest = () => {
   });
 };
 
-export const useUpdateRepairRequest = () => {
-
-}
+export const useUpdateRepairRequest = () => {};

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 
-import httpClient from "@/lib/base-http-client";
+import { httpClient } from "@/lib/base-http-client";
 
 export interface ItemType {
   name: string;
