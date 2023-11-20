@@ -34,7 +34,7 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   emailAddress: string;
-  role: string | unknown;
+  role: UserRole;
 }
 
 export enum SearchCriteria {
@@ -46,10 +46,9 @@ export enum SearchCriteria {
 }
 
 export enum UserRole {
-  ADMIN = "admin",
-  ORGANISATION_MANAGER = "organisation_manager",
-  EVENT_MANAGER = "event_manager",
-  REPAIRER = "repairer",
-  CLIENT = "client"
+  ADMIN = "ADMIN",
+  ORGANISATION_MANAGER = "ORGANISATION_MANAGER",
+  EVENT_MANAGER = "EVENT_MANAGER",
+  REPAIRER = "REPAIRER",
+  CLIENT = "CLIENT"
 }
-

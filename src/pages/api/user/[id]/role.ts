@@ -1,48 +1,38 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { isClerkAPIResponseError } from "@clerk/nextjs";
+import { ApiError } from "next/dist/server/api-utils";
+import { getAuth } from "@clerk/nextjs/server";
+import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
-import UserService from "@/services/user";
+import apiHandler from "@/lib/api-handler";
+import userService from "@/services/user";
 import { UserRole } from "@/types";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  switch (req.method) {
-    case "PATCH":
-      updateUserRole(req, res);
-      break;
-    default:
-      return res.status(405).json({
-        error: { message: `Method ${req.method} not allowed` }
-      });
+export default apiHandler({
+  patch: updateUserRole
+});
+
+async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
+  const { id: userId } = req.query;
+  const { role } = req.body;
+
+  const parsedRole = validateRole(role);
+
+  // only admins can update a user's role
+  const { userId: updaterId } = getAuth(req);
+  // TODO: move this to a more generic function to check permissions.
+  const updaterRole = await userService.getRole(updaterId!);
+  if (updaterRole !== UserRole.ADMIN) {
+    throw new ApiError(
+      HttpStatusCode.Unauthorized,
+      "Not authorised to update user role"
+    );
   }
+
+  await userService.updateRole(userId as string, parsedRole);
+
+  return res.status(204).end();
 }
-
-const updateUserRole = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { id: userId } = req.query;
-    const { role } = req.body;
-
-    const parsedRole = validateRole(role);
-
-    const userService = new UserService();
-    await userService.updateRole(userId as string, parsedRole);
-
-    return res.status(204).end();
-  } catch (e) {
-    if (e instanceof z.ZodError) {
-      return res.status(400).json({ error: e.issues });
-    }
-
-    if (isClerkAPIResponseError(e)) {
-      return res.status(e.status).json({ error: e.message });
-    }
-
-    return res.status(500).end();
-  }
-};
 
 const validateRole = (role: string) => {
   const roleSchema = z.nativeEnum(UserRole);

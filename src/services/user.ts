@@ -3,11 +3,7 @@
 import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
 
-import {
-  buildPaginationResponse,
-  PaginationOptions,
-  PaginationResponse
-} from "@/lib/pagination";
+import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
 import { User, UserRole } from "@/types";
 
 type ClerkOrderBy =
@@ -18,66 +14,70 @@ type ClerkOrderBy =
   | "-created_at"
   | "-updated_at";
 
-type UserResponse = User;
+async function getMany(options: PaginationOptions) {
+  const { orderBy, perPage, page, query } = options;
 
-interface IUserService {
-  getMany(
-    options: PaginationOptions
-  ): Promise<PaginationResponse<UserResponse>>;
-  getUser(userId: string): Promise<UserResponse>;
-  updateRole(userId: string, role: string): void;
+  const searchRequest = {
+    orderBy: orderBy as ClerkOrderBy,
+    limit: perPage,
+    offset: (page - 1) * perPage,
+    query
+  };
+
+  // getCount requires a search request too so it returns the total query count.
+  const users = await clerkClient.users.getUserList(searchRequest);
+  const totalCount = await clerkClient.users.getCount(searchRequest);
+
+  return buildPaginationResponse<User>(
+    users.map((user) => toResponse(user)),
+    options,
+    totalCount
+  );
 }
 
-class UserService implements IUserService {
-  async getMany(
-    options: PaginationOptions
-  ): Promise<PaginationResponse<UserResponse>> {
-    const { orderBy, perPage, page, query } = options;
-
-    const searchRequest = {
-      orderBy: orderBy as ClerkOrderBy,
-      limit: perPage,
-      offset: (page - 1) * perPage,
-      query
-    };
-
-    // getCount requires a search request too so it returns the total query count.
-    const users = await clerkClient.users.getUserList(searchRequest);
-    const totalCount = await clerkClient.users.getCount(searchRequest);
-
-    return buildPaginationResponse<UserResponse>(
-      users.map((user) => this.toResponse(user)),
-      options,
-      totalCount
-    );
-  }
-
-  async getUser(userId: string): Promise<UserResponse> {
-    const user = await clerkClient.users.getUser(userId);
-    return this.toResponse(user);
-  }
-
-  async updateRole(userId: string, role: string) {
-    return await clerkClient.users.updateUser(userId, {
-      publicMetadata: {
-        role: role
-      }
-    });
-  }
-
-  private toResponse(user: ClerkUser): UserResponse {
-    const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
-    const role = publicMetadata.role ? publicMetadata.role : UserRole.CLIENT;
-    const emailAddress = emailAddresses[0].emailAddress;
-
-    return {
-      id,
-      firstName,
-      lastName,
-      role,
-      emailAddress
-    };
-  }
+async function getUser(userId: string) {
+  const user = await clerkClient.users.getUser(userId);
+  return toResponse(user);
 }
 
-export default UserService;
+async function updateRole(userId: string, role: UserRole) {
+  return await clerkClient.users.updateUser(userId, {
+    publicMetadata: {
+      role: role
+    }
+  });
+}
+
+async function getRole(userId: string): Promise<UserRole> {
+  const user = await clerkClient.users.getUser(userId);
+  const role = user.publicMetadata.role
+    ? (user.publicMetadata.role as UserRole)
+    : UserRole.CLIENT;
+
+  return role;
+}
+
+function toResponse(user: ClerkUser): User {
+  const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
+  const role = publicMetadata.role
+    ? (publicMetadata.role as UserRole)
+    : UserRole.CLIENT;
+  const emailAddress = emailAddresses[0].emailAddress;
+
+  return {
+    id,
+    firstName,
+    lastName,
+    role,
+    emailAddress
+  };
+}
+
+const userService = {
+  getMany,
+  getUser,
+  updateRole,
+  getRole
+};
+
+export default userService;

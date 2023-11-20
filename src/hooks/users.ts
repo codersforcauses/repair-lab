@@ -1,23 +1,28 @@
-import { useQuery } from "react-query";
+import { toast } from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-const useUsers = (
+import { httpClient } from "@/lib/base-http-client";
+import { UserRole } from "@/types";
+
+export const useUsers = (
   perPage: number,
   page: number,
   orderBy: string,
   query: string
 ) => {
   const queryFn = async () => {
-    const response = await fetch(
-      `/api/user?perPage=${perPage}&page=${page}&orderBy=${orderBy}&query=${query}`,
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json"
-        }
-      }
-    );
+    const params = new URLSearchParams({
+      perPage: perPage.toString(),
+      page: page.toString(),
+      orderBy,
+      query
+    });
 
-    return await response.json();
+    const url = `/user?${params.toString()}`;
+
+    const response = await httpClient.get(url);
+
+    return await response.data;
   };
 
   return useQuery({
@@ -26,4 +31,27 @@ const useUsers = (
   });
 };
 
-export default useUsers;
+export const useUpdateUserRole = (userId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  const mutationFn = async (role: UserRole) => {
+    const url = `/user/${userId}/role`;
+    await httpClient.patch(url, { role });
+  };
+
+  const onSuccess = () => {
+    toast.success("User updated!");
+    queryClient.invalidateQueries({ queryKey: ["users"] });
+    queryClient.invalidateQueries({ queryKey: [userId] });
+  };
+
+  const onError = () => {
+    toast.error("Error occurred while updating user");
+  };
+
+  return useMutation({
+    mutationFn: mutationFn,
+    onSuccess,
+    onError
+  });
+};
