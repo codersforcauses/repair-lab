@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { startCase } from "lodash";
 
+import TablePagination from "@/components/Table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
@@ -23,6 +24,7 @@ const User = () => {
 
   return (
     <div className="p-20">
+      {/* Search Bar */}
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <svg
@@ -51,6 +53,8 @@ const User = () => {
           onChange={(e) => search(e)}
         />
       </div>
+
+      {/* Table */}
       {isLoading ? (
         <LoadingSpinner />
       ) : (
@@ -80,54 +84,21 @@ const User = () => {
               </tbody>
             </table>
 
-            <div className="mt-2 flex flex-row justify-between">
-              <div className="flex flex-row items-center gap-1 text-sm text-gray-700">
-                Showing
-                <span className="font-semibold text-gray-900">
-                  {Number(users.meta.perPage) * Number(users.meta.page) -
-                    Number(users.meta.perPage) ==
-                  0
-                    ? 1
-                    : Number(users.meta.perPage) * Number(users.meta.page) -
-                      Number(users.meta.perPage)}
-                </span>
-                <span>to</span>
-                <span className="font-semibold text-gray-900">
-                  {users.meta.totalCount >=
-                  Number(users.meta.perPage) * Number(users.meta.page)
-                    ? Number(users.meta.perPage) * Number(users.meta.page)
-                    : users.meta.totalCount}
-                </span>
-                of
-                <span className="font-semibold text-gray-900">
-                  {users.meta.totalCount}
-                </span>
-                Entries
-              </div>
-
-              <div className="inline-flex ">
-                <button
-                  className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
-                  onClick={() =>
-                    setPage(Number(page) - 1 == 0 ? 1 : Number(page) - 1)
-                  }
-                >
-                  Prev
-                </button>
-                <button
-                  className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900 "
-                  onClick={() =>
-                    setPage(
-                      Number(page) + 1 > Number(users.meta.lastPage)
-                        ? Number(users.meta.lastPage)
-                        : Number(page) + 1
-                    )
-                  }
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+            <TablePagination
+              perPage={perPage}
+              page={page}
+              totalCount={Number(users.meta.totalCount)}
+              prevPage={() =>
+                setPage(Number(page) - 1 == 0 ? 1 : Number(page) - 1)
+              }
+              nextPage={() =>
+                setPage(
+                  Number(page) + 1 > Number(users.meta.lastPage)
+                    ? Number(users.meta.lastPage)
+                    : Number(page) + 1
+                )
+              }
+            />
           </div>
         </>
       )}
