@@ -1,29 +1,21 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
-interface ItemType {
+import { httpClient } from "@/lib/base-http-client";
+
+export interface ItemType {
   name: string;
 }
 
-export function useItemTypes() {
-  const [itemTypes, setItemTypes] = useState<string[]>([]);
+export const useItemTypes = () => {
+  const queryFn = async () => {
+    const url = `/item-type`;
+    const response = await httpClient.get(url);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/item-type`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+    return response.data;
+  };
 
-      const data: ItemType[] = await response.json();
-      const itemTypeNames = data.map(({ name }) => name);
-
-      setItemTypes(itemTypeNames);
-    };
-
-    fetchData();
-  }, []);
-
-  return itemTypes;
-}
+  return useQuery({
+    queryKey: ["item-types"],
+    queryFn: queryFn
+  });
+};
