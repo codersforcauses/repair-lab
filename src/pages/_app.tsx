@@ -5,10 +5,19 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import Toast from "@/components/Toast";
+
 import "@/styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchInterval: 1000 * 60 * 10, // 10 minutes
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,6 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <main className={inter.className}>
             <Component {...pageProps} />
+            <Toast position="bottom-center" />
           </main>
         </QueryClientProvider>
       </ClerkProvider>

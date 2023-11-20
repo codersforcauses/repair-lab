@@ -7,8 +7,8 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
-import { useBrands } from "@/hooks/brands";
-import { useItemTypes } from "@/hooks/item-types";
+import { Brand, useBrands } from "@/hooks/brands";
+import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
@@ -19,8 +19,8 @@ export default function PrepopulatedRepairAttemptForm({
   props: RepairRequest;
   onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
-  const itemTypes = useItemTypes();
-  const itemBrands = useBrands();
+  const { data: itemTypes } = useItemTypes();
+  const { data: itemBrands } = useBrands();
 
   let status;
   switch (props.status) {
@@ -61,10 +61,14 @@ export default function PrepopulatedRepairAttemptForm({
           name="item"
           control={control}
           rules={{ required: true }}
-          options={itemTypes.map((type) => ({
-            id: type,
-            text: type
-          }))}
+          options={
+            itemTypes
+              ? itemTypes.map((type: ItemType) => ({
+                  id: type,
+                  text: type
+                }))
+              : []
+          }
         />
 
         {/* Brand, Material */}
@@ -73,10 +77,14 @@ export default function PrepopulatedRepairAttemptForm({
           label="Brand"
           control={control}
           rules={{ required: true }}
-          options={itemBrands.map((brand) => ({
-            id: brand,
-            text: brand
-          }))}
+          options={
+            itemBrands
+              ? itemBrands.map((brand: Brand) => ({
+                  id: brand,
+                  text: brand
+                }))
+              : []
+          }
         />
         <FieldInput
           name="itemMaterial"

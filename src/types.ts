@@ -1,3 +1,7 @@
+import {
+  Event as PrismaEvent,
+  RepairRequest as PrismaRepairRequest
+} from "@prisma/client";
 import { z } from "zod";
 
 import { createEventSchema, updateEventSchema } from "@/schema/event";
@@ -6,8 +10,15 @@ import {
   updateRepairRequestSchema
 } from "@/schema/repair-request";
 
-export type RepairRequest = z.infer<typeof createRepairRequestSchema>;
+// TODO: Not sure if we should be exposing prisma model types in the frontend??
+
+// Repair Requests
+export type RepairRequest = PrismaRepairRequest;
+export type CreateRepairRequest = z.infer<typeof createRepairRequestSchema>;
 export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
+
+// Events
+export type Event = PrismaEvent;
 export type CreateEvent = z.infer<typeof createEventSchema>;
 export type UpdateEvent = z.infer<typeof updateEventSchema>;
 

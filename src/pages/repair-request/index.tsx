@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { z } from "zod";
 
 import Button from "@/components/Button";
@@ -11,14 +10,14 @@ import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import SingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
-import Toast from "@/components/Toast";
-import { useBrands } from "@/hooks/brands";
-import { useEventOptions } from "@/hooks/events";
-import { useItemTypes } from "@/hooks/item-types";
+import { Brand, useBrands } from "@/hooks/brands";
+import { EventOption, useEventOptions } from "@/hooks/events";
+import { ItemType, useItemTypes } from "@/hooks/item-types";
+import { useCreateRepairRequest } from "@/hooks/repair-request";
 import { createRepairRequestSchema } from "@/schema/repair-request";
-import { RepairRequest } from "@/types";
+import { CreateRepairRequest } from "@/types";
 
-export interface FormValues extends RepairRequest {
+export interface FormValues extends CreateRepairRequest {
   tncAccepted: boolean;
 }
 
@@ -42,30 +41,13 @@ const Home = () => {
     }
   });
 
-  const itemTypeList = useItemTypes();
-  const brandList = useBrands();
-  const eventOptions = useEventOptions();
+  const { data: itemTypeList } = useItemTypes();
+  const { data: brandList } = useBrands();
+  const { data: eventOptions } = useEventOptions();
+  const { mutate: createRepairRequest } = useCreateRepairRequest();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const response = await fetch(`/api/repair-request`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        eventId: data.eventId,
-        itemBrand: data.itemBrand,
-        itemType: data.itemType,
-        description: data.description,
-        comment: data.comment
-      })
-    });
-
-    if (response.ok) {
-      toast.success("Repair request submitted!");
-    } else {
-      toast.error(`Error! ${response.statusText}`);
-    }
+    createRepairRequest(data);
   };
 
   return (
@@ -99,9 +81,13 @@ const Home = () => {
             placeholder="Select a brand"
             label="Brand"
             rules={{ required: true }}
-            options={brandList.map((brand) => {
-              return { id: brand, text: brand };
-            })}
+            options={
+              brandList
+                ? brandList.map((brand: Brand) => {
+                    return { id: brand.name, text: brand.name };
+                  })
+                : []
+            }
           />
 
           <SingleSelect
@@ -110,9 +96,13 @@ const Home = () => {
             placeholder="Select an item type"
             label="Item Type"
             rules={{ required: true }}
-            options={itemTypeList.map((itemType) => {
-              return { id: itemType, text: itemType };
-            })}
+            options={
+              itemTypeList
+                ? itemTypeList.map((itemType: ItemType) => {
+                    return { id: itemType.name, text: itemType.name };
+                  })
+                : []
+            }
           />
 
           {/* Input field for Description of Item */}
@@ -133,9 +123,13 @@ const Home = () => {
             control={control}
             placeholder="Select an event"
             label="Event"
-            options={eventOptions.map((event) => {
-              return { id: event.id, text: event.name };
-            })}
+            options={
+              eventOptions
+                ? eventOptions.map((event: EventOption) => {
+                    return { id: event.id, text: event.name };
+                  })
+                : []
+            }
           />
 
           <FieldTextArea
@@ -158,7 +152,6 @@ const Home = () => {
           </Button>
         </form>
       </div>
-      <Toast position="bottom-center" />
     </div>
   );
 };

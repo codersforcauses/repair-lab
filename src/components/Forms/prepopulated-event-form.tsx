@@ -1,23 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Event, ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
+import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateEventSchema } from "@/schema/event";
+import { Event } from "@/types";
 import { UpdateEvent } from "@/types";
 
 export default function PrepopulatedEventForm({
   props,
-  itemTypes,
   onSubmit
 }: {
   props: Event;
-  itemTypes: ItemType[];
   onSubmit: SubmitHandler<UpdateEvent>;
 }) {
+  const { data: itemTypes } = useItemTypes();
+
   const { control, handleSubmit } = useForm<UpdateEvent>({
     resolver: zodResolver(updateEventSchema),
     defaultValues: {
@@ -31,22 +32,6 @@ export default function PrepopulatedEventForm({
       status: props.status
     }
   });
-
-  // const onSubmit: SubmitHandler<Event> = async (data) => {
-  //   // console.log(JSON.stringify(data));
-  //   const response = await fetch(`/api/repair-request`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify(data)
-  //   });
-  //   if (response.ok) {
-  //     alert("Data submitted");
-  //   } else {
-  //     alert(`Error! ${response.statusText}`);
-  //   }
-  // };
 
   return (
     <div>
@@ -64,10 +49,14 @@ export default function PrepopulatedEventForm({
             control={control}
             name="eventType"
             label="Event Type"
-            options={itemTypes.map((type) => ({
-              id: type.name,
-              text: type.name
-            }))}
+            options={
+              itemTypes
+                ? itemTypes.map((type: ItemType) => ({
+                    id: type.name,
+                    text: type.name
+                  }))
+                : []
+            }
           ></FieldSingleSelect>
 
           <FieldTextArea

@@ -2,13 +2,13 @@ import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import Toast from "@/components/Toast";
+import { useUpdateRepairRequest } from "@/hooks/repair-request";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
@@ -18,6 +18,8 @@ export default function RepairAttempt() {
   const {
     query: { id }
   } = useRouter();
+
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(id as string);
 
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),
@@ -36,20 +38,7 @@ export default function RepairAttempt() {
   const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
 
   const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
-    const loadingToastId = toast.loading("Submitting data...");
-    const response = await fetch(`/api/repair-request/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    toast.dismiss(loadingToastId);
-    if (response.ok) {
-      toast.success("Data submitted!");
-    } else {
-      toast.error(`Error! ${response.statusText}`);
-    }
+    updateRepairRequest(data);
   };
 
   return (
