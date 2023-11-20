@@ -8,8 +8,8 @@ import { UserRole } from "@/types";
 import { User } from "@/types";
 
 const User = () => {
-  const [orderBy, setOrderBy] = useState("-created_at");
-  const [perPage, setPerPage] = useState(10);
+  const [orderBy, _setOrderBy] = useState("-created_at");
+  const [perPage, _setPerPage] = useState(10);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
 
