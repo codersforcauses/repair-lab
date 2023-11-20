@@ -46,8 +46,10 @@ export enum SearchCriteria {
 }
 
 export enum UserRole {
-  VOLUNTEER = "volunteer",
-  EVENT_MANAGER = "event_manager",
   ADMIN = "admin",
+  ORGANISATION_MANAGER = "organisation_manager",
+  EVENT_MANAGER = "event_manager",
+  REPAIRER = "repairer",
   CLIENT = "client"
 }
+
