@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 
-import { isAuthorised } from "@/services/auth";
-import UserService from "@/services/user"
+import userService from "@/services/user";
 import { UserRole } from "@/types";
 
 export default authMiddleware({
@@ -17,7 +16,6 @@ export default authMiddleware({
 
     // handle users who are authenticated
     if (auth.userId) {
-      const userService = new UserService();
       const user = await userService.getUser(auth.userId);
       const roleProtectedRoutes = buildRoleProtectedRoutes();
 
@@ -26,7 +24,6 @@ export default authMiddleware({
         if(!(req.nextUrl.pathname.startsWith("/api/"))){
           return NextResponse.json({ error: 'Access Denied' }, { status: 401 })
         }
-        isAuthorised(auth.userId, req.nextUrl.pathname, req.method)
       }
     }
   }
@@ -39,15 +36,17 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   // TODO: move protection of api routes to endpoints
   const publicRoutes = ["/auth/login", "/sso-callback", "/auth/forgot-password"]
   const clientRoutes = [...publicRoutes, '/','/repair-request']
-  const volunteerRoutes = [...clientRoutes, '/repair-attempt']
-  const eventManagerRoutes = [...clientRoutes, ...volunteerRoutes, '/event-listing']
-  const adminRoutes = [...clientRoutes, ...volunteerRoutes, ...eventManagerRoutes]
+  const repairerRoutes = [...clientRoutes, '/repair-attempt']
+  const eventManagerRoutes = [...clientRoutes, ...repairerRoutes, '/event-listing']
+  const adminRoutes = [...clientRoutes, ...repairerRoutes, ...eventManagerRoutes]
+  // TODO: organisation routes
 
   return {
     [UserRole.CLIENT]: clientRoutes,
-    [UserRole.VOLUNTEER]: volunteerRoutes,
+    [UserRole.REPAIRER]: repairerRoutes,
     [UserRole.EVENT_MANAGER]: eventManagerRoutes,
-    [UserRole.ADMIN]: adminRoutes
+    [UserRole.ADMIN]: adminRoutes,
+    [UserRole.ORGANISATION_MANAGER]: eventManagerRoutes
   }
 }
 
