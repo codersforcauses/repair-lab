@@ -15,7 +15,10 @@ export async function buildPaginationResponse<T>(
   options: PaginationOptions,
   totalCount: number
 ): Promise<PaginationResponse<T>> {
-  const lastPage = Math.floor(totalCount / options.perPage) + 1;
+  const lastPage =
+    totalCount % options.perPage === 0
+      ? totalCount / options.perPage
+      : Math.floor(totalCount / options.perPage) + 1;
 
   return {
     items: items,

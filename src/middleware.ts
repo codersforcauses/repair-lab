@@ -7,7 +7,7 @@ import { UserRole } from "@/types";
 
 export default authMiddleware({
   // url routes that don't require login
-  publicRoutes: ["/auth/login", "/sso-callback", "/auth/forgot-password"],
+  publicRoutes: ["/auth/login", "/auth/sso-callback", "/auth/forgot-password"],
 
   async afterAuth(auth, req, evt){
     // handle users who aren't authenticated

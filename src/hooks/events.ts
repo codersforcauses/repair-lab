@@ -1,29 +1,125 @@
-import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-interface EventOption {
+import { httpClient } from "@/lib/base-http-client";
+import { CreateEvent, UpdateEvent } from "@/types";
+
+export interface EventOption {
   id: string;
   name: string;
 }
 
-export function useEventOptions() {
-  const [events, setEvents] = useState([] as EventOption[]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/event/options`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+export const useEvent = (eventId: string | undefined) => {
+  const queryFn = async () => {
+    const url = `/event/${eventId}`;
 
-      if (!response.ok) {
-        throw new Error(`Error fetching brands: ${response.status}`);
-      }
-      const events: EventOption[] = await response.json();
-      setEvents(events);
-    };
-    fetchData();
-  }, []);
+    const response = await httpClient.get(url);
+    return response.data;
+  };
 
-  return events;
-}
+  return useQuery({
+    queryKey: [eventId],
+    queryFn
+  });
+};
+
+export const useEvents = (
+  sortKey: string,
+  sortMethod: string,
+  searchWord: string
+) => {
+  const queryFn = async () => {
+    const params = new URLSearchParams({
+      sortKey,
+      sortMethod,
+      searchWord
+    });
+
+    const url = `/event?${params.toString()}`;
+
+    const response = await httpClient.get(url);
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["events", sortKey, sortMethod, searchWord],
+    queryFn
+  });
+};
+
+export const useCreateEvent = () => {
+  const queryClient = useQueryClient();
+
+  const mutationFn = async (data: CreateEvent) => {
+    const url = "/event";
+    await httpClient.post(url, data);
+  };
+
+  const onSuccess = () => {
+    toast.success("Event created!");
+    queryClient.invalidateQueries({ queryKey: ["events"] });
+  };
+
+  const onError = () => {
+    toast.error(`Error occurred while creating event`);
+  };
+
+  return useMutation({
+    mutationFn,
+    onSuccess,
+    onError
+  });
+};
+
+export const useUpdateEvent = (eventId: string | undefined) => {
+  const queryClient = useQueryClient();
+
+  const mutationFn = async (data: UpdateEvent) => {
+    const url = `/event/${eventId}`;
+    await httpClient.patch(url, data);
+  };
+
+  const onSuccess = () => {
+    toast.success("Event updated!");
+    queryClient.invalidateQueries({ queryKey: ["events"] });
+    queryClient.invalidateQueries({ queryKey: [eventId] });
+  };
+
+  const onError = () => {
+    toast.error("Error occurred while updating event");
+  };
+
+  return useMutation({
+    mutationFn: mutationFn,
+    onSuccess,
+    onError
+  });
+};
+
+export const useEventOptions = () => {
+  const queryFn = async () => {
+    const url = `/event/options`;
+    const response = await httpClient.get(url);
+
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["event-options"],
+    queryFn: queryFn
+  });
+};
+
+export const useRepairRequests = (eventId: string | undefined) => {
+  const queryFn = async () => {
+    const url = `event/${eventId}/repair-request`;
+
+    const response = await httpClient.get(url);
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["repair-requests", eventId],
+    queryFn
+  });
+};

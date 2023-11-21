@@ -16,7 +16,7 @@ const SignInOAuthButton = ({ strategy, label, icon }: Props) => {
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn?.authenticateWithRedirect({
       strategy,
-      redirectUrl: "/sso-callback",
+      redirectUrl: "/auth/sso-callback",
       redirectUrlComplete: "/"
     });
   };

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
@@ -10,13 +10,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
-import { Event, EventStatus, ItemType } from "@prisma/client";
+import { EventStatus } from "@prisma/client";
+import { startCase } from "lodash";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
-import { CreateEvent } from "@/types";
+import { useAuth } from "@/hooks/auth";
+import { useCreateEvent, useEvents } from "@/hooks/events";
+import { ItemType, useItemTypes } from "@/hooks/item-types";
+import { CreateEvent, Event } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -34,14 +38,22 @@ function Table() {
     return `${day}/${month}/${year}`;
   }
 
-  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
-  const [eventData, setEventData] = useState<Event[]>([]);
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
   const [modalActive, toggleModal] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const { mutate: createEvent } = useCreateEvent();
+  const { data: eventData, isLoading: isEventsLoading } = useEvents(
+    sortKey,
+    sortMethod,
+    searchWord
+  );
+  const { data: itemTypes } = useItemTypes();
+
+  const { user, isLoaded, role } = useAuth();
 
   const [formData, setFormData] = useState<Partial<Event>>({
     id: undefined,
@@ -63,74 +75,8 @@ function Table() {
     { key: "status", label: "Status" }
   ];
 
-  const sortMethods = [
-    { key: "asc", label: "Ascending" },
-    { key: "desc", label: "Descending" }
-  ];
-
-  useEffect(() => {
-    const params = new URLSearchParams();
-    params.append("sortKey", sortKey);
-    params.append("sortMethod", sortMethod);
-    params.append("searchWord", searchWord);
-
-    fetch(`/api/event?${params.toString()}`, {
-      method: "GET"
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setEventData(data);
-      });
-  }, [sortKey, sortMethod, searchWord]);
-
-  useEffect(() => {
-    fetch("/api/item-type", {
-      method: "GET"
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setItemTypes(data);
-      });
-  }, []);
-
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
-
-  const addEvents: SubmitHandler<CreateEvent> = async (formData) => {
-    try {
-      const response = await fetch("/api/event", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        await response.json();
-        setShowAddModal(false);
-        router.reload();
-      }
-    } catch (error) {
-      alert("Failed to add event");
-    }
-  };
-
-  // handles searching
-  useEffect(() => {
-    const params = new URLSearchParams();
-    params.append("sortKey", sortKey);
-    params.append("sortMethod", sortMethod);
-    params.append("searchWord", searchWord);
-
-    fetch(`/api/event?${params.toString()}`, {
-      method: "GET"
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setEventData(data);
-      });
-  }, [sortKey, sortMethod, searchWord]);
 
   // formats input data before passing it on
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -181,24 +127,13 @@ function Table() {
     );
   }
 
-  function handleSort(key: string) {
-    setSortKey(key);
-  }
-
-  function SortOptions() {
-    // Basic functionality for sorting
-    return (
-      <div>
-        <select onChange={(e) => setSortMethod(e.target.value)}>
-          {sortMethods.map((header) => (
-            <option value={header.key} key={header.key}>
-              {header.label}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  }
+  const submitCreateEvent: SubmitHandler<CreateEvent> = async (data) => {
+    createEvent(data, {
+      onSuccess: () => {
+        setShowAddModal(false);
+      }
+    });
+  };
 
   return (
     <div>
@@ -218,7 +153,13 @@ function Table() {
 
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
-          <span className="mr-2 font-light text-slate-600"> Account Name </span>
+          <span className="mr-2 font-light text-slate-600">
+            {isLoaded
+              ? `${user?.firstName} ${user?.lastName} ${startCase(
+                  role.trim().toLowerCase()
+                )}`
+              : ""}
+          </span>
           <button
             className="h-12 w-12 rounded-full bg-slate-800"
             onClick={() => toggleModal(true)}
@@ -333,12 +274,14 @@ function Table() {
                   }
                   className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
                 >
-                  {itemTypes.map((type) => (
-                    <option value={type.name} key={type.name}>
-                      {" "}
-                      {type.name}{" "}
-                    </option>
-                  ))}
+                  {itemTypes
+                    ? itemTypes.map((type: ItemType) => (
+                        <option value={type.name} key={type.name}>
+                          {" "}
+                          {type.name}{" "}
+                        </option>
+                      ))
+                    : []}
                 </select>
               </div>
 
@@ -416,7 +359,7 @@ function Table() {
             showModal={showAddModal}
             height="h-3/4"
           >
-            <EventForm itemTypes={itemTypes} onSubmit={addEvents} />
+            <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
           </Modal>
         </div>
       </div>
@@ -424,61 +367,62 @@ function Table() {
       {/* main table*/}
       <div className="flex justify-center">
         <div className="container flex w-full justify-center overflow-hidden">
-          <table className="w-10/12 table-auto overflow-hidden rounded-lg">
-            <thead>
-              <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
-                {headers.map((col) => (
-                  <th key={col.key} className="p-2.5 pl-5 font-normal">
+          {isEventsLoading ? (
+            "Loading..."
+          ) : (
+            <table className="w-10/12 table-auto overflow-hidden rounded-lg">
+              <thead>
+                <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
+                  {headers.map((col) => (
+                    <th key={col.key} className="p-2.5 pl-5 font-normal">
+                      {" "}
+                      {col.label} {ToggleChevron(col.key)}{" "}
+                    </th>
+                  ))}
+                  <th className="w-10 p-2.5 text-justify font-normal">
                     {" "}
-                    {col.label} {ToggleChevron(col.key)}{" "}
+                    Edit{" "}
                   </th>
-                ))}
-                <th className="w-10 p-2.5 text-justify font-normal"> Edit </th>
-              </tr>
-            </thead>
+                </tr>
+              </thead>
 
-            <tbody className="bg-secondary-50">
-              {eventData.map((event: Event) => {
-                function handleEditEvent() {
-                  setShowAddModal(true);
-                }
-                return (
-                  <tr
-                    key={event.name}
-                    className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
-                  >
-                    <td className="pl-5 font-light">
-                      <button
-                        className="text-sm"
-                        onClick={() =>
-                          router.push(
-                            "/events/" + event.id + "/repair-requests"
-                          )
-                        }
-                      >
-                        {event.name}
-                      </button>
-                    </td>
-                    <td className="p-2.5 text-sm font-light">
-                      {event.createdBy}
-                    </td>
-                    <td className="text-sm font-light">{event.location}</td>
-                    <td className="text-sm font-light">
-                      {formatDate(String(event.startDate))}
-                    </td>
-                    <td className="text-sm font-light">{event.eventType}</td>
-                    <td className="text-sm font-light">{event.status}</td>
-                    <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                      <EventFormEditButton
-                        props={event}
-                        itemTypes={itemTypes}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              <tbody className="bg-secondary-50">
+                {eventData.map((event: Event) => {
+                  return (
+                    <tr
+                      key={event.name}
+                      className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
+                    >
+                      <td className="pl-5 font-light">
+                        <button
+                          className="text-sm"
+                          onClick={() =>
+                            router.push(
+                              "/events/" + event.id + "/repair-requests"
+                            )
+                          }
+                        >
+                          {event.name}
+                        </button>
+                      </td>
+                      <td className="p-2.5 text-sm font-light">
+                        {event.createdBy}
+                      </td>
+                      <td className="text-sm font-light">{event.location}</td>
+                      <td className="text-sm font-light">
+                        {formatDate(String(event.startDate))}
+                      </td>
+                      <td className="text-sm font-light">{event.eventType}</td>
+                      <td className="text-sm font-light">{event.status}</td>
+                      <td className="align-center ml-0 p-2.5 pl-0 text-center">
+                        <EventFormEditButton props={event} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

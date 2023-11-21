@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSignUp, useUser } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 
 import VerificationForm from "@/components/Auth/Forms/verification";
@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import SignInOAuthButton from "@/components/Button/sign-in-oauth";
 import FieldInput from "@/components/FormFields/field-input";
 import Logo from "@/components/UI/logoSvg";
+import { useAuth } from "@/hooks/auth";
 
 export interface RegisterFormValues {
   emailAddress: string;
@@ -25,7 +26,7 @@ const RegisterForm = () => {
   const [pendingVerification, setPendingVerification] = useState(false);
   const [registerError, setRegisterError] = useState(false);
   const [registerErrorMsg, setRegisterErrMsg] = useState("");
-  const { isSignedIn } = useUser();
+  const { isSignedIn } = useAuth();
 
   const router = useRouter();
 

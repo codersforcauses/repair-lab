@@ -1,28 +1,21 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
-interface Brand {
+import { httpClient } from "@/lib/base-http-client";
+
+export interface Brand {
   name: string;
 }
 
-export function useBrands() {
-  const [brands, setBrands] = useState([] as string[]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/brand`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+export const useBrands = () => {
+  const queryFn = async () => {
+    const url = `/brand`;
+    const response = await httpClient.get(url);
 
-      if (!response.ok) {
-        throw new Error(`Error fetching brands: ${response.status}`);
-      }
-      const brands: Brand[] = await response.json();
-      const brandNames = brands.map(({ name }) => name);
-      setBrands(brandNames);
-    };
-    fetchData();
-  }, []);
-  return brands;
-}
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["brands"],
+    queryFn: queryFn
+  });
+};
