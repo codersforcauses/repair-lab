@@ -8,7 +8,7 @@ import {
   PaginationOptions,
   PaginationResponse
 } from "@/lib/pagination";
-import { User, UserRole } from "@/types";
+import { UserRole } from "@/types";
 
 type ClerkOrderBy =
   | "created_at"
@@ -18,7 +18,13 @@ type ClerkOrderBy =
   | "-created_at"
   | "-updated_at";
 
-type UserResponse = User;
+interface UserResponse {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  emailAddress: string;
+  role: UserRole;
+}
 
 interface IUserService {
   getMany(
@@ -67,7 +73,8 @@ class UserService implements IUserService {
 
   private toResponse(user: ClerkUser): UserResponse {
     const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
-    const role = publicMetadata.role ? publicMetadata.role : UserRole.CLIENT;
+    const roleExists = publicMetadata.role !== undefined
+    const role = roleExists ? publicMetadata.role as UserRole : UserRole.CLIENT
     const emailAddress = emailAddresses[0].emailAddress;
 
     return {
@@ -77,6 +84,10 @@ class UserService implements IUserService {
       role,
       emailAddress
     };
+  }
+
+  async getRole(userId: string): Promise<UserRole> {
+    return (await this.getUser(userId)).role
   }
 }
 
