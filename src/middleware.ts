@@ -37,9 +37,9 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   // TODO: move protection of api routes to endpoints
   const publicRoutes = [new RegExp(PageRouteRegex.AUTH)]
   const clientRoutes = [...publicRoutes, new RegExp(PageRouteRegex.ROOT), new RegExp(PageRouteRegex.REPAIR_REQUEST)]
-  const repairerRoutes = [...clientRoutes, new RegExp(PageRouteRegex.REPAIR_ATTEMPT), new RegExp(PageRouteRegex.REQUESTS)]
+  const repairerRoutes = [...clientRoutes, new RegExp(PageRouteRegex.REPAIR_ATTEMPT)]
   const eventManagerRoutes = [...clientRoutes, ...repairerRoutes, new RegExp(PageRouteRegex.EVENTS)]
-  const adminRoutes = [...clientRoutes, ...repairerRoutes, ...eventManagerRoutes, new RegExp(PageRouteRegex.USERS), new RegExp(PageRouteRegex.TESTS)]
+  const adminRoutes = [new RegExp(PageRouteRegex.ALL)]
   // TODO: organisation manager routes
 
   return {
@@ -53,14 +53,12 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
 
 // middleware route
 export enum PageRouteRegex {
-  ROOT = "/",
-  AUTH = "/auth\/*",
-  EVENTS = "/events\/*",
-  REPAIR_REQUEST = "/repair-request",
-  REPAIR_ATTEMPT = "/repair-request\/*",
-  REQUESTS = "/requests\/*",
-  TESTS = "/tests\/*",
-  USERS = "/users\/*"
+  ROOT = "/\$",
+  AUTH = "/auth",
+  EVENTS = "/events",
+  REPAIR_REQUEST = "/repair-request\$",
+  REPAIR_ATTEMPT = "/repair-request",
+  ALL = "/"
 }
 
 export const config = {
