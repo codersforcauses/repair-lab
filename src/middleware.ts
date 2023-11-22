@@ -32,7 +32,9 @@ export default authMiddleware({
         )
       ) {
         if (!req.nextUrl.pathname.startsWith("/api/")) {
-          return NextResponse.json({ error: "Access Denied" }, { status: 401 });
+          const url = req.nextUrl.clone();
+          url.pathname = "/401";
+          return NextResponse.rewrite(url);
         }
       }
     }

@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <StrictMode>
       <ClerkProvider clerkJSVariant="headless" {...pageProps}>
         <QueryClientProvider client={queryClient}>
-          <main className={inter.className}>
+          <main className={`${inter.className}`}>
             <Component {...pageProps} />
             <Toast position="bottom-center" />
           </main>
