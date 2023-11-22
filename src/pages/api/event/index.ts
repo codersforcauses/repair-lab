@@ -63,7 +63,7 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse) {
   const newEvent = await prisma.event.create({
     data: {
       ...rest,
-      createdBy: userId as string,
+      createdBy: userId!,
       event: {
         connect: {
           name: eventType
