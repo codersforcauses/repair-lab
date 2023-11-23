@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RepairRequest } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
@@ -10,7 +9,7 @@ import FieldTextArea from "@/components/FormFields/field-text-area";
 import { Brand, useBrands } from "@/hooks/brands";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
-import type { GeneralRepairAttempt } from "@/types";
+import type { GeneralRepairAttempt, RepairRequest } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
   props,
@@ -63,10 +62,9 @@ export default function PrepopulatedRepairAttemptForm({
           rules={{ required: true }}
           options={
             itemTypes
-              ? itemTypes.map((type: ItemType) => ({
-                  id: type,
-                  text: type
-                }))
+              ? itemTypes.map((itemType: ItemType) => {
+                  return { id: itemType.name, text: itemType.name };
+                })
               : []
           }
         />
@@ -79,10 +77,9 @@ export default function PrepopulatedRepairAttemptForm({
           rules={{ required: true }}
           options={
             itemBrands
-              ? itemBrands.map((brand: Brand) => ({
-                  id: brand,
-                  text: brand
-                }))
+              ? itemBrands.map((brand: Brand) => {
+                  return { id: brand.name, text: brand.name };
+                })
               : []
           }
         />

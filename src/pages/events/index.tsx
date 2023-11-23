@@ -11,11 +11,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dialog } from "@headlessui/react";
 import { EventStatus } from "@prisma/client";
+import { startCase } from "lodash";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
+import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { CreateEvent, Event } from "@/types";
@@ -50,6 +52,8 @@ function Table() {
     searchWord
   );
   const { data: itemTypes } = useItemTypes();
+
+  const { user, isLoaded, role } = useAuth();
 
   const [formData, setFormData] = useState<Partial<Event>>({
     id: undefined,
@@ -149,7 +153,13 @@ function Table() {
 
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
-          <span className="mr-2 font-light text-slate-600"> Account Name </span>
+          <span className="mr-2 font-light text-slate-600">
+            {isLoaded
+              ? `${user?.firstName} ${user?.lastName} ${startCase(
+                  role.trim().toLowerCase()
+                )}`
+              : ""}
+          </span>
           <button
             className="h-12 w-12 rounded-full bg-slate-800"
             onClick={() => toggleModal(true)}

@@ -19,7 +19,7 @@ async function createRepairRequest(req: NextApiRequest, res: NextApiResponse) {
     data: {
       ...rest,
       thumbnailImage: "Fake S3 Key", // TODO: change this once image upload works.
-      createdBy: userId as string,
+      createdBy: userId!,
       images: {
         create: images?.map((image) => {
           return {
