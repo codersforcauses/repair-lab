@@ -18,35 +18,39 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse) {
 
   // Use 'search' query parameter to filter events
   const events = await prisma.event.findMany({
-    where: {
-      OR: [
-        {
-          name: {
-            contains: searchWord as string,
-            mode: "insensitive"
-          }
-        },
-        {
-          createdBy: {
-            contains: searchWord as string,
-            mode: "insensitive"
-          }
-        },
-        {
-          location: {
-            contains: searchWord as string,
-            mode: "insensitive"
-          }
-        },
-        {
-          eventType: {
-            contains: searchWord as string,
-            mode: "insensitive"
+    ...(searchWord
+      ? {
+          where: {
+            OR: [
+              {
+                name: {
+                  contains: searchWord as string,
+                  mode: "insensitive"
+                }
+              },
+              {
+                createdBy: {
+                  contains: searchWord as string,
+                  mode: "insensitive"
+                }
+              },
+              {
+                location: {
+                  contains: searchWord as string,
+                  mode: "insensitive"
+                }
+              },
+              {
+                eventType: {
+                  contains: searchWord as string,
+                  mode: "insensitive"
+                }
+              }
+              // Add more fields to search if necessary
+            ]
           }
         }
-        // Add more fields to search if necessary
-      ]
-    },
+      : {}),
     orderBy: sortObj
   });
 
