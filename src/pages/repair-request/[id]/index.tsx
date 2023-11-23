@@ -47,6 +47,7 @@ export default function RepairAttempt() {
     >
       <h1 className="w-full rounded-t-lg bg-[#d9d9d9] px-5 py-3 text-3xl font-semibold leading-normal  text-grey-950 max-[415px]:text-center max-[415px]:text-lg">
         General Repair Attempt
+        <p>ID: {id}</p>
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
