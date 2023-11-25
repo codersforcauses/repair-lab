@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
@@ -81,9 +81,3 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
 
   res.status(200).json(newEvent);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

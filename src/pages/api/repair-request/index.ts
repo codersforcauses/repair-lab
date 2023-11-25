@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
@@ -36,9 +36,3 @@ async function createRepairRequest(
 
   return res.status(200).json(repairRequest);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
 
@@ -66,9 +66,3 @@ async function updateEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
 
   res.status(200).json(updatedEvent);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

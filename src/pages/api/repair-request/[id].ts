@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
 
@@ -51,9 +51,3 @@ async function updateRepairRequest(
 
   return res.status(200).json(repairAttempt);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

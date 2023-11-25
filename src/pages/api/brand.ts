@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import { Brand } from "@/hooks/brands";
 import apiHandler from "@/lib/api-handler";
@@ -13,9 +13,3 @@ async function getBrands(_req: NextApiRequest, res: NextApiResponse<Brand[]>) {
 
   return res.status(200).json(brands);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

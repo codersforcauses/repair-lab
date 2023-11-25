@@ -20,9 +20,3 @@ async function getUsers(
 
   return res.status(200).json(users);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

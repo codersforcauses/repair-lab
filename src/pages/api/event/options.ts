@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PageConfig } from "next";
 
 import { EventOption } from "@/hooks/events";
 import apiHandler from "@/lib/api-handler";
@@ -22,9 +21,3 @@ async function getEventOptions(
 
   res.status(200).json(events);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};
