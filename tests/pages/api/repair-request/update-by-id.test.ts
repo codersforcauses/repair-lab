@@ -3,14 +3,13 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { RepairRequest } from "@prisma/client";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import endpoint, { config } from "@/pages/api/repair-request/[id]";
+import endpoint from "@/pages/api/repair-request/[id]";
 
 import prisma from "../../../../src/lib/prisma";
 import { cleanup, seedTestData } from "../../../utils";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
-handler.config = config;
 
 describe("PATCH /api/repair-request/:id", () => {
   beforeAll(async () => {
