@@ -10,10 +10,10 @@ export const createEventSchema = z.object({
   eventType: z.string().min(1, { message: "Event type is required" }),
   startDate: z
     .string()
-    .datetime({ offset: true, message: "Invalid date format for startDate" }),
+    .refine((s) => new Date(s), "Invalid date format for Start Date"),
   endDate: z
     .string()
-    .datetime({ offset: true, message: "Invalid date format for endDate" })
+    .refine((s) => new Date(s), "Invalid date format for Start Date")
 });
 
 export const updateEventSchema = z.object({
@@ -29,11 +29,11 @@ export const updateEventSchema = z.object({
   eventType: z.string().optional(),
   startDate: z
     .string()
-    .datetime({ offset: true, message: "Invalid date format for startDate" })
+    .refine((s) => new Date(s), "Invalid date format for Start Date")
     .optional(),
   endDate: z
     .string()
-    .datetime({ offset: true, message: "Invalid date format for endDate" })
+    .refine((s) => new Date(s), "Invalid date format for Start Date")
     .optional(),
   status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional()
 });

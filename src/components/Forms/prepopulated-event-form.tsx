@@ -27,8 +27,17 @@ export default function PrepopulatedEventForm({
       description: props.description,
       disclaimer: props.disclaimer,
       eventType: props.eventType,
-      startDate: new Date(props.startDate).toISOString(),
-      endDate: new Date(props.endDate).toISOString(),
+      // datetime-local fields are stubbon. Ensure timezone stays
+      startDate: new Date(
+        props.startDate.getTime() - props.startDate.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .slice(0, -1),
+      endDate: new Date(
+        props.endDate.getTime() - props.endDate.getTimezoneOffset() * 60000
+      )
+        .toISOString()
+        .slice(0, -1),
       status: props.status
     }
   });
@@ -77,12 +86,14 @@ export default function PrepopulatedEventForm({
             control={control}
             name="startDate"
             label="Start Date"
+            type="datetime-local"
           ></FieldInput>
 
           <FieldInput
             control={control}
             name="endDate"
             label="End Date"
+            type="datetime-local"
           ></FieldInput>
 
           <FieldTextArea

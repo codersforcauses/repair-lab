@@ -1,8 +1,9 @@
+import { Event } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
-import { CreateEvent, UpdateEvent } from "@/types";
+import { CreateEvent, EventResponse, UpdateEvent } from "@/types";
 
 export interface EventOption {
   id: string;
@@ -37,8 +38,16 @@ export const useEvents = (
 
     const url = `/event?${params.toString()}`;
 
-    const response = await httpClient.get(url);
-    return response.data;
+    const response = await httpClient.get<EventResponse[]>(url);
+    // convert back to dates
+    const events: Event[] = response.data.map((originalItem) => ({
+      ...originalItem,
+      createdAt: new Date(originalItem.createdAt),
+      updatedAt: new Date(originalItem.updatedAt),
+      startDate: new Date(originalItem.startDate),
+      endDate: new Date(originalItem.endDate)
+    }));
+    return events;
   };
 
   return useQuery({

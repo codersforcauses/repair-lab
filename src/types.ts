@@ -52,3 +52,10 @@ export enum UserRole {
   REPAIRER = "REPAIRER",
   CLIENT = "CLIENT"
 }
+
+// API responses
+type DateToString<T> = {
+  [K in keyof T]: T[K] extends Date ? string : T[K];
+};
+
+export type EventResponse = DateToString<Event>;

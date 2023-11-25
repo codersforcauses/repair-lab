@@ -14,7 +14,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
   placeholder?: string;
   icon?: string;
-  type?: string;
+  type?: React.HTMLInputTypeAttribute;
   width?: string;
 }
 
