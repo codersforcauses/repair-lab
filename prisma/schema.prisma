@@ -15,10 +15,11 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name        String   @unique
-  location    String
-  description String
-  volunteers  String[]
+  name         String          @unique
+  location     String
+  description  String
+  //TODO: fix error validating
+  eventRepairs EventRepairer[]
 
   event     ItemType @relation(fields: [eventType], references: [name]) //relates event to the item type being repaired there
   eventType String
@@ -101,4 +102,11 @@ model EventImage {
 
   repairEvent   Event  @relation(fields: [repairEventId], references: [id])
   repairEventId String
+}
+
+model EventRepairer {
+  id      String @id @default(uuid())
+  userId  String
+  eventId String
+  Event   Event  @relation(fields: [eventId], references: [id])
 }
