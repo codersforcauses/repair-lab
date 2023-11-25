@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse, PageConfig } from "next";
-import { getAuth } from "@clerk/nextjs/server";
+import { clerkClient, getAuth, User } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
@@ -53,6 +53,21 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse) {
       : {}),
     orderBy: sortObj
   });
+
+  const userId = events.map((e) => e.createdBy);
+  const users = await clerkClient.users.getUserList({ userId });
+  const userMap = users.reduce(
+    (obj, item) => {
+      obj[item.id] = item;
+      return obj;
+    },
+    {} as Record<string, User>
+  );
+
+  for (const event of events) {
+    const user = userMap[event.createdBy];
+    if (user) event.createdBy = `${user.firstName} ${user.lastName}`;
+  }
 
   res.status(200).json(events);
 }
