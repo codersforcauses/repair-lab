@@ -3,6 +3,7 @@ import { clerkClient, getAuth, User } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
+import { EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -64,12 +65,15 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse) {
     {} as Record<string, User>
   );
 
-  for (const event of events) {
-    const user = userMap[event.createdBy];
-    if (user) event.createdBy = `${user.firstName} ${user.lastName}`;
-  }
+  const eventResponse: EventResponse[] = events.map((e) => {
+    return {
+      ...e,
+      firstName: userMap[e.createdBy]?.firstName ?? e.createdBy,
+      lastName: userMap[e.createdBy]?.lastName ?? ""
+    };
+  });
 
-  res.status(200).json(events);
+  res.status(200).json(eventResponse);
 }
 
 async function createEvent(req: NextApiRequest, res: NextApiResponse) {

@@ -20,7 +20,7 @@ import Modal from "@/components/Modal";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event } from "@/types";
+import { CreateEvent, Event, EventResponse } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -387,7 +387,7 @@ function Table() {
               </thead>
 
               <tbody className="bg-secondary-50">
-                {eventData.map((event: Event) => {
+                {eventData.map((event: EventResponse) => {
                   return (
                     <tr
                       key={event.name}
@@ -406,7 +406,7 @@ function Table() {
                         </button>
                       </td>
                       <td className="p-2.5 text-sm font-light">
-                        {event.createdBy}
+                        {event.firstName} {event.lastName}
                       </td>
                       <td className="text-sm font-light">{event.location}</td>
                       <td className="text-sm font-light">

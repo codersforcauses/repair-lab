@@ -52,3 +52,9 @@ export enum UserRole {
   REPAIRER = "REPAIRER",
   CLIENT = "CLIENT"
 }
+
+// API Responses
+export type EventResponse = Event & {
+  firstName: string;
+  lastName: string;
+};
