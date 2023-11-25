@@ -5,13 +5,14 @@ import { HttpStatusCode } from "axios";
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { updateEventSchema } from "@/schema/event";
+import { Event } from "@/types";
 
 export default apiHandler({
   get: getEvent,
   patch: updateEvent
 });
 
-async function getEvent(req: NextApiRequest, res: NextApiResponse) {
+async function getEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
   const { id } = req.query;
 
   const event = await prisma.event.findUnique({
@@ -25,7 +26,7 @@ async function getEvent(req: NextApiRequest, res: NextApiResponse) {
   return res.status(200).json(event);
 }
 
-async function updateEvent(req: NextApiRequest, res: NextApiResponse) {
+async function updateEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
   const {
     name,
     location,
