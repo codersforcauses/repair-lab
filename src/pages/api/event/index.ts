@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { clerkClient, getAuth, User } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
-import { EventResponse } from "@/types";
+import { Event, EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -12,7 +12,10 @@ export default apiHandler({
   post: createEvent
 });
 
-async function getEvents(req: NextApiRequest, res: NextApiResponse) {
+async function getEvents(
+  req: NextApiRequest,
+  res: NextApiResponse<EventResponse[]>
+) {
   const { sortKey, sortMethod, searchWord } = req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
@@ -76,7 +79,7 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(eventResponse);
 }
 
-async function createEvent(req: NextApiRequest, res: NextApiResponse) {
+async function createEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
   const { eventType, startDate, endDate, ...rest } = createEventSchema.parse(
     req.body
   );
@@ -99,9 +102,3 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse) {
 
   res.status(200).json(newEvent);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};

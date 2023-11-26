@@ -3,13 +3,12 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import prisma from "@/lib/prisma";
-import endpoint, { config } from "@/pages/api/brand";
+import endpoint from "@/pages/api/brand";
 
 import { cleanup } from "../../../utils";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
-handler.config = config;
 
 describe("GET /api/brand", () => {
   beforeAll(async () => {
