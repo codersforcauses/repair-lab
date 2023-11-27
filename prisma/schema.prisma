@@ -15,10 +15,10 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name         String          @unique
-  location     String
-  description  String
-  //TODO: fix error validating
+  name        String @unique
+  location    String
+  description String
+
   eventRepairs EventRepairer[]
 
   event     ItemType @relation(fields: [eventType], references: [name]) //relates event to the item type being repaired there
