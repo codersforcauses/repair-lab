@@ -4,12 +4,16 @@ import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
+import { RepairRequest } from "@/types";
 
 export default apiHandler({
   get: getRepairRequests
 });
 
-async function getRepairRequests(req: NextApiRequest, res: NextApiResponse) {
+async function getRepairRequests(
+  req: NextApiRequest,
+  res: NextApiResponse<RepairRequest[]>
+) {
   const { id } = req.query;
 
   const event = await prisma.event.findUnique({

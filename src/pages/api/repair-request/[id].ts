@@ -1,16 +1,20 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
+import { RepairRequest } from "@/types";
 
 export default apiHandler({
   patch: updateRepairRequest
 });
 
-async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
+async function updateRepairRequest(
+  req: NextApiRequest,
+  res: NextApiResponse<RepairRequest>
+) {
   const { id } = req.query;
   const parsedData = updateRepairRequestSchema.parse(req.body);
 
@@ -47,9 +51,3 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
 
   return res.status(200).json(repairAttempt);
 }
-
-export const config: PageConfig = {
-  api: {
-    externalResolver: true
-  }
-};
