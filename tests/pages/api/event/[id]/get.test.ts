@@ -48,9 +48,9 @@ describe("GET /api/event/:id", () => {
             "Content-Type": "application/json"
           }
         });
-
+  
         const result = await res.json();
-
+  
         const expectedEvent = {
           id: "acf5ed50-19a2-11ee-be56-0242ac120002",
           createdBy: "mock user",
@@ -58,16 +58,26 @@ describe("GET /api/event/:id", () => {
           location: "Curtin University",
           eventType: "Laptop",
           description: "Laptop repair event.",
-          volunteers: ["Justin", "Spongebob"],
+          eventRepairs: expect.arrayContaining([
+            expect.objectContaining({
+              userId: "Justin",
+              eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
+            }),
+            expect.objectContaining({
+              userId: "Dylon",
+              eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
+            })
+          ]),
           disclaimer: "This is a disclaimer",
           status: "UPCOMING",
           startDate: "2023-11-16T01:27:08.417Z",
           endDate: "2023-11-17T01:27:08.417Z"
         };
-
+  
         expect(res.status).toBe(200);
         expect(result).toMatchObject(expectedEvent);
       }
     });
   });
+  
 });
