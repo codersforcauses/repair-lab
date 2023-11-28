@@ -58,7 +58,14 @@ describe("GET /api/event/:id", () => {
           location: "Curtin University",
           eventType: "Laptop",
           description: "Laptop repair event.",
-          volunteers: ["Justin", "Spongebob"],
+          eventRepairer: [
+            {
+              userId: "Dylon"
+            },
+            {
+              userId: "Justin"
+            }
+          ],
           disclaimer: "This is a disclaimer",
           status: "UPCOMING",
           startDate: "2023-11-16T01:27:08.417Z",
