@@ -90,14 +90,6 @@ describe("PATCH /api/event/:id", () => {
           createdBy: "mock user",
           location: "Curtin University",
           eventType: "Laptop",
-          eventRepairer: [
-            {
-              userId: "Dylon"
-            },
-            {
-              userId: "Justin"
-            }
-          ],
           name: "Updated Event",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

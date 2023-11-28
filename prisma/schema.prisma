@@ -109,4 +109,6 @@ model EventRepairer {
   userId  String
   eventId String
   Event   Event  @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, eventId])
 }
