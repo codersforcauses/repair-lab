@@ -85,17 +85,6 @@ describe("PATCH /api/event/:id", () => {
           where: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" }
         });
 
-        // eventRepairs: {
-        //   create: [
-        //     {
-        //       userId: "Dylon"
-        //     },
-        //     {
-        //       userId: "Justin"
-        //     }
-        //   ]
-        // },
-
         const expectedEvent = {
           id: "acf5ed50-19a2-11ee-be56-0242ac120002",
           createdBy: "mock user",
