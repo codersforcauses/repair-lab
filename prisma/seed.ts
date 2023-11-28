@@ -8,7 +8,7 @@ import {
   EventRepairer,
   ItemType,
   PrismaClient,
-  RepairRequest,
+  RepairRequest
 } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -142,10 +142,7 @@ async function createRandomRepairRequests(
   return repairRequests;
 }
 
-async function createRandomEventRepairers(
-  count: number,
-  events: Event[],
-) {
+async function createRandomEventRepairers(count: number, events: Event[]) {
   const eventRepairers: EventRepairer[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -162,7 +159,6 @@ async function createRandomEventRepairers(
 
   return eventRepairers;
 }
-
 
 async function main() {
   const fakerSeed = 0;

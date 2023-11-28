@@ -45,9 +45,9 @@ export const seedTestData = async () => {
       description: "Laptop repair event.",
       disclaimer: "This is a disclaimer",
       eventRepairs: {
-        create:[
+        create: [
           {
-            userId:"Dylon",
+            userId: "Dylon"
           },
           {
             userId: "Justin"
