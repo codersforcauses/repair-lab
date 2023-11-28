@@ -5,9 +5,10 @@ import { faker } from "@faker-js/faker";
 import {
   Brand,
   Event,
+  EventRepairer,
   ItemType,
   PrismaClient,
-  RepairRequest
+  RepairRequest,
 } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -77,13 +78,6 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
         name: faker.commerce.productName(),
         location: faker.location.street(),
         description: faker.lorem.sentence(),
-        volunteers: [
-          faker.person.fullName(),
-          faker.person.fullName(),
-          faker.person.fullName(),
-          faker.person.fullName(),
-          faker.person.fullName()
-        ],
         event: {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
@@ -148,6 +142,28 @@ async function createRandomRepairRequests(
   return repairRequests;
 }
 
+async function createRandomEventRepairers(
+  count: number,
+  events: Event[],
+) {
+  const eventRepairers: EventRepairer[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const eventRepairer = await prisma.eventRepairer.create({
+      data: {
+        userId: faker.helpers.arrayElement(events).id,
+        eventId: faker.helpers.arrayElement(events).id
+      }
+    });
+
+    eventRepairers.push(eventRepairer);
+    console.log(eventRepairer);
+  }
+
+  return eventRepairers;
+}
+
+
 async function main() {
   const fakerSeed = 0;
   const itemTypeNames: string[] = ["Clock", "Bike", "Computer"];
@@ -167,6 +183,7 @@ async function main() {
     itemTypes,
     brands
   );
+  await createRandomEventRepairers(eventCount, events);
 }
 
 main()
