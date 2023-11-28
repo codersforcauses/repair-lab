@@ -154,7 +154,6 @@ async function createRandomEventRepairers(count: number, events: Event[]) {
     });
 
     eventRepairers.push(eventRepairer);
-    console.log(eventRepairer);
   }
 
   return eventRepairers;
