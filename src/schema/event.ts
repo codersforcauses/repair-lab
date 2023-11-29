@@ -1,5 +1,21 @@
 import { z } from "zod";
 
+const dateStringToISO = (
+  val: string,
+  ctx: z.RefinementCtx,
+  message: string
+) => {
+  const parsed = new Date(val);
+  if (isNaN(parsed.getTime())) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message
+    });
+    return z.NEVER;
+  }
+  return parsed.toISOString();
+};
+
 export const createEventSchema = z.object({
   name: z.string().min(1, { message: "Event name is required" }),
   location: z.string().min(1, { message: "Event location is required" }),
@@ -10,15 +26,15 @@ export const createEventSchema = z.object({
   eventType: z.string().min(1, { message: "Event type is required" }),
   startDate: z
     .string()
-    .refine(
-      (s) => new Date(s).toString() !== "Invalid Date",
-      "Invalid date format for start date"
+    .min(1, { message: "Start Date is required" })
+    .transform((str, ctx) =>
+      dateStringToISO(str, ctx, "Invalid date format for Start Date")
     ),
   endDate: z
     .string()
-    .refine(
-      (s) => new Date(s).toString() !== "Invalid Date",
-      "Invalid date format for end date"
+    .min(1, { message: "End Date is required" })
+    .transform((str, ctx) =>
+      dateStringToISO(str, ctx, "Invalid date format for End Date")
     )
 });
 
@@ -35,16 +51,14 @@ export const updateEventSchema = z.object({
   eventType: z.string().optional(),
   startDate: z
     .string()
-    .refine(
-      (s) => new Date(s).toString() !== "Invalid Date",
-      "Invalid date format for start date"
+    .transform((str, ctx) =>
+      dateStringToISO(str, ctx, "Invalid date format for Start Date")
     )
     .optional(),
   endDate: z
     .string()
-    .refine(
-      (s) => new Date(s).toString() !== "Invalid Date",
-      "Invalid date format for end date"
+    .transform((str, ctx) =>
+      dateStringToISO(str, ctx, "Invalid date format for End Date")
     )
     .optional(),
   status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional()
