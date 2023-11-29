@@ -6,6 +6,7 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
+import { toDatetimeLocalString } from "@/lib/date-utils";
 import { updateEventSchema } from "@/schema/event";
 import { Event } from "@/types";
 import { UpdateEvent } from "@/types";
@@ -27,17 +28,8 @@ export default function PrepopulatedEventForm({
       description: props.description,
       disclaimer: props.disclaimer,
       eventType: props.eventType,
-      // datetime-local fields are stubbon. Ensure timezone stays
-      startDate: new Date(
-        props.startDate.getTime() - props.startDate.getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .slice(0, -1),
-      endDate: new Date(
-        props.endDate.getTime() - props.endDate.getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .slice(0, -1),
+      startDate: toDatetimeLocalString(props.startDate),
+      endDate: toDatetimeLocalString(props.endDate),
       status: props.status
     }
   });
