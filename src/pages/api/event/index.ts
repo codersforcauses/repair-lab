@@ -65,7 +65,7 @@ async function getEvents(
       obj[item.id] = item;
       return obj;
     },
-    {} as Record<string, User>
+    {} as Partial<Record<string, User>>
   );
 
   const eventResponse: EventResponse[] = events.map((e) => {
