@@ -13,7 +13,8 @@ export const createEventSchema = z.object({
     .datetime({ offset: true, message: "Invalid date format for startDate" }),
   endDate: z
     .string()
-    .datetime({ offset: true, message: "Invalid date format for endDate" })
+    .datetime({ offset: true, message: "Invalid date format for endDate" }),
+  volunteers: z.string().array().nonempty({ message: "Need at least one volunteer!",})
 });
 
 export const updateEventSchema = z.object({
@@ -35,5 +36,6 @@ export const updateEventSchema = z.object({
     .string()
     .datetime({ offset: true, message: "Invalid date format for endDate" })
     .optional(),
-  status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional()
+  status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional(),
+  volunteers: z.string().array().optional()
 });

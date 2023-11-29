@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
+import FieldMultiSelect from "@/components/FormFields/field-multi-select";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { createEventSchema } from "@/schema/event";
@@ -25,7 +26,8 @@ export default function EventForm({
       startDate: "",
       endDate: "",
       eventType: "",
-      disclaimer: ""
+      disclaimer: "",
+      volunteers: [""]
     }
   });
 
@@ -85,6 +87,16 @@ export default function EventForm({
             control={control}
             rules={{ required: false }}
           />
+
+          <FieldMultiSelect
+            control={control}
+            name="volunteers"
+            label="Volunteers"
+            options={itemTypes.map((type) => ({
+              id: type.name,
+              text: type.name
+            }))}
+          ></FieldMultiSelect>
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">
