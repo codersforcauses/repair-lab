@@ -2,7 +2,7 @@ import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import { cleanup, seedTestData } from "@/../tests/utils";
+import { cleanup, mockClerkUsers, seedTestData } from "@/../tests/utils";
 import prisma from "@/lib/prisma";
 import endpoint from "@/pages/api/event/[id]";
 
@@ -17,6 +17,15 @@ describe("PATCH /api/event/:id", () => {
     vi.mock("@clerk/nextjs/server", () => {
       return {
         getAuth: vi.fn().mockReturnValue({ userId: "Test" })
+      };
+    });
+    vi.mock("@clerk/nextjs", () => {
+      return {
+        clerkClient: {
+          users: {
+            getUserList: vi.fn().mockReturnValue(mockClerkUsers)
+          }
+        }
       };
     });
   });
