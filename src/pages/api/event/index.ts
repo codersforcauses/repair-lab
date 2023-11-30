@@ -60,7 +60,7 @@ async function getEvents(
   });
 
   const eventResponse: EventResponse[] =
-    await eventService.convertEventsToResponse(events);
+    await eventService.toClientResponse(events);
 
   res.status(200).json(eventResponse);
 }

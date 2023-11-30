@@ -17,9 +17,7 @@ export default function Volunteers() {
     query: { id: eventId }
   } = useRouter();
 
-  const { isLoading: isEventLoading, data: event } = useEvent(
-    eventId as string
-  );
+  const { data: event } = useEvent(eventId as string);
 
   useEffect(() => {
     if (!event) return;

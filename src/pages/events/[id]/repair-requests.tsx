@@ -12,7 +12,7 @@ import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useRepairRequests } from "@/hooks/events";
 import { useEvent } from "@/hooks/events";
-import { RepairRequest } from "@/types";
+import { RepairRequestResponse } from "@/types";
 
 export default function RepairRequests() {
   const [eventModal, showEventModal] = useState(false);
@@ -53,9 +53,13 @@ export default function RepairRequests() {
                   <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
                     <span>
                       Repair Requests (
-                      {isRepairRequestsLoading
-                        ? "Loading..."
-                        : repairRequests.length}
+                      {!repairRequests ? (
+                        <div className="w-full h-full flex items-center justify-center ">
+                          <LoadingSpinner />
+                        </div>
+                      ) : (
+                        repairRequests.length
+                      )}
                       )
                     </span>
                   </div>
@@ -66,12 +70,12 @@ export default function RepairRequests() {
                 </div>
               </div>
               <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
-                {isRepairRequestsLoading ? (
+                {!repairRequests ? (
                   <div className="w-full h-full flex items-center justify-center ">
                     <LoadingSpinner />
                   </div>
                 ) : (
-                  repairRequests.map((item: RepairRequest) => (
+                  repairRequests.map((item: RepairRequestResponse) => (
                     <div key={item.id}>
                       <Card
                         props={{
@@ -79,7 +83,9 @@ export default function RepairRequests() {
                           image: "/images/broken-clock-sad.jpg",
                           description: item.description,
                           status: item.status,
-                          firstName: item.assignedTo,
+                          firstName:
+                            item.assignedTo.firstName ??
+                            item.assignedTo.emailAddress,
                           lastName: "",
                           avatar: "/images/repair_lab_logo.jpg",
                           repairRequestProps: item

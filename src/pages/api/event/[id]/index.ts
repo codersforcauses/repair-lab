@@ -28,9 +28,7 @@ async function getEvent(
   }
 
   // TODO: make a singular version
-  const eventResponse = (
-    await eventService.convertEventsToResponse([event])
-  )[0];
+  const eventResponse = (await eventService.toClientResponse([event]))[0];
   return res.status(200).json(eventResponse);
 }
 
@@ -76,7 +74,7 @@ async function updateEvent(
   });
 
   const eventResponse = (
-    await eventService.convertEventsToResponse([updatedEvent])
+    await eventService.toClientResponse([updatedEvent])
   )[0];
 
   res.status(200).json(eventResponse);

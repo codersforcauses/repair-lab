@@ -12,7 +12,7 @@ export interface HeaderProps {
 export default function Header({ props }: { props: HeaderProps }) {
   let displayName =
     `${props.createdBy.firstName} ${props.createdBy.lastName}`.trim();
-  if (!displayName) displayName = "Unknown";
+  if (!displayName) displayName = props.createdBy.emailAddress;
 
   return (
     <>
