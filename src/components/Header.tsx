@@ -10,10 +10,9 @@ export interface HeaderProps {
 }
 
 export default function Header({ props }: { props: HeaderProps }) {
-  let displayName =
-    `${props.createdBy.firstName} ${props.createdBy.lastName}`.trim();
-  if (!displayName) displayName = props.createdBy.emailAddress;
-
+  const displayName =
+    `${props.createdBy.firstName} ${props.createdBy.lastName}`.trim() ||
+    props.createdBy.emailAddress;
   return (
     <>
       <div className="header-component sticky top-0 z-20 flex justify-between gap-4 px-5 pb-8 pt-6 ">

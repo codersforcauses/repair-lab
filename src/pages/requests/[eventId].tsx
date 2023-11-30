@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { RepairRequest, RepairRequestImage } from "@prisma/client";
+import { RepairRequestImage } from "@prisma/client";
 import { FaEdit, FaImages } from "react-icons/fa";
 
 import Button from "@/components/Button";
@@ -11,11 +11,12 @@ import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repai
 import Modal from "@/components/Modal";
 import FormatDate from "@/components/utils/format-date";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
+import { RepairRequestResponse } from "@/types";
 
 const inter = Inter({ subsets: ["latin"] });
 const minWidth = 425;
 
-type Request = RepairRequest & {
+type Request = RepairRequestResponse & {
   images: RepairRequestImage[];
 };
 
@@ -39,7 +40,9 @@ export default function RepairReqList() {
   const [images, setImages] = useState([] as RepairRequestImage[]);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState({} as RepairRequest);
+  const [selectedRequest, setSelectedRequest] = useState(
+    {} as RepairRequestResponse
+  );
 
   const {
     query: { eventId: event }
@@ -139,7 +142,11 @@ export default function RepairReqList() {
             <p className="pb-1">ID: {repairReq.id.slice(0, 2)}</p>
             <p className="pb-1">Brand: {repairReq.itemBrand}</p>
             <p className="pb-1">Item: {repairReq.itemType}</p>
-            <p className="pb-1">Submitted By: {repairReq.createdBy}</p>
+            <p className="pb-1">
+              Submitted By:{" "}
+              {`${repairReq.createdBy.firstName} ${repairReq.createdBy.lastName}`.trim() ||
+                repairReq.createdBy.emailAddress}
+            </p>
             <p className="pb-1">Description: </p>
             <div className=" w-full bg-white p-3">{repairReq.description}</div>
 

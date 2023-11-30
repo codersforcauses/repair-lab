@@ -48,7 +48,7 @@ export default function Volunteers() {
                 {volunteers.map((item) => (
                   <div key={item.id}>
                     <AssigneeBadge
-                      firstName={item.firstName ?? "Unknown"}
+                      firstName={item.firstName ?? item.emailAddress}
                       lastName={item.lastName ?? ""}
                     />
                   </div>
