@@ -2,7 +2,7 @@ import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import { cleanup, seedTestData } from "@/../tests/utils";
+import { cleanup, mockClerkUsers, seedTestData } from "@/../tests/utils";
 import endpoint from "@/pages/api/event/[id]";
 
 // Respect the Next.js config object if it's exported
@@ -16,6 +16,15 @@ describe("GET /api/event/:id", () => {
     vi.mock("@clerk/nextjs/server", () => {
       return {
         getAuth: vi.fn().mockReturnValue({ userId: "Test" })
+      };
+    });
+    vi.mock("@clerk/nextjs", () => {
+      return {
+        clerkClient: {
+          users: {
+            getUserList: vi.fn().mockReturnValue(mockClerkUsers)
+          }
+        }
       };
     });
   });
@@ -53,16 +62,39 @@ describe("GET /api/event/:id", () => {
 
         const expectedEvent = {
           id: "acf5ed50-19a2-11ee-be56-0242ac120002",
-          createdBy: "mock user",
+          createdBy: {
+            id: "mock user",
+            firstName: "test",
+            lastName: "test",
+            role: "CLIENT",
+            emailAddress: "test@gmail.com"
+          },
+          createdAt: "2023-11-16T01:27:08.417Z",
+          updatedAt: "2023-11-16T01:27:08.417Z",
           name: "Laptop Repair Event",
           location: "Curtin University",
-          eventType: "Laptop",
           description: "Laptop repair event.",
-          volunteers: ["Justin", "Spongebob"],
+          volunteers: [
+            {
+              id: "user_1",
+              firstName: "Justin",
+              lastName: "",
+              role: "CLIENT",
+              emailAddress: "justin@gmail.com"
+            },
+            {
+              id: "user_2",
+              firstName: "Spongebob",
+              lastName: "",
+              role: "CLIENT",
+              emailAddress: "spongebob@gmail.com"
+            }
+          ],
+          eventType: "Laptop",
           disclaimer: "This is a disclaimer",
-          status: "UPCOMING",
           startDate: "2023-11-16T01:27:08.417Z",
-          endDate: "2023-11-17T01:27:08.417Z"
+          endDate: "2023-11-16T01:27:08.417Z",
+          status: "UPCOMING"
         };
 
         expect(res.status).toBe(200);

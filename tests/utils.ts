@@ -44,7 +44,7 @@ export const seedTestData = async () => {
       eventType: "Laptop",
       description: "Laptop repair event.",
       disclaimer: "This is a disclaimer",
-      volunteers: ["Justin", "Spongebob"],
+      volunteers: ["user_1", "user_2"],
       startDate: new Date("2023-11-16T01:27:08.417Z"),
       endDate: new Date("2023-11-17T01:27:08.417Z")
     }
@@ -63,3 +63,33 @@ export const seedTestData = async () => {
     }
   });
 };
+
+export const mockClerkUsers = [
+  {
+    id: "mock user",
+    firstName: "test",
+    lastName: "test",
+    emailAddresses: [{ emailAddress: "test@gmail.com" }],
+    publicMetadata: {
+      role: "CLIENT"
+    }
+  },
+  {
+    id: "user_1",
+    firstName: "Justin",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "justin@gmail.com" }],
+    publicMetadata: {
+      role: "CLIENT"
+    }
+  },
+  {
+    id: "user_2",
+    firstName: "Spongebob",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "spongebob@gmail.com" }],
+    publicMetadata: {
+      role: "CLIENT"
+    }
+  }
+];
