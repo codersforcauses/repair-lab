@@ -1,4 +1,5 @@
 import {
+  $Enums,
   Event as PrismaEvent,
   RepairRequest as PrismaRepairRequest
 } from "@prisma/client";
@@ -53,8 +54,19 @@ export enum UserRole {
   CLIENT = "CLIENT"
 }
 
-// API Responses
-export type EventResponse = Event & {
-  firstName: string;
-  lastName: string;
+// API Responses on client
+export type EventResponse = {
+  id: string;
+  createdBy: User;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  location: string;
+  description: string;
+  volunteers: User[];
+  eventType: string;
+  disclaimer: string;
+  status: $Enums.EventStatus;
+  startDate: string;
+  endDate: string;
 };

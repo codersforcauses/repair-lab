@@ -5,14 +5,18 @@ import { HttpStatusCode } from "axios";
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { updateEventSchema } from "@/schema/event";
-import { Event } from "@/types";
+import eventService from "@/services/event";
+import { EventResponse } from "@/types";
 
 export default apiHandler({
   get: getEvent,
   patch: updateEvent
 });
 
-async function getEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
+async function getEvent(
+  req: NextApiRequest,
+  res: NextApiResponse<EventResponse>
+) {
   const { id } = req.query;
 
   const event = await prisma.event.findUnique({
@@ -23,10 +27,17 @@ async function getEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  return res.status(200).json(event);
+  // TODO: make a singular version
+  const eventResponse = (
+    await eventService.convertEventsToResponse([event])
+  )[0];
+  return res.status(200).json(eventResponse);
 }
 
-async function updateEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
+async function updateEvent(
+  req: NextApiRequest,
+  res: NextApiResponse<EventResponse>
+) {
   const {
     name,
     location,
@@ -64,5 +75,9 @@ async function updateEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
     }
   });
 
-  res.status(200).json(updatedEvent);
+  const eventResponse = (
+    await eventService.convertEventsToResponse([updatedEvent])
+  )[0];
+
+  res.status(200).json(eventResponse);
 }

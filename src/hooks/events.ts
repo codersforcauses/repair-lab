@@ -2,7 +2,7 @@ import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
-import { CreateEvent, UpdateEvent } from "@/types";
+import { CreateEvent, EventResponse, UpdateEvent } from "@/types";
 
 export interface EventOption {
   id: string;
@@ -13,7 +13,7 @@ export const useEvent = (eventId: string | undefined) => {
   const queryFn = async () => {
     const url = `/event/${eventId}`;
 
-    const response = await httpClient.get(url);
+    const response = await httpClient.get<EventResponse>(url);
     return response.data;
   };
 

@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { clerkClient, getAuth, User } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
+import eventService from "@/services/event";
 import { Event, EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
@@ -58,23 +59,8 @@ async function getEvents(
     orderBy: sortObj
   });
 
-  const userId = events.map((e) => e.createdBy);
-  const users = await clerkClient.users.getUserList({ userId });
-  const userMap = users.reduce(
-    (obj, item) => {
-      obj[item.id] = item;
-      return obj;
-    },
-    {} as Partial<Record<string, User>>
-  );
-
-  const eventResponse: EventResponse[] = events.map((e) => {
-    return {
-      ...e,
-      firstName: userMap[e.createdBy]?.firstName ?? e.createdBy,
-      lastName: userMap[e.createdBy]?.lastName ?? ""
-    };
-  });
+  const eventResponse: EventResponse[] =
+    await eventService.convertEventsToResponse(events);
 
   res.status(200).json(eventResponse);
 }

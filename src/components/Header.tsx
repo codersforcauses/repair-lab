@@ -1,22 +1,26 @@
 import FormatDate from "@/components/utils/format-date";
+import { User } from "@/types";
 
 export interface HeaderProps {
   name: string;
-  createdBy: string;
+  createdBy: User;
   location: string;
   startDate: Date;
   endDate: Date;
 }
 
 export default function Header({ props }: { props: HeaderProps }) {
+  let displayName =
+    `${props.createdBy.firstName} ${props.createdBy.lastName}`.trim();
+  if (!displayName) displayName = "Unknown";
+
   return (
     <>
       <div className="header-component sticky top-0 z-20 flex justify-between gap-4 px-5 pb-8 pt-6 ">
         <div>
           <h1 className="text-2xl font-bold text-zinc-600">{props.name}</h1>
           <p className="mr-8 text-lg text-[#098D85]">
-            Event Manager:{" "}
-            <span className="text-zinc-800">{props.createdBy} </span>
+            Event Manager: <span className="text-zinc-800">{displayName}</span>
           </p>
         </div>
         <div>

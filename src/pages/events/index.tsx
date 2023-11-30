@@ -406,7 +406,7 @@ function Table() {
                         </button>
                       </td>
                       <td className="p-2.5 text-sm font-light">
-                        {event.firstName} {event.lastName}
+                        {event.createdBy.firstName} {event.createdBy.lastName}
                       </td>
                       <td className="text-sm font-light">{event.location}</td>
                       <td className="text-sm font-light">
