@@ -7,32 +7,32 @@ import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { EventResponse, User } from "@/types";
+import { useEvent } from "@/hooks/events";
+import { User } from "@/types";
 
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
-
   const {
     query: { id: eventId }
   } = useRouter();
 
-  useEffect(() => {
-    if (!eventId) return;
+  const { isLoading: isEventLoading, data: event } = useEvent(
+    eventId as string
+  );
 
-    fetch(`/api/event/${eventId}`)
-      .then((res) => res.json())
-      .then((event: EventResponse) => {
-        setVolunteers(event.volunteers);
-        setHeaderValues({
-          name: event.name,
-          location: event.location,
-          startDate: new Date(event.startDate),
-          endDate: new Date(event.endDate),
-          createdBy: event.createdBy
-        });
-      });
-  }, [eventId]);
+  useEffect(() => {
+    if (!event) return;
+    setHeaderValues({
+      name: event.name,
+      location: event.location,
+      startDate: new Date(event.startDate),
+      endDate: new Date(event.endDate),
+      createdBy: event.createdBy
+    });
+    setVolunteers(event.volunteers);
+  }, [event]);
+
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">

@@ -19,7 +19,8 @@ export const useEvent = (eventId: string | undefined) => {
 
   return useQuery({
     queryKey: [eventId],
-    queryFn
+    queryFn,
+    enabled: eventId != undefined
   });
 };
 
@@ -120,6 +121,7 @@ export const useRepairRequests = (eventId: string | undefined) => {
 
   return useQuery({
     queryKey: ["repair-requests", eventId],
-    queryFn
+    queryFn,
+    enabled: eventId != undefined
   });
 };

@@ -7,13 +7,30 @@ import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { EventResponse } from "@/types";
+import { useEvent } from "@/hooks/events";
 
 // TODO: clean this up this is a place holder for now
 
 export default function Images() {
   const [images, setImages] = useState([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
+  const {
+    query: { id: eventId }
+  } = useRouter();
+
+  const { data: event } = useEvent(eventId as string);
+
+  useEffect(() => {
+    if (!event) return;
+    setHeaderValues({
+      name: event.name,
+      location: event.location,
+      startDate: new Date(event.startDate),
+      endDate: new Date(event.endDate),
+      createdBy: event.createdBy
+    });
+    // setImages(event.images); // TODO: enable this when api returns it
+  }, [event]);
 
   function Images() {
     const content = [];
@@ -28,27 +45,6 @@ export default function Images() {
     }
     return content;
   }
-
-  const {
-    query: { id: eventId }
-  } = useRouter();
-
-  useEffect(() => {
-    if (!eventId) return;
-
-    fetch(`/api/event/${eventId}`)
-      .then((res) => res.json())
-      .then((event: EventResponse) => {
-        // setImages(event.images); // TODO: make the api actually return something
-        setHeaderValues({
-          name: event.name,
-          location: event.location,
-          startDate: new Date(event.startDate),
-          endDate: new Date(event.endDate),
-          createdBy: event.createdBy
-        });
-      });
-  }, [eventId]);
 
   return (
     <Sidebar>
