@@ -1,4 +1,6 @@
-import FormatDate, { toDatetimeLocalString } from "@/components/utils/format-date";
+import FormatDate, {
+  toDatetimeLocalString
+} from "@/components/utils/format-date";
 
 export interface HeaderProps {
   name: string;
