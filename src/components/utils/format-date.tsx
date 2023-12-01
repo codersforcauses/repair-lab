@@ -17,5 +17,5 @@ export const toDatetimeLocalString = (input: string | Date) => {
   }
   return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
     .toISOString()
-    .slice(0, -1);
+    .slice(0, 16);
 };
