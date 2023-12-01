@@ -6,11 +6,10 @@ import Button from "@/components/Button";
 
 interface Props {
   strategy: OAuthStrategy;
-  label: string;
   icon: ReactNode;
 }
 
-const SignInOAuthButton = ({ strategy, label, icon }: Props) => {
+const SignInOAuthButton = ({ strategy, icon }: Props) => {
   const { signIn } = useSignIn();
 
   const signInWith = (strategy: OAuthStrategy) => {
@@ -22,10 +21,9 @@ const SignInOAuthButton = ({ strategy, label, icon }: Props) => {
   };
 
   return (
-    <Button onClick={() => signInWith(strategy)} width="w-full">
+    <Button onClick={() => signInWith(strategy)} width="w-20" height="h-16">
       <div className="relative flex items-center justify-center space-x-4">
         <div className="w-5">{icon}</div>
-        <span className="">{label}</span>
       </div>
     </Button>
   );
