@@ -65,12 +65,18 @@ const RegisterForm = () => {
     <div>
       {!pendingVerification && (
         <>
-          <div className="w-full">
-            <SignInOAuthButton
-              strategy="oauth_google"
-              label="Continue with Google"
-              icon={googleIcon}
-            />
+          <div className="relative flex justify-center align-center pt-5 pb-5">
+            <div className="pr-4">
+              <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
+            </div>
+
+            <div className="pr-4">
+              <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
+            </div>
+
+            <div>
+              <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
+            </div>
           </div>
 
           <Separator />
@@ -81,7 +87,7 @@ const RegisterForm = () => {
                 <span className="text-red-500">{registerErrorMsg}</span>
               </div>
             )}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 pt-4">
               <FieldInput
                 name="emailAddress"
                 control={control}
@@ -133,7 +139,11 @@ const RegisterForm = () => {
                 </span>
               </Link>
             </div>
-            <Button width="w-full">Sign Up</Button>
+            <div className="flex pt-2 pb-3 justify-center">
+              <Button height="h-11" width="w-10/12">
+                Sign Up
+              </Button>
+            </div>
           </form>
         </>
       )}
