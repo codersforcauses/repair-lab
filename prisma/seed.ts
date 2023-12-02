@@ -5,7 +5,6 @@ import { faker } from "@faker-js/faker";
 import {
   Brand,
   Event,
-  EventRepairer,
   ItemType,
   PrismaClient,
   RepairRequest
@@ -161,23 +160,6 @@ async function createRandomRepairRequests(
   return repairRequests;
 }
 
-async function createRandomEventRepairers(count: number, events: Event[]) {
-  const eventRepairs: EventRepairer[] = [];
-
-  for (let i = 0; i < count; i++) {
-    const eventRepairer = await prisma.eventRepairer.create({
-      data: {
-        userId: faker.helpers.arrayElement(events).id,
-        eventId: faker.helpers.arrayElement(events).id
-      }
-    });
-
-    eventRepairs.push(eventRepairer);
-  }
-
-  return eventRepairs;
-}
-
 async function main() {
   const fakerSeed = 0;
   const itemTypeNames: string[] = ["Clock", "Bike", "Computer"];
@@ -197,7 +179,6 @@ async function main() {
     itemTypes,
     brands
   );
-  // await createRandomEventRepairers(eventCount, events);
 }
 
 main()
