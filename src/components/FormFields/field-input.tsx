@@ -9,7 +9,7 @@ import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T>,
-    Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
+  Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
   id?: string;
   label?: string;
   placeholder?: string;
@@ -43,12 +43,13 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
   const inputStyle = `mr-1 w-full h-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
+  // format it like YYYY-MM-DDThh:mm
 
+  const convertedValue = field.value && type === 'datetime-local' ? new Date(field.value).toISOString().slice(0, 16) : field.value;
   return (
     <div
-      className={`${baseStyle} ${
-        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
-      }`}
+      className={`${baseStyle} ${fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
+        }`}
     >
       <Label label={!label ? props.name : label} {...props} />
       <input
@@ -57,6 +58,11 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
         placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
         id={!id ? `${props.name}` : `${id}`}
         {...field}
+        value={convertedValue}
+        onChange={(e) => {
+          const value = type === 'datetime-local' ? (new Date(e.target.value)).toISOString() : e.target.value;
+          field.onChange(value);
+        }}
       />
       {!icon ? (
         ""
