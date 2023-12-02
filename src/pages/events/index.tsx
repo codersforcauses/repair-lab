@@ -158,7 +158,7 @@ function Table() {
             firstName={user?.firstName}
             lastName={user?.lastName}
             role={role as UserRole}
-            description="Hello im ELLEN :)"
+            description={String(user?.unsafeMetadata.description)}
           ></ProfilePopover>
         </div>
       </div>
