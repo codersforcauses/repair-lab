@@ -72,9 +72,12 @@ const RegisterForm = () => {
       {!pendingVerification && (
         <>
           <div className="relative flex justify-center align-center pt-5 pb-4 gap-x-0.5">
-            <SignInOAuthButton strategy="oauth_google" icon={facebookIcon} />
+            <SignInOAuthButton strategy="oauth_facebook" icon={facebookIcon} />
             <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
-            <SignInOAuthButton strategy="oauth_google" icon={microsoftIcon} />
+            <SignInOAuthButton
+              strategy="oauth_microsoft"
+              icon={microsoftIcon}
+            />
           </div>
 
           <Separator />
