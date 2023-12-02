@@ -14,7 +14,12 @@ export const createEventSchema = z.object({
   endDate: z
     .string()
     .datetime({ offset: true, message: "Invalid date format for endDate" })
-});
+  })
+  .refine((data) => new Date(data.endDate) >= new Date(data.startDate), {
+    // validation to ensure the end date comes after the start date
+    message: "End Date must be later than Start Date",
+    path: ["endDate"]
+  });
 
 export const updateEventSchema = z.object({
   name: z.string().optional(),
@@ -36,4 +41,17 @@ export const updateEventSchema = z.object({
     .datetime({ offset: true, message: "Invalid date format for endDate" })
     .optional(),
   status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional()
-});
+})
+.refine(
+  (data) => {
+    if (data.startDate && data.endDate) {
+      // validation to ensure the end date comes after the start date
+      return new Date(data.endDate) >= new Date(data.startDate);
+    }
+    return true;
+  },
+  {
+    message: "End Date must be later than Start Date",
+    path: ["endDate"]
+  }
+);
