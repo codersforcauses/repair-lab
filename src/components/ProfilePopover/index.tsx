@@ -1,11 +1,11 @@
-import { Transition, Popover } from "@headlessui/react";
+import { useState } from "react";
 import { UserResource } from "@clerk/types";
-import { useState, Fragment } from "react";
-import { UserRole } from "@/types";
-import { FaPencil } from "react-icons/fa6";
+import { Popover, Transition } from "@headlessui/react";
 import { FaSave } from "react-icons/fa";
+import { FaPencil } from "react-icons/fa6";
+
 import { useAuth } from "@/hooks/auth";
-import Image from "next/image";
+import { UserRole } from "@/types";
 
 interface Props {
   firstName: string | null | undefined;
@@ -76,61 +76,70 @@ export default function ProfilePopover({
           className="mx-auto rounded-full h-12 w-12"
         />
       </Popover.Button>
+      <Transition
+        as={Popover.Panel}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
+          <div className="flex flex-col">
+            <img
+              alt="user avatar"
+              src={user?.imageUrl}
+              className="mx-auto rounded-full my-6"
+              width={110}
+              height={110}
+            />
 
-      <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
-        <div className="flex flex-col">
-          <img
-            alt="user avatar"
-            src={user?.imageUrl}
-            className="mx-auto rounded-full my-6"
-            width={110}
-            height={110}
-          />
-
-          {/* name and role */}
-          <div className="text-center">
-            <div className="text-[28px] font-semibold">
-              {firstName} {lastName}
+            {/* name and role */}
+            <div className="text-center">
+              <div className="text-[28px] font-semibold">
+                {firstName} {lastName}
+              </div>
+              <div className="text-[24px] text-slate-400">
+                {String(role).charAt(0).toUpperCase() +
+                  String(role).slice(1).toLowerCase()}
+              </div>
             </div>
-            <div className="text-[24px] text-slate-400">
-              {String(role).charAt(0).toUpperCase() +
-                String(role).slice(1).toLowerCase()}
+
+            {/* description textarea */}
+            <div className="relative mx-auto mt-[20px]">
+              <textarea
+                disabled={!isEdit}
+                className="w-[280px] h-[93px] px-2 py-1 outline-none resize-none text-slate-800 bg-white border-lightAqua-200 border-2 rounded-lg"
+                onChange={handleChange}
+              >
+                {description}
+              </textarea>
+              <button
+                className="text-primary-600 absolute bottom-3 right-3"
+                onClick={() => setIsEdit(!isEdit)}
+              >
+                {isEdit ? (
+                  <span
+                    onClick={async () =>
+                      await updateUserMetadata(user, descriptionText ?? "")
+                    }
+                    className="text-l space-x-1"
+                  >
+                    <FaSave className="inline text-xl" />
+                    <span>Save</span>
+                  </span>
+                ) : (
+                  <span className="text-l space-x-1">
+                    <FaPencil className="inline text-xl" />
+                    <span>Edit</span>
+                  </span>
+                )}
+              </button>
             </div>
           </div>
-
-          {/* description textarea */}
-          <div className="relative mx-auto mt-[20px]">
-            <textarea
-              disabled={!isEdit}
-              className="w-[280px] h-[93px] px-2 py-1 outline-none resize-none text-slate-800 bg-white border-lightAqua-200 border-2 rounded-lg"
-              onChange={handleChange}
-            >
-              {description}
-            </textarea>
-            <button
-              className="text-primary-600 absolute bottom-3 right-3"
-              onClick={() => setIsEdit(!isEdit)}
-            >
-              {isEdit ? (
-                <span
-                  onClick={async () =>
-                    await updateUserMetadata(user, descriptionText ?? "")
-                  }
-                  className="text-l space-x-1"
-                >
-                  <FaSave className="inline text-xl" />
-                  <span>Save</span>
-                </span>
-              ) : (
-                <span className="text-l space-x-1">
-                  <FaPencil className="inline text-xl" />
-                  <span>Edit</span>
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </Popover.Panel>
+        </Popover.Panel>
+      </Transition>
     </Popover>
   );
 }
