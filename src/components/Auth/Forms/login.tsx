@@ -16,6 +16,8 @@ interface LoginFormValues {
 }
 
 const googleIcon = <Logo name="Google" viewBox="0 0 24 24" fill="#FFFFFF" />;
+const microsoftIcon = <Logo name="Microsoft" viewBox="0 0 24 24" fill="#FFFFFF" />;
+const facebookIcon = <Logo name="Facebook" viewBox="0 0 24 24" fill="#FFFFFF" />;
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -58,9 +60,9 @@ const LoginForm = () => {
 
   return (
     <div>
-      <div className="relative flex justify-center align-center pt-5 pb-5">
+      <div className="relative flex justify-center align-center pt-5 pb-4">
         <div className="pr-4">
-          <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
+          <SignInOAuthButton strategy="oauth_google" icon={facebookIcon} />
         </div>
 
         <div className="pr-4">
@@ -68,7 +70,7 @@ const LoginForm = () => {
         </div>
 
         <div>
-          <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
+          <SignInOAuthButton strategy="oauth_google" icon={microsoftIcon} />
         </div>
       </div>
 
