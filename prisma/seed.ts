@@ -90,6 +90,24 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
     console.log(event);
   }
 
+  const ev = events.map(
+    async (e) =>
+      await prisma.event.update({
+        where: {
+          id: e.id
+        },
+        data: {
+          eventRepairs: {
+            create: [
+              {
+                userId: faker.helpers.arrayElement(events).id
+              }
+            ]
+          }
+        }
+      })
+  );
+
   return events;
 }
 
@@ -143,7 +161,7 @@ async function createRandomRepairRequests(
 }
 
 async function createRandomEventRepairers(count: number, events: Event[]) {
-  const eventRepairers: EventRepairer[] = [];
+  const eventRepairs: EventRepairer[] = [];
 
   for (let i = 0; i < count; i++) {
     const eventRepairer = await prisma.eventRepairer.create({
@@ -153,10 +171,10 @@ async function createRandomEventRepairers(count: number, events: Event[]) {
       }
     });
 
-    eventRepairers.push(eventRepairer);
+    eventRepairs.push(eventRepairer);
   }
 
-  return eventRepairers;
+  return eventRepairs;
 }
 
 async function main() {
@@ -178,7 +196,7 @@ async function main() {
     itemTypes,
     brands
   );
-  await createRandomEventRepairers(eventCount, events);
+  // await createRandomEventRepairers(eventCount, events);
 }
 
 main()
