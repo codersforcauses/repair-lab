@@ -90,7 +90,6 @@ describe("PATCH /api/event/:id", () => {
           createdBy: "mock user",
           location: "Curtin University",
           eventType: "Laptop",
-          volunteers: ["Justin", "Spongebob"],
           name: "Updated Event",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
