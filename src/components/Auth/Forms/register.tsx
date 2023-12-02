@@ -71,18 +71,10 @@ const RegisterForm = () => {
     <div>
       {!pendingVerification && (
         <>
-          <div className="relative flex justify-center align-center pt-5 pb-4">
-            <div className="pr-4">
-              <SignInOAuthButton strategy="oauth_google" icon={facebookIcon} />
-            </div>
-
-            <div className="pr-4">
-              <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
-            </div>
-
-            <div>
-              <SignInOAuthButton strategy="oauth_google" icon={microsoftIcon} />
-            </div>
+          <div className="relative flex justify-center align-center pt-5 pb-4 gap-x-0.5">
+            <SignInOAuthButton strategy="oauth_google" icon={facebookIcon} />
+            <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
+            <SignInOAuthButton strategy="oauth_google" icon={microsoftIcon} />
           </div>
 
           <Separator />
@@ -146,7 +138,7 @@ const RegisterForm = () => {
               </Link>
             </div>
             <div className="flex pt-2 pb-3 justify-center">
-              <Button height="h-11" width="w-10/12">
+              <Button height="h-11" width="w-11/12">
                 Sign Up
               </Button>
             </div>
