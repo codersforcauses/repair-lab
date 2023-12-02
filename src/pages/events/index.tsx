@@ -68,7 +68,7 @@ function Table() {
   // The label is what users see, the key is what the server uses
   const headers: { key: string; label: string }[] = [
     { key: "name", label: "Event Name" },
-    { key: "createdBy", label: "Event Manager" },
+    { key: "createdBy", label: "Created By" },
     { key: "location", label: "Location" },
     { key: "startDate", label: "Date" },
     { key: "eventType", label: "Type" },
