@@ -19,8 +19,6 @@ model Event {
   location    String
   description String
 
-  eventRepairs EventRepairer[]
-
   event     ItemType @relation(fields: [eventType], references: [name]) //relates event to the item type being repaired there
   eventType String
 
@@ -33,6 +31,7 @@ model Event {
 
   repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
   images         EventImage[]
+  eventRepairer  EventRepairer[]
 }
 
 enum EventStatus {

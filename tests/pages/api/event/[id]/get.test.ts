@@ -64,6 +64,8 @@ describe("GET /api/event/:id", () => {
           endDate: "2023-11-17T01:27:08.417Z"
         };
 
+        console.log(result);
+
         expect(res.status).toBe(200);
         expect(result).toMatchObject(expectedEvent);
       }
