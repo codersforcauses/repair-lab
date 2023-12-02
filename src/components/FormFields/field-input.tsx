@@ -7,9 +7,10 @@ import {
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import { isoToDatePickerValue } from "@/lib/datetime";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T>,
-  Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
+    Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
   id?: string;
   label?: string;
   placeholder?: string;
@@ -28,12 +29,6 @@ Input:
 Output:
   A input text box that is compatible w/ React-hook-forms
 */
-function convertTime(t: Date) {
-  const z = t.getTimezoneOffset() * 60 * 1000
-  const tLocal = +t - z
-  const localDate = new Date(tLocal)
-  return localDate.toISOString().slice(0, 16)
-}
 
 export default function FieldInput<T extends FieldValues = FieldValues>({
   id,
@@ -51,11 +46,15 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   const normalBorderStyle = `border-grey-300`;
   const inputStyle = `mr-1 w-full h-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
   // format it like YYYY-MM-DDThh:mm
-  const convertedValue = field.value && type === 'datetime-local' ? convertTime(new Date(field.value)) : field.value;
+  const convertedValue =
+    field.value && type === "datetime-local"
+      ? isoToDatePickerValue(new Date(field.value))
+      : field.value;
   return (
     <div
-      className={`${baseStyle} ${fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
-        }`}
+      className={`${baseStyle} ${
+        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
+      }`}
     >
       <Label label={!label ? props.name : label} {...props} />
       <input
@@ -66,7 +65,10 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
         {...field}
         value={convertedValue}
         onChange={(e) => {
-          const value = type === 'datetime-local' ? (new Date(e.target.value)).toISOString() : e.target.value;
+          const value =
+            type === "datetime-local"
+              ? new Date(e.target.value).toISOString()
+              : e.target.value;
           field.onChange(value);
         }}
       />
