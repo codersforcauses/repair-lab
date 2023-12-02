@@ -3,11 +3,10 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { cleanup, seedTestData } from "@/../tests/utils";
-import endpoint, { config } from "@/pages/api/event/[id]";
+import endpoint from "@/pages/api/event/[id]";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
-handler.config = config;
 
 describe("GET /api/event/:id", () => {
   beforeAll(async () => {
@@ -59,7 +58,6 @@ describe("GET /api/event/:id", () => {
           location: "Curtin University",
           eventType: "Laptop",
           description: "Laptop repair event.",
-          volunteers: ["Justin", "Spongebob"],
           disclaimer: "This is a disclaimer",
           status: "UPCOMING",
           startDate: "2023-11-16T01:27:08.417Z",

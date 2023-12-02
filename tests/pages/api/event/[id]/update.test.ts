@@ -4,11 +4,10 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { cleanup, seedTestData } from "@/../tests/utils";
 import prisma from "@/lib/prisma";
-import endpoint, { config } from "@/pages/api/event/[id]";
+import endpoint from "@/pages/api/event/[id]";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
-handler.config = config;
 
 describe("PATCH /api/event/:id", () => {
   beforeAll(async () => {
@@ -91,7 +90,6 @@ describe("PATCH /api/event/:id", () => {
           createdBy: "mock user",
           location: "Curtin University",
           eventType: "Laptop",
-          volunteers: ["Justin", "Spongebob"],
           name: "Updated Event",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
