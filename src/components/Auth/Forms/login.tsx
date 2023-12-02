@@ -16,8 +16,12 @@ interface LoginFormValues {
 }
 
 const googleIcon = <Logo name="Google" viewBox="0 0 24 24" fill="#FFFFFF" />;
-const microsoftIcon = <Logo name="Microsoft" viewBox="0 0 24 24" fill="#FFFFFF" />;
-const facebookIcon = <Logo name="Facebook" viewBox="0 0 24 24" fill="#FFFFFF" />;
+const microsoftIcon = (
+  <Logo name="Microsoft" viewBox="0 0 24 24" fill="#FFFFFF" />
+);
+const facebookIcon = (
+  <Logo name="Facebook" viewBox="0 0 24 24" fill="#FFFFFF" />
+);
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
