@@ -30,9 +30,9 @@ Output:
 */
 function convertTime(t: Date) {
   const z = t.getTimezoneOffset() * 60 * 1000
-  let tLocal = t - z
-  tLocal = new Date(tLocal)
-  return tLocal.toISOString().slice(0, 16)
+  const tLocal = +t - z
+  const localDate = new Date(tLocal)
+  return localDate.toISOString().slice(0, 16)
 }
 
 export default function FieldInput<T extends FieldValues = FieldValues>({
