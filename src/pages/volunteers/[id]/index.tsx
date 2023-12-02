@@ -1,10 +1,10 @@
 // Page for repairers to view their assigned events
 import Image from "next/image";
-import { useRouter } from "next/router";
 
+import Box from "@/components/EventBox/Box";
 
 const Home = () => {
-  const router = useRouter();
+
 return (
 <div>
       {/* HEADER BAR*/}
@@ -17,10 +17,15 @@ return (
         />
       </div>
         <h1 className="relative z-10 mt-2 flex w-full justify-center">
-          {" "}
           My Events
         </h1>
-      </div>
+         <hr/>
+         <div className="relative flex-row items-center justify-center">
+            <Box/>
+            
+            <Box/>
+         </div>
+</div>
 );
 };
 
