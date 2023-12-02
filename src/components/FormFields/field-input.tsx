@@ -28,6 +28,13 @@ Input:
 Output:
   A input text box that is compatible w/ React-hook-forms
 */
+function convertTime(t: Date) {
+  const z = t.getTimezoneOffset() * 60 * 1000
+  let tLocal = t - z
+  tLocal = new Date(tLocal)
+  return tLocal.toISOString().slice(0, 16)
+}
+
 export default function FieldInput<T extends FieldValues = FieldValues>({
   id,
   label,
@@ -44,8 +51,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   const normalBorderStyle = `border-grey-300`;
   const inputStyle = `mr-1 w-full h-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
   // format it like YYYY-MM-DDThh:mm
-
-  const convertedValue = field.value && type === 'datetime-local' ? new Date(field.value).toISOString().slice(0, 16) : field.value;
+  const convertedValue = field.value && type === 'datetime-local' ? convertTime(new Date(field.value)) : field.value;
   return (
     <div
       className={`${baseStyle} ${fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
