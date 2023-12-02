@@ -1,5 +1,4 @@
-import { Dialog, Transition, Popover } from "@headlessui/react";
-import { clerkClient } from "@clerk/nextjs";
+import { Transition, Popover } from "@headlessui/react";
 import { UserResource } from "@clerk/types";
 import { useState, Fragment } from "react";
 import { UserRole } from "@/types";
@@ -48,17 +47,16 @@ export default function ProfilePopover({
         {firstName!.charAt(0).toUpperCase() + lastName!.charAt(0).toUpperCase()}
       </Popover.Button>
 
-      {/* <Popover.Panel className="w-[200px] absolute z-10"> */}
       <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
         <div className="flex flex-col">
           {/* avatar */}
-          <div className="font-medium text-5xl text-center leading-[110px] relative h-[110px] w-[110px] mt-[20px] mx-auto rounded-full bg-lightAqua-200">
+          <div className="font-medium text-5xl text-center leading-[110px] relative h-[110px] w-[110px] my-6 mx-auto rounded-full bg-lightAqua-200">
             {firstName!.charAt(0).toUpperCase() +
               lastName!.charAt(0).toUpperCase()}
           </div>
 
           {/* name and role */}
-          <div className="text-center mt-[20px]">
+          <div className="text-center">
             <div className="text-[28px] font-semibold">
               {firstName} {lastName}
             </div>
