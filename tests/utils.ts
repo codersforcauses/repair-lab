@@ -44,16 +44,6 @@ export const seedTestData = async () => {
       eventType: "Laptop",
       description: "Laptop repair event.",
       disclaimer: "This is a disclaimer",
-      eventRepairs: {
-        create: [
-          {
-            userId: "Dylon"
-          },
-          {
-            userId: "Justin"
-          }
-        ]
-      },
       startDate: new Date("2023-11-16T01:27:08.417Z"),
       endDate: new Date("2023-11-17T01:27:08.417Z")
     }
