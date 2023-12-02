@@ -8,20 +8,19 @@ const Home = () => {
 return (
 <div>
       {/* HEADER BAR*/}
-      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
+      <div className="relative z-10 mt-2 flex w-full justify-center">
         <Image
-          className="m-10 mb-5 mt-5"
-          src="/images/repair_lab_logo.jpg"
-          alt="logo"
-          width="90"
-          height="90"
+          src="/images/repair_lab_logo.png"
+          alt="Repair Labs Logo"
+          width={90}
+          height={90}
         />
-        <h1 className="mt-[50px] text-3xl font-semibold text-slate-600">
+      </div>
+        <h1 className="relative z-10 mt-2 flex w-full justify-center">
           {" "}
-          Assigned Events
+          My Events
         </h1>
       </div>
-</div>
 );
 };
 
