@@ -82,31 +82,32 @@ async function createRandomEvents(count: number, itemTypes: ItemType[]) {
           connect: { name: faker.helpers.arrayElement(itemTypes).name }
         },
         startDate: startDate,
-        endDate: endDate
+        endDate: endDate,
+        eventRepairs: {
+          create: [
+            {
+              userId: faker.person.fullName()
+            },
+            {
+              userId: faker.person.fullName()
+            },
+            {
+              userId: faker.person.fullName()
+            },
+            {
+              userId: faker.person.fullName()
+            },
+            {
+              userId: faker.person.fullName()
+            }
+          ]
+        }
       }
     });
 
     events.push(event);
     console.log(event);
   }
-
-  const ev = events.map(
-    async (e) =>
-      await prisma.event.update({
-        where: {
-          id: e.id
-        },
-        data: {
-          eventRepairs: {
-            create: [
-              {
-                userId: faker.helpers.arrayElement(events).id
-              }
-            ]
-          }
-        }
-      })
-  );
 
   return events;
 }
