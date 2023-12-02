@@ -5,6 +5,7 @@ import { UserRole } from "@/types";
 import { FaPencil } from "react-icons/fa6";
 import { FaSave } from "react-icons/fa";
 import { useAuth } from "@/hooks/auth";
+import Image from "next/image";
 
 interface Props {
   firstName: string | null | undefined;
@@ -12,6 +13,29 @@ interface Props {
   role: UserRole;
   description: string | null | undefined;
 }
+
+const colors = [
+  "#ffc857",
+  "#e9724c",
+  "#c5283d",
+  "#481d24",
+  "#255f85",
+  "#edffec",
+  "#61e786",
+  "#5a5766",
+  "#48435c",
+  "#9792e3"
+] as const;
+
+const generateRandomAvatarUrl = (
+  firstName: string | null | undefined,
+  lastName: string | null | undefined
+) => {
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  return `https://ui-avatars.com/api/?background=
+  ${randomColor}&color=random&name=
+  ${firstName!.charAt(0)}+${lastName!.charAt(0)}`;
+};
 
 const updateUserMetadata = async (
   user: UserResource | null | undefined,
@@ -34,26 +58,34 @@ export default function ProfilePopover({
   const [descriptionText, setDescriptionText] = useState(description);
   const { user } = useAuth();
 
+  console.log(user);
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     setDescriptionText(e.target.value);
   };
 
-  if (firstName === null || firstName === undefined) return null;
+  // if (firstName === null || firstName === undefined) return null;
 
   return (
     <Popover className="relative">
-      <Popover.Button className="h-12 w-12 right-2 rounded-full bg-slate-600">
-        {firstName!.charAt(0).toUpperCase() + lastName!.charAt(0).toUpperCase()}
+      <Popover.Button>
+        <img
+          alt="user avatar"
+          src={user?.imageUrl}
+          className="mx-auto rounded-full h-12 w-12"
+        />
       </Popover.Button>
 
       <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
         <div className="flex flex-col">
-          {/* avatar */}
-          <div className="font-medium text-5xl text-center leading-[110px] relative h-[110px] w-[110px] my-6 mx-auto rounded-full bg-lightAqua-200">
-            {firstName!.charAt(0).toUpperCase() +
-              lastName!.charAt(0).toUpperCase()}
-          </div>
+          <img
+            alt="user avatar"
+            src={user?.imageUrl}
+            className="mx-auto rounded-full my-6"
+            width={110}
+            height={110}
+          />
 
           {/* name and role */}
           <div className="text-center">
