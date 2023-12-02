@@ -93,8 +93,8 @@ const Home = () => {
             options={
               brandList
                 ? brandList.map((brand: Brand) => {
-                  return { id: brand.name, text: brand.name };
-                })
+                    return { id: brand.name, text: brand.name };
+                  })
                 : []
             }
           />
@@ -108,8 +108,8 @@ const Home = () => {
             options={
               itemTypeList
                 ? itemTypeList.map((itemType: ItemType) => {
-                  return { id: itemType.name, text: itemType.name };
-                })
+                    return { id: itemType.name, text: itemType.name };
+                  })
                 : []
             }
           />
@@ -135,8 +135,8 @@ const Home = () => {
             options={
               eventOptions
                 ? eventOptions.map((event: EventOption) => {
-                  return { id: event.id, text: event.name };
-                })
+                    return { id: event.id, text: event.name };
+                  })
                 : []
             }
           />
