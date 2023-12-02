@@ -18,10 +18,9 @@ const updateUserMetadata = async (
   user: UserResource | null | undefined,
   description: string
 ) => {
-  console.log(user?.unsafeMetadata.description);
   await user?.update({
     unsafeMetadata: {
-      description
+      description: description
     }
   });
 };
@@ -33,14 +32,20 @@ export default function ProfilePopover({
   description
 }: Props) {
   const [isEdit, setIsEdit] = useState(false);
+  const [descriptionText, setDescriptionText] = useState(description);
   const { user } = useAuth();
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+    setDescriptionText(e.target.value);
+  };
 
   if (firstName === null || firstName === undefined) return null;
 
   return (
     <Popover className="relative">
       <Popover.Button className="h-12 w-12 right-2 rounded-full bg-slate-600">
-        EX
+        {firstName!.charAt(0).toUpperCase() + lastName!.charAt(0).toUpperCase()}
       </Popover.Button>
 
       {/* <Popover.Panel className="w-[200px] absolute z-10"> */}
@@ -68,8 +73,9 @@ export default function ProfilePopover({
             <textarea
               disabled={!isEdit}
               className="w-[280px] h-[93px] px-2 py-1 outline-none resize-none text-slate-800 bg-white border-lightAqua-200 border-2 rounded-lg"
+              onChange={handleChange}
             >
-              {description ? description : ""}
+              {description}
             </textarea>
             <button
               className="text-primary-600 absolute bottom-3 right-3"
@@ -78,7 +84,7 @@ export default function ProfilePopover({
               {isEdit ? (
                 <span
                   onClick={async () =>
-                    await updateUserMetadata(user, description ?? "")
+                    await updateUserMetadata(user, descriptionText ?? "")
                   }
                   className="text-l space-x-1"
                 >
