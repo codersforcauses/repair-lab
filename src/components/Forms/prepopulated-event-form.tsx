@@ -52,9 +52,9 @@ export default function PrepopulatedEventForm({
             options={
               itemTypes
                 ? itemTypes.map((type: ItemType) => ({
-                  id: type.name,
-                  text: type.name
-                }))
+                    id: type.name,
+                    text: type.name
+                  }))
                 : []
             }
           ></FieldSingleSelect>
@@ -77,14 +77,14 @@ export default function PrepopulatedEventForm({
             control={control}
             name="startDate"
             label="Start Date"
-            type='datetime-local'
+            type="datetime-local"
           ></FieldInput>
 
           <FieldInput
             control={control}
             name="endDate"
             label="End Date"
-            type='datetime-local'
+            type="datetime-local"
           ></FieldInput>
 
           <FieldTextArea

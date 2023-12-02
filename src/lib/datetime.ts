@@ -22,8 +22,8 @@ export function formatTime(_date: string | Date): string {
 
 export function isoToDatePickerValue(_date: string | Date) {
   const date = stringToDate(_date);
-  const z = date.getTimezoneOffset() * 60 * 1000
-  const tLocal = +date - z
-  const localDate = new Date(tLocal)
-  return localDate.toISOString().slice(0, 16)
+  const z = date.getTimezoneOffset() * 60 * 1000;
+  const tLocal = +date - z;
+  const localDate = new Date(tLocal);
+  return localDate.toISOString().slice(0, 16);
 }
