@@ -21,6 +21,7 @@ export const useUsers = (
     const url = `/user?${params.toString()}`;
 
     const response = await httpClient.get(url);
+    console.log(response);
 
     return await response.data;
   };
@@ -30,7 +31,7 @@ export const useUsers = (
     queryFn: queryFn
   });
 };
-
+ 
 export const useUpdateUserRole = (userId: string | undefined) => {
   const queryClient = useQueryClient();
 

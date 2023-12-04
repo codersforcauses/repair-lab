@@ -90,7 +90,7 @@ export default function EventForm({
 
           <FieldMultiSelect
             control={control}
-            name="volunteers"
+            name="volunteers" 
             label="Volunteers"
             options={itemTypes.map((type) => ({
               id: type.name,
