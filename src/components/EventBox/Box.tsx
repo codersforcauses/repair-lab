@@ -18,27 +18,29 @@ const Box = ({
 }: BoxProps) => {
 
   return (
-    <div className="flex mx-10 flex-col mt-5 items-center text-xs rounded-lg bg-slate-200">
+    <div className="flex mx-10 flex-row mt-5 items-left text-xs rounded-lg bg-slate-200">
       <div>
         <Image
           src="/images/jeans_repair.jpg"
           alt="Person holding jeans"
           width={500}
           height={500}
-          className=" rounded-t-lg object-none h-20"
+          className="object-none w-20 h-20 ml-1 custom-position rounded-full scale-90"
         />
       </div>
 
-      <span className="font-bold text-sm">
+    <div className="flex flex-col ml-4">
+      <span className="font-bold text-sm pt-2">
         {eventTitle}
       </span>
-      <h2 className="">
+      <div className="pt-1">
         {startDate} - {endDate}
-      </h2>
+      </div>
 
-      <p className="pt-2 text-left">
+      <div className="pt-1">
         {description}
-      </p>
+      </div>
+    </div>
 
     </div>
   );
