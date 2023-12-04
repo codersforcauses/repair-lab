@@ -25,11 +25,11 @@ const Box = ({
           alt="Person holding jeans"
           width={500}
           height={500}
-          className="object-none w-20 h-20 ml-1 custom-position rounded-full scale-90"
+          className="object-none w-20 h-20 ml-1 custom-position rounded-full scale-75"
         />
       </div>
 
-    <div className="flex flex-col ml-4">
+    <div className="flex flex-col ml-2">
       <span className="font-bold text-sm pt-2">
         {eventTitle}
       </span>
