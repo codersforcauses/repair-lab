@@ -17,7 +17,7 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
   const { sortKey, sortMethod, searchWord } = req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
-  const { userId } = getAuth(req); // get id from search query probably?
+  const { userId } = getAuth(req); 
   const userRole = await userService.getRole(userId as string);
   const isRepairer =
     userRole == "REPAIRER"
@@ -26,7 +26,7 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
             has: userId
           }
         }
-      : {};
+      : {}; 
   // Use 'search' query parameter to filter events
   const events = await prisma.event.findMany({
     where: {
