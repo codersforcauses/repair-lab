@@ -48,14 +48,16 @@ export default function Volunteers() {
         <Header props={headerValues} />
         <div className="container">
           <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-            <span>Volunteers ({volunteers.length})</span>
+           
             <div
               className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
               role="presentation"
-            >
+              onClick={manageVolunteer}
+              onKeyDown={manageVolunteer}
+            > 
+            <span>Volunteers ({volunteers.length})</span>
               <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
-            
           </div>
           <div className="container mx-auto">
             <div className="flex justify-end"></div>
