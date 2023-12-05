@@ -4,7 +4,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
 import userService from "@/services/user";
-import { Event } from "@/types";
+import { Event, UserRole } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -17,16 +17,16 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
   const { sortKey, sortMethod, searchWord } = req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
-  const { userId } = getAuth(req); 
-  const userRole = await userService.getRole(userId as string);
+  const { userId } = getAuth(req);
+  const Role = await userService.getRole(userId as string);
   const isRepairer =
-    userRole == "REPAIRER"
+    Role == UserRole.REPAIRER
       ? {
           volunteers: {
             has: userId
           }
         }
-      : {}; 
+      : {};
   // Use 'search' query parameter to filter events
   const events = await prisma.event.findMany({
     where: {
