@@ -1,26 +1,24 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronUp,
   faPlus,
-  faSearch,
-  faXmark
+  faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
-import { startCase } from "lodash";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
+import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
-import { ItemType, useItemTypes } from "@/hooks/item-types";
+import { useItemTypes } from "@/hooks/item-types";
 import { CreateEvent, Event, UserRole } from "@/types";
-import ProfilePopover from "@/components/ProfilePopover";
 
 function Table() {
   const router = useRouter();
@@ -158,7 +156,7 @@ function Table() {
             firstName={user?.firstName}
             lastName={user?.lastName}
             role={role as UserRole}
-            description={String(user?.unsafeMetadata.description)}
+            desc={String(user?.unsafeMetadata.description)}
           ></ProfilePopover>
         </div>
       </div>
