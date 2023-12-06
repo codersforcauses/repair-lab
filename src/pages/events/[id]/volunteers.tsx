@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
+import VolunteerManageForm from "@/components/Forms/volunteer-manage.form"
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
+import Modal from "@/components/Modal";
+import {VolunteerManageAttempt} from "@/types";
 
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
@@ -34,17 +37,31 @@ export default function Volunteers() {
       });
   }, [eventId]);
 
+  const [VolunteerModal, showVolunteerModal] = useState(false);
+
+  function manageVolunteer(){
+    showVolunteerModal(true);
+  }
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
         <Header props={headerValues} />
         <div className="container">
           <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
+           
+            <div
+              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              role="presentation"
+              onClick={manageVolunteer}
+              onKeyDown={manageVolunteer}
+            > 
             <span>Volunteers ({volunteers.length})</span>
             <div
               className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
               role="presentation"
             >
+              <CiCirclePlus color="rgb(82 82 91)" size={100} />
+            </div>
               <CiCirclePlus color="rgb(82 82 91)" size={100} />
             </div>
           </div>
@@ -57,7 +74,22 @@ export default function Volunteers() {
                 <AssigneeBadge firstName={item} />
               </div>
             ))}
+            <div
+              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              role="presentation"
+            >
+              <CiCirclePlus color="rgb(82 82 91)" size={100} />
+            </div>
           </div>
+          <Modal showModal={VolunteerModal} setShowPopup={showVolunteerModal}>
+              {" "}
+              <div className="text-center">
+                <h1 className="text-xl font-bold">New Event Form</h1>
+                <div>
+                  <VolunteerManageForm />
+                </div>
+              </div>
+          </Modal>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
         </div>
       </main>
