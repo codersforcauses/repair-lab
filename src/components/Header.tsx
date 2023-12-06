@@ -1,4 +1,4 @@
-import FormatDate from "@/components/utils/format-date";
+import { formatDate, formatTime } from "@/lib/datetime";
 
 export interface HeaderProps {
   name: string;
@@ -22,10 +22,9 @@ export default function Header({ props }: { props: HeaderProps }) {
         <div>
           <h1 className="text-right text-xl text-zinc-600">
             Location: {props.location} <br />
-            Date: {FormatDate(String(props.startDate))}
+            Date: {formatDate(props.startDate)}
             <br />
-            Time: {String(props.startDate).slice(12, 16)}-
-            {String(props.endDate).slice(12, 16)}
+            Time: {formatTime(props.startDate)}-{formatTime(props.endDate)}
           </h1>
         </div>
       </div>
