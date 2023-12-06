@@ -13,8 +13,6 @@ type BoxProps = {
   // Add image stuff later once figure it out / if theres even an image that will be returned
 }
 
-
-
 const Box = ({
   eventTitle,
   startDate,
@@ -35,44 +33,44 @@ const Box = ({
 
   return (
     <div className="flex mx-10 flex-row mt-5 items-left text-xs rounded-lg
-     bg-slate-200 hover:bg-primary-500 shadow-sm"
-      role='button'
-      tabIndex={0}
-      onKeyDown={handleClick}
-      onClick={handleClick}>
+     bg-slate-200 hover:bg-primary-500 shadow-sm">
 
       <div>
         <Image
           src={imagePath}
-          alt="Person holding jeans"
+          alt="event image"
           width={500}
           height={500}
-          className="object-fill w-20 h-20 ml-1 custom-position rounded-full scale-75"
+          className="object-fill w-20 h-20 ml-1 border-solid border-2 border-teal-500 rounded-full scale-75"
         />
       </div>
 
       <div className="flex flex-col ml-2">
-        <span className="font-bold text-sm pt-2">
+        <span className="font-bold text-sm pt-2 bord">
           {eventTitle}
         </span>
-        <div className="pt-1 italic">
+        <div className="pt-1 italic border-spacing-8 ">
           {startDate} - {endDate}
         </div>
 
-        <div className={`pt-1 ${!expanded && "line-clamp-1"}`}>
+        <div className={`pt-1 ${!expanded && "line-clamp-1"} relative`}>
           {description}
         </div>
-
-  
-        
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">;
-          {expanded} <path strokeLinecap="round" strokeLinejoin="round" d = {expanded ? "M19.5 8.25l-7.5 7.5-7.5-7.5": "M4.5 15.75l7.5-7.5 7.5 7.5" }/>;
-        </svg>
-        
-
-
+      
       </div>
 
+      <svg xmlns="http://www.w3.org/2000/svg" fill="None" viewBox="0 0 30 30" strokeWidth={2} 
+          stroke="teal" className="w-8 h-8">;
+          <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              d = {expanded ? "M4.5 15.75l7.5-7.5 7.5 7.5" :"M19.5 8.25l-7.5 7.5-7.5-7.5" }
+              role='button'
+              tabIndex={0}
+              onKeyDown={handleClick}
+              onClick={handleClick}
+          />
+        </svg>
     </div>
   );
 };
