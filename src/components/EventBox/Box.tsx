@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Image from "next/image";
 
 // Contains type of info stored in our event box.
@@ -7,23 +8,42 @@ type BoxProps = {
   endDate: string;
   description: string;
   imagePath: string;
+  handleClick?: () => void;
   // Add other data as required
   // Add image stuff later once figure it out / if theres even an image that will be returned
 }
+
+
 
 const Box = ({
   eventTitle,
   startDate,
   endDate,
   description,
-  imagePath
+  imagePath,
 }: BoxProps) => {
 
+  const [expanded, setExpanded] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleClick = () => {
+    if (isButtonDisabled) return;
+    setExpanded(!expanded);
+    setIsButtonDisabled(true);
+    setTimeout(() => setIsButtonDisabled(false), 1000);
+  }
+
   return (
-    <div className="flex mx-10 flex-row mt-5 items-left text-xs rounded-lg bg-slate-200 hover:bg-primary-500 shadow-sm">
+    <div className="flex mx-10 flex-row mt-5 items-left text-xs rounded-lg
+     bg-slate-200 hover:bg-primary-500 shadow-sm"
+      role='button'
+      tabIndex={0}
+      onKeyDown={handleClick}
+      onClick={handleClick}>
+
       <div>
         <Image
-          src={imagePath} 
+          src={imagePath}
           alt="Person holding jeans"
           width={500}
           height={500}
@@ -31,18 +51,19 @@ const Box = ({
         />
       </div>
 
-    <div className="flex flex-col ml-2">
-      <span className="font-bold text-sm pt-2">
-        {eventTitle}
-      </span>
-      <div className="pt-1 italic">
-        {startDate} - {endDate}
-      </div>
+      <div className="flex flex-col ml-2">
+        <span className="font-bold text-sm pt-2">
+          {eventTitle}
+        </span>
+        <div className="pt-1 italic">
+          {startDate} - {endDate}
+        </div>
 
-      <div className="pt-1">
-        {description}
+        <div className={`pt-1 ${!expanded && "line-clamp-1"}`}>
+          {description}
+        </div>
+
       </div>
-    </div>
 
     </div>
   );

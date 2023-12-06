@@ -19,23 +19,23 @@ const Home = () => {
       <h1 className="relative z-10 mt-2 flex w-full justify-center">
         My Events
       </h1>
-      <hr className="mx-10"/>
+      <hr className="mx-10" />
       <div className="relative flex-row items-center justify-center">
-        <Box eventTitle="Jeans Repair Weekend" 
-             startDate="1 January" 
-             endDate="2 January" 
-             description="An event to repair jeans for donation."
-             imagePath="/images/jeans_repair.jpg"/>
-        <Box eventTitle="Bike Repair Day" 
-             startDate="3 March" 
-             endDate="4 March" 
-             description="The first bike repair event of the year."
-             imagePath="/images/Repair_Lab_bikerepair.jpg" />
-        <Box eventTitle="Toy Repairing Day" 
-             startDate="5 June" 
-             endDate="5 June" 
-             description="Mid-year toy repairing event." 
-             imagePath="/images/generalToy.jpeg" />
+        <Box eventTitle="Jeans Repair Weekend"
+          startDate="1 January"
+          endDate="2 January"
+          description="An event to repair jeans for donation."
+          imagePath="/images/jeans_repair.jpg" />
+        <Box eventTitle="Bike Repair Day"
+          startDate="3 March"
+          endDate="4 March"
+          description="The first bike repair event of the year. LONG LONG LONG LONG LONG LONG"
+          imagePath="/images/Repair_Lab_bikerepair.jpg" />
+        <Box eventTitle="Toy Repairing Day"
+          startDate="5 June"
+          endDate="5 June"
+          description="Mid-year toy repairing event. AAAAAAAAAAAAAAAAAAAA LONGLONGLONGLONGLONG AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          imagePath="/images/generalToy.jpeg" />
       </div>
     </div>
   );
