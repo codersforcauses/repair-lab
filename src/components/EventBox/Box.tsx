@@ -34,15 +34,15 @@ const Box = ({
   return (
     <div className="flex mx-10 flex-row mt-5 items-right text-xs rounded-lg
      bg-slate-200 shadow-sm">
-      <div>
+      <span className="flex-none">
         <Image
           src={imagePath}
           alt="event image"
           width={500}
           height={500}
-          className="object-fill w-20 h-20 ml-1 rounded-full scale-75"
+          className="w-20 h-20 ml-1 rounded-full scale-75"
         />
-      </div>
+      </span>
       <div className="flex flex-col ml-2 mr-2">
         <span className="font-bold text-sm pt-2">
           {eventTitle}
@@ -57,9 +57,9 @@ const Box = ({
       
       </div>
 
-      <div className="items-right mr-2 -mt-0.5">
+      <div className="items-right mr-2 -mt-1">
         <svg fill="None" viewBox="0 0 30 30" strokeWidth={1.5} 
-            stroke="black" className="w-7 h-7 mt-8">;
+            stroke="black" className="w-8 h-8 mt-8">;
             <path  
 
                 // Used icons from https://heroicons.com/
