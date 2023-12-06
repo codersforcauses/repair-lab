@@ -32,7 +32,7 @@ const Box = ({
   }
 
   return (
-    <div className="flex mx-10 flex-row mt-5 items-right text-xs rounded-lg
+    <div className="flex mx-10 flex-row mt-4 items-right text-xs rounded-lg
      bg-slate-200 shadow-sm">
       <span className="flex-none">
         <Image
@@ -51,7 +51,7 @@ const Box = ({
           {startDate} - {endDate}
         </div>
 
-        <div className={`pt-1 ${!expanded && "line-clamp-1"} relative`}>
+        <div className={`pt-1 ${!expanded && "line-clamp-1"} relative mb-2`}>
           {description}
         </div>
       
