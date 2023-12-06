@@ -28,28 +28,26 @@ const Box = ({
     if (isButtonDisabled) return;
     setExpanded(!expanded);
     setIsButtonDisabled(true);
-    setTimeout(() => setIsButtonDisabled(false), 200);
+    setTimeout(() => setIsButtonDisabled(false), 1);
   }
 
   return (
-    <div className="flex mx-10 flex-row mt-5 items-left text-xs rounded-lg
-     bg-slate-200 hover:bg-primary-500 shadow-sm">
-
+    <div className="flex mx-10 flex-row mt-5 items-right text-xs rounded-lg
+     bg-slate-200 shadow-sm">
       <div>
         <Image
           src={imagePath}
           alt="event image"
           width={500}
           height={500}
-          className="object-fill w-20 h-20 ml-1 border-solid border-2 border-teal-500 rounded-full scale-75"
+          className="object-fill w-20 h-20 ml-1 rounded-full scale-75"
         />
       </div>
-
-      <div className="flex flex-col ml-2">
-        <span className="font-bold text-sm pt-2 bord">
+      <div className="flex flex-col ml-2 mr-2">
+        <span className="font-bold text-sm pt-2">
           {eventTitle}
         </span>
-        <div className="pt-1 italic border-spacing-8 ">
+        <div className="pt-1 italic border-spacing-2">
           {startDate} - {endDate}
         </div>
 
@@ -59,18 +57,24 @@ const Box = ({
       
       </div>
 
-      <svg xmlns="http://www.w3.org/2000/svg" fill="None" viewBox="0 0 30 30" strokeWidth={2} 
-          stroke="teal" className="w-8 h-8">;
-          <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              d = {expanded ? "M4.5 15.75l7.5-7.5 7.5 7.5" :"M19.5 8.25l-7.5 7.5-7.5-7.5" }
-              role='button'
-              tabIndex={0}
-              onKeyDown={handleClick}
-              onClick={handleClick}
-          />
-        </svg>
+      <div className="items-right mr-2 -mt-0.5">
+        <svg fill="None" viewBox="0 0 30 30" strokeWidth={1.5} 
+            stroke="black" className="w-7 h-7 mt-8">;
+            <path  
+
+                // Used icons from https://heroicons.com/
+                // Open source, MIT license. 
+                d = {expanded ? "M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12"
+                                :"M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" 
+                    }
+                role='button'
+                tabIndex={0}
+                onKeyDown={handleClick}
+                onClick={handleClick}
+            />
+          </svg>
+      </div>
+      
     </div>
   );
 };

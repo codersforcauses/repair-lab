@@ -29,12 +29,12 @@ const Home = () => {
         <Box eventTitle="Bike Repair Day"
           startDate="3 March"
           endDate="4 March"
-          description="The first bike repair event of the year. LONG LONG LONG LONG LONG LONG"
+          description="The second bike repair event of the year."
           imagePath="/images/Repair_Lab_bikerepair.jpg" />
         <Box eventTitle="Toy Repairing Day"
           startDate="5 June"
           endDate="5 June"
-          description="Mid-year toy repairing event. AAAAAAAAAAAAAAAAAAAA LONGLONGLONGLONGLONG AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          description="Toy repairing event. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
           imagePath="/images/generalToy.jpeg" />
       </div>
     </div>
