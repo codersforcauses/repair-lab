@@ -8,12 +8,10 @@ import FieldMultiSelect from "../FormFields/field-multi-select";
 
 export default function VolunteerManageForm({
 
-  // itemBrands,
-  // itemTypes,
+  volunteersArray,
   onSubmit
 }: {
-  // itemBrands?: Brand[];
-  // itemTypes?: ItemType[];
+  volunteersArray?: [];
   onSubmit?: SubmitHandler<VolunteerManageAttempt>;
 }) {
   const {control, handleSubmit } = useForm<VolunteerManageAttempt>({
@@ -25,8 +23,8 @@ export default function VolunteerManageForm({
 
   const defaultOnSubmit: SubmitHandler<VolunteerManageAttempt> = async (data) => { 
     console.log(JSON.stringify(data));
-    // const response = await fetch("/api/events", {
-    //   method: "PATCH",
+    // const response = await fetch("/api/event", {
+    //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json"
     //   },

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
-import VolunteerManageForm from "@/components/Forms/volunteer-manage.form"
+import VolunteerManageForm from "@/components/Forms/volunteer-manage-form"
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
