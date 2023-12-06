@@ -30,7 +30,7 @@ const Box = ({
     if (isButtonDisabled) return;
     setExpanded(!expanded);
     setIsButtonDisabled(true);
-    setTimeout(() => setIsButtonDisabled(false), 1000);
+    setTimeout(() => setIsButtonDisabled(false), 200);
   }
 
   return (
@@ -62,6 +62,14 @@ const Box = ({
         <div className={`pt-1 ${!expanded && "line-clamp-1"}`}>
           {description}
         </div>
+
+  
+        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">;
+          {expanded} <path strokeLinecap="round" strokeLinejoin="round" d = {expanded ? "M19.5 8.25l-7.5 7.5-7.5-7.5": "M4.5 15.75l7.5-7.5 7.5 7.5" }/>;
+        </svg>
+        
+
 
       </div>
 
