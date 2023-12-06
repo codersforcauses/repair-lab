@@ -15,10 +15,9 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name        String   @unique
+  name        String @unique
   location    String
   description String
-  volunteers  String[]
 
   event     ItemType @relation(fields: [eventType], references: [name]) //relates event to the item type being repaired there
   eventType String
@@ -32,6 +31,7 @@ model Event {
 
   repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
   images         EventImage[]
+  eventRepairer  EventRepairer[]
 }
 
 enum EventStatus {
@@ -101,4 +101,13 @@ model EventImage {
 
   repairEvent   Event  @relation(fields: [repairEventId], references: [id])
   repairEventId String
+}
+
+model EventRepairer {
+  id      String @id @default(uuid())
+  userId  String
+  eventId String
+  Event   Event  @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, eventId])
 }
