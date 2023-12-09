@@ -11,9 +11,7 @@ import Sidebar from "@/components/sidebar/index";
 
 export default function Images() {
   const [images, setImages] = useState([]);
-  const [headerValues, setHeaderValues] = useState<HeaderProps>(
-    {} as HeaderProps
-  );
+  const [headerValues, setHeaderValues] = useState<HeaderProps>();
 
   function Images() {
     const content = [];
@@ -53,7 +51,7 @@ export default function Images() {
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
-        <Header props={headerValues} />
+        <Header {...headerValues} />
         <div className="container">
           <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
             <span>Images ({Images().length})</span>
