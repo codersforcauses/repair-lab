@@ -11,9 +11,7 @@ import Sidebar from "@/components/sidebar/index";
 
 export default function Images() {
   const [images, setImages] = useState([]);
-  const [headerValues, setHeaderValues] = useState<HeaderProps>(
-    {} as HeaderProps
-  );
+  const [headerValues, setHeaderValues] = useState<HeaderProps>();
 
   function Images() {
     const content = [];
