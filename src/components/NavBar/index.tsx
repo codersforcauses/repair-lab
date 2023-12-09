@@ -19,12 +19,10 @@ const adminRoles = [
   UserRole.EVENT_MANAGER
 ];
 
-const clientRoles = [UserRole.CLIENT, UserRole.REPAIRER];
-
 export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
   return (
-    <div className="relative h-[110px] bg-red-300">
+    <div className="h-[60px] leading-[60px] text-lg bg-lightAqua-300">
       {isLoaded && (
         <>
           <div className="flex flex-row">
