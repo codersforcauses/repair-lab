@@ -153,10 +153,8 @@ const RegisterForm = () => {
               />
             </div>
 
-            <div className="flex pt-5 pb-2 justify-center">
-              <Button height="h-10">
-                Sign Up
-              </Button>
+            <div className="flex pt-5 pb-3 justify-center">
+              <Button height="h-10">Sign Up</Button>
             </div>
 
             <div className="m-1 text-center">
