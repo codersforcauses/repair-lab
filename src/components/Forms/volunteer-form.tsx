@@ -1,3 +1,4 @@
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Brand, ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -6,7 +7,6 @@ import Button from "@/components/Button";
 import FieldMultiSelect from "@/components/FormFields/field-multi-select";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
-
 export default function RepairAttemptForm({
   itemBrands,
   itemTypes,
@@ -64,7 +64,7 @@ export default function RepairAttemptForm({
       alert(`Error! ${response.statusText}`);
     }
   };
-
+  <DevTool control={control} />;
   return (
     <form onSubmit={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
       {/* ID, Item */}
