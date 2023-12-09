@@ -22,7 +22,7 @@ const adminRoles = [
 export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
   return (
-    <div className="h-[60px] leading-[60px] text-lg bg-lightAqua-300">
+    <div className="h-[60px] leading-[60px] text-lg bg-white">
       {isLoaded && (
         <>
           <div className="flex flex-row">
