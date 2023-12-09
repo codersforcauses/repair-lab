@@ -13,11 +13,11 @@ function classNames(...classes: any[]) {
 export default function MenuList({ items }: Props) {
   return (
     <Tab.Group>
-      <Tab.List className="flex flex-row pl-20 space-x-1 rounded-xl">
+      <Tab.List className="flex flex-row pl-20 space-x-1">
         {items.map((item) => (
           <Tab
             key={item.item}
-            className="w-[200px] rounded-lg text-lg font-medium leading-5 outline-none text-black hover:bg-white/[0.12] hover:text-primary-700"
+            className="w-[200px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700"
           >
             {<Link href="/">{item.item}</Link>}
           </Tab>
