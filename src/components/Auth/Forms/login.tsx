@@ -110,7 +110,7 @@ const LoginForm = () => {
         </div>
 
         <div className="flex pt-5 pb-3 justify-center">
-          <Button height="h-11" width="w-9/12">
+          <Button height="h-11">
             Sign In
           </Button>
         </div>

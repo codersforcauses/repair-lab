@@ -93,8 +93,9 @@ const RegisterForm = () => {
               <div className="flex gap-x-6">
                 <FieldInput
                   width="w-1/2"
-                  name="lastName"
+                  name="firstName"
                   control={control}
+                  placeholder="Example: John"
                   label="First Name"
                   type="hidden"
                 />
@@ -102,6 +103,7 @@ const RegisterForm = () => {
                   width="w-1/2"
                   name="lastName"
                   control={control}
+                  placeholder="Example: Smith"
                   label="Last Name"
                   type="hidden"
                 />
@@ -152,7 +154,7 @@ const RegisterForm = () => {
             </div>
 
             <div className="flex pt-5 pb-2 justify-center">
-              <Button height="h-11" width="w-11/12">
+              <Button height="h-11">
                 Sign Up
               </Button>
             </div>
