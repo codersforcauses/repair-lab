@@ -62,10 +62,8 @@ jobs:
           node-version: "18"
           cache: "npm"
       - run: npm i
-      - run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: postgres://postgres:postgres@postgres:5432/test?schema=public
-          DATABASE_URL_DIRECT: postgres://postgres:postgres@postgres:5432/test
+      - name: Check migrations and schema match
+        run: npx prisma migrate diff --exit-code --from-migrations "prisma/migrations" --to-schema-datamodel "prisma/schema.prisma" --shadow-database-url "postgres://postgres:postgres@postgres:5432/test?schema=public"
       - name: Run API tests
         run: npm run coverage
         env:
