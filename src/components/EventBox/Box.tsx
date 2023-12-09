@@ -32,7 +32,7 @@ const Box = ({
 
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
-      <div className="flex justify-between flex-row text-lg rounded-lg bg-slate-300"
+      <div className={`flex justify-between flex-row text-lg rounded-lg ${!expanded ? "bg-slate-200" : "bg-slate-300"} `}
         role='button'
         tabIndex={0}
         onKeyDown={handleClick}
