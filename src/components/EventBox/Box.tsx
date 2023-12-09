@@ -69,7 +69,7 @@ const Box = ({
         </div>
       </div>
 
-      <div className={`pt-1 ${!expanded && "hidden"} relative mb-2 mx-2`}>
+      <div className={`pt-1 relative mb-2 mx-2 overflow-hidden transition-[max-height] duration-500 ease-in ${expanded ? "max-h-40" : "max-h-0"}`}>
         {description}
       </div>
     </div>
