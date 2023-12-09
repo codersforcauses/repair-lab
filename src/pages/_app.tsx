@@ -26,9 +26,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ClerkProvider clerkJSVariant="headless" {...pageProps}>
         <QueryClientProvider client={queryClient}>
           <main className={`${inter.className}`}>
-            <NavBar>
-              <Component {...pageProps} />
-            </NavBar>
+            <NavBar />
+            <Component {...pageProps} />
             <Toast position="bottom-center" />
           </main>
         </QueryClientProvider>

@@ -3,10 +3,6 @@ import MenuList from "@/components/NavBar/menu-list";
 import { useAuth } from "@/hooks/auth";
 import Account from "@/components/NavBar/account";
 
-interface Props {
-  children?: React.ReactNode;
-}
-
 const adminItems = ["Home", "Events", "Repair Requests"];
 const clientItems = ["Home", "My Events"];
 
@@ -25,10 +21,10 @@ const adminRoles = [
 
 const clientRoles = [UserRole.CLIENT, UserRole.REPAIRER];
 
-export default function NavBar({ children }: Props) {
+export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
   return (
-    <div>
+    <div className="relative h-[110px] bg-red-300">
       {isLoaded && (
         <>
           <div className="flex flex-row">
@@ -47,7 +43,6 @@ export default function NavBar({ children }: Props) {
             />
             <Account name={"JOHN"}></Account>
           </div>
-          <div>{children}</div>
         </>
       )}
     </div>
