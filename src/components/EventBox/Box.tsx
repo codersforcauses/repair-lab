@@ -32,7 +32,7 @@ const Box = ({
 
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
-      <div className={`flex justify-between flex-row text-lg rounded-lg ${!expanded ? "bg-slate-200" : "bg-slate-300"} `}
+      <div className={`flex justify-between flex-row text-lg rounded-lg transition-colors duration-300 ease-in-out ${!expanded ? "bg-slate-200" : "bg-slate-300"} `}
         role='button'
         tabIndex={0}
         onKeyDown={handleClick}
@@ -69,9 +69,20 @@ const Box = ({
         </div>
       </div>
 
-      <div className={`pt-1 relative mb-2 mx-2 overflow-hidden transition-[max-height] duration-500 ease-in ${expanded ? "max-h-40" : "max-h-0"}`}>
+      <div className={`pt-1 relative mb-2 mx-2 overflow-hidden 
+      transition-[max-height] duration-500 ease-in-out ${expanded ? "max-h-40" : "max-h-0"}`}>
         {description}
+          
+        <div role='button'
+            tabIndex={0}
+            className="bg-primary-800 px-2000 opacity-50 rounded-lg text-white text-md hover:bg-primary-800 text-center"
+        >
+          See Repair Requests {">"}
+        </div>
+
       </div>
+
+    
     </div>
   );
 };
