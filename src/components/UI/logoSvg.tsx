@@ -172,7 +172,7 @@ const Logo = (props: svgProps) => {
   const svgPath = () => {
     switch (props.name) {
       case "Facebook":
-        return <path fill="#1877F2" d={Facebook}/>;
+        return <path fill="#1877F2" d={Facebook} />;
       case "Google":
         return Google();
       case "Microsoft":
