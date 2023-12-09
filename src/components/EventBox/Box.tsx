@@ -31,46 +31,46 @@ const Box = ({
   }
 
   return (
-    <div className="flex justify-between mx-5 flex-row mt-4 text-lg rounded-lg
-     bg-slate-200 shadow-lg"
-      role='button'
-      tabIndex={0}
-      onKeyDown={handleClick}
-      onClick={handleClick}>
-      {/* <span className="flex-none">
-        <Image
-          src={imagePath}
-          alt="event image"
-          width={500}
-          height={500}
-          className="w-20 h-20 ml-1 rounded-full scale-95"
-        />
-      </span> */}
-      <div className="flex flex-col ml-2 mr-2">
-        <span className="font-bold pt-2">
-          {eventTitle}
-        </span>
-        <div className="pt-1 italic border-spacing-2">
-          {startDate} - {endDate}
+    <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
+      <div className="flex justify-between flex-row text-lg rounded-lg bg-slate-300"
+        role='button'
+        tabIndex={0}
+        onKeyDown={handleClick}
+        onClick={handleClick}>
+        {/* <span className="flex-none">
+          <Image
+            src={imagePath}
+            alt="event image"
+            width={500}
+            height={500}
+            className="w-20 h-20 ml-1 rounded-full scale-95"
+          />
+        </span> */}
+        <div className="flex flex-col ml-2 mr-2">
+          <span className="font-bold pt-2">
+            {eventTitle}
+          </span>
+          <div className="pt-1 italic border-spacing-2">
+            {startDate} - {endDate}
+          </div>
         </div>
 
-        <div className={`pt-1 ${!expanded && "hidden"} relative mb-2`}>
-          {description}
+        <div className="justify-right mr-2 -mt-1">
+          <svg fill="None" viewBox="0 0 30 30" strokeWidth={2}
+            stroke="black" className="flex w-7 h-7 mt-8 justify-right">;
+            <path
+              // Used icons from https://heroicons.com/
+              // Open source, MIT license. 
+              d={expanded ? "M4.5 15.75l7.5-7.5 7.5 7.5"
+                : "M19.5 8.25l-7.5 7.5-7.5-7.5"
+              }
+            />
+          </svg>
         </div>
-
       </div>
 
-      <div className="justify-right mr-2 -mt-1">
-        <svg fill="None" viewBox="0 0 30 30" strokeWidth={1.5}
-          stroke="black" className="flex w-7 h-7 mt-8 justify-right">;
-          <path
-            // Used icons from https://heroicons.com/
-            // Open source, MIT license. 
-            d={expanded ? "M4.5 15.75l7.5-7.5 7.5 7.5"
-              : "M19.5 8.25l-7.5 7.5-7.5-7.5"
-            }
-          />
-        </svg>
+      <div className={`pt-1 ${!expanded && "hidden"} relative mb-2 mx-2`}>
+        {description}
       </div>
     </div>
   );
