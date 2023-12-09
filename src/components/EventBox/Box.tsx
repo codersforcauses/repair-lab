@@ -70,7 +70,7 @@ const Box = ({
       </div>
 
       <div className={`pt-1 relative mb-2 mx-2 overflow-hidden 
-      transition-[max-height] duration-500 ease-in-out ${expanded ? "max-h-40" : "max-h-0"}`}>
+      transition-[max-height] duration-500 ease-in-out ${expanded ? "max-h-96" : "max-h-0"}`}>
         {description}
           
         <div role='button'
