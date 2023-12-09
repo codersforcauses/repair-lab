@@ -75,7 +75,7 @@ const Box = ({
           
         <div role='button'
             tabIndex={0}
-            className="bg-primary-800 px-2000 opacity-50 rounded-lg text-white text-md hover:bg-primary-800 text-center"
+            className="bg-primary-800 px-2000 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
         >
           See Repair Requests {">"}
         </div>
