@@ -5,14 +5,13 @@ import {
 import { z } from "zod";
 
 import { createEventSchema, updateEventSchema } from "@/schema/event";
+import { 
+  manageVolunteerSchema
+} from "@/schema/manage-volunteer";
 import {
   createRepairRequestSchema,
   updateRepairRequestSchema
 } from "@/schema/repair-request";
-
-import { 
-  manageVolunteerSchema
-} from "@/schema/manage-volunteer";
 
 // TODO: Not sure if we should be exposing prisma model types in the frontend??
 
