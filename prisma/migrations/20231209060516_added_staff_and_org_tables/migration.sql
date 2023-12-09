@@ -1,14 +1,13 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('REPAIRER', 'EVENT_MANAGER', 'ORG_ADMIN', 'SUPER_ADMIN');
 
-  - You are about to drop the `Roles` table. If the table is not empty, all the data it contains will be lost.
+-- CreateTable
+CREATE TABLE "Organisation" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
-*/
--- DropForeignKey
-ALTER TABLE "Roles" DROP CONSTRAINT "Roles_organisationId_fkey";
-
--- DropTable
-DROP TABLE "Roles";
+    CONSTRAINT "Organisation_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Staff" (
@@ -19,6 +18,9 @@ CREATE TABLE "Staff" (
 
     CONSTRAINT "Staff_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Organisation_name_key" ON "Organisation"("name");
 
 -- AddForeignKey
 ALTER TABLE "Staff" ADD CONSTRAINT "Staff_organisationId_fkey" FOREIGN KEY ("organisationId") REFERENCES "Organisation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
