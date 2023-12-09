@@ -2,11 +2,13 @@
 import Image from "next/image";
 
 import Box from "@/components/EventBox/Box";
-
+  
 const Home = () => {
+
 
   return (
     <div>
+
       {/* HEADER BAR*/}
       <div className="relative z-10 mt-2 flex w-full justify-center">
         <Image

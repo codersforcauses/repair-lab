@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 
 // Contains type of info stored in our event box.
 type BoxProps = {
@@ -32,13 +31,13 @@ const Box = ({
   }
 
   return (
-    <div className="flex mx-10 flex-row mt-4 items-right text-xs rounded-lg
-     bg-slate-200 shadow-sm"
+    <div className="flex mx-5 flex-row mt-4 items-right text-xs rounded-lg
+     bg-slate-200 shadow-lg"
       role='button'
       tabIndex={0}
       onKeyDown={handleClick}
       onClick={handleClick}>
-      <span className="flex-none">
+      {/* <span className="flex-none">
         <Image
           src={imagePath}
           alt="event image"
@@ -46,7 +45,7 @@ const Box = ({
           height={500}
           className="w-20 h-20 ml-1 rounded-full scale-75"
         />
-      </span>
+      </span> */}
       <div className="flex flex-col ml-2 mr-2">
         <span className="font-bold text-sm pt-2">
           {eventTitle}
@@ -63,14 +62,21 @@ const Box = ({
 
       <div className="items-right mr-2 -mt-1">
         <svg fill="None" viewBox="0 0 30 30" strokeWidth={1.5}
-          stroke="black" className="w-8 h-8 mt-8">;
+          stroke="black" className="w-7 h-7 mt-8">;
           <path
-
             // Used icons from https://heroicons.com/
             // Open source, MIT license. 
-            d={expanded ? "M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12"
-              : "M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25"
+            d={expanded ? "M4.5 15.75l7.5-7.5 7.5 7.5"
+              : "M19.5 8.25l-7.5 7.5-7.5-7.5"
             }
+
+
+
+
+          
+
+
+
 
           />
         </svg>
