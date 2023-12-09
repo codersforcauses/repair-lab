@@ -40,6 +40,4 @@ describe("POST /api/event/[id]/repairers", () => {
       }
     });
   });
-
-
 });

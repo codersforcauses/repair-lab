@@ -63,7 +63,7 @@ export const seedTestData = async () => {
   });
 
   await prisma.eventRepairer.create({
-    data:{
+    data: {
       eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
       userId: "Feifan"
     }
