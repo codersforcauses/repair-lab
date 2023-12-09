@@ -72,12 +72,14 @@ export default function EventForm({
             control={control}
             name="startDate"
             label="Start Date"
+            type="datetime-local"
           ></FieldInput>
 
           <FieldInput
             control={control}
             name="endDate"
             label="End Date"
+            type="datetime-local"
           ></FieldInput>
 
           <FieldTextArea
