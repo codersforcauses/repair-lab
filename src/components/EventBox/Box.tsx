@@ -31,7 +31,7 @@ const Box = ({
   }
 
   return (
-    <div className="flex mx-5 flex-row mt-4 items-right text-xs rounded-lg
+    <div className="flex justify-between mx-5 flex-row mt-4 text-lg rounded-lg
      bg-slate-200 shadow-lg"
       role='button'
       tabIndex={0}
@@ -43,45 +43,35 @@ const Box = ({
           alt="event image"
           width={500}
           height={500}
-          className="w-20 h-20 ml-1 rounded-full scale-75"
+          className="w-20 h-20 ml-1 rounded-full scale-95"
         />
       </span> */}
       <div className="flex flex-col ml-2 mr-2">
-        <span className="font-bold text-sm pt-2">
+        <span className="font-bold pt-2">
           {eventTitle}
         </span>
         <div className="pt-1 italic border-spacing-2">
           {startDate} - {endDate}
         </div>
 
-        <div className={`pt-1 ${!expanded && "line-clamp-1"} relative mb-2`}>
+        <div className={`pt-1 ${!expanded && "hidden"} relative mb-2`}>
           {description}
         </div>
 
       </div>
 
-      <div className="items-right mr-2 -mt-1">
+      <div className="justify-right mr-2 -mt-1">
         <svg fill="None" viewBox="0 0 30 30" strokeWidth={1.5}
-          stroke="black" className="w-7 h-7 mt-8">;
+          stroke="black" className="flex w-7 h-7 mt-8 justify-right">;
           <path
             // Used icons from https://heroicons.com/
             // Open source, MIT license. 
             d={expanded ? "M4.5 15.75l7.5-7.5 7.5 7.5"
               : "M19.5 8.25l-7.5 7.5-7.5-7.5"
             }
-
-
-
-
-          
-
-
-
-
           />
         </svg>
       </div>
-
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Home = () => {
           height={90}
         />
       </div>
-      <h1 className="relative z-10 mt-2 flex w-full justify-center">
+      <h1 className="relative z-10 mt-2 text-xl flex w-full justify-center">
         My Events
       </h1>
       <hr className="mx-10" />
