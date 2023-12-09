@@ -1,6 +1,7 @@
 import { UserRole } from "@/types";
 import MenuList from "@/components/NavBar/menu-list";
 import { useAuth } from "@/hooks/auth";
+import Account from "@/components/NavBar/account";
 
 interface Props {
   children?: React.ReactNode;
@@ -25,24 +26,27 @@ const adminRoles = [
 const clientRoles = [UserRole.CLIENT, UserRole.REPAIRER];
 
 export default function NavBar({ children }: Props) {
-  const { role, isLoaded } = useAuth();
+  const { role, isLoaded, user } = useAuth();
   return (
     <div>
       {isLoaded && (
         <>
-          <MenuList
-            items={
-              adminRoles.includes(role)
-                ? adminItems.map((item) => ({
-                    item,
-                    path: pathMap[item]
-                  }))
-                : clientItems.map((item) => ({
-                    item,
-                    path: pathMap[item]
-                  }))
-            }
-          />
+          <div className="flex flex-row">
+            <MenuList
+              items={
+                adminRoles.includes(role)
+                  ? adminItems.map((item) => ({
+                      item,
+                      path: pathMap[item]
+                    }))
+                  : clientItems.map((item) => ({
+                      item,
+                      path: pathMap[item]
+                    }))
+              }
+            />
+            <Account name={"JOHN"}></Account>
+          </div>
           <div>{children}</div>
         </>
       )}
