@@ -61,4 +61,24 @@ export const seedTestData = async () => {
       thumbnailImage: ""
     }
   });
+
+  await prisma.eventRepairer.createMany({
+    data: [
+      {
+        id: "88676ba2-8d86-49b1-9969-ba3997917575",
+        userId: "user_2YwY1mwVezd3hBl5gumC03gxIBT",
+        eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
+      },
+      {
+        id: "88676ba2-8d86-49b1-9969-ba3997917576",
+        userId: "user_2ZFoJ0ZhsYpkFClPc5VsL7C6Mp4",
+        eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
+      },
+      {
+        id: "88676ba2-8d86-49b1-9969-ba3997917577",
+        userId: "test_empty",
+        eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
+      }
+    ]
+  });
 };

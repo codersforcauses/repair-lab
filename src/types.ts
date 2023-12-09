@@ -52,3 +52,11 @@ export enum UserRole {
   REPAIRER = "REPAIRER",
   CLIENT = "CLIENT"
 }
+
+// clerk
+export enum ClerkSortOrder {
+  ASC_CREATED_AT = "+created_at",
+  ASC_UPDATED_AT = "+updated_at",
+  DESC_CREATED_AT = "-created_at",
+  DESC_UPDATED_AT = "-updated_at"
+}

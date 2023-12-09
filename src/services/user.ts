@@ -4,15 +4,22 @@ import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
 
 import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
-import { User, UserRole } from "@/types";
+import { ClerkSortOrder, User, UserRole } from "@/types";
 
-type ClerkOrderBy =
-  | "created_at"
-  | "updated_at"
-  | "+created_at"
-  | "+updated_at"
-  | "-created_at"
-  | "-updated_at";
+type ClerkOrderBy = "created_at" | "updated_at" | ClerkSortOrder;
+
+type UserListParams = {
+  limit: number;
+  offset: number;
+  orderBy: ClerkSortOrder;
+  emailAddress?: string[];
+  phoneNumber?: string[];
+  username?: string[];
+  web3Wallet?: string[];
+  query?: string;
+  userId?: string[];
+  externalId?: string[];
+};
 
 async function getMany(options: PaginationOptions) {
   const { orderBy, perPage, page, query } = options;
@@ -33,6 +40,11 @@ async function getMany(options: PaginationOptions) {
     options,
     totalCount
   );
+}
+
+async function getUserList(params: UserListParams) {
+  const users = await clerkClient.users.getUserList(params);
+  return users.map((user) => toResponse(user));
 }
 
 async function getUser(userId: string) {
@@ -75,6 +87,7 @@ function toResponse(user: ClerkUser): User {
 
 const userService = {
   getMany,
+  getUserList,
   getUser,
   updateRole,
   getRole
