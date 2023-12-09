@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "react-query";
+import NavBar from "@/components/NavBar";
 
 import Toast from "@/components/Toast";
 
@@ -25,7 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ClerkProvider clerkJSVariant="headless" {...pageProps}>
         <QueryClientProvider client={queryClient}>
           <main className={`${inter.className}`}>
-            <Component {...pageProps} />
+            <NavBar>
+              <Component {...pageProps} />
+            </NavBar>
             <Toast position="bottom-center" />
           </main>
         </QueryClientProvider>

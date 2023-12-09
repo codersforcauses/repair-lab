@@ -52,3 +52,8 @@ export enum UserRole {
   REPAIRER = "REPAIRER",
   CLIENT = "CLIENT"
 }
+
+export type NavPath = {
+  item: string;
+  path: string;
+};

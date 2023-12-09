@@ -1,16 +1,15 @@
+import { NavPath } from "@/types";
 import Link from "next/link";
 
 interface Props {
-  items: Array<string>;
+  items: Array<NavPath>;
 }
 
 export default function MenuList({ items }: Props) {
   return (
     <div>
       {items.map((item) => (
-        <Link href="/" key={item}>
-          {item}
-        </Link>
+        <Link href={item.path}>{item.item}</Link>
       ))}
     </div>
   );

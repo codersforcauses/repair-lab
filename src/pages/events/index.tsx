@@ -137,7 +137,7 @@ function Table() {
   console.log("role", role);
 
   return (
-    <NavBar role={role as UserRole}>
+    <div>
       {/* HEADER BAR*/}
       <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
         <Image
@@ -264,7 +264,7 @@ function Table() {
           )}
         </div>
       </div>
-    </NavBar>
+    </div>
   );
 }
 
