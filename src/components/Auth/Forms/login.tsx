@@ -109,7 +109,13 @@ const LoginForm = () => {
           />
         </div>
 
-        <div className="m-4 text-center">
+        <div className="flex pt-5 pb-3 justify-center">
+          <Button height="h-11" width="w-9/12">
+            Sign In
+          </Button>
+        </div>
+
+        <div className="m-1 text-center">
           <div>
             <Link href="/auth/forgot-password">
               <span className="text-xs text-gray-400 underline">
@@ -126,11 +132,6 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <div className="flex pt-3 pb-3 justify-center">
-          <Button height="h-11" width="w-11/12">
-            Sign In
-          </Button>
-        </div>
       </form>
     </div>
   );
