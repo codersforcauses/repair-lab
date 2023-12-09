@@ -1,16 +1,19 @@
 import axios from "axios";
 
 /**
- * Upload a file to S3
+ * Upload a image to S3
  * @param file File to upload
  * @param detail Additional details to store in S3
  * @returns URL of the uploaded file
- *
+ * Only accept jpg, jpeg, png, webp in backend
  * Implemented based on
  * https://vercel.com/templates/next.js/aws-s3-image-upload-nextjs
  */
-export async function upload(file: Blob, detail?: Record<string, unknown>) {
-  const response = await axios.post("/api/s3-upload", {
+export async function uploadImage(
+  file: Blob,
+  detail?: Record<string, unknown>
+) {
+  const response = await axios.post("/api/upload-image", {
     contentType: file.type,
     ...detail
   });
@@ -31,7 +34,7 @@ export async function upload(file: Blob, detail?: Record<string, unknown>) {
     }
   });
 
-  return `${url}${fields.key}`;
+  return fields.key;
 }
 
-export default upload;
+export default uploadImage;

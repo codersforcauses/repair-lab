@@ -15,7 +15,7 @@ import { EventOption, useEventOptions } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { useCreateRepairRequest } from "@/hooks/repair-request";
 import generateThumbnail from "@/lib/gen-thumbnail";
-import upload from "@/lib/s3-upload";
+import uploadImage from "@/lib/upload-image";
 import { createRepairRequestSchema } from "@/schema/repair-request";
 import { CreateRepairRequest } from "@/types";
 
@@ -49,12 +49,13 @@ const Home = () => {
   const { mutate: createRepairRequest } = useCreateRepairRequest();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const uploadPromises = data.images?.map((image) => upload(image)) ?? [];
+    const uploadPromises =
+      data.images?.map((image) => uploadImage(image)) ?? [];
     const uploadThumbailPromise = data.images?.[0]
-      ? generateThumbnail(data.images[0]).then(upload)
+      ? generateThumbnail(data.images[0]).then(uploadImage)
       : undefined;
-    const urls = await Promise.all([uploadThumbailPromise, ...uploadPromises]);
-    const [thumbnailImage, ...images] = urls;
+    const keys = await Promise.all([uploadThumbailPromise, ...uploadPromises]);
+    const [thumbnailImage, ...images] = keys;
     const updatedData = { ...data, thumbnailImage, images };
     createRepairRequest(updatedData);
   };
