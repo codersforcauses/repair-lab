@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CiCirclePlus } from "react-icons/ci";
 
-import VolunteerManageForm from "@/components/Forms/volunteer-manage-form"
 import AssigneeBadge from "@/components/Cards/assignee-badge";
+import VolunteerManageForm from "@/components/Forms/volunteer-manage-form"
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
-import Sidebar from "@/components/sidebar/index";
 import Modal from "@/components/Modal";
-import {VolunteerManageAttempt} from "@/types";
+import Sidebar from "@/components/sidebar/index";
 
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
@@ -47,22 +45,15 @@ export default function Volunteers() {
       <main className="ml-80 min-h-screen w-full p-4">
         <Header props={headerValues} />
         <div className="container">
-          <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-           
+          <div className="flex flex-row w-auto p-4 text-2xl font-bold text-zinc-400 content-center justify-between">
+            <span>Volunteers ({volunteers.length})</span>
             <div
-              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+              className="flex rounded-lg border bg-primary-500 p-2 w-1/4 shadow-md transition hover:cursor-pointer hover:bg-primary-300 text-sm text-white justify-center"
               role="presentation"
               onClick={manageVolunteer}
               onKeyDown={manageVolunteer}
-            > 
-            <span>Volunteers ({volunteers.length})</span>
-            <div
-              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
-              role="presentation"
             >
-              <CiCirclePlus color="rgb(82 82 91)" size={100} />
-            </div>
-              <CiCirclePlus color="rgb(82 82 91)" size={100} />
+              Add Volunteers
             </div>
           </div>
           <div className="container mx-auto">
@@ -74,14 +65,8 @@ export default function Volunteers() {
                 <AssigneeBadge firstName={item} />
               </div>
             ))}
-            <div
-              className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
-              role="presentation"
-            >
-              <CiCirclePlus color="rgb(82 82 91)" size={100} />
-            </div>
           </div>
-          <Modal showModal={VolunteerModal} setShowPopup={showVolunteerModal}>
+          <Modal showModal={VolunteerModal} setShowPopup={showVolunteerModal} height="h-full">
               {" "}
               <div className="text-center">
                 <h1 className="text-xl font-bold">New Event Form</h1>
