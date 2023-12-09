@@ -39,7 +39,12 @@ export default function NavBar() {
                     }))
               }
             />
-            <Account name={"JOHN"}></Account>
+            <Account
+              firstName={user?.firstName}
+              lastName={user?.lastName}
+              role={role}
+              desc={user?.unsafeMetadata.description}
+            ></Account>
           </div>
         </>
       )}
