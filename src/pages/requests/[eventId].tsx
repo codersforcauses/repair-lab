@@ -9,8 +9,8 @@ import Button from "@/components/Button";
 import StatusPill from "@/components/Cards/status-pill";
 import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal";
-import FormatDate from "@/components/utils/format-date";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
+import { formatDate } from "@/lib/datetime";
 
 const inter = Inter({ subsets: ["latin"] });
 const minWidth = 425;
@@ -122,7 +122,7 @@ export default function RepairReqList() {
         <br />
         Event Start Date:{" "}
         <span className="text-primary-600">
-          {FormatDate(eventInfo.startDate)}
+          {formatDate(eventInfo.startDate)}
         </span>
         <br />
         Total number of repair requests:{" "}
