@@ -88,7 +88,25 @@ const RegisterForm = () => {
                 <span className="text-red-500">{registerErrorMsg}</span>
               </div>
             )}
+
             <div className="flex flex-col gap-4 pt-4">
+              <div className="flex gap-x-6">
+                <FieldInput
+                  width="w-1/2"
+                  name="lastName"
+                  control={control}
+                  label="First Name"
+                  type="hidden"
+                />
+                <FieldInput
+                  width="w-1/2"
+                  name="lastName"
+                  control={control}
+                  label="Last Name"
+                  type="hidden"
+                />
+              </div>
+
               <FieldInput
                 name="emailAddress"
                 control={control}
