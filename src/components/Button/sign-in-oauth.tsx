@@ -21,7 +21,7 @@ const SignInOAuthButton = ({ strategy, icon }: Props) => {
   };
 
   return (
-    <Button onClick={() => signInWith(strategy)} width="w-20" height="h-16">
+    <Button onClick={() => signInWith(strategy)} color="white" border="border-2" width="w-20" height="h-16" hover="white">
       <div className="relative flex items-center justify-center space-x-4">
         <div className="w-5">{icon}</div>
       </div>
