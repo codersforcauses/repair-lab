@@ -10,7 +10,7 @@ const clientItems = ["Home", "My Events"];
 const pathMap: { [key: string]: string } = {
   Home: "/",
   Events: "/events",
-  "Repair Requests": "/repair-requests",
+  "Repair Requests": "/repair-request",
   "My Events": "/my-events"
 };
 

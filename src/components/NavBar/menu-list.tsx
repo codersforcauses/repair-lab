@@ -19,7 +19,7 @@ export default function MenuList({ items }: Props) {
             key={item.item}
             className="w-[200px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700"
           >
-            {<Link href="/">{item.item}</Link>}
+            {<Link href={item.path}>{item.item}</Link>}
           </Tab>
         ))}
       </Tab.List>
