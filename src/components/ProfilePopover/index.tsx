@@ -4,14 +4,6 @@ import { Popover, Transition } from "@headlessui/react";
 import { GoCheck, GoPencil, GoX } from "react-icons/go";
 
 import { useAuth } from "@/hooks/auth";
-import { UserRole } from "@/types";
-
-interface Props {
-  firstName: string | null | undefined;
-  lastName: string | null | undefined;
-  role: UserRole;
-  desc: string | null | undefined;
-}
 
 const updateUserMetadata = async (
   user: UserResource | null | undefined,
@@ -24,22 +16,18 @@ const updateUserMetadata = async (
   });
 };
 
-export default function ProfilePopover({
-  firstName,
-  lastName,
-  role,
-  desc
-}: Props) {
-  const [isEdit, setIsEdit] = useState(false);
-  const [description, setDescription] = useState(desc);
-  const [initialDescription, setInitialDescription] = useState(desc);
-  const { user } = useAuth();
+export default function ProfilePopover() {
+  const { user, role } = useAuth();
 
-  // if (firstName === null || firstName === undefined) return null;
+  const [isEdit, setIsEdit] = useState(false);
+  const [description, setDescription] = useState(
+    String(user?.unsafeMetadata.description)
+  );
+  const [initialDescription, setInitialDescription] = useState(description);
 
   useEffect(() => {
-    setDescription(desc);
-  }, [desc]);
+    setDescription(description);
+  }, [description]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
@@ -97,7 +85,7 @@ export default function ProfilePopover({
             {/* name and role */}
             <div className="text-center">
               <div className="text-[28px] font-semibold">
-                {firstName} {lastName}
+                {user?.firstName} {user?.lastName}
               </div>
               <div className="text-[24px] text-slate-500">
                 {String(role).charAt(0).toUpperCase() +

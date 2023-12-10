@@ -18,7 +18,7 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event, UserRole } from "@/types";
+import { CreateEvent, Event } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -152,12 +152,7 @@ function Table() {
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
           {/* Profile Pop Over */}
-          <ProfilePopover
-            firstName={user?.firstName}
-            lastName={user?.lastName}
-            role={role as UserRole}
-            desc={String(user?.unsafeMetadata.description)}
-          ></ProfilePopover>
+          <ProfilePopover></ProfilePopover>
         </div>
       </div>
 
