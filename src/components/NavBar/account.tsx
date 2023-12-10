@@ -33,7 +33,7 @@ export default function Account({
       {isLoggedIn ? (
         <>
           
-          <button onClick={handleNewRepairRequest} className="flex items-center justify-center w-[200px] h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800">
+          <button onClick={handleNewRepairRequest} className="w-[200px] h-[60px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800">
             New Repair Request +
           </button>
 
