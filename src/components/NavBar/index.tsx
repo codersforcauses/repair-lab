@@ -1,6 +1,7 @@
 import { UserRole } from "@/types";
 import MenuList from "@/components/NavBar/menu-list";
 import { useAuth } from "@/hooks/auth";
+import { useClerk } from "@clerk/nextjs";
 import Account from "@/components/NavBar/account";
 
 const adminItems = ["Home", "Events", "Repair Requests"];
@@ -21,6 +22,8 @@ const adminRoles = [
 
 export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
+  const { signOut } = useClerk();
+
   return (
     <div className="h-[60px] leading-[60px] text-lg bg-white">
       {isLoaded && (
@@ -44,7 +47,9 @@ export default function NavBar() {
               lastName={user?.lastName}
               role={role}
               desc={user?.unsafeMetadata.description}
-            ></Account>
+              isLoggedIn={!!user}
+              onSignOut={signOut}
+            />
           </div>
         </>
       )}
