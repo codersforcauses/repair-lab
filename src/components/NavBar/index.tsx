@@ -28,7 +28,7 @@ export default function NavBar() {
     <div className="h-[60px] leading-[60px] text-lg bg-white">
       {isLoaded && (
         <>
-          <div className="flex flex-row">
+          <div className="flex flex-row justify-between pl-20 pr-20">
             <MenuList
               items={
                 adminRoles.includes(role)
