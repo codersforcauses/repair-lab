@@ -83,10 +83,10 @@ export default function ProfilePopover() {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
+        <Popover.Panel className="absolute top-14 -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
           <div className="flex flex-col items-center">
             {/* avatar */}
-            <div className="relative w-[110px] h-[110px] rounded-full my-6">
+            <div className="relative w-28 h-28 rounded-full my-6">
               {user?.imageUrl && (
                 <Image
                   alt="user avatar"
@@ -99,10 +99,10 @@ export default function ProfilePopover() {
             </div>
             {/* name and role */}
             <div className="text-center">
-              <div className="text-[28px] font-semibold">
+              <div className="text-2xl font-semibold">
                 {user?.firstName} {user?.lastName}
               </div>
-              <div className="text-[24px] text-slate-500">
+              <div className="text-xl text-slate-500">
                 {String(role).charAt(0).toUpperCase() +
                   String(role).slice(1).toLowerCase()}
               </div>
@@ -110,12 +110,11 @@ export default function ProfilePopover() {
 
             {/* description textarea */}
             <div
-              className={
-                "relative mx-auto mt-[20px] w-[280px] h-[93px] border-2 rounded-xl " +
-                (isEdit
+              className={`relative mx-auto mt-5 w-70 h-23 border-2 rounded-xl ${
+                isEdit
                   ? "border-lightAqua-200 bg-white"
-                  : "border-slate-300 bg-slate-50 text-slate-500")
-              }
+                  : "border-slate-300 bg-slate-50 text-slate-500"
+              }`}
             >
               <textarea
                 ref={(textareaRef) =>
@@ -123,10 +122,9 @@ export default function ProfilePopover() {
                 }
                 disabled={!isEdit}
                 value={description ?? ""}
-                className={
-                  "no-scrollbar resize-none w-full h-2/3 px-2 py-1 outline-none text-slate-80 rounded-xl " +
-                  (isEdit ? "bg-white" : "bg-slate-50")
-                }
+                className={`no-scrollbar resize-none w-full h-2/3 p-2 outline-none text-slate-80 rounded-xl ${
+                  isEdit ? "bg-white" : "bg-slate-50"
+                }`}
                 onChange={handleChange}
                 onFocus={(e) =>
                   e.currentTarget.setSelectionRange(
