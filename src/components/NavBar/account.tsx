@@ -29,7 +29,6 @@ export default function Account({
     <div className="flex flex-row pl-20 space-x-1">
       {isLoggedIn ? (
         <>
-          {/* New Repair Request Button with green bubble style */}
           <button
             onClick={() => router.push("/repair-request")}
             className="flex items-center justify-center mt-2.5 px-2 placeholder:w-[200px] h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
@@ -37,7 +36,6 @@ export default function Account({
             New Repair Request +
           </button>
 
-          {/* Log out Button */}
           <ActionButton onClick={onSignOut} label="Log out" />
 
           <ProfilePopover
