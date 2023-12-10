@@ -85,7 +85,6 @@ export default function ProfilePopover() {
       >
         <Popover.Panel className="absolute top-14 -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
           <div className="flex flex-col items-center">
-            {/* avatar */}
             <div className="relative w-28 h-28 rounded-full my-6">
               {user?.imageUrl && (
                 <Image
@@ -97,7 +96,7 @@ export default function ProfilePopover() {
                 />
               )}
             </div>
-            {/* name and role */}
+
             <div className="text-center">
               <div className="text-2xl font-semibold">
                 {user?.firstName} {user?.lastName}
@@ -108,9 +107,8 @@ export default function ProfilePopover() {
               </div>
             </div>
 
-            {/* description textarea */}
             <div
-              className={`relative mx-auto mt-5 w-70 h-23 border-2 rounded-xl ${
+              className={`relative mx-auto mt-5 w-72 h-24 border-2 rounded-xl ${
                 isEdit
                   ? "border-lightAqua-200 bg-white"
                   : "border-slate-300 bg-slate-50 text-slate-500"
@@ -132,8 +130,7 @@ export default function ProfilePopover() {
                     e.currentTarget.value.length
                   )
                 }
-              ></textarea>
-
+              />
               <span className="absolute bottom-1 right-3">
                 {!isEdit ? (
                   <button
