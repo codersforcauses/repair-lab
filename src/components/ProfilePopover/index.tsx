@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { UserResource } from "@clerk/types";
 import { Popover, Transition } from "@headlessui/react";
 import { GoCheck, GoPencil, GoX } from "react-icons/go";
@@ -56,11 +57,17 @@ export default function ProfilePopover() {
   return (
     <Popover className="relative">
       <Popover.Button>
-        <img
-          alt="user avatar"
-          src={user?.imageUrl}
-          className="focus:outline-none mx-auto outline-none rounded-full h-12 w-12"
-        />
+        <div className="focus:outline-none mx-auto outline-none rounded-full h-12 w-12 relative">
+          {user?.imageUrl && (
+            <Image
+              alt="user avatar"
+              src={user.imageUrl}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full"
+            />
+          )}
+        </div>
       </Popover.Button>
       <Transition
         as={Popover.Panel}
@@ -72,16 +79,19 @@ export default function ProfilePopover() {
         leaveTo="opacity-0"
       >
         <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center">
             {/* avatar */}
-            <img
-              alt="user avatar"
-              src={user?.imageUrl}
-              className="mx-auto rounded-full my-6"
-              width={110}
-              height={110}
-            />
-
+            <div className="relative w-[110px] h-[110px] rounded-full my-6">
+              {user?.imageUrl && (
+                <Image
+                  alt="user avatar"
+                  src={user.imageUrl}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+              )}
+            </div>
             {/* name and role */}
             <div className="text-center">
               <div className="text-[28px] font-semibold">
