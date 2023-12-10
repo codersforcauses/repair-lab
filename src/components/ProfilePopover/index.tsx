@@ -6,16 +6,9 @@ import { GoCheck, GoPencil, GoX } from "react-icons/go";
 
 import { useAuth } from "@/hooks/auth";
 
-const updateUserMetadata = async (
-  user: UserResource | null | undefined,
-  description: string
-) => {
-  await user?.update({
-    unsafeMetadata: {
-      description: description
-    }
-  });
-};
+async function updateUserMetadata(user: UserResource, description: string) {
+  await user.update({ unsafeMetadata: { description } });
+}
 
 export default function ProfilePopover() {
   const { user, role } = useAuth();
@@ -33,25 +26,37 @@ export default function ProfilePopover() {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     if (newValue.length <= 200) {
-      setDescription(e.target.value); // Update the description state with the new value
+      setDescription(newValue);
     }
   };
 
   const handleEditClick = () => {
-    if (!isEdit) {
-      setInitialDescription(description); // Store the initial description when starting to edit
-    }
     setIsEdit(!isEdit);
+    if (!isEdit) {
+      setInitialDescription(description);
+    }
   };
 
   const handleCancelClick = () => {
-    setDescription(initialDescription); // Revert to the initial description on cancel
+    setDescription(initialDescription);
     setIsEdit(false);
   };
 
   const handleSaveClick = async () => {
-    await updateUserMetadata(user, description ?? "");
-    setIsEdit(false);
+    if (user) {
+      try {
+        await updateUserMetadata(user, description);
+        setIsEdit(false);
+      } catch (error) {
+        // Not really sure how we're handling errors in repair lab so feel free to let me know, consider this a placeholder
+        // eslint-disable-next-line no-console
+        console.error("Failed to update user metadata:", error);
+      }
+    } else {
+      // Same as above
+      // eslint-disable-next-line no-console
+      console.error("User data is not available");
+    }
   };
 
   return (
