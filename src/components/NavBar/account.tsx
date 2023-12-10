@@ -22,16 +22,26 @@ export default function Account({
   const router = useRouter();
 
   const handleSignIn = () => {
-    router.push("/login"); // Navigate to the sign-in page
+    router.push("/login"); 
+  };
+  const handleNewRepairRequest = () => {
+    router.push("/repair-request");
   };
 
   return (
     <div className="flex flex-row pl-20 space-x-1">
       {isLoggedIn ? (
         <>
+          
+          <button onClick={handleNewRepairRequest} className="flex items-center justify-center w-[200px] h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800">
+            New Repair Request +
+          </button>
+
+          
           <button onClick={onSignOut} className="w-[200px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700">
             Log out
           </button>
+
           <ProfilePopover
             firstName={firstName}
             lastName={lastName}
