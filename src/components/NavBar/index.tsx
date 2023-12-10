@@ -25,7 +25,7 @@ export default function NavBar() {
   const { signOut } = useClerk();
 
   return (
-    <div className="h-[60px] leading-[60px] text-lg bg-white">
+    <div className="sticky top-0 z-50 h-[60px] leading-[60px] text-lg bg-white">
       {isLoaded && (
         <>
           <div className="flex flex-row justify-between pl-20 pr-20">

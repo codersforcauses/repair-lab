@@ -7,8 +7,8 @@ interface Props {
   lastName?: string;
   role: UserRole;
   desc: string;
-  isLoggedIn: boolean; // New prop to determine login status
-  onSignOut: () => void; // New prop for handling click event
+  isLoggedIn: boolean; 
+  onSignOut: () => void; 
 }
 
 export default function Account({
