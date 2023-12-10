@@ -28,20 +28,22 @@ export default function Account({
   return (
     <div className="flex items-center">
       {isLoggedIn ? (
-        <button onClick={onSignOut} className="mr-2">
-          Log out
-        </button>
+        <>
+          <button onClick={onSignOut} className="mr-2">
+            Log out
+          </button>
+          <ProfilePopover
+            firstName={firstName}
+            lastName={lastName}
+            role={role}
+            desc={desc}
+          />
+        </>
       ) : (
         <button onClick={handleSignIn} className="mr-2">
           Sign in
         </button>
       )}
-      <ProfilePopover
-        firstName={firstName}
-        lastName={lastName}
-        role={role}
-        desc={desc}
-      ></ProfilePopover>
     </div>
   );
 }
