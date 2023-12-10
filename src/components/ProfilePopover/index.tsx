@@ -15,13 +15,13 @@ export default function ProfilePopover() {
 
   const [isEdit, setIsEdit] = useState(false);
   const [description, setDescription] = useState(
-    String(user?.unsafeMetadata.description)
+    String(user?.unsafeMetadata.description) || ""
   );
   const [initialDescription, setInitialDescription] = useState(description);
 
   useEffect(() => {
-    setDescription(description);
-  }, [description]);
+    setDescription(String(user?.unsafeMetadata.description) || "");
+  }, [user?.unsafeMetadata.description]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
