@@ -152,7 +152,7 @@ function Table() {
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
           {/* Profile Pop Over */}
-          <ProfilePopover></ProfilePopover>
+          <ProfilePopover />
         </div>
       </div>
 
