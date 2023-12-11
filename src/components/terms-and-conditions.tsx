@@ -40,6 +40,7 @@ export const TermsAndConditions = ({
           ref={field.ref}
           name={field.name}
           checked={field.value}
+          onClick={() => !field.value && handleshowPopupChange()}
         />
 
         <div className="space-x-1.5">
