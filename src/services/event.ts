@@ -1,16 +1,10 @@
 import userService from "@/services/user";
-import { Event, EventResponse, EventWithRepairers } from "@/types";
+import { Event, EventResponse } from "@/types";
 
-const toClientResponse = async (
-  events: Event[] | EventWithRepairers[]
-): Promise<EventResponse[]> => {
+const toClientResponse = async (events: Event[]): Promise<EventResponse[]> => {
   if (events.length <= 0) return [];
 
-  const userIds = events.flatMap((e) =>
-    "eventRepairer" in e
-      ? [e.createdBy, ...e.eventRepairer.flatMap((repairer) => repairer.id)]
-      : [e.createdBy]
-  );
+  const userIds = events.flatMap((e) => e.createdBy);
   const userMap = await userService.getUserMapFromIds(userIds);
 
   const responses: EventResponse[] = events.map((e) => {
@@ -20,14 +14,7 @@ const toClientResponse = async (
       startDate: e.startDate.toISOString(),
       endDate: e.startDate.toISOString(),
       createdAt: e.startDate.toISOString(),
-      updatedAt: e.startDate.toISOString(),
-      // empty array if no repairers passed
-      eventRepairer:
-        "eventRepairer" in e
-          ? e.eventRepairer.map(
-              (r) => userMap[r.userId] ?? userService.unknownUser(r.userId)
-            )
-          : []
+      updatedAt: e.startDate.toISOString()
     };
   });
   return responses;
