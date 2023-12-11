@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Disclosure, Transition } from '@headlessui/react';
 
 
@@ -22,22 +21,13 @@ const Box = ({
   imagePath,
 }: BoxProps) => {
 
-  const [expanded, setExpanded] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  const handleClick = () => {
-    if (isButtonDisabled) return;
-    setExpanded(!expanded);
-    setIsButtonDisabled(true);
-    setTimeout(() => setIsButtonDisabled(false), 500);
-  }
 
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
       <Disclosure>
         {({ open }) => (
           <>
-            <Disclosure.Button as="div" className="flex justify-between flex-row text-lg rounded-lg ">
+            <Disclosure.Button as="div" className={`flex justify-between flex-row text-lg rounded-lg transition-colors duration-300 ease-in-out  ${!open ? "bg-slate-200" : "bg-slate-300"} `}>
               {/* transition-colors duration-300 ease-in-out ${!expanded ? "bg-slate-200" : "bg-slate-300"}*/}
               {/* <span className="flex-none">
           <Image
