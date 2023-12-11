@@ -4,7 +4,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { Event, EventResponse } from "@/types";
+import { EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -65,7 +65,10 @@ async function getEvents(
   res.status(200).json(eventResponse);
 }
 
-async function createEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
+async function createEvent(
+  req: NextApiRequest,
+  res: NextApiResponse<EventResponse>
+) {
   const { eventType, startDate, endDate, ...rest } = createEventSchema.parse(
     req.body
   );
@@ -85,6 +88,6 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
       endDate: new Date(endDate)
     }
   });
-
-  res.status(200).json(newEvent);
+  const eventResponse = (await eventService.toClientResponse([newEvent]))[0];
+  res.status(200).json(eventResponse);
 }
