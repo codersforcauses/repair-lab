@@ -4,7 +4,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { Event, EventResponse } from "@/types";
+import { Event, EventResponse, EventWithRepairers } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -22,7 +22,7 @@ async function getEvents(
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 
   // Use 'search' query parameter to filter events
-  const events = await prisma.event.findMany({
+  const events: EventWithRepairers[] = await prisma.event.findMany({
     ...(searchWord
       ? {
           where: {
@@ -56,7 +56,10 @@ async function getEvents(
           }
         }
       : {}),
-    orderBy: sortObj
+    orderBy: sortObj,
+    include: {
+      eventRepairer: true
+    }
   });
 
   const eventResponse: EventResponse[] =

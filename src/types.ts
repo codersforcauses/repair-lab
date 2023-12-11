@@ -1,6 +1,7 @@
 import {
   $Enums,
   Event as PrismaEvent,
+  Prisma,
   RepairRequest as PrismaRepairRequest
 } from "@prisma/client";
 import { z } from "zod";
@@ -20,6 +21,11 @@ export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 
 // Events
 export type Event = PrismaEvent;
+export type EventWithRepairers = Prisma.EventGetPayload<{
+  include: {
+    eventRepairer: true;
+  };
+}>;
 export type CreateEvent = z.infer<typeof createEventSchema>;
 export type UpdateEvent = z.infer<typeof updateEventSchema>;
 
@@ -56,6 +62,8 @@ export enum UserRole {
 
 // API Responses on client
 // All dates are returned as ISO strings
+export type EventStatus = $Enums.EventStatus;
+
 export type EventResponse = {
   id: string;
   createdBy: User;
@@ -66,10 +74,10 @@ export type EventResponse = {
   name: string;
   location: string;
   description: string;
-  volunteers: User[];
+  eventRepairers: User[];
   eventType: string;
   disclaimer: string;
-  status: $Enums.EventStatus;
+  status: EventStatus;
   /** ISO date string */
   startDate: string;
   /** ISO date string */
@@ -80,7 +88,7 @@ export type RepairRequestResponse = {
   createdBy: User;
   assignedTo: User;
   eventId: string;
-  status: $Enums.RepairStatus;
+  status: EventStatus;
   description: string;
   comment: string;
   thumbnailImage: string;
