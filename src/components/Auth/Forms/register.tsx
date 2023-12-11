@@ -13,6 +13,8 @@ import Logo from "@/components/UI/logoSvg";
 import { useAuth } from "@/hooks/auth";
 
 export interface RegisterFormValues {
+  firstName: string;
+  lastName: string;
   emailAddress: string;
   password: string;
   confirmPassword: string;
