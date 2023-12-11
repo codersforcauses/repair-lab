@@ -74,7 +74,7 @@ export type EventResponse = {
   name: string;
   location: string;
   description: string;
-  eventRepairers: User[];
+  eventRepairer: User[];
   eventType: string;
   disclaimer: string;
   status: EventStatus;

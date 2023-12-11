@@ -22,7 +22,7 @@ const toClientResponse = async (
       createdAt: e.startDate.toISOString(),
       updatedAt: e.startDate.toISOString(),
       // empty array if no repairers passed
-      eventRepairers:
+      eventRepairer:
         "eventRepairer" in e
           ? e.eventRepairer.map(
               (r) => userMap[r.userId] ?? userService.unknownUser(r.userId)

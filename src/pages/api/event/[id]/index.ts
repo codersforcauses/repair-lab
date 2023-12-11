@@ -6,7 +6,7 @@ import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { updateEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { EventResponse } from "@/types";
+import { EventResponse, EventWithRepairers } from "@/types";
 
 export default apiHandler({
   get: getEvent,
@@ -19,8 +19,11 @@ async function getEvent(
 ) {
   const { id } = req.query;
 
-  const event = await prisma.event.findUnique({
-    where: { id: id as string }
+  const event: EventWithRepairers | null = await prisma.event.findUnique({
+    where: { id: id as string },
+    include: {
+      eventRepairer: true
+    }
   });
 
   if (!event) {

@@ -27,7 +27,8 @@ export default function Volunteers() {
       endDate: new Date(event.endDate),
       createdBy: event.createdBy
     });
-    setVolunteers(event.eventRepairers);
+    console.log(event);
+    setVolunteers(event.eventRepairer);
   }, [event]);
 
   return (
