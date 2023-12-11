@@ -1,8 +1,8 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import { cleanup, seedTestData, setupClerkMocks } from "@/../tests/utils";
+import { cleanup, seedTestData } from "@/../tests/utils";
 import endpoint from "@/pages/api/event/[id]";
 
 // Respect the Next.js config object if it's exported
@@ -12,7 +12,8 @@ describe("GET /api/event/:id", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
-    setupClerkMocks();
+    vi.mock("@clerk/nextjs/server");
+    vi.mock("@clerk/nextjs");
   });
 
   it("should return 404 if an existing event is not found", async () => {

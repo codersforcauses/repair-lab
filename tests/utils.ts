@@ -1,5 +1,4 @@
 import { exec } from "node:child_process";
-import { vi } from "vitest";
 
 import prisma from "./setup";
 
@@ -61,52 +60,5 @@ export const seedTestData = async () => {
       comment: "Some comment",
       thumbnailImage: ""
     }
-  });
-};
-
-export const mockClerkUsers = [
-  {
-    id: "mock user",
-    firstName: "test",
-    lastName: "test",
-    emailAddresses: [{ emailAddress: "test@gmail.com" }],
-    publicMetadata: {
-      role: "CLIENT"
-    }
-  },
-  {
-    id: "user_1",
-    firstName: "Justin",
-    lastName: "",
-    emailAddresses: [{ emailAddress: "justin@gmail.com" }],
-    publicMetadata: {
-      role: "CLIENT"
-    }
-  },
-  {
-    id: "user_2",
-    firstName: "Spongebob",
-    lastName: "",
-    emailAddresses: [{ emailAddress: "spongebob@gmail.com" }],
-    publicMetadata: {
-      role: "CLIENT"
-    }
-  }
-];
-
-export const setupClerkMocks = () => {
-  vi.mock("@clerk/nextjs/server", () => {
-    return {
-      getAuth: vi.fn().mockReturnValue({ userId: "Test" })
-    };
-  });
-  vi.mock("@clerk/nextjs", () => {
-    return {
-      clerkClient: {
-        users: {
-          getUserList: vi.fn().mockReturnValue(mockClerkUsers)
-        }
-      }
-    };
   });
 };

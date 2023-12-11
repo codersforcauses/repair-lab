@@ -1,12 +1,12 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
 import { RepairRequest } from "@prisma/client";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import endpoint from "@/pages/api/repair-request";
 
 import prisma from "../../../../src/lib/prisma";
-import { cleanup, seedTestData, setupClerkMocks } from "../../../utils";
+import { cleanup, seedTestData } from "../../../utils";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
@@ -15,7 +15,7 @@ describe("POST /api/repair-request", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
-    setupClerkMocks();
+    vi.mock("@clerk/nextjs/server");
   });
 
   it("should return 400 status code on invalid fields", async () => {
