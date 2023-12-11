@@ -14,6 +14,7 @@ describe("PATCH /api/event/:id", () => {
     await cleanup();
     await seedTestData();
     vi.mock("@clerk/nextjs/server");
+    vi.mock("@clerk/nextjs");
   });
 
   it("should return 400 status code on invalid fields", async () => {
