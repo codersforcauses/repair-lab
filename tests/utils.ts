@@ -1,4 +1,5 @@
 import { exec } from "node:child_process";
+import { vi } from "vitest";
 
 import prisma from "./setup";
 
@@ -92,3 +93,20 @@ export const mockClerkUsers = [
     }
   }
 ];
+
+export const setupClerkMocks = () => {
+  vi.mock("@clerk/nextjs/server", () => {
+    return {
+      getAuth: vi.fn().mockReturnValue({ userId: "Test" })
+    };
+  });
+  vi.mock("@clerk/nextjs", () => {
+    return {
+      clerkClient: {
+        users: {
+          getUserList: vi.fn().mockReturnValue(mockClerkUsers)
+        }
+      }
+    };
+  });
+};

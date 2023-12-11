@@ -1,8 +1,8 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
-import { cleanup, mockClerkUsers, seedTestData } from "@/../tests/utils";
+import { cleanup, seedTestData, setupClerkMocks } from "@/../tests/utils";
 import prisma from "@/lib/prisma";
 import endpoint from "@/pages/api/event/[id]";
 
@@ -13,21 +13,7 @@ describe("PATCH /api/event/:id", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
-
-    vi.mock("@clerk/nextjs/server", () => {
-      return {
-        getAuth: vi.fn().mockReturnValue({ userId: "Test" })
-      };
-    });
-    vi.mock("@clerk/nextjs", () => {
-      return {
-        clerkClient: {
-          users: {
-            getUserList: vi.fn().mockReturnValue(mockClerkUsers)
-          }
-        }
-      };
-    });
+    setupClerkMocks();
   });
 
   it("should return 400 status code on invalid fields", async () => {

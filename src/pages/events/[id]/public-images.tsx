@@ -12,7 +12,7 @@ import { useEvent } from "@/hooks/events";
 // TODO: clean this up this is a place holder for now
 
 export default function Images() {
-  const [images, setImages] = useState([]);
+  const [images, _setImages] = useState([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const {
     query: { id: eventId }

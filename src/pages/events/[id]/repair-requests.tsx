@@ -21,8 +21,7 @@ export default function RepairRequests() {
     query: { id: eventId }
   } = useRouter();
 
-  const { isLoading: isRepairRequestsLoading, data: repairRequests } =
-    useRepairRequests(eventId as string);
+  const { data: repairRequests } = useRepairRequests(eventId as string);
 
   const { data: event } = useEvent(eventId as string);
 
