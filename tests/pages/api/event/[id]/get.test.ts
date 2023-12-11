@@ -74,23 +74,6 @@ describe("GET /api/event/:id", () => {
           name: "Laptop Repair Event",
           location: "Curtin University",
           description: "Laptop repair event.",
-          volunteers: [
-            {
-              id: "user_1",
-              firstName: "Justin",
-              lastName: "",
-              role: "CLIENT",
-              emailAddress: "justin@gmail.com"
-            },
-            {
-              id: "user_2",
-              firstName: "Spongebob",
-              lastName: "",
-              role: "CLIENT",
-              emailAddress: "spongebob@gmail.com"
-            }
-          ],
-          eventType: "Laptop",
           disclaimer: "This is a disclaimer",
           startDate: "2023-11-16T01:27:08.417Z",
           endDate: "2023-11-16T01:27:08.417Z",

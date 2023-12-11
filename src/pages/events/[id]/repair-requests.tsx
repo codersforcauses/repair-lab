@@ -46,7 +46,7 @@ export default function RepairRequests() {
       <main className="ml-80 min-h-screen w-full p-4">
         {headerValues ? (
           <>
-            <Header props={headerValues} />
+            <Header {...headerValues} />
             <div className="container">
               <div className="container mx-auto items-center">
                 <div className="flex justify-between">

@@ -1,4 +1,4 @@
-import FormatDate from "@/components/utils/format-date";
+import { formatDate, formatTime } from "@/lib/datetime";
 import { User } from "@/types";
 
 export interface HeaderProps {
@@ -9,10 +9,11 @@ export interface HeaderProps {
   endDate: Date;
 }
 
-export default function Header({ props }: { props: HeaderProps }) {
+export default function Header(props: Partial<HeaderProps>) {
   const displayName =
-    `${props.createdBy.firstName} ${props.createdBy.lastName}`.trim() ||
-    props.createdBy.emailAddress;
+    props.createdBy &&
+    (`${props.createdBy.firstName} ${props.createdBy.lastName}`.trim() ||
+      props.createdBy.emailAddress);
   return (
     <>
       <div className="header-component sticky top-0 z-20 flex justify-between gap-4 px-5 pb-8 pt-6 ">
@@ -25,10 +26,12 @@ export default function Header({ props }: { props: HeaderProps }) {
         <div>
           <h1 className="text-right text-xl text-zinc-600">
             Location: {props.location} <br />
-            Date: {FormatDate(String(props.startDate))}
+            Date: {props.startDate ? formatDate(props.startDate) : ""}
             <br />
-            Time: {String(props.startDate).slice(12, 16)}-
-            {String(props.endDate).slice(12, 16)}
+            Time:{" "}
+            {props.startDate && props.endDate
+              ? `${formatTime(props.startDate)}-${formatTime(props.endDate)}`
+              : ""}
           </h1>
         </div>
       </div>

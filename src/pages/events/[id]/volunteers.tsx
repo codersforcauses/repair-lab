@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
-import { HeaderProps } from "@/components/Header";
-import Header from "@/components/Header";
+import Header, { HeaderProps } from "@/components/Header";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
@@ -36,7 +35,7 @@ export default function Volunteers() {
       <main className="ml-80 min-h-screen w-full p-4">
         {headerValues ? (
           <>
-            <Header props={headerValues} />
+            <Header {...headerValues} />
             <div className="container">
               <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
                 <span>Volunteers ({volunteers.length})</span>

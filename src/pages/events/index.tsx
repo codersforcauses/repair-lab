@@ -1,26 +1,24 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronUp,
   faPlus,
-  faSearch,
-  faXmark
+  faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dialog } from "@headlessui/react";
 import { EventStatus } from "@prisma/client";
-import { startCase } from "lodash";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
+import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
-import { ItemType, useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event, EventResponse } from "@/types";
+import { useItemTypes } from "@/hooks/item-types";
+import { CreateEvent, Event, EventResponse, UserRole } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -42,7 +40,7 @@ function Table() {
   const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<string>("asc");
   const [expandedButton, setExpandedButton] = useState<string>("");
-  const [modalActive, toggleModal] = useState(false);
+
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   const { mutate: createEvent } = useCreateEvent();
@@ -153,176 +151,14 @@ function Table() {
 
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
-          <span className="mr-2 font-light text-slate-600">
-            {isLoaded
-              ? `${user?.firstName} ${user?.lastName} ${startCase(
-                  role.trim().toLowerCase()
-                )}`
-              : ""}
-          </span>
-          <button
-            className="h-12 w-12 rounded-full bg-slate-800"
-            onClick={() => toggleModal(true)}
-          >
-            O
-          </button>
+          {/* Profile Pop Over */}
+          <ProfilePopover
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+            role={role as UserRole}
+            desc={String(user?.unsafeMetadata.description)}
+          ></ProfilePopover>
         </div>
-      </div>
-
-      {/* options modal*/}
-      <div className=" flex items-center justify-center">
-        <Dialog
-          open={modalActive}
-          onClose={() => toggleModal(false)}
-          className="absolute inset-0 flex justify-center p-4 text-center sm:items-center sm:p-0"
-        >
-          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <Dialog.Title className=" flow-root border-slate-300 bg-lightAqua-300 p-4 font-semibold">
-              <span className="float-left">
-                {" "}
-                {showCreateForm && "Create Event"}{" "}
-                {!showCreateForm && "Edit Event Details"}{" "}
-              </span>
-              <button
-                onClick={() => toggleModal(false)}
-                className="float-right h-6 w-6 items-center rounded-full hover:bg-lightAqua-500"
-              >
-                <FontAwesomeIcon
-                  className="align-middle align-text-top text-xl"
-                  icon={faXmark}
-                />
-              </button>
-            </Dialog.Title>
-            <Dialog.Description className="p-3 font-light">
-              Select each field below to change their contents
-            </Dialog.Description>
-
-            {/* main form*/}
-            <form>
-              <div key={headers[0].key} className="flow-root">
-                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                  {" "}
-                  {headers[0].label}
-                </label>
-                <input
-                  type="text"
-                  name={headers[0].key}
-                  value={
-                    formData[headers[0].key as keyof Partial<Event>] as string
-                  }
-                  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                />
-              </div>
-
-              <div key={headers[1].key} className="flow-root">
-                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                  {" "}
-                  {headers[1].label}
-                </label>
-                <input
-                  type="text"
-                  name={headers[1].key}
-                  value={
-                    formData[headers[1].key as keyof Partial<Event>] as string
-                  }
-                  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                />
-              </div>
-
-              <div key={headers[2].key} className="flow-root">
-                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                  {" "}
-                  {headers[2].label}
-                </label>
-                <input
-                  type="text"
-                  name={headers[2].key}
-                  value={
-                    formData[headers[2].key as keyof Partial<Event>] as string
-                  }
-                  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                />
-              </div>
-
-              <div key={headers[3].key} className="flow-root">
-                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                  {" "}
-                  {headers[3].label}
-                </label>
-                <input
-                  type="datetime-local"
-                  name={headers[3].key}
-                  onChange={handleInputChange}
-                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 p-1 text-sm font-light text-slate-600"
-                />
-              </div>
-
-              <div key={headers[4].key} className="flow-root">
-                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                  {" "}
-                  {headers[4].label}
-                </label>
-                <select
-                  name={headers[4].key}
-                  onChange={handleInputChange as ChangeEventHandler}
-                  defaultValue={
-                    formData[headers[4].key as keyof Partial<Event>] as string
-                  }
-                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
-                >
-                  {itemTypes
-                    ? itemTypes.map((type: ItemType) => (
-                        <option value={type.name} key={type.name}>
-                          {" "}
-                          {type.name}{" "}
-                        </option>
-                      ))
-                    : []}
-                </select>
-              </div>
-
-              <div key={headers[5].key} className="flow-root">
-                <label className="float-left m-1 pb-[10px] pl-10 text-sm font-light">
-                  {" "}
-                  {headers[5].label}
-                </label>
-                <select
-                  name={headers[5].key}
-                  onChange={handleInputChange as ChangeEventHandler}
-                  defaultValue={
-                    formData[headers[5].key as keyof Partial<Event>] as string
-                  }
-                  className="float-right m-1 mr-10 h-8 w-48 rounded-md border border-slate-400 bg-white p-1 text-sm font-light text-slate-600"
-                >
-                  <option value={upcoming}> UPCOMING </option>
-                  <option value={ongoing}> ONGOING </option>
-                  <option value={completed}> COMPLETED </option>
-                </select>
-              </div>
-
-              {/* Bottom button row*/}
-              <div className=" mt-3 border-t-[2px] border-slate-200 align-bottom">
-                <button
-                  type="submit"
-                  className="m-1 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
-                >
-                  Submit
-                </button>
-
-                <button
-                  onClick={() => toggleModal(false)}
-                  className="m-2 rounded border border-lightAqua-500 bg-transparent px-2 py-1 text-sm font-light text-lightAqua-500 hover:border-transparent hover:bg-lightAqua-500 hover:text-white"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </Dialog.Panel>
-        </Dialog>
       </div>
 
       {/* Search bar above table */}
@@ -387,39 +223,42 @@ function Table() {
               </thead>
 
               <tbody className="bg-secondary-50">
-                {eventData.map((event: EventResponse) => {
-                  return (
-                    <tr
-                      key={event.name}
-                      className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
-                    >
-                      <td className="pl-5 font-light">
-                        <button
-                          className="text-sm"
-                          onClick={() =>
-                            router.push(
-                              "/events/" + event.id + "/repair-requests"
-                            )
-                          }
-                        >
-                          {event.name}
-                        </button>
-                      </td>
-                      <td className="p-2.5 text-sm font-light">
-                        {event.createdBy.firstName} {event.createdBy.lastName}
-                      </td>
-                      <td className="text-sm font-light">{event.location}</td>
-                      <td className="text-sm font-light">
-                        {formatDate(String(event.startDate))}
-                      </td>
-                      <td className="text-sm font-light">{event.eventType}</td>
-                      <td className="text-sm font-light">{event.status}</td>
-                      <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                        <EventFormEditButton props={event} />
-                      </td>
-                    </tr>
-                  );
-                })}
+                {eventData &&
+                  eventData.map((event: EventResponse) => {
+                    return (
+                      <tr
+                        key={event.name}
+                        className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
+                      >
+                        <td className="pl-5 font-light">
+                          <button
+                            className="text-sm"
+                            onClick={() =>
+                              router.push(
+                                "/events/" + event.id + "/repair-requests"
+                              )
+                            }
+                          >
+                            {event.name}
+                          </button>
+                        </td>
+                        <td className="p-2.5 text-sm font-light">
+                          {event.createdBy.firstName} {event.createdBy.lastName}
+                        </td>
+                        <td className="text-sm font-light">{event.location}</td>
+                        <td className="text-sm font-light">
+                          {formatDate(String(event.startDate))}
+                        </td>
+                        <td className="text-sm font-light">
+                          {event.eventType}
+                        </td>
+                        <td className="text-sm font-light">{event.status}</td>
+                        <td className="align-center ml-0 p-2.5 pl-0 text-center">
+                          <EventFormEditButton props={event} />
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           )}

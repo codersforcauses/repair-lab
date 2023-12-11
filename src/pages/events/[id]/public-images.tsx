@@ -51,7 +51,7 @@ export default function Images() {
       <main className="ml-80 min-h-screen w-full p-4">
         {headerValues ? (
           <>
-            <Header props={headerValues} />
+            <Header {...headerValues} />
             <div className="container">
               <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
                 <span>Images ({Images().length})</span>
