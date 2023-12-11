@@ -46,7 +46,7 @@ export default function PrepopulatedRepairAttemptForm({
       isRepaired: status,
       isSparePartsNeeded: isSparePartsNeeded,
       spareParts: props.spareParts,
-      repairComment: props.comment
+      repairComment: props.repairComment
     }
   });
 
