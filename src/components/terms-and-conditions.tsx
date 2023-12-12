@@ -40,7 +40,7 @@ export const TermsAndConditions = ({
           ref={field.ref}
           name={field.name}
           checked={field.value}
-          onClick={() => {
+          onChange={() => {
             if (!field.value) {
               handleshowPopupChange();
             } else {
