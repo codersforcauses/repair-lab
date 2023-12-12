@@ -40,13 +40,11 @@ export const TermsAndConditions = ({
           ref={field.ref}
           name={field.name}
           checked={field.value}
-          onChange={() => {
-            if (!field.value) {
-              handleshowPopupChange();
-            } else {
-              setValue(field.name, !field.value);
-            }
-          }}
+          onChange={() =>
+            !field.value
+              ? handleshowPopupChange()
+              : setValue(field.name, !field.value)
+          }
         />
 
         <div className="space-x-1.5">
