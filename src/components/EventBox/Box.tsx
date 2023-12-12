@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { Disclosure, Transition } from '@headlessui/react';
-
 
 // Contains type of info stored in our event box.
 type BoxProps = {
@@ -47,7 +47,7 @@ const Box = ({
                 </div>
               </div>
 
-              <div className="justify-right mr-2 -mt-1">
+              <div className="justify-right mr-2 -mt-2">
                 <svg fill="None" viewBox="0 0 30 30" strokeWidth={2}
                   stroke="black" className="flex w-7 h-7 mt-8 justify-right">;
                   <path
@@ -59,6 +59,7 @@ const Box = ({
                   />
                 </svg>
               </div>
+
             </Disclosure.Button>
 
             <Transition
@@ -70,14 +71,18 @@ const Box = ({
               leaveFrom="transform  max-h-[800px]"
               leaveTo="transform  max-h-0"
             >
+
               <Disclosure.Panel className="pt-1 relative mb-2 mx-2">
                 {description}
-
-                <div role='button'
-                  tabIndex={0}
-                  className="bg-primary-800 px-2000 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
-                >
-                  See Repair Requests {">"}
+                  <div className="p-2 pt-4 relative flex justify-center">
+                  <Link href="/my-events/[id].tsx">
+                    <div role='button'
+                      tabIndex={0}
+                      className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
+                    >
+                      See Repair Requests {">"}
+                    </div>
+                  </Link>
                 </div>
 
               </Disclosure.Panel>
