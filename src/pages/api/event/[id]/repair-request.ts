@@ -4,7 +4,8 @@ import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
-import { RepairRequest } from "@/types";
+import repairRequestService from "@/services/repairRequest";
+import { RepairRequestResponse } from "@/types";
 
 export default apiHandler({
   get: getRepairRequests
@@ -12,7 +13,7 @@ export default apiHandler({
 
 async function getRepairRequests(
   req: NextApiRequest,
-  res: NextApiResponse<RepairRequest[]>
+  res: NextApiResponse<RepairRequestResponse[]>
 ) {
   const { id } = req.query;
 
@@ -29,6 +30,9 @@ async function getRepairRequests(
   });
 
   // TODO: Generate GET presigned urls for images in S3.
+  // TODO: make a singular version
+  const repairRequestResponse =
+    await repairRequestService.toClientResponse(repairRequests);
 
-  return res.status(200).json(repairRequests);
+  return res.status(200).json(repairRequestResponse);
 }
