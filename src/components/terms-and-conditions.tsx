@@ -41,9 +41,9 @@ export const TermsAndConditions = ({
           name={field.name}
           checked={field.value}
           onChange={() =>
-            !field.value
-              ? handleshowPopupChange()
-              : setValue(field.name, !field.value)
+            field.value
+              ? setValue(field.name, !field.value)
+              : handleshowPopupChange()
           }
         />
 
