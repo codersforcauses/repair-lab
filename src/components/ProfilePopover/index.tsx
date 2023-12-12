@@ -1,78 +1,78 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { UserResource } from "@clerk/types";
 import { Popover, Transition } from "@headlessui/react";
 import { GoCheck, GoPencil, GoX } from "react-icons/go";
 
 import { useAuth } from "@/hooks/auth";
-import { UserRole } from "@/types";
 
-interface Props {
-  firstName: string | null | undefined;
-  lastName: string | null | undefined;
-  role: UserRole;
-  desc: string | null | undefined;
+async function updateUserMetadata(user: UserResource, description: string) {
+  await user.update({ unsafeMetadata: { description } });
 }
 
-const updateUserMetadata = async (
-  user: UserResource | null | undefined,
-  description: string
-) => {
-  await user?.update({
-    unsafeMetadata: {
-      description: description
-    }
-  });
-};
+export default function ProfilePopover() {
+  const { user, role } = useAuth();
 
-export default function ProfilePopover({
-  firstName,
-  lastName,
-  role,
-  desc
-}: Props) {
   const [isEdit, setIsEdit] = useState(false);
-  const [description, setDescription] = useState(desc);
-  const [initialDescription, setInitialDescription] = useState(desc);
-  const { user } = useAuth();
-
-  // if (firstName === null || firstName === undefined) return null;
+  const [description, setDescription] = useState(
+    String(user?.unsafeMetadata.description) || ""
+  );
+  const [initialDescription, setInitialDescription] = useState(description);
 
   useEffect(() => {
-    setDescription(desc);
-  }, [desc]);
+    setDescription(String(user?.unsafeMetadata.description) || "");
+  }, [user?.unsafeMetadata.description]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     if (newValue.length <= 200) {
-      setDescription(e.target.value); // Update the description state with the new value
+      setDescription(newValue);
     }
   };
 
   const handleEditClick = () => {
-    if (!isEdit) {
-      setInitialDescription(description); // Store the initial description when starting to edit
-    }
     setIsEdit(!isEdit);
+    if (!isEdit) {
+      setInitialDescription(description);
+    }
   };
 
   const handleCancelClick = () => {
-    setDescription(initialDescription); // Revert to the initial description on cancel
+    setDescription(initialDescription);
     setIsEdit(false);
   };
 
   const handleSaveClick = async () => {
-    await updateUserMetadata(user, description ?? "");
-    setIsEdit(false);
+    if (user) {
+      try {
+        await updateUserMetadata(user, description);
+        setIsEdit(false);
+      } catch (error) {
+        // Not really sure how we're handling errors in repair lab so feel free to let me know, consider this a placeholder
+        // eslint-disable-next-line no-console
+        console.error("Failed to update user metadata:", error);
+      }
+    } else {
+      // Same as above
+      // eslint-disable-next-line no-console
+      console.error("User data is not available");
+    }
   };
 
   return (
     <Popover className="relative">
       <Popover.Button>
-        <img
-          alt="user avatar"
-          src={user?.imageUrl}
-          className="focus:outline-none mx-auto outline-none rounded-full h-12 w-12"
-        />
+        <div className="focus:outline-none mx-auto outline-none rounded-full h-12 w-12 relative">
+          {user?.imageUrl && (
+            <Image
+              alt="user avatar"
+              src={user.imageUrl}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full"
+            />
+          )}
+        </div>
       </Popover.Button>
       <Transition
         as={Popover.Panel}
@@ -83,36 +83,36 @@ export default function ProfilePopover({
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <Popover.Panel className="absolute top-[60px] -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
-          <div className="flex flex-col">
-            {/* avatar */}
-            <img
-              alt="user avatar"
-              src={user?.imageUrl}
-              className="mx-auto rounded-full my-6"
-              width={110}
-              height={110}
-            />
+        <Popover.Panel className="absolute top-14 -right-5 w-80 h-96 rounded-lg bg-white z-10 shadow-custom">
+          <div className="flex flex-col items-center">
+            <div className="relative w-28 h-28 rounded-full my-6">
+              {user?.imageUrl && (
+                <Image
+                  alt="user avatar"
+                  src={user.imageUrl}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+              )}
+            </div>
 
-            {/* name and role */}
             <div className="text-center">
-              <div className="text-[28px] font-semibold">
-                {firstName} {lastName}
+              <div className="text-2xl font-semibold">
+                {user?.firstName} {user?.lastName}
               </div>
-              <div className="text-[24px] text-slate-500">
+              <div className="text-xl text-slate-500">
                 {String(role).charAt(0).toUpperCase() +
                   String(role).slice(1).toLowerCase()}
               </div>
             </div>
 
-            {/* description textarea */}
             <div
-              className={
-                "relative mx-auto mt-[20px] w-[280px] h-[93px] border-2 rounded-xl " +
-                (isEdit
+              className={`relative mx-auto mt-5 w-72 h-24 border-2 rounded-xl ${
+                isEdit
                   ? "border-lightAqua-200 bg-white"
-                  : "border-slate-300 bg-slate-50 text-slate-500")
-              }
+                  : "border-slate-300 bg-slate-50 text-slate-500"
+              }`}
             >
               <textarea
                 ref={(textareaRef) =>
@@ -120,10 +120,9 @@ export default function ProfilePopover({
                 }
                 disabled={!isEdit}
                 value={description ?? ""}
-                className={
-                  "no-scrollbar resize-none w-full h-2/3 px-2 py-1 outline-none text-slate-80 rounded-xl " +
-                  (isEdit ? "bg-white" : "bg-slate-50")
-                }
+                className={`no-scrollbar resize-none w-full h-2/3 p-2 outline-none text-slate-80 rounded-xl ${
+                  isEdit ? "bg-white" : "bg-slate-50"
+                }`}
                 onChange={handleChange}
                 onFocus={(e) =>
                   e.currentTarget.setSelectionRange(
@@ -131,8 +130,7 @@ export default function ProfilePopover({
                     e.currentTarget.value.length
                   )
                 }
-              ></textarea>
-
+              />
               <span className="absolute bottom-1 right-3">
                 {!isEdit ? (
                   <button
