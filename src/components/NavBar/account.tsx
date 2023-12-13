@@ -1,6 +1,7 @@
+import { useRouter } from "next/router";
+
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
-import { useRouter } from "next/router";
 
 interface Props {
   firstName?: string;
@@ -21,22 +22,24 @@ export default function Account({
 }: Props) {
   const router = useRouter();
 
-  const handleButtonClick = (path: string) => {
+  // Not used in this file
+  /* const handleButtonClick = (path: string) => {
     router.push(path);
-  };
+  }; */
 
   return (
-    <div className="flex flex-row pl-20 space-x-1">
+    <div className="flex items-center">
       {isLoggedIn ? (
         <>
-          <button
+          {/* Duplicate of the "Repair Requests" nav link" */}
+          {/* <button
             onClick={() => router.push("/repair-request")}
             className="flex items-center justify-center mt-2.5 px-2 placeholder:w-[200px] h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Repair Request +
-          </button>
+          </button> */}
 
-          <ActionButton onClick={onSignOut} label="Log out" />
+          <ActionButton onClick={onSignOut} label="Log Out" />
 
           <ProfilePopover
             firstName={firstName}
@@ -46,7 +49,7 @@ export default function Account({
           />
         </>
       ) : (
-        <ActionButton onClick={() => router.push("/login")} label="Sign in" />
+        <ActionButton onClick={() => router.push("/login")} label="Sign In" />
       )}
     </div>
   );
@@ -62,7 +65,7 @@ function ActionButton({
   return (
     <button
       onClick={onClick}
-      className="w-[200px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700"
+      className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700"
     >
       {label}
     </button>

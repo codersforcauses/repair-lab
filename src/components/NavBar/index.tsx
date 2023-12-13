@@ -1,8 +1,10 @@
-import { UserRole } from "@/types";
+import Image from "next/image";
+import { useClerk } from "@clerk/nextjs";
+
+import Account from "@/components/NavBar/account";
 import MenuList from "@/components/NavBar/menu-list";
 import { useAuth } from "@/hooks/auth";
-import { useClerk } from "@clerk/nextjs";
-import Account from "@/components/NavBar/account";
+import { UserRole } from "@/types";
 
 const adminItems = ["Home", "Events", "Repair Requests"];
 const clientItems = ["Home", "My Events"];
@@ -25,10 +27,18 @@ export default function NavBar() {
   const { signOut } = useClerk();
 
   return (
-    <div className="sticky top-0 z-50 h-[60px] leading-[60px] text-lg bg-white">
+    <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
-        <>
-          <div className="flex flex-row justify-between pl-20 pr-20">
+        <div className="flex justify-between items-center mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center">
+            <Image
+              src="/images/repair_lab_logo.png"
+              alt="Repair Labs Logo"
+              width={721}
+              height={831}
+              className="shrink-0" // prevent the Image component from shrinking below its set dimensions
+              style={{ width: "50px", height: "50px" }}
+            />
             <MenuList
               items={
                 adminRoles.includes(role)
@@ -42,16 +52,16 @@ export default function NavBar() {
                     }))
               }
             />
-            <Account
-              firstName={user?.firstName}
-              lastName={user?.lastName}
-              role={role}
-              desc={user?.unsafeMetadata.description}
-              isLoggedIn={!!user}
-              onSignOut={signOut}
-            />
           </div>
-        </>
+          <Account
+            firstName={user?.firstName}
+            lastName={user?.lastName}
+            role={role}
+            desc={user?.unsafeMetadata.description}
+            isLoggedIn={!!user}
+            onSignOut={signOut}
+          />
+        </div>
       )}
     </div>
   );
