@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { FaPlus } from "react-icons/fa";
 
 import Button from "@/components/Button";
 import TablePagination from "@/components/Table/table-pagination";
@@ -18,7 +19,7 @@ export default function VolunteerManageForm({
   onSubmit?: SubmitHandler<VolunteerManageAttempt>;
 }) {
   const [orderBy, _setOrderBy] = useState("-created_at");
-  const [perPage, _setPerPage] = useState(10);
+  const [perPage, _setPerPage] = useState(8);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
 
@@ -57,7 +58,7 @@ export default function VolunteerManageForm({
   return (
     <form onSubmit={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
       {/* ID, Item */}
-      <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
+      <div className="m-1 flex flex-wrap justify-center gap-2 w-full h-full">
         {/* <FieldMultiSelect 
         name="volunteers"
         label="volunteers"
@@ -98,7 +99,7 @@ export default function VolunteerManageForm({
           }
         ]}
         placeholder = "" /> */}
-        <div className="p-20">
+        <div className="p-3 w-full">
           {/* Search Bar */}
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -122,7 +123,7 @@ export default function VolunteerManageForm({
               type="text"
               id="default-search"
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              placeholder="Search User ID, First name, Last name, Email"
+              placeholder="Search User ID, First name, Last name"
               required
               value={query}
               onChange={(e) => search(e)}
@@ -131,25 +132,22 @@ export default function VolunteerManageForm({
 
           {/* Table */}
           {isLoading ? (
-            <LoadingSpinner />
+            <div className="pt-5">
+              <LoadingSpinner />
+            </div>
           ) : (
             <>
-              <div className="relative overflow-x-auto p-10 shadow-md sm:rounded-lg">
+              <div className="relative p-5 shadow-md sm:rounded-lg">
                 <table className="w-full text-left text-sm text-gray-500 ">
                   <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                     <tr>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-2">
                         First Name
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-2">
                         Last Name
                       </th>
-                      <th scope="col" className="px-6 py-3">
-                        Email
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Role
-                      </th>
+                      <th scope="col" className="px-6 py-2"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -206,13 +204,18 @@ const VolunteerRow = ({ user, index }: { user: User; index: number }) => {
     >
       <th
         scope="row"
-        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 "
+        className="whitespace-nowrap px-6 py-3 font-medium text-gray-900 "
       >
         {user.firstName}
       </th>
-      <td className="px-6 py-4">{user.lastName}</td>
-      <td className="px-6 py-4">{user.emailAddress}</td>
-      <td className="px-6 py-4"></td>
+      <td className="px-6 py-3">{user.lastName}</td>
+      <td className="px-0 py-3 flex">
+        <Button height="h-10" width="w-10">
+          <div className="flex justify-center">
+            <FaPlus />
+          </div>
+        </Button>
+      </td>
     </tr>
   );
 };
