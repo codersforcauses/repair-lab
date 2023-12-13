@@ -12,15 +12,14 @@ const Home = () => {
   fetch('/api/event')
   .then((response) => response.json())
   .then((data) => {setEventData(data);})
-
-  
+  .catch((err) => {
+    console.log(err.message);
+  });
 
    const arr = [];
     Object.keys(eventData).forEach(function(key) {
       arr.push(eventData[key]);
     });
-
-  console.log(arr);
 
   const { userId } = useAuth();
   console.log(userId);
@@ -45,11 +44,18 @@ const Home = () => {
       If you are testing, put your own userId in (find it in console)*/}
       {(userId == "user_2YegcKa0KOns3791eORQdY7ERxY")
         ?
+
+        // Slicing the date strings is a temp measure - remove when
+        // date formatting issue is resolved.
         <div className="relative flex-row items-center justify-center">
           <ul>{arr.map(item => <Box key={item.id} 
                                     eventTitle={item.name}
-                                    startDate={item.startDate}
-                                    endDate={item.endDate}
+                                    // Slicing to get mm-dd then reversing it
+                                    startDate={item.startDate.slice(5, 9).split('-').reverse().join('-')}
+                                    // If endDate is same as start date, endDate only contributes the year
+                                    endDate={item.startDate.slice(0, 9) === item.endDate.slice(0, 9) 
+                                             ? item.endDate.slice(0, 4) : 
+                                             item.endDate.slice(5, 9).split('-').reverse().join('-') + "   " + item.endDate.slice(0, 4)}
                                     description={item.description}
                                 />)}</ul>;
         </div>
