@@ -9,13 +9,13 @@ import FieldTextArea from "@/components/FormFields/field-text-area";
 import { Brand, useBrands } from "@/hooks/brands";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
-import type { GeneralRepairAttempt, RepairRequest } from "@/types";
+import type { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
 
 export default function PrepopulatedRepairAttemptForm({
   props,
   onSubmit
 }: {
-  props: RepairRequest;
+  props: RepairRequestResponse;
   onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
   const { data: itemTypes } = useItemTypes();
@@ -46,7 +46,7 @@ export default function PrepopulatedRepairAttemptForm({
       isRepaired: status,
       isSparePartsNeeded: isSparePartsNeeded,
       spareParts: props.spareParts,
-      repairComment: props.comment
+      repairComment: props.repairComment
     }
   });
 

@@ -18,7 +18,7 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event, UserRole } from "@/types";
+import { CreateEvent, Event, EventResponse } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -152,12 +152,7 @@ function Table() {
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
           {/* Profile Pop Over */}
-          <ProfilePopover
-            firstName={user?.firstName}
-            lastName={user?.lastName}
-            role={role as UserRole}
-            desc={String(user?.unsafeMetadata.description)}
-          ></ProfilePopover>
+          <ProfilePopover />
         </div>
       </div>
 
@@ -223,39 +218,42 @@ function Table() {
               </thead>
 
               <tbody className="bg-secondary-50">
-                {eventData.map((event: Event) => {
-                  return (
-                    <tr
-                      key={event.name}
-                      className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
-                    >
-                      <td className="pl-5 font-light">
-                        <button
-                          className="text-sm"
-                          onClick={() =>
-                            router.push(
-                              "/events/" + event.id + "/repair-requests"
-                            )
-                          }
-                        >
-                          {event.name}
-                        </button>
-                      </td>
-                      <td className="p-2.5 text-sm font-light">
-                        {event.createdBy}
-                      </td>
-                      <td className="text-sm font-light">{event.location}</td>
-                      <td className="text-sm font-light">
-                        {formatDate(String(event.startDate))}
-                      </td>
-                      <td className="text-sm font-light">{event.eventType}</td>
-                      <td className="text-sm font-light">{event.status}</td>
-                      <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                        <EventFormEditButton props={event} />
-                      </td>
-                    </tr>
-                  );
-                })}
+                {eventData &&
+                  eventData.map((event: EventResponse) => {
+                    return (
+                      <tr
+                        key={event.name}
+                        className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
+                      >
+                        <td className="pl-5 font-light">
+                          <button
+                            className="text-sm"
+                            onClick={() =>
+                              router.push(
+                                "/events/" + event.id + "/repair-requests"
+                              )
+                            }
+                          >
+                            {event.name}
+                          </button>
+                        </td>
+                        <td className="p-2.5 text-sm font-light">
+                          {event.createdBy.firstName} {event.createdBy.lastName}
+                        </td>
+                        <td className="text-sm font-light">{event.location}</td>
+                        <td className="text-sm font-light">
+                          {formatDate(String(event.startDate))}
+                        </td>
+                        <td className="text-sm font-light">
+                          {event.eventType}
+                        </td>
+                        <td className="text-sm font-light">{event.status}</td>
+                        <td className="align-center ml-0 p-2.5 pl-0 text-center">
+                          <EventFormEditButton props={event} />
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           )}
