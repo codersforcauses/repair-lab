@@ -67,11 +67,11 @@ export default function ProfilePopover({
 
   return (
     <Popover className="relative">
-      <Popover.Button>
+      <Popover.Button className="flex">
         <img
           alt="user avatar"
           src={user?.imageUrl}
-          className="focus:outline-none mx-auto outline-none rounded-full h-12 w-12"
+          className="rounded-full h-12 w-12"
         />
       </Popover.Button>
       <Transition

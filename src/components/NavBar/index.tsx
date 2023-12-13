@@ -13,7 +13,7 @@ const pathMap: { [key: string]: string } = {
   Home: "/",
   Events: "/events",
   "Repair Requests": "/repair-request",
-  "My Events": "/my-events"
+  "My Events": "/my-events" // To be redirected to a new page for existing repair requests
 };
 
 const adminRoles = [
@@ -36,7 +36,6 @@ export default function NavBar() {
               alt="Repair Labs Logo"
               width={721}
               height={831}
-              className="shrink-0" // prevent the Image component from shrinking below its set dimensions
               style={{ width: "50px", height: "50px" }}
             />
             <MenuList
