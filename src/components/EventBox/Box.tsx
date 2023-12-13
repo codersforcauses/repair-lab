@@ -1,8 +1,9 @@
-import Link from "next/link";
+import { useRouter } from "next/router"
 import { Disclosure, Transition } from '@headlessui/react';
 
 // Contains type of info stored in our event box.
 type BoxProps = {
+  eventId: string;
   eventTitle: string;
   startDate: string; // Wanted to use the Date type, but had issues, will alter based off what the backend is
   endDate: string;
@@ -14,6 +15,7 @@ type BoxProps = {
 }
 
 const Box = ({
+  eventId,
   eventTitle,
   startDate,
   endDate,
@@ -21,6 +23,7 @@ const Box = ({
   location
 }: BoxProps) => {
 
+  const router = useRouter();
 
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
@@ -73,17 +76,17 @@ const Box = ({
             >
 
               <Disclosure.Panel className="pt-1 relative mb-2 mx-2">
-              <p> Details: {description} </p>
-                <p> Location: {location} </p>
-                  <div className="p-2 pt-4 relative flex justify-center">
-                  <Link href="/my-events/[id].tsx">
-                    <div role='button'
-                      tabIndex={0}
-                      className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
-                    >
-                      See Repair Requests {">"}
-                    </div>
-                  </Link>
+                {description}
+                <div className="p-2 pt-4 relative flex justify-center">
+                  <button
+                    className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
+                    onClick={() =>
+                      router.push(
+                        "/my-events/" + eventId
+                      )}
+                  >
+                    See Repair Requests {">"}
+                  </button>
                 </div>
 
               </Disclosure.Panel>

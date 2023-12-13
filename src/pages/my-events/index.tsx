@@ -1,28 +1,54 @@
 // Page for repairers to view their assigned events
 import { useState } from 'react'
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useAuth } from "@clerk/nextjs";
 
 import Box from "@/components/EventBox/Box";
+import { useCreateEvent, useEvents } from "@/hooks/events";
+import { Event } from "@/types";
 
 const Home = () => {
 
-  const [eventData, setEventData] = useState("");
+  const router = useRouter();
 
-  fetch('/api/event')
-  .then((response) => response.json())
-  .then((data) => {setEventData(data);})
-  .catch((err) => {
-    console.log(err.message);
-  });
+  function formatDate(dateString: string): string {
+    const actualDate = new Date(dateString);
+    const day = actualDate.getDate().toString().padStart(2, "0");
+    const month = (actualDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = actualDate.getFullYear().toString();
 
-   const arr = [];
-    Object.keys(eventData).forEach(function(key) {
-      arr.push(eventData[key]);
-    });
+    return `${day}/${month}/${year}`;
+  }
+
+  const [sortKey, setSortKey] = useState<string>("startDate");
+  const [searchWord, setSearchWord] = useState<string>("");
+  const [sortMethod, setSortMethod] = useState<string>("asc");
+
+  const { mutate: createEvent } = useCreateEvent();
+  const { data: eventData, isLoading: isEventsLoading } = useEvents(
+    sortKey,
+    sortMethod,
+    searchWord
+  );
 
   const { userId } = useAuth();
   console.log(userId);
+
+
+  // fetch('/api/event')
+  //   .then((response) => response.json())
+  //   .then((data) => { setEventData(data); })
+  //   .catch((err) => {
+  //     console.log(err.message);
+  //   });
+
+  // const arr = [];
+  // Object.keys(eventData).forEach(function (key) {
+  //   arr.push(eventData[key]);
+  // });
+
+
 
   return (
     <div>
@@ -42,23 +68,20 @@ const Home = () => {
       <hr className="mx-10" />
       {/* Temporary test: will replace with a proper call to backend 
       If you are testing, put your own userId in (find it in console)*/}
-      {(userId == "user_2YegcKa0KOns3791eORQdY7ERxY")
+      {(userId == "user_2YegcKa0KOns3791eORQdY7ERxY" || userId == "user_2YekxgT3DGBekKxfNK4xE0ndGkW")
+
         ?
 
         // Slicing the date strings is a temp measure - remove when
         // date formatting issue is resolved.
         <div className="relative flex-row items-center justify-center">
-          <ul>{arr.map(item => <Box key={item.id} 
-                                    eventTitle={item.name}
-                                    // Slicing to get mm-dd then reversing it
-                                    startDate={item.startDate.slice(5, 9).split('-').reverse().join('-')}
-                                    // If endDate is same as start date, endDate only contributes the year
-                                    endDate={item.startDate.slice(0, 9) === item.endDate.slice(0, 9) 
-                                             ? item.endDate.slice(0, 4) : 
-                                             item.endDate.slice(5, 9).split('-').reverse().join('-') + "   " + item.endDate.slice(0, 4)}
-                                    description={item.description}
-                                    location={item.location}
-                                />)}</ul>;
+          <ul>{eventData.map((event: Event) => <Box key={event.id}
+            eventId={event.id}
+            eventTitle={event.name}
+            startDate={formatDate(String(event.startDate))}
+            endDate={formatDate(String(event.startDate))}
+            description={event.description}
+          />)}</ul>;
         </div>
 
         // <div className="relative flex-row items-center justify-center">
