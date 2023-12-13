@@ -72,17 +72,6 @@ export default function Volunteers() {
                   </div>
                 ))}
               </div>
-              <Modal
-                showModal={VolunteerModal}
-                setShowPopup={showVolunteerModal}
-              >
-                {" "}
-                <div className="text-center">
-                  <h1 className="text-xl font-bold">Add Volunteers</h1>
-                  <VolunteerManageForm />
-                </div>
-              </Modal>
-              <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
             </div>
             <Modal
               showModal={VolunteerModal}
