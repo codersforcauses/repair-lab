@@ -84,7 +84,7 @@ export type RepairRequestResponse = {
   status: RepairStatus;
   description: string;
   comment: string;
-  thumbnailImage: string;
+  thumbnailImage?: string;
   repairComment: string;
   spareParts: string;
   hoursWorked: number;
