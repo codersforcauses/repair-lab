@@ -76,7 +76,8 @@ const Box = ({
             >
 
               <Disclosure.Panel className="pt-1 relative mb-2 mx-2">
-                {description}
+                <p>Location: {location} </p>
+                <p>Details: {description}</p>
                 <div className="p-2 pt-4 relative flex justify-center">
                   <button
                     className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"

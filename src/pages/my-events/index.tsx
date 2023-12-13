@@ -81,6 +81,7 @@ const Home = () => {
             startDate={formatDate(String(event.startDate))}
             endDate={formatDate(String(event.startDate))}
             description={event.description}
+            location={event.location}
           />)}</ul>;
         </div>
 
