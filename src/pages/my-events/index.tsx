@@ -46,8 +46,8 @@ const Home = () => {
       {(userId == "user_2YegcKa0KOns3791eORQdY7ERxY")
         ?
         <div className="relative flex-row items-center justify-center">
-          <ul>{arr.map(item => <Box key={item.eventTitle} 
-                                    eventTitle={item.eventTitle}
+          <ul>{arr.map(item => <Box key={item.id} 
+                                    eventTitle={item.name}
                                     startDate={item.startDate}
                                     endDate={item.endDate}
                                     description={item.description}
