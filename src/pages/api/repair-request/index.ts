@@ -23,7 +23,6 @@ async function createRepairRequest(
   const repairRequest = await prisma.repairRequest.create({
     data: {
       ...rest,
-      thumbnailImage: "Fake S3 Key", // TODO: change this once image upload works.
       createdBy: userId!,
       images: {
         create: images?.map((image) => {

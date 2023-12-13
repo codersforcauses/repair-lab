@@ -17,7 +17,8 @@ const toClientResponse = async (
         userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo),
       requestDate: req.requestDate.toISOString(),
       updatedAt: req.updatedAt.toISOString(),
-      hoursWorked: req.hoursWorked.toNumber()
+      hoursWorked: req.hoursWorked.toNumber(),
+      thumbnailImage: req.thumbnailImage ?? undefined
     };
   });
   return responses;
