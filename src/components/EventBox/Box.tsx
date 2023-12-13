@@ -7,6 +7,7 @@ type BoxProps = {
   startDate: string; // Wanted to use the Date type, but had issues, will alter based off what the backend is
   endDate: string;
   description: string;
+  location: string;
   handleClick?: () => void;
   // Add other data as required
   // Add image stuff later once figure it out / if theres even an image that will be returned
@@ -16,7 +17,8 @@ const Box = ({
   eventTitle,
   startDate,
   endDate,
-  description
+  description,
+  location
 }: BoxProps) => {
 
 
@@ -71,7 +73,8 @@ const Box = ({
             >
 
               <Disclosure.Panel className="pt-1 relative mb-2 mx-2">
-                {description}
+              <p> Details: {description} </p>
+                <p> Location: {location} </p>
                   <div className="p-2 pt-4 relative flex justify-center">
                   <Link href="/my-events/[id].tsx">
                     <div role='button'

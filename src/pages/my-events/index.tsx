@@ -57,6 +57,7 @@ const Home = () => {
                                              ? item.endDate.slice(0, 4) : 
                                              item.endDate.slice(5, 9).split('-').reverse().join('-') + "   " + item.endDate.slice(0, 4)}
                                     description={item.description}
+                                    location={item.location}
                                 />)}</ul>;
         </div>
 
