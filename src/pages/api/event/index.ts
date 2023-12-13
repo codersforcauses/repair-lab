@@ -3,7 +3,8 @@ import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
-import { Event } from "@/types";
+import eventService from "@/services/event";
+import { EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -12,7 +13,10 @@ export default apiHandler({
   post: createEvent
 });
 
-async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
+async function getEvents(
+  req: NextApiRequest,
+  res: NextApiResponse<EventResponse[]>
+) {
   const { sortKey, sortMethod, searchWord } = req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
@@ -55,10 +59,16 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
     orderBy: sortObj
   });
 
-  res.status(200).json(events);
+  const eventResponse: EventResponse[] =
+    await eventService.toClientResponse(events);
+
+  res.status(200).json(eventResponse);
 }
 
-async function createEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
+async function createEvent(
+  req: NextApiRequest,
+  res: NextApiResponse<EventResponse>
+) {
   const { eventType, startDate, endDate, ...rest } = createEventSchema.parse(
     req.body
   );
@@ -78,6 +88,6 @@ async function createEvent(req: NextApiRequest, res: NextApiResponse<Event>) {
       endDate: new Date(endDate)
     }
   });
-
-  res.status(200).json(newEvent);
+  const eventResponse = (await eventService.toClientResponse([newEvent]))[0];
+  res.status(200).json(eventResponse);
 }
