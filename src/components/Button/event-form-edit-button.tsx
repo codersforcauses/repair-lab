@@ -6,9 +6,13 @@ import { SubmitHandler } from "react-hook-form";
 import PrepopulatedEventForm from "@/components/Forms/prepopulated-event-form";
 import Modal from "@/components/Modal";
 import { useUpdateEvent } from "@/hooks/events";
-import { Event, UpdateEvent } from "@/types";
+import { EventResponse, UpdateEvent } from "@/types";
 
-export default function EventFormEditButton({ props }: { props: Event }) {
+export default function EventFormEditButton({
+  props
+}: {
+  props: EventResponse;
+}) {
   const [showEditModal, setShowEditModal] = useState(false);
 
   const { mutate: updateEvent } = useUpdateEvent(props.id);
