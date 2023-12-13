@@ -10,6 +10,7 @@ import Sidebar from "@/components/sidebar/index";
 export default function Volunteers() {
   const [volunteers, setVolunteers] = useState([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
+  const [VolunteerModal, showVolunteerModal] = useState(false);
 
   const {
     query: { id: eventId }
@@ -34,8 +35,6 @@ export default function Volunteers() {
       });
   }, [eventId]);
 
-  const [VolunteerModal, showVolunteerModal] = useState(false);
-
   function manageVolunteer() {
     showVolunteerModal(true);
   }
@@ -46,14 +45,13 @@ export default function Volunteers() {
         <div className="container">
           <div className="flex flex-row w-auto p-4 text-2xl font-bold text-zinc-400 content-center justify-between">
             <span>Volunteers ({volunteers.length})</span>
-            <div
-              className="flex rounded-lg border bg-primary-500 p-2 w-1/4 shadow-md transition hover:cursor-pointer hover:bg-primary-300 text-sm text-white justify-center"
-              role="presentation"
+            <button
+              className="flex rounded-lg border bg-primary-500 p-2 w-1/5 shadow-md transition hover:cursor-pointer hover:bg-primary-300 text-sm text-white justify-center"
               onClick={manageVolunteer}
               onKeyDown={manageVolunteer}
             >
               Add Volunteers
-            </div>
+            </button>
           </div>
           <div className="container mx-auto">
             <div className="flex justify-end"></div>
@@ -65,21 +63,22 @@ export default function Volunteers() {
               </div>
             ))}
           </div>
-          <Modal
-            showModal={VolunteerModal}
-            setShowPopup={showVolunteerModal}
-            height="h-full"
-          >
-            {" "}
-            <div className="text-center">
-              <h1 className="text-xl font-bold">New Event Form</h1>
-              <div>
-                <VolunteerManageForm />
-              </div>
-            </div>
-          </Modal>
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
         </div>
+
+        <Modal
+          showModal={VolunteerModal}
+          setShowPopup={showVolunteerModal}
+          height="h-full"
+        >
+          {" "}
+          <div className="text-center">
+            <h1 className="text-xl font-bold">Manage Volunteers</h1>
+            <div>
+              <VolunteerManageForm />
+            </div>
+          </div>
+        </Modal>
       </main>
     </Sidebar>
   );
