@@ -1,4 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { ApiError } from "next/dist/server/api-utils";
+import { getAuth } from "@clerk/nextjs/server";
+import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import { EventRepairer } from "@/types";
@@ -15,6 +18,20 @@ async function createRepairer(
 ) {
   const { userId } = req.body;
   const { id } = req.query;
+
+  const event = await prisma.event.findUnique({
+    where: { id: id as string }
+  });
+
+  if (!event) {
+    throw new ApiError(HttpStatusCode.NotFound, "Event not found");
+  }
+
+  const user = await getAuth(req);
+
+  if (!user) {
+    throw new ApiError(HttpStatusCode.NotFound, "User not found");
+  }
 
   const newEventRepairer = await prisma.eventRepairer.create({
     data: {
