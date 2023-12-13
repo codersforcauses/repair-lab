@@ -1,9 +1,12 @@
 // Page for repairers to view the repair requests associated with
 // a given event. This page is accessed via the my-events page. 
+import { useState } from 'react'
 import Image from "next/image";
-import { Tab } from '@headlessui/react'
+import { RadioGroup } from '@headlessui/react'
 
 const Home = () => {
+
+  const [plan, setPlan] = useState('startup')
 
   return (
 
@@ -19,50 +22,38 @@ const Home = () => {
       </div>
       
       <h1 className="relative z-10 mt-2 text-xl flex w-full justify-center">
-        Repair Requests
+        [Event Name] Repair Requests
       </h1>
 
       <hr className="mx-10" />
 
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-l">
 
-    <div className="flex flex-col ml-2 mr-2">
+    <div className="flex flex-col ml-2 mr-2 mb-5">
       <span className="font-bold pt-2">
-        eventTitle
+        My Repair Requests
       </span>
     </div>
+      <RadioGroup value={plan} onChange={setPlan}>
+        
+        <RadioGroup.Option value="A">
+          {({ checked }) => (
+            <span className={checked ? 'bg-blue-200' : ''}>A</span>
+          )}
+        </RadioGroup.Option>
+        <RadioGroup.Option value="B">
+          {({ checked }) => (
+            <span className={checked ? 'bg-blue-200' : ''}>B</span>
+          )}
+        </RadioGroup.Option>
+        <RadioGroup.Option value="C">
+          {({ checked }) => (
+            <span className={checked ? 'bg-blue-200' : ''}>C</span>
+          )}
+        </RadioGroup.Option>
+      </RadioGroup>
 
-    <div className="w-full max-w-md px-2 py-16 sm:px-0">
-      <Tab.Group>
-          <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-          
-            <Tab className="w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                  'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus">
-            My Repairs </Tab>
-            
-            <Tab className="w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                  'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus">
-            All </Tab>
-            
-            <Tab className="w-full rounded-lg py-2.5 text-sm font-medium leading-5',
-                  'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus">
-            Available </Tab>
-           
-          </Tab.List>
-          <Tab.Panels>
-            <Tab.Panel className="rounded-xl bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
-                Task 1 ....
-            </Tab.Panel>
-            <Tab.Panel className="rounded-xl bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
-                Task 2 ....
-            </Tab.Panel>
-            <Tab.Panel className="rounded-xl bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
-                Task 3....
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-    </div>
-    </div>
+    </div> 
   </div>     
   )
 }

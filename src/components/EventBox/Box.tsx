@@ -17,8 +17,7 @@ const Box = ({
   eventTitle,
   startDate,
   endDate,
-  description,
-  imagePath,
+  description
 }: BoxProps) => {
 
 
