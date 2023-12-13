@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
+import VolunteerManageForm from "@/components/Forms/volunteer-manage-form";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
+import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
@@ -61,10 +63,21 @@ export default function Volunteers() {
                 <div
                   className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
                   role="presentation"
+                  onClick={manageVolunteer}
                 >
                   <CiCirclePlus color="rgb(82 82 91)" size={100} />
                 </div>
               </div>
+              <Modal
+                showModal={VolunteerModal}
+                setShowPopup={showVolunteerModal}
+              >
+                {" "}
+                <div className="text-center">
+                  <h1 className="text-xl font-bold">Add Volunteers</h1>
+                  <VolunteerManageForm />
+                </div>
+              </Modal>
               <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
             </div>
           </>

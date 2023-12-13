@@ -197,6 +197,7 @@ export default function VolunteerManageForm({
 
 const VolunteerRow = ({ user, index }: { user: User; index: number }) => {
   return (
+    /** have a check to see if volunter id is in array, if it is dont list this volunteer */
     <tr
       className={`${
         index % 2 === 0 ? "bg-white" : "bg-secondary-50"
@@ -210,6 +211,7 @@ const VolunteerRow = ({ user, index }: { user: User; index: number }) => {
       </th>
       <td className="px-6 py-3">{user.lastName}</td>
       <td className="px-0 py-3 flex">
+        {/** check if this volunteer is in the array of volunteers to add, if so display minus, else plus*/}
         <Button height="h-10" width="w-10">
           <div className="flex justify-center">
             <FaPlus />
