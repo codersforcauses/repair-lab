@@ -5,7 +5,8 @@ import { HttpStatusCode } from "axios";
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
-import { RepairRequest } from "@/types";
+import repairRequestService from "@/services/repairRequest";
+import { RepairRequestResponse } from "@/types";
 
 export default apiHandler({
   patch: updateRepairRequest
@@ -13,7 +14,7 @@ export default apiHandler({
 
 async function updateRepairRequest(
   req: NextApiRequest,
-  res: NextApiResponse<RepairRequest>
+  res: NextApiResponse<RepairRequestResponse>
 ) {
   const { id } = req.query;
   const parsedData = updateRepairRequestSchema.parse(req.body);
@@ -49,5 +50,9 @@ async function updateRepairRequest(
     }
   });
 
-  return res.status(200).json(repairAttempt);
+  const repairRequestResponse = (
+    await repairRequestService.toClientResponse([repairAttempt])
+  )[0];
+
+  return res.status(200).json(repairRequestResponse);
 }

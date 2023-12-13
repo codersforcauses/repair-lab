@@ -12,12 +12,8 @@ describe("GET /api/event/:id", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
-
-    vi.mock("@clerk/nextjs/server", () => {
-      return {
-        getAuth: vi.fn().mockReturnValue({ userId: "Test" })
-      };
-    });
+    vi.mock("@clerk/nextjs/server");
+    vi.mock("@clerk/nextjs");
   });
 
   it("should return 404 if an existing event is not found", async () => {
@@ -53,15 +49,22 @@ describe("GET /api/event/:id", () => {
 
         const expectedEvent = {
           id: "acf5ed50-19a2-11ee-be56-0242ac120002",
-          createdBy: "mock user",
+          createdBy: {
+            id: "mock user",
+            firstName: "test",
+            lastName: "test",
+            role: "CLIENT",
+            emailAddress: "test@gmail.com"
+          },
+          createdAt: "2023-11-16T01:27:08.417Z",
+          updatedAt: "2023-11-16T01:27:08.417Z",
           name: "Laptop Repair Event",
           location: "Curtin University",
-          eventType: "Laptop",
           description: "Laptop repair event.",
           disclaimer: "This is a disclaimer",
-          status: "UPCOMING",
           startDate: "2023-11-16T01:27:08.417Z",
-          endDate: "2023-11-17T01:27:08.417Z"
+          endDate: "2023-11-16T01:27:08.417Z",
+          status: "UPCOMING"
         };
 
         expect(res.status).toBe(200);

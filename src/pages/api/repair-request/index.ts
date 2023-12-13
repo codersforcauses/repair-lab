@@ -4,7 +4,8 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { createRepairRequestSchema } from "@/schema/repair-request";
-import { RepairRequest } from "@/types";
+import repairRequestService from "@/services/repairRequest";
+import { RepairRequestResponse } from "@/types";
 
 export default apiHandler({
   post: createRepairRequest
@@ -12,7 +13,7 @@ export default apiHandler({
 
 async function createRepairRequest(
   req: NextApiRequest,
-  res: NextApiResponse<RepairRequest>
+  res: NextApiResponse<RepairRequestResponse>
 ) {
   const parsedData = createRepairRequestSchema.parse(req.body);
 
@@ -33,5 +34,9 @@ async function createRepairRequest(
     }
   });
 
-  return res.status(200).json(repairRequest);
+  const repairRequestResponse = (
+    await repairRequestService.toClientResponse([repairRequest])
+  )[0];
+
+  return res.status(200).json(repairRequestResponse);
 }
