@@ -36,7 +36,8 @@ async function getEvents(
     startDate,
     endDate,
     eventType,
-    eventStatus
+    eventStatus,
+    createdBy
   } = req.query;
 
   const sortObj: { [key: string]: "asc" | "desc" } = {
@@ -44,6 +45,7 @@ async function getEvents(
   };
 
   const eventTypeList = paramToArray(eventType);
+  const userIDList = paramToArray(createdBy);
   const eventStatusList = paramToArray(eventStatus) as EventStatus[];
 
   const events = await prisma.event.findMany({
@@ -70,7 +72,12 @@ async function getEvents(
       }),
       ...(eventStatusList && {
         status: { in: eventStatusList }
-      })
+      }),
+      // positive search - do not allow length 0
+      ...(userIDList &&
+        userIDList.length != 0 && {
+          createdBy: { in: userIDList }
+        })
     },
     orderBy: sortObj
   });

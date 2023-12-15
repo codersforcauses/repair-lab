@@ -7,7 +7,8 @@ import {
   faChevronUp,
   faFilter,
   faPlus,
-  faSearch
+  faSearch,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
@@ -21,10 +22,11 @@ import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
+import { useUsers } from "@/hooks/users";
 import { isoToDatePickerValue } from "@/lib/datetime";
-import { CreateEvent, Event, EventResponse } from "@/types";
+import { CreateEvent, Event, EventResponse, User } from "@/types";
 
-type FilterType = "daterange" | "option";
+type FilterType = "daterange" | "option" | "user";
 
 function Table() {
   const router = useRouter();
@@ -82,7 +84,8 @@ function Table() {
     searchWord,
     dateFilter,
     columnFilters["eventType"] ?? [],
-    columnFilters["status"] ?? []
+    columnFilters["status"] ?? [],
+    columnFilters["createdBy"] ?? []
   );
   const { data: itemTypes } = useItemTypes();
 
@@ -107,7 +110,7 @@ function Table() {
   }[] = useMemo(
     () => [
       { key: "name", label: "Event Name" },
-      { key: "createdBy", label: "Created By" },
+      { key: "createdBy", label: "Created By", filterType: "user" },
       { key: "location", label: "Location" },
       { key: "startDate", label: "Date", filterType: "daterange" },
       {
@@ -134,6 +137,7 @@ function Table() {
         newFilters[header.key] = [...header.filterOptions];
       }
     });
+    newFilters["createdBy"] = [];
     setColumnFilters(newFilters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headers]);
@@ -193,7 +197,20 @@ function Table() {
     if (!filterType) return;
 
     let filterPicker = <></>;
-    if (filterType == "daterange") {
+    if (filterType == "user")
+      filterPicker = (
+        <UserFilter
+          onListChange={(userIDs) => updateColumnFilter(column, userIDs)}
+          onClose={(e) => {
+            if (
+              buttonRef.current &&
+              !buttonRef.current.contains(e.target as HTMLDivElement)
+            )
+              setOpenFilterMenu("");
+          }}
+        />
+      );
+    else if (filterType == "daterange") {
       filterPicker = (
         <FilterMenu
           onClose={(e) => {
@@ -419,6 +436,119 @@ function Table() {
 }
 
 export default Table;
+
+function UserFilter({
+  onClose,
+  onListChange
+}: {
+  onClose?: (event: MouseEvent) => void;
+  onListChange?: (userIDs: string[]) => void;
+}) {
+  const [userSearch, setUserSearch] = useState<string>("");
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+  const { data: users, isLoading } = useUsers(10, 1, "-created_at", userSearch);
+
+  const addUser = (user: User) =>
+    !selectedUsers.some((other) => other.id === user.id) &&
+    setSelectedUsers([...selectedUsers, user]);
+  const removeUserByIndex = (index: number) =>
+    setSelectedUsers([
+      ...selectedUsers.slice(0, index),
+      ...selectedUsers.slice(index + 1)
+    ]);
+
+  useEffect(() => {
+    onListChange && onListChange(selectedUsers.map((u) => u.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUsers]);
+  // perhaps display the user list in the search box, similar to atlassian?
+
+  return (
+    <FilterMenu onClose={(e) => onClose && onClose(e)}>
+      <div className="w-80">
+        {/* Selected list*/}
+        <div className="relative mb-4 overflow-x-scroll h-8 bg-gray-100 flex items-center text-xs">
+          {selectedUsers.map((user: User, index) => (
+            <div
+              key={user.id}
+              className="flex h-5/6 p-1 bg-gray-200 rounded-sm ml-1 mr-1"
+            >
+              <div className="h-full aspect-square rounded-full block mr-2 overflow-hidden flex-grow-0 flex-shrink-0">
+                <Image
+                  src="/images/repair_lab_logo.png"
+                  width={30}
+                  height={30}
+                  alt="repair-labs"
+                  className="h-full object-cover  "
+                />
+              </div>{" "}
+              <div className="block overflow-hidden text-clip whitespace-nowrap">
+                {user.firstName} {user.lastName}
+              </div>
+              <button
+                className="ml-2 hover:opacity-60"
+                onClick={() => {
+                  removeUserByIndex(index);
+                }}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+          ))}
+          {selectedUsers.length == 0 && (
+            <div className="w-min ml-2 opacity-30 pointer-events-none">
+              Empty
+            </div>
+          )}
+        </div>
+
+        {/* User search*/}
+        <div className="relative mb-4">
+          <input
+            className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
+            type="search"
+            name="search"
+            placeholder="Search"
+            onChange={(e) => setUserSearch(e.target.value)}
+          />
+
+          <FontAwesomeIcon
+            icon={faSearch}
+            className="absolute right-4 top-2/4 -translate-y-2/4 transform pointer-events-none text-gray-500"
+          />
+        </div>
+        {/* Results list*/}
+
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="flex flex-col">
+            {users.items.map((user: User) => (
+              <button
+                key={user.id}
+                className="flex h-8 p-1 hover:bg-slate-200 w-full rounded-sm"
+                onClick={() => addUser(user)}
+              >
+                <div className="h-full aspect-square rounded-full block mr-2 overflow-hidden flex-grow-0 flex-shrink-0">
+                  <Image
+                    src="/images/repair_lab_logo.png"
+                    width={30}
+                    height={30}
+                    alt="repair-labs"
+                    className="h-full object-cover  "
+                  />
+                </div>
+                <div className="block overflow-hidden text-ellipsis whitespace-nowrap">
+                  {user.firstName} {user.lastName} {user.emailAddress}
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </FilterMenu>
+  );
+}
 
 function FilterMenu({
   onClose,
