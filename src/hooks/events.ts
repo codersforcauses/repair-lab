@@ -43,7 +43,7 @@ export const useEvents = (
       searchWord,
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
-      eventTypes: eventTypes.join(",")
+      eventType: eventTypes.join(",")
     });
 
     const url = `/event?${params.toString()}`;

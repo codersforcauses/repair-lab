@@ -4,7 +4,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { EventResponse } from "@/types";
+import { EventResponse, EventStatus } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -13,89 +13,66 @@ export default apiHandler({
   post: createEvent
 });
 
+function paramToArray(param: string | string[] | undefined) {
+  let array: string[] | undefined;
+  if (!param) {
+    array = undefined;
+  } else if (typeof param === "string") {
+    array = param.split(",").map((item) => item.trim());
+  } else if (Array.isArray(param)) {
+    array = param.flatMap((item) => item.split(",").map((item) => item.trim()));
+  }
+  return array;
+}
 async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse[]>
 ) {
-  const { sortKey, sortMethod, searchWord, startDate, endDate, eventTypes } =
-    req.query;
-  const sortObj: { [key: string]: "asc" | "desc" } = {};
-  sortObj[sortKey as string] = sortMethod as "asc" | "desc";
+  const {
+    sortKey,
+    sortMethod,
+    searchWord,
+    startDate,
+    endDate,
+    eventType,
+    eventStatus
+  } = req.query;
 
-  // split the comma delimmited list into string[]
-  let eventTypeList: string[] | undefined;
-  if (!eventTypes) {
-    eventTypeList = undefined;
-  } else if (typeof eventTypes === "string") {
-    eventTypeList = eventTypes.split(",").map((item) => item.trim());
-  } else if (Array.isArray(eventTypes)) {
-    eventTypeList = eventTypes.flatMap((item) =>
-      item.split(",").map((item) => item.trim())
-    );
-  }
+  const sortObj: { [key: string]: "asc" | "desc" } = {
+    [sortKey as string]: sortMethod as "asc" | "desc"
+  };
 
-  // Use 'search' query parameter to filter events
+  const eventTypeList = paramToArray(eventType);
+  const eventStatusList = paramToArray(eventStatus) as EventStatus[];
+
   const events = await prisma.event.findMany({
-    ...(searchWord
-      ? {
-          where: {
-            OR: [
-              {
-                name: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              },
-              {
-                createdBy: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              },
-              {
-                location: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              },
-              {
-                eventType: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              }
-              // Add more fields to search if necessary
-            ]
-          }
-        }
-      : {}),
-    ...(startDate
-      ? {
-          where: {
-            startDate: {
-              gte: new Date(startDate as string)
-            }
-          }
-        }
-      : {}),
-    ...(endDate
-      ? {
-          where: {
-            startDate: {
-              lte: new Date(endDate as string)
-            }
-          }
-        }
-      : {}),
-    ...(eventTypeList && eventTypeList.length > 0
-      ? {
-          where: {
-            eventType: {
-              in: eventTypeList
-            }
-          }
-        }
-      : {}),
+    where: {
+      ...(searchWord && {
+        OR: [
+          { name: { contains: searchWord as string, mode: "insensitive" } },
+          {
+            createdBy: { contains: searchWord as string, mode: "insensitive" }
+          },
+          { location: { contains: searchWord as string, mode: "insensitive" } },
+          { eventType: { contains: searchWord as string, mode: "insensitive" } }
+          // Add more fields to search if necessary
+        ]
+      }),
+      ...(startDate && {
+        startDate: { gte: new Date(startDate as string) }
+      }),
+      ...(endDate && {
+        startDate: { lte: new Date(endDate as string) }
+      }),
+      ...(eventTypeList &&
+        eventTypeList.length > 0 && {
+          eventType: { in: eventTypeList }
+        }),
+      ...(eventStatusList &&
+        eventStatusList.length > 0 && {
+          status: { in: eventStatusList }
+        })
+    },
     orderBy: sortObj
   });
 
