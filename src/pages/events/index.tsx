@@ -184,7 +184,6 @@ function Table() {
       </button>
     );
   }
-  // TODO: fix filter menu being affected by overflow hidden
   function FilterButton(
     column: string,
     filterType?: FilterType,
@@ -353,7 +352,7 @@ function Table() {
       {/* main table*/}
       <div className="flex justify-center">
         <div className="container block w-full justify-center">
-          <table className="w-10/12 table-auto  rounded-lg m-auto">
+          <table className="w-10/12 table-auto overflow-hidden rounded-lg m-auto">
             <thead>
               <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
                 {headers.map((col) => (
@@ -402,13 +401,17 @@ function Table() {
                     </tr>
                   );
                 })}
+              {isEventsLoading && (
+                <tr className=" h-40">
+                  <td colSpan={headers.length + 1}>
+                    <div className="w-full h-full flex items-center justify-center">
+                      <LoadingSpinner />
+                    </div>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
-          {isEventsLoading && (
-            <div className="w-full h-full flex items-center justify-center ">
-              <LoadingSpinner />
-            </div>
-          )}
         </div>
       </div>
     </div>
