@@ -34,7 +34,8 @@ export const useEvents = (
   sortMethod: string,
   searchWord: string,
   dateRange: { startDate: string; endDate: string },
-  eventTypes: string[]
+  eventType: string[],
+  eventStatus: string[]
 ) => {
   const queryFn = async () => {
     const params = new URLSearchParams({
@@ -43,7 +44,8 @@ export const useEvents = (
       searchWord,
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
-      eventType: eventTypes.join(",")
+      eventType: eventType.join(","),
+      eventStatus: eventStatus.join(",")
     });
 
     const url = `/event?${params.toString()}`;
@@ -59,7 +61,8 @@ export const useEvents = (
       sortMethod,
       searchWord,
       dateRange,
-      eventTypes
+      eventType,
+      eventStatus
     ],
     queryFn
   });

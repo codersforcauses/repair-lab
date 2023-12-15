@@ -15,10 +15,11 @@ export default apiHandler({
 
 function paramToArray(param: string | string[] | undefined) {
   let array: string[] | undefined;
-  if (!param) {
+  if (param === undefined) {
     array = undefined;
   } else if (typeof param === "string") {
-    array = param.split(",").map((item) => item.trim());
+    if (!param) array = []; // empty string
+    else array = param.split(",").map((item) => item.trim());
   } else if (Array.isArray(param)) {
     array = param.flatMap((item) => item.split(",").map((item) => item.trim()));
   }
@@ -64,14 +65,12 @@ async function getEvents(
       ...(endDate && {
         startDate: { lte: new Date(endDate as string) }
       }),
-      ...(eventTypeList &&
-        eventTypeList.length > 0 && {
-          eventType: { in: eventTypeList }
-        }),
-      ...(eventStatusList &&
-        eventStatusList.length > 0 && {
-          status: { in: eventStatusList }
-        })
+      ...(eventTypeList && {
+        eventType: { in: eventTypeList }
+      }),
+      ...(eventStatusList && {
+        status: { in: eventStatusList }
+      })
     },
     orderBy: sortObj
   });
