@@ -92,7 +92,12 @@ function Table() {
       filterType: "option",
       filterOptions: (itemTypes as ItemType[])?.map((v) => v.name)
     },
-    { key: "status", label: "Status" }
+    {
+      key: "status",
+      label: "Status",
+      filterType: "option",
+      filterOptions: Object.values(EventStatus)
+    }
   ];
 
   // will toggle modal visibility for editing events
@@ -207,6 +212,7 @@ function Table() {
                   type="checkbox"
                   className=""
                   onChange={() => handleCheckboxChange(option)}
+                  checked={eventTypeFilter.includes(option)}
                 ></input>{" "}
                 {option}
               </label>
