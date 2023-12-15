@@ -71,17 +71,17 @@ const RegisterForm = () => {
         <>
           <div className="relative flex justify-center pt-5 pb-4 gap-x-1">
             <SignInOAuthButton
-              ariaLabel="Sign Up with Facebook"
+              ariaLabel="Click to sign up with Facebook"
               strategy="oauth_facebook"
               icon={facebookIcon}
             />
             <SignInOAuthButton
-              ariaLabel="Sign Up with Google"
+              ariaLabel="Click to sign up with Google"
               strategy="oauth_google"
               icon={googleIcon}
             />
             <SignInOAuthButton
-              ariaLabel="Sign Up with Microsoft Outlook"
+              ariaLabel="Click to sign up with Microsoft Outlook"
               strategy="oauth_microsoft"
               icon={microsoftIcon}
             />
@@ -105,7 +105,7 @@ const RegisterForm = () => {
                   rules={{
                     required: "This field is required"
                   }}
-                  placeholder="John"
+                  placeholder="e.g. John"
                   label="First Name"
                 />
                 <FieldInput
@@ -115,7 +115,7 @@ const RegisterForm = () => {
                   rules={{
                     required: "This field is required"
                   }}
-                  placeholder="Smith"
+                  placeholder="e.g. Smith"
                   label="Last Name"
                 />
               </div>
@@ -131,7 +131,7 @@ const RegisterForm = () => {
                       "Email address must be a valid address"
                   }
                 }}
-                placeholder="example@domain.com"
+                placeholder="e.g. name@domain.com"
                 label="Email Address"
                 icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
               />
@@ -165,7 +165,7 @@ const RegisterForm = () => {
             </div>
 
             <div className="flex pt-5 pb-3 justify-center">
-              <Button height="h-10">Sign Up</Button>
+              <Button aria-label="Click to complete the Sign Up process" height="h-10">Sign Up</Button>
             </div>
 
             <div className="m-1 text-center">

@@ -62,17 +62,17 @@ const LoginForm = () => {
     <div>
       <div className="relative flex justify-center pt-5 pb-4 gap-x-1">
         <SignInOAuthButton
-          ariaLabel="Sign in with Facebook"
+          ariaLabel="Click to sign in with Facebook"
           strategy="oauth_facebook"
           icon={facebookIcon}
         />
         <SignInOAuthButton
-          ariaLabel="Sign in with Google"
+          ariaLabel="Click to sign in with Google"
           strategy="oauth_google"
           icon={googleIcon}
         />
         <SignInOAuthButton
-          ariaLabel="Sign in with Microsoft Outlook"
+          ariaLabel="Click to sign in with Microsoft Outlook"
           strategy="oauth_microsoft"
           icon={microsoftIcon}
         />
@@ -90,7 +90,7 @@ const LoginForm = () => {
         <div className="flex flex-col gap-4 pt-4">
           <FieldInput
             name="emailAddress"
-            placeholder="example@domain.com"
+            placeholder="e.g. name@domain.com"
             control={control}
             rules={{
               required: "This field is required",
@@ -118,7 +118,7 @@ const LoginForm = () => {
         </div>
 
         <div className="flex pt-5 pb-3 justify-center">
-          <Button height="h-10">Sign In</Button>
+          <Button aria-label="Click to complete the sign in process" height="h-10">Sign In</Button>
         </div>
 
         <div className="m-1 text-center">
