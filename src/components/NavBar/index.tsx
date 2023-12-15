@@ -29,15 +29,9 @@ export default function NavBar() {
   return (
     <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
-        <div className="flex justify-between items-center mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative flex items-center justify-between mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          
           <div className="flex items-center">
-            <Image
-              src="/images/repair_lab_logo.png"
-              alt="Repair Labs Logo"
-              width={721}
-              height={831}
-              style={{ width: "50px", height: "50px" }}
-            />
             <MenuList
               items={
                 adminRoles.includes(role)
@@ -52,14 +46,29 @@ export default function NavBar() {
               }
             />
           </div>
-          <Account
-            firstName={user?.firstName}
-            lastName={user?.lastName}
-            role={role}
-            desc={user?.unsafeMetadata.description}
-            isLoggedIn={!!user}
-            onSignOut={signOut}
-          />
+
+          
+          <div className="absolute left-1/2 top-2 transform -translate-x-1/2">
+            <Image
+              src="/images/repair_lab_logo.png"
+              alt="Repair Labs Logo"
+              width={721}
+              height={831}
+              style={{ width: "100px", height: "100px" }}
+            />
+          </div>
+
+          
+          <div className="flex items-center">
+            <Account
+              firstName={user?.firstName}
+              lastName={user?.lastName}
+              role={role}
+              desc={user?.unsafeMetadata.description}
+              isLoggedIn={!!user}
+              onSignOut={signOut}
+            />
+          </div>
         </div>
       )}
     </div>
