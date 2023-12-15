@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
@@ -76,6 +76,13 @@ function Table() {
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
+
+  // Allows Navbar 'New Event +' button to open /events with the Add new event modal open.
+  useEffect(() => {
+    if (router.query.openModal === 'true') {
+      setShowAddModal(true);
+    }
+  }, [router.query.openModal]);
 
   // formats input data before passing it on
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {

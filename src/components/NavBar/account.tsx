@@ -34,7 +34,7 @@ export default function Account({
           </button>
 
           <button
-            onClick={() => router.push("/repair-request")}
+            onClick={() => router.push("/events?openModal=true")}
             className="flex items-center justify-center px-2 placeholder:w-[160px] h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Event +
