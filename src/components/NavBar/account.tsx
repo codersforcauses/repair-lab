@@ -22,11 +22,6 @@ export default function Account({
 }: Props) {
   const router = useRouter();
 
-  // Not used in this file
-  /* const handleButtonClick = (path: string) => {
-    router.push(path);
-  }; */
-
   return (
     <div className="flex items-center">
       {isLoggedIn ? (
