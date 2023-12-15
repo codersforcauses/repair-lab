@@ -79,7 +79,7 @@ function Table() {
 
   // Allows Navbar 'New Event +' button to open /events with the Add new event modal open.
   useEffect(() => {
-    if (router.query.openModal === 'true') {
+    if (router.query.openModal === "true") {
       setShowAddModal(true);
     }
   }, [router.query.openModal]);
