@@ -22,12 +22,17 @@ async function getEvents(
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 
-  // always make it an array, even if one value
-  const eventTypeList: string[] | undefined = !eventTypes
-    ? undefined
-    : typeof eventTypes === "string"
-      ? [eventTypes]
-      : eventTypes;
+  // split the comma delimmited list into string[]
+  let eventTypeList: string[] | undefined;
+  if (!eventTypes) {
+    eventTypeList = undefined;
+  } else if (typeof eventTypes === "string") {
+    eventTypeList = eventTypes.split(",").map((item) => item.trim());
+  } else if (Array.isArray(eventTypes)) {
+    eventTypeList = eventTypes.flatMap((item) =>
+      item.split(",").map((item) => item.trim())
+    );
+  }
 
   // Use 'search' query parameter to filter events
   const events = await prisma.event.findMany({
