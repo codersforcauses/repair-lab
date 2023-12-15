@@ -118,7 +118,12 @@ const LoginForm = () => {
         </div>
 
         <div className="flex pt-5 pb-3 justify-center">
-          <Button aria-label="Click to complete the sign in process" height="h-10">Sign In</Button>
+          <Button
+            aria-label="Click to complete the sign in process"
+            height="h-10"
+          >
+            Sign In
+          </Button>
         </div>
 
         <div className="m-1 text-center">
