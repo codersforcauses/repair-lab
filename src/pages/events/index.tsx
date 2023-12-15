@@ -195,6 +195,9 @@ function Table() {
             : [...prevItems, item]
         );
       };
+      const isAllClicked =
+        options &&
+        options.every((element) => eventTypeFilter.includes(element));
       filterPicker = (
         <FilterMenu
           onClose={(e) => {
@@ -205,18 +208,30 @@ function Table() {
               setOpenFilterMenu("");
           }}
         >
-          {options &&
-            options?.map((option) => (
-              <label key={option} className="select-none block">
+          {options && (
+            <>
+              <label className="select-none block">
                 <input
                   type="checkbox"
                   className=""
-                  onChange={() => handleCheckboxChange(option)}
-                  checked={eventTypeFilter.includes(option)}
+                  onChange={() => setEventTypeFilter(isAllClicked ? [] : [...options])}
+                  checked={isAllClicked}
                 ></input>{" "}
-                {option}
+                <strong>All</strong>
               </label>
-            ))}
+              {options?.map((option) => (
+                <label key={option} className="select-none block">
+                  <input
+                    type="checkbox"
+                    className=""
+                    onChange={() => handleCheckboxChange(option)}
+                    checked={eventTypeFilter.includes(option)}
+                  ></input>{" "}
+                  {option}
+                </label>
+              ))}
+            </>
+          )}
         </FilterMenu>
       );
     }
@@ -307,7 +322,7 @@ function Table() {
       {/* main table*/}
       <div className="flex justify-center">
         <div className="container block w-full justify-center">
-          <table className="w-10/12 table-auto overflow-hidden rounded-lg m-auto">
+          <table className="w-10/12 table-auto  rounded-lg m-auto">
             <thead>
               <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
                 {headers.map((col) => (
