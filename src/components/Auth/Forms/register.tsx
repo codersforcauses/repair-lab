@@ -97,17 +97,21 @@ const RegisterForm = () => {
                   width="w-1/2"
                   name="firstName"
                   control={control}
-                  placeholder="Example: John"
+                  rules={{
+                    required: "This field is required"
+                  }}
+                  placeholder="John"
                   label="First Name"
-                  type="hidden"
                 />
                 <FieldInput
                   width="w-1/2"
                   name="lastName"
                   control={control}
-                  placeholder="Example: Smith"
+                  rules={{
+                    required: "This field is required"
+                  }}
+                  placeholder="Smith"
                   label="Last Name"
-                  type="hidden"
                 />
               </div>
 
@@ -122,7 +126,7 @@ const RegisterForm = () => {
                       "Email address must be a valid address"
                   }
                 }}
-                placeholder="Enter email address"
+                placeholder="example@domain.com"
                 label="Email Address"
                 icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
               />
@@ -133,7 +137,7 @@ const RegisterForm = () => {
                 rules={{
                   required: "This field is required"
                 }}
-                placeholder="Enter password"
+                placeholder="Enter Password"
                 label="Password"
                 type="password"
               />
@@ -149,7 +153,7 @@ const RegisterForm = () => {
                     }
                   }
                 }}
-                placeholder="Confirm password"
+                placeholder="Confirm Password"
                 label="Confirm Password"
                 type="password"
               />
