@@ -20,7 +20,7 @@ import ProfilePopover from "@/components/ProfilePopover";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
-import { useItemTypes } from "@/hooks/item-types";
+import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { isoToDatePickerValue } from "@/lib/datetime";
 import { CreateEvent, Event, EventResponse } from "@/types";
 
@@ -49,6 +49,7 @@ function Table() {
   // Filtering
   const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
   const [dateFilter, setDateFilter] = useState({ startDate: "", endDate: "" });
+  const [eventTypeFilter, setEventTypeFilter] = useState<string[]>([]);
 
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -57,7 +58,8 @@ function Table() {
     sortKey,
     sortMethod,
     searchWord,
-    dateFilter
+    dateFilter,
+    eventTypeFilter
   );
   const { data: itemTypes } = useItemTypes();
 
@@ -78,12 +80,18 @@ function Table() {
     key: string;
     label: string;
     filterType?: FilterType;
+    filterOptions?: string[];
   }[] = [
     { key: "name", label: "Event Name" },
     { key: "createdBy", label: "Created By" },
     { key: "location", label: "Location" },
     { key: "startDate", label: "Date", filterType: "daterange" },
-    { key: "eventType", label: "Type" },
+    {
+      key: "eventType",
+      label: "Type",
+      filterType: "option",
+      filterOptions: (itemTypes as ItemType[])?.map((v) => v.name)
+    },
     { key: "status", label: "Status" }
   ];
 
@@ -133,45 +141,78 @@ function Table() {
       </button>
     );
   }
-  function FilterButton(column: string, filterType?: FilterType) {
+  // TODO: fix filter menu being affected by overflow hidden
+  function FilterButton(
+    column: string,
+    filterType?: FilterType,
+    options?: string[]
+  ) {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     if (!filterType) return;
 
-    const daterange = (
-      <FilterMenu
-        onClose={(e) => {
-          if (
-            buttonRef.current &&
-            !buttonRef.current.contains(e.target as HTMLDivElement)
-          )
-            setOpenFilterMenu("");
-        }}
-      >
-        <ConciseInput
-          label="From"
-          id="startDate"
-          type="date"
-          value={dateFilter.startDate}
-          onChange={(value) =>
-            setDateFilter({ ...dateFilter, startDate: value })
-          }
-        />
-        <ConciseInput
-          label="To"
-          id="endDate"
-          type="date"
-          value={dateFilter.endDate}
-          onChange={(value) => setDateFilter({ ...dateFilter, endDate: value })}
-        />
-      </FilterMenu>
-    );
-    const option = <>test2</>;
-
     let filterPicker = <></>;
     if (filterType == "daterange") {
-      filterPicker = daterange;
+      filterPicker = (
+        <FilterMenu
+          onClose={(e) => {
+            if (
+              buttonRef.current &&
+              !buttonRef.current.contains(e.target as HTMLDivElement)
+            )
+              setOpenFilterMenu("");
+          }}
+        >
+          <ConciseInput
+            label="From"
+            id="startDate"
+            type="date"
+            value={dateFilter.startDate}
+            onChange={(value) =>
+              setDateFilter({ ...dateFilter, startDate: value })
+            }
+          />
+          <ConciseInput
+            label="To"
+            id="endDate"
+            type="date"
+            value={dateFilter.endDate}
+            onChange={(value) =>
+              setDateFilter({ ...dateFilter, endDate: value })
+            }
+          />
+        </FilterMenu>
+      );
     } else {
-      filterPicker = option;
+      const handleCheckboxChange = (item: string) => {
+        setEventTypeFilter((prevItems) =>
+          prevItems.includes(item)
+            ? prevItems.filter((prevItem) => prevItem !== item)
+            : [...prevItems, item]
+        );
+      };
+      filterPicker = (
+        <FilterMenu
+          onClose={(e) => {
+            if (
+              buttonRef.current &&
+              !buttonRef.current.contains(e.target as HTMLDivElement)
+            )
+              setOpenFilterMenu("");
+          }}
+        >
+          {options &&
+            options?.map((option) => (
+              <label key={option} className="select-none block">
+                <input
+                  type="checkbox"
+                  className=""
+                  onChange={() => handleCheckboxChange(option)}
+                ></input>{" "}
+                {option}
+              </label>
+            ))}
+        </FilterMenu>
+      );
     }
     return (
       <>
@@ -267,7 +308,7 @@ function Table() {
                   <th key={col.key} className="p-2.5 pl-5 font-normal relative">
                     {" "}
                     {col.label} {ToggleChevron(col.key)}{" "}
-                    {FilterButton(col.key, col.filterType)}
+                    {FilterButton(col.key, col.filterType, col.filterOptions)}
                   </th>
                 ))}
                 <th className="w-10 p-2.5 text-justify font-normal"> Edit </th>
@@ -351,7 +392,7 @@ function FilterMenu({
   return (
     <div
       ref={filterRef}
-      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left"
+      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left max-h-48 overflow-y-scroll"
     >
       {children}
     </div>

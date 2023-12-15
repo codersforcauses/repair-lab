@@ -33,7 +33,8 @@ export const useEvents = (
   sortKey: string,
   sortMethod: string,
   searchWord: string,
-  dateRange: { startDate: string; endDate: string }
+  dateRange: { startDate: string; endDate: string },
+  eventTypes: string[]
 ) => {
   const queryFn = async () => {
     const params = new URLSearchParams({
@@ -41,7 +42,8 @@ export const useEvents = (
       sortMethod,
       searchWord,
       startDate: dateRange.startDate,
-      endDate: dateRange.endDate
+      endDate: dateRange.endDate,
+      eventTypes: eventTypes.join(",")
     });
 
     const url = `/event?${params.toString()}`;
@@ -51,7 +53,14 @@ export const useEvents = (
   };
 
   return useQuery({
-    queryKey: ["events", sortKey, sortMethod, searchWord, dateRange],
+    queryKey: [
+      "events",
+      sortKey,
+      sortMethod,
+      searchWord,
+      dateRange,
+      eventTypes
+    ],
     queryFn
   });
 };

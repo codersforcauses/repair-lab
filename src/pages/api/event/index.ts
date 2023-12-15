@@ -17,9 +17,17 @@ async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse[]>
 ) {
-  const { sortKey, sortMethod, searchWord, startDate, endDate } = req.query;
+  const { sortKey, sortMethod, searchWord, startDate, endDate, eventTypes } =
+    req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
+
+  // always make it an array, even if one value
+  const eventTypeList: string[] | undefined = !eventTypes
+    ? undefined
+    : typeof eventTypes === "string"
+      ? [eventTypes]
+      : eventTypes;
 
   // Use 'search' query parameter to filter events
   const events = await prisma.event.findMany({
@@ -70,6 +78,15 @@ async function getEvents(
           where: {
             startDate: {
               lte: new Date(endDate as string)
+            }
+          }
+        }
+      : {}),
+    ...(eventTypeList && eventTypeList.length > 0
+      ? {
+          where: {
+            eventType: {
+              in: eventTypeList
             }
           }
         }
