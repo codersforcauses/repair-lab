@@ -17,6 +17,7 @@ import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
+import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
@@ -133,10 +134,19 @@ function Table() {
     );
   }
   function FilterButton(column: string, filterType?: FilterType) {
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     if (!filterType) return;
 
     const daterange = (
-      <FilterMenu onClose={() => setOpenFilterMenu("")}>
+      <FilterMenu
+        onClose={(e) => {
+          if (
+            buttonRef.current &&
+            !buttonRef.current.contains(e.target as HTMLDivElement)
+          )
+            setOpenFilterMenu("");
+        }}
+      >
         <ConciseInput
           label="From"
           id="startDate"
@@ -163,15 +173,20 @@ function Table() {
     } else {
       filterPicker = option;
     }
-
     return (
-      <button onClick={() => setOpenFilterMenu(column)}>
-        <FontAwesomeIcon icon={faFilter} />
-        {openFilterMenu == column && filterPicker}
-      </button>
+      <>
+        <button
+          ref={buttonRef}
+          onClick={() => {
+            setOpenFilterMenu(openFilterMenu === column ? "" : column);
+          }}
+        >
+          <FontAwesomeIcon icon={faFilter} />
+        </button>
+        {openFilterMenu === column && filterPicker}
+      </>
     );
   }
-
   const submitCreateEvent: SubmitHandler<CreateEvent> = async (data) => {
     createEvent(data, {
       onSuccess: () => {
@@ -244,69 +259,62 @@ function Table() {
 
       {/* main table*/}
       <div className="flex justify-center">
-        <div className="container flex w-full justify-center overflow-hidden">
-          {isEventsLoading ? (
-            "Loading..."
-          ) : (
-            <table className="w-10/12 table-auto overflow-hidden rounded-lg">
-              <thead>
-                <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
-                  {headers.map((col) => (
-                    <th
-                      key={col.key}
-                      className="p-2.5 pl-5 font-normal relative"
-                    >
-                      {" "}
-                      {col.label} {ToggleChevron(col.key)}{" "}
-                      {FilterButton(col.key, col.filterType)}
-                    </th>
-                  ))}
-                  <th className="w-10 p-2.5 text-justify font-normal">
+        <div className="container block w-full justify-center">
+          <table className="w-10/12 table-auto overflow-hidden rounded-lg m-auto">
+            <thead>
+              <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
+                {headers.map((col) => (
+                  <th key={col.key} className="p-2.5 pl-5 font-normal relative">
                     {" "}
-                    Edit{" "}
+                    {col.label} {ToggleChevron(col.key)}{" "}
+                    {FilterButton(col.key, col.filterType)}
                   </th>
-                </tr>
-              </thead>
+                ))}
+                <th className="w-10 p-2.5 text-justify font-normal"> Edit </th>
+              </tr>
+            </thead>
 
-              <tbody className="bg-secondary-50">
-                {eventData &&
-                  eventData.map((event: EventResponse) => {
-                    return (
-                      <tr
-                        key={event.name}
-                        className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
-                      >
-                        <td className="pl-5 font-light">
-                          <button
-                            className="text-sm"
-                            onClick={() =>
-                              router.push(
-                                "/events/" + event.id + "/repair-requests"
-                              )
-                            }
-                          >
-                            {event.name}
-                          </button>
-                        </td>
-                        <td className="p-2.5 text-sm font-light">
-                          {event.createdBy.firstName} {event.createdBy.lastName}
-                        </td>
-                        <td className="text-sm font-light">{event.location}</td>
-                        <td className="text-sm font-light">
-                          {formatDate(String(event.startDate))}
-                        </td>
-                        <td className="text-sm font-light">
-                          {event.eventType}
-                        </td>
-                        <td className="text-sm font-light">{event.status}</td>
-                        <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                          <EventFormEditButton props={event} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+            <tbody className="bg-secondary-50">
+              {eventData &&
+                eventData.map((event: EventResponse) => {
+                  return (
+                    <tr
+                      key={event.name}
+                      className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
+                    >
+                      <td className="pl-5 font-light">
+                        <button
+                          className="text-sm"
+                          onClick={() =>
+                            router.push(
+                              "/events/" + event.id + "/repair-requests"
+                            )
+                          }
+                        >
+                          {event.name}
+                        </button>
+                      </td>
+                      <td className="p-2.5 text-sm font-light">
+                        {event.createdBy.firstName} {event.createdBy.lastName}
+                      </td>
+                      <td className="text-sm font-light">{event.location}</td>
+                      <td className="text-sm font-light">
+                        {formatDate(String(event.startDate))}
+                      </td>
+                      <td className="text-sm font-light">{event.eventType}</td>
+                      <td className="text-sm font-light">{event.status}</td>
+                      <td className="align-center ml-0 p-2.5 pl-0 text-center">
+                        <EventFormEditButton props={event} />
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+          {isEventsLoading && (
+            <div className="w-full h-full flex items-center justify-center ">
+              <LoadingSpinner />
+            </div>
           )}
         </div>
       </div>
@@ -320,7 +328,7 @@ function FilterMenu({
   onClose,
   children
 }: {
-  onClose: () => void;
+  onClose: (event: MouseEvent) => void;
   children: ReactNode;
 }) {
   const filterRef = useRef<HTMLDivElement | null>(null);
@@ -328,7 +336,7 @@ function FilterMenu({
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
 
@@ -337,7 +345,7 @@ function FilterMenu({
       filterRef.current &&
       !filterRef.current.contains(event.target as HTMLDivElement)
     )
-      onClose();
+      onClose(event);
   };
 
   return (
