@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   faChevronDown,
   faChevronRight,
   faChevronUp,
+  faFilter,
   faPlus,
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +20,10 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
+import { isoToDatePickerValue } from "@/lib/datetime";
 import { CreateEvent, Event, EventResponse } from "@/types";
+
+type FilterType = "daterange" | "option";
 
 function Table() {
   const router = useRouter();
@@ -41,13 +45,18 @@ function Table() {
   const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
 
+  // Filtering
+  const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState({ startDate: "", endDate: "" });
+
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   const { mutate: createEvent } = useCreateEvent();
   const { data: eventData, isLoading: isEventsLoading } = useEvents(
     sortKey,
     sortMethod,
-    searchWord
+    searchWord,
+    dateFilter
   );
   const { data: itemTypes } = useItemTypes();
 
@@ -64,11 +73,15 @@ function Table() {
   });
 
   // The label is what users see, the key is what the server uses
-  const headers: { key: string; label: string }[] = [
+  const headers: {
+    key: string;
+    label: string;
+    filterType?: FilterType;
+  }[] = [
     { key: "name", label: "Event Name" },
     { key: "createdBy", label: "Created By" },
     { key: "location", label: "Location" },
-    { key: "startDate", label: "Date" },
+    { key: "startDate", label: "Date", filterType: "daterange" },
     { key: "eventType", label: "Type" },
     { key: "status", label: "Status" }
   ];
@@ -116,6 +129,45 @@ function Table() {
     return (
       <button onClick={() => handleButtonClick(column)}>
         <FontAwesomeIcon icon={icon} />
+      </button>
+    );
+  }
+  function FilterButton(column: string, filterType?: FilterType) {
+    if (!filterType) return;
+
+    const daterange = (
+      <FilterMenu onClose={() => setOpenFilterMenu("")}>
+        <ConciseInput
+          label="From"
+          id="startDate"
+          type="date"
+          value={dateFilter.startDate}
+          onChange={(value) =>
+            setDateFilter({ ...dateFilter, startDate: value })
+          }
+        />
+        <ConciseInput
+          label="To"
+          id="endDate"
+          type="date"
+          value={dateFilter.endDate}
+          onChange={(value) => setDateFilter({ ...dateFilter, endDate: value })}
+        />
+      </FilterMenu>
+    );
+    const option = <>test2</>;
+
+    let filterPicker = <></>;
+    if (filterType == "daterange") {
+      filterPicker = daterange;
+    } else {
+      filterPicker = option;
+    }
+
+    return (
+      <button onClick={() => setOpenFilterMenu(column)}>
+        <FontAwesomeIcon icon={faFilter} />
+        {openFilterMenu == column && filterPicker}
       </button>
     );
   }
@@ -200,9 +252,13 @@ function Table() {
               <thead>
                 <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
                   {headers.map((col) => (
-                    <th key={col.key} className="p-2.5 pl-5 font-normal">
+                    <th
+                      key={col.key}
+                      className="p-2.5 pl-5 font-normal relative"
+                    >
                       {" "}
                       {col.label} {ToggleChevron(col.key)}{" "}
+                      {FilterButton(col.key, col.filterType)}
                     </th>
                   ))}
                   <th className="w-10 p-2.5 text-justify font-normal">
@@ -259,3 +315,80 @@ function Table() {
 }
 
 export default Table;
+
+function FilterMenu({
+  onClose,
+  children
+}: {
+  onClose: () => void;
+  children: ReactNode;
+}) {
+  const filterRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      filterRef.current &&
+      !filterRef.current.contains(event.target as HTMLDivElement)
+    )
+      onClose();
+  };
+
+  return (
+    <div
+      ref={filterRef}
+      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left"
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Displays label over the border */
+function ConciseInput({
+  label,
+  id,
+  type,
+  value,
+  onChange
+}: {
+  label: string;
+  id: string;
+  type: React.HTMLInputTypeAttribute;
+  value?: string;
+  onChange?: (value: string) => void;
+}) {
+  const convertedValue =
+    value && type === "date"
+      ? isoToDatePickerValue(new Date(value)).substring(0, 10)
+      : value;
+  return (
+    <div className="border-gray-500 border p-2 relative rounded-lg mb-4 last:mb-0">
+      <label
+        htmlFor={id}
+        className="absolute -top-1/3 left-1 px-2 bg-white font-bold"
+      >
+        {label}
+      </label>
+      <input
+        className="appearance-none border-none outline-none"
+        id={id}
+        type={type}
+        value={convertedValue}
+        onChange={(e) => {
+          const value =
+            type === "date"
+              ? new Date(e.target.value).toISOString()
+              : e.target.value;
+          if (onChange) onChange(value);
+        }}
+      ></input>
+    </div>
+  );
+}

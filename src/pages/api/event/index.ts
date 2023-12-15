@@ -17,7 +17,7 @@ async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse[]>
 ) {
-  const { sortKey, sortMethod, searchWord } = req.query;
+  const { sortKey, sortMethod, searchWord, startDate, endDate } = req.query;
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
 
@@ -53,6 +53,24 @@ async function getEvents(
               }
               // Add more fields to search if necessary
             ]
+          }
+        }
+      : {}),
+    ...(startDate
+      ? {
+          where: {
+            startDate: {
+              gte: new Date(startDate as string)
+            }
+          }
+        }
+      : {}),
+    ...(endDate
+      ? {
+          where: {
+            startDate: {
+              lte: new Date(endDate as string)
+            }
           }
         }
       : {}),
