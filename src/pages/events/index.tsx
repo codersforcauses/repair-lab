@@ -51,6 +51,7 @@ function Table() {
   // Filtering
   const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
   const [dateFilter, setDateFilter] = useState({ startDate: "", endDate: "" });
+  const [userFilter, setUserFilter] = useState<User[]>([]);
   const [columnFilters, setColumnFilters] = useState<
     Partial<Record<string, string[]>>
   >({});
@@ -85,7 +86,7 @@ function Table() {
     dateFilter,
     columnFilters["eventType"] ?? [],
     columnFilters["status"] ?? [],
-    columnFilters["createdBy"] ?? []
+    userFilter.map((u) => u.id)
   );
   const { data: itemTypes } = useItemTypes();
 
@@ -137,7 +138,6 @@ function Table() {
         newFilters[header.key] = [...header.filterOptions];
       }
     });
-    newFilters["createdBy"] = [];
     setColumnFilters(newFilters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headers]);
@@ -200,7 +200,8 @@ function Table() {
     if (filterType == "user")
       filterPicker = (
         <UserFilter
-          onListChange={(userIDs) => updateColumnFilter(column, userIDs)}
+          selectedUsers={userFilter}
+          onListChange={(users) => setUserFilter([...users])}
           onClose={(e) => {
             if (
               buttonRef.current &&
@@ -369,7 +370,7 @@ function Table() {
       {/* main table*/}
       <div className="flex justify-center">
         <div className="container block w-full justify-center">
-          <table className="w-10/12 table-auto overflow-hidden rounded-lg m-auto">
+          <table className="w-10/12 table-auto rounded-lg m-auto">
             <thead>
               <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
                 {headers.map((col) => (
@@ -439,28 +440,26 @@ export default Table;
 
 function UserFilter({
   onClose,
-  onListChange
+  onListChange,
+  selectedUsers
 }: {
   onClose?: (event: MouseEvent) => void;
-  onListChange?: (userIDs: string[]) => void;
+  onListChange?: (user: User[]) => void;
+  selectedUsers: User[];
 }) {
   const [userSearch, setUserSearch] = useState<string>("");
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const { data: users, isLoading } = useUsers(10, 1, "-created_at", userSearch);
 
   const addUser = (user: User) =>
+    onListChange &&
     !selectedUsers.some((other) => other.id === user.id) &&
-    setSelectedUsers([...selectedUsers, user]);
+    onListChange([...selectedUsers, user]);
   const removeUserByIndex = (index: number) =>
-    setSelectedUsers([
+    onListChange &&
+    onListChange([
       ...selectedUsers.slice(0, index),
       ...selectedUsers.slice(index + 1)
     ]);
-
-  useEffect(() => {
-    onListChange && onListChange(selectedUsers.map((u) => u.id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedUsers]);
   // perhaps display the user list in the search box, similar to atlassian?
 
   return (
@@ -577,7 +576,7 @@ function FilterMenu({
   return (
     <div
       ref={filterRef}
-      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left max-h-48 overflow-y-scroll min-w-fit"
+      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left max-h-72 overflow-y-scroll min-w-fit"
     >
       {children}
     </div>
