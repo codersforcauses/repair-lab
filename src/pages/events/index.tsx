@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   faChevronDown,
+  faChevronRight,
   faChevronUp,
   faPlus,
   faSearch
@@ -38,8 +39,7 @@ function Table() {
 
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
-  const [sortMethod, setSortMethod] = useState<string>("asc");
-  const [expandedButton, setExpandedButton] = useState<string>("");
+  const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
 
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -96,12 +96,6 @@ function Table() {
   }
 
   function handleButtonClick(key: string) {
-    if (expandedButton === key) {
-      setExpandedButton("");
-    } else {
-      setExpandedButton(key);
-    }
-
     // If the clicked column is already the sort key, toggle the sort method
     if (sortKey === key) {
       setSortMethod(sortMethod === "asc" ? "desc" : "asc");
@@ -111,16 +105,17 @@ function Table() {
       setSortMethod("asc");
     }
   }
-
   function ToggleChevron(column: string) {
+    const isActive = sortKey === column;
+    const icon = isActive
+      ? sortMethod === "asc"
+        ? faChevronUp
+        : faChevronDown
+      : faChevronRight;
+
     return (
       <button onClick={() => handleButtonClick(column)}>
-        {" "}
-        {column === expandedButton ? (
-          <FontAwesomeIcon icon={faChevronUp} />
-        ) : (
-          <FontAwesomeIcon icon={faChevronDown} />
-        )}
+        <FontAwesomeIcon icon={icon} />
       </button>
     );
   }
