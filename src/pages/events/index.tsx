@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
@@ -49,7 +49,29 @@ function Table() {
   // Filtering
   const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
   const [dateFilter, setDateFilter] = useState({ startDate: "", endDate: "" });
-  const [eventTypeFilter, setEventTypeFilter] = useState<string[]>([]);
+  const [columnFilters, setColumnFilters] = useState<
+    Partial<Record<string, string[]>>
+  >({});
+  const toggleColumnFilterOption = (column: string, option: string) => {
+    setColumnFilters((prevFilters) => {
+      const newFilters = { ...prevFilters };
+      const columnFilter = newFilters[column];
+      if (columnFilter) {
+        newFilters[column] = columnFilter.includes(option)
+          ? columnFilter.filter((prevItem) => prevItem !== option)
+          : [...columnFilter, option];
+      }
+
+      return newFilters;
+    });
+  };
+  const updateColumnFilter = (column: string, filterList: string[]) => {
+    setColumnFilters((prevFilters) => {
+      const newFilters = { ...prevFilters };
+      newFilters[column] = filterList;
+      return newFilters;
+    });
+  };
 
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -59,7 +81,8 @@ function Table() {
     sortMethod,
     searchWord,
     dateFilter,
-    eventTypeFilter
+    columnFilters["eventType"] ?? [],
+    columnFilters["status"] ?? []
   );
   const { data: itemTypes } = useItemTypes();
 
@@ -81,24 +104,39 @@ function Table() {
     label: string;
     filterType?: FilterType;
     filterOptions?: string[];
-  }[] = [
-    { key: "name", label: "Event Name" },
-    { key: "createdBy", label: "Created By" },
-    { key: "location", label: "Location" },
-    { key: "startDate", label: "Date", filterType: "daterange" },
-    {
-      key: "eventType",
-      label: "Type",
-      filterType: "option",
-      filterOptions: (itemTypes as ItemType[])?.map((v) => v.name)
-    },
-    {
-      key: "status",
-      label: "Status",
-      filterType: "option",
-      filterOptions: Object.values(EventStatus)
-    }
-  ];
+  }[] = useMemo(
+    () => [
+      { key: "name", label: "Event Name" },
+      { key: "createdBy", label: "Created By" },
+      { key: "location", label: "Location" },
+      { key: "startDate", label: "Date", filterType: "daterange" },
+      {
+        key: "eventType",
+        label: "Type",
+        filterType: "option",
+        filterOptions: (itemTypes as ItemType[])?.map((v) => v.name)
+      },
+      {
+        key: "status",
+        label: "Status",
+        filterType: "option",
+        filterOptions: Object.values(EventStatus)
+      }
+    ],
+    [itemTypes]
+  );
+
+  // Initialise filters
+  useEffect(() => {
+    const newFilters = { ...columnFilters };
+    headers.forEach((header) => {
+      if (header.filterOptions) {
+        newFilters[header.key] = [...header.filterOptions];
+      }
+    });
+    setColumnFilters(newFilters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [headers]);
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
@@ -188,16 +226,9 @@ function Table() {
         </FilterMenu>
       );
     } else {
-      const handleCheckboxChange = (item: string) => {
-        setEventTypeFilter((prevItems) =>
-          prevItems.includes(item)
-            ? prevItems.filter((prevItem) => prevItem !== item)
-            : [...prevItems, item]
-        );
-      };
       const isAllClicked =
         options &&
-        options.every((element) => eventTypeFilter.includes(element));
+        options.every((element) => columnFilters[column]?.includes(element));
       filterPicker = (
         <FilterMenu
           onClose={(e) => {
@@ -213,8 +244,9 @@ function Table() {
               <label className="select-none block">
                 <input
                   type="checkbox"
-                  className=""
-                  onChange={() => setEventTypeFilter(isAllClicked ? [] : [...options])}
+                  onChange={() =>
+                    updateColumnFilter(column, isAllClicked ? [] : [...options])
+                  }
                   checked={isAllClicked}
                 ></input>{" "}
                 <strong>All</strong>
@@ -223,9 +255,8 @@ function Table() {
                 <label key={option} className="select-none block">
                   <input
                     type="checkbox"
-                    className=""
-                    onChange={() => handleCheckboxChange(option)}
-                    checked={eventTypeFilter.includes(option)}
+                    onChange={() => toggleColumnFilterOption(column, option)}
+                    checked={columnFilters[column]?.includes(option)}
                   ></input>{" "}
                   {option}
                 </label>
@@ -413,7 +444,7 @@ function FilterMenu({
   return (
     <div
       ref={filterRef}
-      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left max-h-48 overflow-y-scroll"
+      className="absolute inset-x-0 top-50 mt-2.5 bg-white p-4 shadow-md mx-auto rounded-2xl text-left max-h-48 overflow-y-scroll min-w-fit"
     >
       {children}
     </div>
