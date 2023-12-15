@@ -21,13 +21,9 @@ export interface RegisterFormValues {
   code: string;
 }
 
-const googleIcon = <Logo name="Google" viewBox="0 0 24 24" fill="#FFFFFF" />;
-const microsoftIcon = (
-  <Logo name="Microsoft" viewBox="0 0 24 24" fill="#FFFFFF" />
-);
-const facebookIcon = (
-  <Logo name="Facebook" viewBox="0 0 24 24" fill="#FFFFFF" />
-);
+const googleIcon = <Logo name="Google" viewBox="0 0 24 24" />;
+const microsoftIcon = <Logo name="Microsoft" viewBox="0 0 24 24" />;
+const facebookIcon = <Logo name="Facebook" viewBox="0 0 24 24" />;
 
 const RegisterForm = () => {
   const { isLoaded, signUp } = useSignUp();
@@ -74,9 +70,18 @@ const RegisterForm = () => {
       {!pendingVerification && (
         <>
           <div className="relative flex justify-center pt-5 pb-4 gap-x-1">
-            <SignInOAuthButton strategy="oauth_facebook" icon={facebookIcon} />
-            <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
             <SignInOAuthButton
+              ariaLabel="Sign Up with Facebook"
+              strategy="oauth_facebook"
+              icon={facebookIcon}
+            />
+            <SignInOAuthButton
+              ariaLabel="Sign Up with Google"
+              strategy="oauth_google"
+              icon={googleIcon}
+            />
+            <SignInOAuthButton
+              ariaLabel="Sign Up with Microsoft Outlook"
               strategy="oauth_microsoft"
               icon={microsoftIcon}
             />

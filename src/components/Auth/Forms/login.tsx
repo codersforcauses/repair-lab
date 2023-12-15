@@ -15,13 +15,9 @@ interface LoginFormValues {
   password: string;
 }
 
-const googleIcon = <Logo name="Google" viewBox="0 0 24 24" fill="#FFFFFF" />;
-const microsoftIcon = (
-  <Logo name="Microsoft" viewBox="0 0 24 24" fill="#FFFFFF" />
-);
-const facebookIcon = (
-  <Logo name="Facebook" viewBox="0 0 24 24" fill="#FFFFFF" />
-);
+const googleIcon = <Logo name="Google" viewBox="0 0 24 24" />;
+const microsoftIcon = <Logo name="Microsoft" viewBox="0 0 24 24" />;
+const facebookIcon = <Logo name="Facebook" viewBox="0 0 24 24" />;
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -65,9 +61,21 @@ const LoginForm = () => {
   return (
     <div>
       <div className="relative flex justify-center pt-5 pb-4 gap-x-1">
-        <SignInOAuthButton strategy="oauth_facebook" icon={facebookIcon} />
-        <SignInOAuthButton strategy="oauth_google" icon={googleIcon} />
-        <SignInOAuthButton strategy="oauth_microsoft" icon={microsoftIcon} />
+        <SignInOAuthButton
+          ariaLabel="Sign in with Facebook"
+          strategy="oauth_facebook"
+          icon={facebookIcon}
+        />
+        <SignInOAuthButton
+          ariaLabel="Sign in with Google"
+          strategy="oauth_google"
+          icon={googleIcon}
+        />
+        <SignInOAuthButton
+          ariaLabel="Sign in with Microsoft Outlook"
+          strategy="oauth_microsoft"
+          icon={microsoftIcon}
+        />
       </div>
 
       <Separator />
