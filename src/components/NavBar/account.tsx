@@ -4,8 +4,8 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
 
 interface Props {
-  firstName?: string | null;
-  lastName?: string | null;
+  firstName?: string;
+  lastName?: string;
   role: UserRole;
   desc: string;
   isLoggedIn: boolean;
@@ -49,7 +49,7 @@ export default function Account({
           )}
 
           <ActionButton onClick={onSignOut} label="Log Out" />
-
+            
           <ProfilePopover
             firstName={firstName}
             lastName={lastName}
