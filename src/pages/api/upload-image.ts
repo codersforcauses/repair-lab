@@ -5,7 +5,6 @@ import { v4 as uuid } from "uuid";
 import apiHandler from "@/lib/api-handler";
 import { AWS_BUCKET_NAME, s3client } from "@/lib/aws-client";
 
-
 export default apiHandler({
   post: preUpload
 });
