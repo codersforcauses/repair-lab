@@ -49,9 +49,9 @@ const Home = () => {
           </Tab.List>
 
 
-            <Tab.Panels className="flex-col text-center justify-center">
+            <Tab.Panels className="flex-col text-center break-words justify-center">
            
-            <Tab.Panel><div className="bg-slate-200">Content1 a a a a a a</div></Tab.Panel>
+            <Tab.Panel><div className="bg-slate-200">Content1 </div></Tab.Panel>
             <Tab.Panel><div className="bg-slate-200">Content 2</div></Tab.Panel>
 
     
