@@ -49,7 +49,7 @@ const Home = () => {
             <Tab as={Fragment}>
               {({ selected }) => (
             <button
-              className={selected ? 'bg-teal-600 text-white' : 'bg-slate-300 text-black'
+              className={selected ? 'bg-slate-200 ' : 'bg-slate-300'
               }
             >
               My Repairs
@@ -60,7 +60,7 @@ const Home = () => {
           <Tab as={Fragment}>
               {({ selected }) => (
             <button
-              className={selected ? 'bg-teal-600 text-white' : 'bg-slate-300 text-black'
+              className={selected ? 'bg-slate-200 ' : 'bg-slate-300 '
               }
             >
               Available
