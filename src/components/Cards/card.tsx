@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Image from "next/image";
-import { RepairRequest } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
@@ -8,7 +7,7 @@ import StatusPill from "@/components/Cards/status-pill";
 import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal/index";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
-import { GeneralRepairAttempt } from "@/types";
+import { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
 
 export type CardProps = {
   title?: string;
@@ -19,7 +18,7 @@ export type CardProps = {
   lastName?: string;
   avatar?: string;
   handleClick?: () => void;
-  repairRequestProps: RepairRequest;
+  repairRequestProps: RepairRequestResponse;
 };
 
 export default function Card({ props }: { props: CardProps }) {
