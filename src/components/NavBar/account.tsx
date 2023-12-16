@@ -49,7 +49,7 @@ export default function Account({
           )}
 
           <ActionButton onClick={onSignOut} label="Log Out" />
-
+            
           <ProfilePopover
             firstName={firstName}
             lastName={lastName}
