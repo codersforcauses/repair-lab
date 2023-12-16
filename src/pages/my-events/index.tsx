@@ -35,21 +35,6 @@ const Home = () => {
   const { userId } = useAuth();
   console.log(userId);
 
-
-  // fetch('/api/event')
-  //   .then((response) => response.json())
-  //   .then((data) => { setEventData(data); })
-  //   .catch((err) => {
-  //     console.log(err.message);
-  //   });
-
-  // const arr = [];
-  // Object.keys(eventData).forEach(function (key) {
-  //   arr.push(eventData[key]);
-  // });
-
-
-
   return (
     <div>
 
@@ -66,47 +51,33 @@ const Home = () => {
         My Events
       </h1>
       <hr className="mx-10" />
-      {/* Temporary test: will replace with a proper call to backend 
-      If you are testing, put your own userId in (find it in console)*/}
-      {(userId == "user_2YegcKa0KOns3791eORQdY7ERxY" || userId == "user_2YekxgT3DGBekKxfNK4xE0ndGkW")
 
-        ?
-
-        // Slicing the date strings is a temp measure - remove when
-        // date formatting issue is resolved.
-        <div className="relative flex-row items-center justify-center">
-          <ul>{eventData.map((event: Event) => <Box key={event.id}
-            eventId={event.id}
-            eventTitle={event.name}
-            startDate={formatDate(String(event.startDate))}
-            endDate={formatDate(String(event.startDate))}
-            description={event.description}
-            location={event.location}
-          />)}</ul>;
+      {isEventsLoading ? (
+        <div className="flex justify-center">
+          Loading...
         </div>
-
-        // <div className="relative flex-row items-center justify-center">
-        //   <Box eventTitle="Jeans Repair Weekend"
-        //     startDate="1 January"
-        //     endDate="2 January"
-        //     description="An event to repair jeans in preparation for donation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        //     imagePath="/images/jeans_repair.jpg" />
-        //   <Box eventTitle="Bike Repair Day"
-        //     startDate="3 March"
-        //     endDate="4 March"
-        //     description="The second bike repair event of the year. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        //     imagePath="/images/Repair_Lab_bikerepair.jpg" />
-        //   <Box eventTitle="Toy Repairing Day"
-        //     startDate="5 June"
-        //     endDate="5 June"
-        //     description="Toy repairing event. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        //     imagePath="/images/generalToy.jpeg" />
-        // </div>
-        :
-        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
-          You have no assigned events.
-        </div>
-      }
+      ) : (
+        /* Temporary test: will replace with a proper call to backend 
+        If you are testing, put your own userId in (find it in console)*/
+        (userId == "user_2YegcKa0KOns3791eORQdY7ERxY" || userId == "user_2YekxgT3DGBekKxfNK4xE0ndGkW")
+          ? (
+            <div className="relative flex-row items-center justify-center">
+              <ul>{eventData.map((event: Event) => <Box key={event.id}
+                eventId={event.id}
+                eventTitle={event.name}
+                startDate={formatDate(String(event.startDate))}
+                endDate={formatDate(String(event.startDate))}
+                description={event.description}
+                location={event.location}
+              />)}</ul>;
+            </div>
+          )
+          : (
+            <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+              You have no assigned events.
+            </div>
+          )
+      )}
     </div>
   );
 };
