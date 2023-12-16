@@ -66,13 +66,13 @@ export default function RepairRequests() {
                     <SortBy />
                     <SearchBar />
                     <div
-                      className="flex items-center rounded-full transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50 w-10 h-10"
+                      className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
                       role="presentation"
                       onClick={newEvent}
                       onKeyDown={newEvent}
                     
                     >
-                      <CiCirclePlus color="rgb(82 82 91)" size={50} />
+                      <CiCirclePlus stroke="white" color="rgb(82 82 91)" size={50} />
                     </div>
                   </div>
                 </div>
