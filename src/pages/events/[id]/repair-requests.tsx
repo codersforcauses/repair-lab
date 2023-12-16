@@ -70,9 +70,12 @@ export default function RepairRequests() {
                       role="presentation"
                       onClick={newEvent}
                       onKeyDown={newEvent}
-                    
                     >
-                      <CiCirclePlus stroke="white" color="rgb(82 82 91)" size={50} />
+                      <CiCirclePlus
+                        stroke="white"
+                        color="rgb(82 82 91)"
+                        size={50}
+                      />
                     </div>
                   </div>
                 </div>
@@ -102,7 +105,7 @@ export default function RepairRequests() {
                     </div>
                   ))
                 )}
-                
+
                 <Modal showModal={eventModal} setShowPopup={showEventModal}>
                   {" "}
                   <div className="text-center">
