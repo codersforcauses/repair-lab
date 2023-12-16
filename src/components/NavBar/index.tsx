@@ -56,7 +56,7 @@ export default function NavBar() {
             firstName={user?.firstName}
             lastName={user?.lastName}
             role={role}
-            desc={user?.unsafeMetadata.description}
+            desc={user?.unsafeMetadata.description as string}
             isLoggedIn={!!user}
             onSignOut={signOut}
           />

@@ -4,8 +4,8 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
 
 interface Props {
-  firstName?: string;
-  lastName?: string;
+  firstName?: string | null;
+  lastName?: string | null;
   role: UserRole;
   desc: string;
   isLoggedIn: boolean;
