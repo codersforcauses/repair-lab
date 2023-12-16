@@ -20,7 +20,11 @@ export default function MenuList({ items }: Props) {
             key={item.item}
             className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700"
           >
-            <Link href={item.path}>{item.item}</Link>
+            <Link href={item.path}>
+              <div className="flex items-center justify-center h-full w-full">
+                {item.item}
+              </div>
+            </Link>
           </Tab>
         ))}
       </Tab.List>
