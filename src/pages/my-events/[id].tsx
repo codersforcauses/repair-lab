@@ -76,15 +76,13 @@ const Home = () => {
             <Tab.Panel><div className=""> Content1 </div></Tab.Panel>
             <Tab.Panel><div className="">Content 2</div></Tab.Panel>
 
-            
-
     
 
           </Tab.Panels>
         </Tab.Group>
 
       </div>
-      
+  
   </div>     
   )
 }
