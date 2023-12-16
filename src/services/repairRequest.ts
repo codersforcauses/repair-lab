@@ -11,7 +11,7 @@ import { RepairRequest, RepairRequestResponse } from "@/types";
  * @returns
  */
 const toClientResponse = async (
-  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>, // TODO: fix type later
+  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>,
   withImage = false
 ): Promise<RepairRequestResponse[]> => {
   const userIds = repairRequests.flatMap((e) => [e.createdBy, e.assignedTo]);
