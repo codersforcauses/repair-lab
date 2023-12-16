@@ -5,9 +5,9 @@ import { useRouter } from "next/router";
 import { useAuth } from "@clerk/nextjs";
 
 import Box from "@/components/EventBox/Box";
-import { useCreateEvent, useEvents } from "@/hooks/events";
+import LoadingSpinner from "@/components/UI/loading-spinner";
+import { useEvents } from "@/hooks/events";
 import { Event } from "@/types";
-
 const Home = () => {
 
   const router = useRouter();
@@ -25,7 +25,6 @@ const Home = () => {
   const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<string>("asc");
 
-  const { mutate: createEvent } = useCreateEvent();
   const { data: eventData, isLoading: isEventsLoading } = useEvents(
     sortKey,
     sortMethod,
@@ -54,7 +53,7 @@ const Home = () => {
 
       {isEventsLoading ? (
         <div className="flex justify-center">
-          Loading...
+          <LoadingSpinner/>
         </div>
       ) : (
         /* Temporary test: will replace with a proper call to backend 
