@@ -11,7 +11,7 @@ import { useEvent } from "@/hooks/events";
 import { User } from "@/types";
 
 export default function Volunteers() {
-  const [volunteers, _setVolunteers] = useState<User[]>([]);
+  const [volunteers, setVolunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const [VolunteerModal, showVolunteerModal] = useState(false);
   const {
@@ -80,7 +80,7 @@ export default function Volunteers() {
             >
               {" "}
               <div className="text-center">
-                <h1 className="text-xl font-bold">Manage Volunteers</h1>
+                <h1 className="text-xl font-bold">Add Volunteers</h1>
                 <div>
                   <VolunteerManageForm />
                 </div>

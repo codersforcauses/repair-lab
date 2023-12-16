@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FaPlus } from "react-icons/fa";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 import Button from "@/components/Button";
 import TablePagination from "@/components/Table/table-pagination";
@@ -15,7 +15,7 @@ export default function VolunteerManageForm({
   volunteersArray,
   onSubmit
 }: {
-  volunteersArray?: [];
+  volunteersArray?: string[];
   onSubmit?: SubmitHandler<VolunteerManageAttempt>;
 }) {
   const [orderBy, _setOrderBy] = useState("-created_at");
@@ -57,48 +57,7 @@ export default function VolunteerManageForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
-      {/* ID, Item */}
       <div className="m-1 flex flex-wrap justify-center gap-2 w-full h-full">
-        {/* <FieldMultiSelect 
-        name="volunteers"
-        label="volunteers"
-        control={control}
-        rules={{required: true}}
-        options={[
-          {
-            id: 0,
-            text: "Option1"
-          },
-          {
-            id: 1,
-            text: "Option2"
-          },
-          {
-            id: 2,
-            text: "Second"
-          },
-          {
-            id: 3,
-            text: "Person"
-          },
-          {
-            id: 4,
-            text: "Perosn1"
-          },
-          {
-            id: 5,
-            text: "Arrif"
-          },
-          {
-            id: 6,
-            text: "Option7"
-          },
-          {
-            id: 7,
-            text: "A really really long option for the purpose of testing"
-          }
-        ]}
-        placeholder = "" /> */}
         <div className="p-3 w-full">
           {/* Search Bar */}
           <div className="relative">
@@ -142,10 +101,10 @@ export default function VolunteerManageForm({
                   <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                     <tr>
                       <th scope="col" className="px-6 py-2">
-                        First Name
+                        Full Name
                       </th>
                       <th scope="col" className="px-6 py-2">
-                        Last Name
+                        Email
                       </th>
                       <th scope="col" className="px-6 py-2"></th>
                     </tr>
@@ -153,7 +112,12 @@ export default function VolunteerManageForm({
                   <tbody>
                     {users.items.map((user: User, index: number) => {
                       return (
-                        <VolunteerRow key={user.id} user={user} index={index} />
+                        <VolunteerRow
+                          key={user.id}
+                          user={user}
+                          index={index}
+                          volunteersArray={volunteersArray}
+                        />
                       );
                     })}
                   </tbody>
@@ -181,7 +145,7 @@ export default function VolunteerManageForm({
       </div>
 
       {/* Submit */}
-      <div className="my-5 flex flex-row">
+      <div className="mt-5 flex flex-row">
         <Button
           onClick={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}
           height="h-9"
@@ -195,9 +159,25 @@ export default function VolunteerManageForm({
   );
 }
 
-const VolunteerRow = ({ user, index }: { user: User; index: number }) => {
+const VolunteerRow = ({
+  user,
+  index,
+  volunteersArray
+}: {
+  user: User;
+  index: number;
+  volunteersArray: string[] | undefined;
+}) => {
+  const minusClick = () => {
+    volunteersArray = volunteersArray?.filter((id) => id != user.id);
+    console.log("removed user from volunteersArray");
+  };
+  const addClick = () => {
+    volunteersArray?.push(user.id);
+    console.log("pushed user to volunteersArray");
+  };
   return (
-    /** have a check to see if volunter id is in array, if it is dont list this volunteer */
+    /** have a check to see if volunter id is in final array of volunteers, if it is dont list this volunteer */
     <tr
       className={`${
         index % 2 === 0 ? "bg-white" : "bg-secondary-50"
@@ -207,16 +187,26 @@ const VolunteerRow = ({ user, index }: { user: User; index: number }) => {
         scope="row"
         className="whitespace-nowrap px-6 py-3 font-medium text-gray-900 "
       >
-        {user.firstName}
+        {user.firstName} {user.lastName}
       </th>
-      <td className="px-6 py-3">{user.lastName}</td>
+      <td className="px-6 py-3">{user.emailAddress}</td>
       <td className="px-0 py-3 flex">
-        {/** check if this volunteer is in the array of volunteers to add, if so display minus, else plus*/}
-        <Button height="h-10" width="w-10">
-          <div className="flex justify-center">
-            <FaPlus />
-          </div>
-        </Button>
+        {/** check if this volunteer is in the array of volunteers to add, if so display minus, else plus.
+         * If button is clicked on, add/delete from volunteersArray
+         */}
+        {volunteersArray?.includes(user.id) ? (
+          <Button height="h-10" width="w-10" color="red" onClick={minusClick}>
+            <div className="flex justify-center">
+              <FaMinus />
+            </div>
+          </Button>
+        ) : (
+          <Button height="h-10" width="w-10" onClick={addClick}>
+            <div className="flex justify-center">
+              <FaPlus />
+            </div>
+          </Button>
+        )}
       </td>
     </tr>
   );
