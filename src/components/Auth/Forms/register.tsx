@@ -174,7 +174,7 @@ const RegisterForm = () => {
 
             <div className="m-1 text-center">
               <Link href="/auth/login">
-                <span className="text-xs text-gray-400 underline">
+                <span className="text-[13px] text-gray-400 underline">
                   Already have an account? Sign in
                 </span>
               </Link>
