@@ -113,6 +113,7 @@ const LoginForm = () => {
               required: "This field is required"
             }}
             label="Password"
+            icon="/images/passwordIcon.svg"
             type="password"
           />
         </div>

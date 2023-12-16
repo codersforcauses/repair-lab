@@ -133,7 +133,6 @@ const RegisterForm = () => {
                 }}
                 placeholder="e.g. name@domain.com"
                 label="Email Address"
-                icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
               />
 
               <FieldInput
