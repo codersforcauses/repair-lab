@@ -29,7 +29,6 @@ async function getRepairRequests(
     where: { event: { id: id as string } }
   });
 
-  // TODO: Generate GET presigned urls for images in S3.
   // TODO: make a singular version
   const repairRequestResponse =
     await repairRequestService.toClientResponse(repairRequests);

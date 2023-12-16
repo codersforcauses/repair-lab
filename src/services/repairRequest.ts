@@ -1,14 +1,29 @@
+import { RepairRequestImage } from "@prisma/client";
+
+import { presignImage, presignImages } from "@/lib/presign-image";
 import userService from "@/services/user";
 import { RepairRequest, RepairRequestResponse } from "@/types";
 
+/**
+ * Converts a list of RepairRequest to RepairRequestResponse
+ * @param repairRequests 
+ * @param withImage If you need the image presigned urls
+ * @returns 
+ */
 const toClientResponse = async (
-  repairRequests: RepairRequest[]
+  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>, // TODO: fix type later
+  withImage = false,
 ): Promise<RepairRequestResponse[]> => {
   const userIds = repairRequests.flatMap((e) => [e.createdBy, e.assignedTo]);
-
   const userMap = await userService.getUserMapFromIds(userIds);
 
-  const responses: RepairRequestResponse[] = repairRequests.map((req) => {
+  const responses: RepairRequestResponse[] = await Promise.all(repairRequests.map(async (req) => {
+
+    const [thumbnailImage, images] = withImage ? await Promise.all([
+      presignImage(req.thumbnailImage),
+      presignImages(req.images?.map(({ s3Key }) => s3Key) || [])
+    ]) : [undefined, []];
+
     return {
       ...req,
       createdBy:
@@ -18,9 +33,10 @@ const toClientResponse = async (
       requestDate: req.requestDate.toISOString(),
       updatedAt: req.updatedAt.toISOString(),
       hoursWorked: req.hoursWorked.toNumber(),
-      thumbnailImage: req.thumbnailImage ?? undefined
+      thumbnailImage,
+      images,
     };
-  });
+  }));
   return responses;
 };
 

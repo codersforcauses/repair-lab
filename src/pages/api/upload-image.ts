@@ -1,10 +1,10 @@
-import { S3Client } from "@aws-sdk/client-s3";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { v4 as uuid } from "uuid";
-import apiHandler from "@/lib/api-handler";
-import type { NextApiRequest, NextApiResponse } from "next";
 
-const AWS_BUCKET_NAME = "repair-lab-images"; // TODO: extract to env
+import apiHandler from "@/lib/api-handler";
+import { AWS_BUCKET_NAME, s3client } from "@/lib/aws-client";
+
 
 export default apiHandler({
   post: preUpload
@@ -22,15 +22,7 @@ async function preUpload(req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ message: "Invalid image type" });
   }
 
-  const client = new S3Client({
-    region: "ap-southeast-2",
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY!,
-      secretAccessKey: process.env.AWS_SECRET_KEY!
-    }
-  });
-
-  const { url, fields } = await createPresignedPost(client, {
+  const { url, fields } = await createPresignedPost(s3client, {
     Bucket: AWS_BUCKET_NAME,
     Key: uuid(),
     Conditions: [
@@ -38,7 +30,6 @@ async function preUpload(req: NextApiRequest, res: NextApiResponse) {
       ["starts-with", "$Content-Type", contentType]
     ],
     Fields: {
-      // acl: 'public-read', // The bucket is default to public-read
       "Content-Type": contentType,
       "x-amz-meta-detail": JSON.stringify(detail)
     },
