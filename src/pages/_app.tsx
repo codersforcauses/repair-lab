@@ -4,8 +4,8 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "react-query";
-import NavBar from "@/components/NavBar";
 
+import NavBar from "@/components/NavBar";
 import Toast from "@/components/Toast";
 
 import "@/styles/globals.css";

@@ -25,7 +25,7 @@ export default function Account({
   desc,
   isLoggedIn,
   onSignOut
-}: Props) {
+}: Readonly<Props>) {
   const router = useRouter();
 
   return (
@@ -67,10 +67,10 @@ export default function Account({
 function ActionButton({
   onClick,
   label
-}: {
+}: Readonly<{
   onClick: () => void;
   label: string;
-}) {
+}>) {
   return (
     <button
       onClick={onClick}

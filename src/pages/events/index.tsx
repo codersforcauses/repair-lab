@@ -19,7 +19,6 @@ import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import { CreateEvent, Event, UserRole } from "@/types";
-import NavBar from "@/components/NavBar";
 
 function Table() {
   const router = useRouter();
