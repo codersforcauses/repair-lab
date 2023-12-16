@@ -62,9 +62,18 @@ export default function RepairRequests() {
                       )
                     </span>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end items-center">
                     <SortBy />
                     <SearchBar />
+                    <div
+                      className="flex items-center rounded-full transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50 w-10 h-10"
+                      role="presentation"
+                      onClick={newEvent}
+                      onKeyDown={newEvent}
+                    
+                    >
+                      <CiCirclePlus color="rgb(82 82 91)" size={50} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -93,14 +102,7 @@ export default function RepairRequests() {
                     </div>
                   ))
                 )}
-                <div
-                  className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
-                  role="presentation"
-                  onClick={newEvent}
-                  onKeyDown={newEvent}
-                >
-                  <CiCirclePlus color="rgb(82 82 91)" size={100} />
-                </div>
+                
                 <Modal showModal={eventModal} setShowPopup={showEventModal}>
                   {" "}
                   <div className="text-center">
