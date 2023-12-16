@@ -127,17 +127,17 @@ const LoginForm = () => {
           </Button>
         </div>
 
-        <div className="m-1 text-center">
+        <div className="m-2 text-center">
           <div>
             <Link href="/auth/forgot-password">
-              <span className="text-[13px] text-gray-400 underline">
+              <span className="text-sm text-gray-400 underline">
                 Forgot your password?
               </span>
             </Link>
           </div>
           <div>
             <Link href="/auth/register">
-              <span className="text-[13px] text-gray-400 underline">
+              <span className="text-sm text-gray-400 underline">
                 Do not have an account? Sign up
               </span>
             </Link>
