@@ -1,5 +1,6 @@
 // Page for repairers to view the repair requests associated with
 // a given event. This page is accessed via the my-events page. 
+import { Fragment } from 'react'
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Tab } from '@headlessui/react'
@@ -40,19 +41,40 @@ const Home = () => {
       </h1>
       <hr className="mx-10" />
 
-      <div className="relative flex-row items-center justify-center text-lg mx-10 bg-sky-950">
+      <div className="mt-4 relative flex-row items-center justify-center text-lg mx-10 bg-slate-200 rounded-lg">
 
         <Tab.Group>
-          <Tab.List className="flex justify-around bg-slate-300">
-            <Tab>My Repairs</Tab>
-            <Tab>Available</Tab>
+          <Tab.List className="flex justify-around rounded-t-lg bg-slate-300 rounded-lg">
+
+            <Tab as={Fragment}>
+              {({ selected }) => (
+            <button
+              className={selected ? 'bg-teal-600 text-white' : 'bg-slate-300 text-black'
+              }
+            >
+              My Repairs
+            </button>
+          )}
+          </Tab>
+
+          <Tab as={Fragment}>
+              {({ selected }) => (
+            <button
+              className={selected ? 'bg-teal-600 text-white' : 'bg-slate-300 text-black'
+              }
+            >
+              Available
+            </button>
+          )}
+          </Tab>
+
           </Tab.List>
 
 
             <Tab.Panels className="flex-col text-center break-words justify-center">
            
-            <Tab.Panel><div className="bg-slate-200">Content1 </div></Tab.Panel>
-            <Tab.Panel><div className="bg-slate-200">Content 2</div></Tab.Panel>
+            <Tab.Panel><div className=""> Content1 </div></Tab.Panel>
+            <Tab.Panel><div className="">Content 2</div></Tab.Panel>
 
     
 
