@@ -35,7 +35,7 @@ export function OptionFilter({
   return (
     <FilterMenu onClose={(e) => onClose?.(e)}>
       {/* Select/Unselect All*/}
-      <label className="select-none block capitalize">
+      <label className="select-none block">
         <input
           type="checkbox"
           onChange={() => onFilterChange?.(isAllClicked ? [] : [...options])}
@@ -45,7 +45,7 @@ export function OptionFilter({
       </label>
       {/* Option list */}
       {options?.map((option) => (
-        <label key={option} className="select-none block capitalize">
+        <label key={option} className="select-none block">
           <input
             type="checkbox"
             onChange={() => toggleOption(option)}
