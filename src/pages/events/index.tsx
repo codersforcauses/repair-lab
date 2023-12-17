@@ -309,25 +309,21 @@ function Table() {
             placeholder="Search"
             onChange={(e) => setSearchWord(e.target.value)}
           />
-          <button
-            className="absolute right-8 top-2/4 -translate-y-2/4 transform cursor-pointer text-gray-500"
-            onClick={() => {
-              // Handle search submit action here
-              console.log("Search submitted");
-            }}
-          >
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
+
+          <FontAwesomeIcon
+            className="absolute right-8 top-2/4 -translate-y-2/4 transform pointer-events-none text-gray-500"
+            icon={faSearch}
+          />
         </div>
 
         {/* Add event button*/}
         <div className=" p-4 text-center ">
-          <button
+          <HoverOpacityButton
             className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
             onClick={() => setShowAddModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
-          </button>
+          </HoverOpacityButton>
           <Modal
             setShowPopup={setShowAddModal}
             showModal={showAddModal}
