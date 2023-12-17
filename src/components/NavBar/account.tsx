@@ -4,10 +4,7 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
 
 interface Props {
-  firstName?: string | null;
-  lastName?: string | null;
   role: UserRole;
-  desc: string;
   isLoggedIn: boolean;
   onSignOut: () => void;
 }
@@ -19,10 +16,7 @@ const adminRoles = [
 ];
 
 export default function Account({
-  firstName,
-  lastName,
   role,
-  desc,
   isLoggedIn,
   onSignOut
 }: Readonly<Props>) {
@@ -50,12 +44,7 @@ export default function Account({
 
           <ActionButton onClick={onSignOut} label="Log Out" />
 
-          <ProfilePopover
-            firstName={firstName}
-            lastName={lastName}
-            role={role}
-            desc={desc}
-          />
+          <ProfilePopover />
         </>
       ) : (
         <ActionButton onClick={() => router.push("/login")} label="Sign In" />

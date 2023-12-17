@@ -52,14 +52,7 @@ export default function NavBar() {
               }
             />
           </div>
-          <Account
-            firstName={user?.firstName}
-            lastName={user?.lastName}
-            role={role}
-            desc={user?.unsafeMetadata.description as string}
-            isLoggedIn={!!user}
-            onSignOut={signOut}
-          />
+          <Account role={role} isLoggedIn={!!user} onSignOut={signOut} />
         </div>
       )}
     </div>
