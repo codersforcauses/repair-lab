@@ -1,6 +1,6 @@
 import { RepairRequestImage } from "@prisma/client";
 
-import { presignImage, presignImages } from "@/lib/presign-image";
+import { presignImage, presignImages } from "@/services/s3";
 import userService from "@/services/user";
 import { RepairRequest, RepairRequestResponse } from "@/types";
 
@@ -11,20 +11,17 @@ import { RepairRequest, RepairRequestResponse } from "@/types";
  * @returns
  */
 const toClientResponse = async (
-  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>,
-  withImage = false
+  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>
 ): Promise<RepairRequestResponse[]> => {
   const userIds = repairRequests.flatMap((e) => [e.createdBy, e.assignedTo]);
   const userMap = await userService.getUserMapFromIds(userIds);
 
   const responses: RepairRequestResponse[] = await Promise.all(
     repairRequests.map(async (req) => {
-      const [thumbnailImage, images] = withImage
-        ? await Promise.all([
-            presignImage(req.thumbnailImage),
-            presignImages(req.images?.map(({ s3Key }) => s3Key) || [])
-          ])
-        : [undefined, []];
+      const [thumbnailImage, images] = await Promise.all([
+        presignImage(req.thumbnailImage),
+        presignImages(req.images?.map(({ s3Key }) => s3Key) || [])
+      ]);
 
       return {
         ...req,

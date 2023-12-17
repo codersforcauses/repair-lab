@@ -20,7 +20,7 @@ async function createRepairRequest(
   const { userId } = getAuth(req);
 
   const { images, ...rest } = parsedData;
-  const repairRequest = await prisma.repairRequest.create({
+  await prisma.repairRequest.create({
     data: {
       ...rest,
       createdBy: userId!,
@@ -34,9 +34,5 @@ async function createRepairRequest(
     }
   });
 
-  const repairRequestResponse = (
-    await repairRequestService.toClientResponse([repairRequest])
-  )[0];
-
-  return res.status(200).json(repairRequestResponse);
+  return res.status(204);
 }
