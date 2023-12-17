@@ -15,10 +15,10 @@ async function getRepairRequests(
   req: NextApiRequest,
   res: NextApiResponse<RepairRequestResponse[]>
 ) {
-  const { id } = req.query;
+  const eventId = req.query.id as string;
 
   const event = await prisma.event.findUnique({
-    where: { id: id as string }
+    where: { id: eventId }
   });
 
   if (!event) {
@@ -26,7 +26,7 @@ async function getRepairRequests(
   }
 
   const repairRequests = await prisma.repairRequest.findMany({
-    where: { event: { id: id as string } }
+    where: { event: { id: eventId } }
   });
 
   // TODO: Generate GET presigned urls for images in S3.

@@ -16,7 +16,7 @@ async function updateRepairRequest(
   req: NextApiRequest,
   res: NextApiResponse<RepairRequestResponse>
 ) {
-  const { id } = req.query;
+  const repairRequestId = req.query.id as string;
   const parsedData = updateRepairRequestSchema.parse(req.body);
 
   const {
@@ -29,7 +29,7 @@ async function updateRepairRequest(
   } = parsedData;
 
   const existingRepairRequest = await prisma.repairRequest.findUnique({
-    where: { id: id as string }
+    where: { id: repairRequestId }
   });
 
   if (!existingRepairRequest) {
@@ -40,7 +40,7 @@ async function updateRepairRequest(
   }
 
   const repairAttempt = await prisma.repairRequest.update({
-    where: { id: id as string },
+    where: { id: repairRequestId },
     data: {
       itemMaterial: itemMaterial,
       hoursWorked: hoursWorked,

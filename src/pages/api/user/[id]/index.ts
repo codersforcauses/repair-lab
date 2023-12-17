@@ -9,9 +9,9 @@ export default apiHandler({
 });
 
 async function getUser(req: NextApiRequest, res: NextApiResponse<User>) {
-  const { id } = req.query;
+  const userId = req.query.id as string;
 
-  const user = await userService.getUser(id as string);
+  const user = await userService.getUser(userId);
 
   return res.status(200).json(user);
 }

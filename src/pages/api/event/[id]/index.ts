@@ -17,10 +17,10 @@ async function getEvent(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse>
 ) {
-  const { id } = req.query;
+  const eventId = req.query.id as string;
 
   const event = await prisma.event.findUnique({
-    where: { id: id as string },
+    where: { id: eventId },
     include: {
       eventRepairer: true
     }
