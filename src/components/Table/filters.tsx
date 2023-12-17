@@ -3,6 +3,7 @@ import Image from "next/image";
 import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { isoToDatePickerValue } from "@/lib/datetime";
@@ -109,13 +110,17 @@ export function UserFilter({
       ...selectedUsers.slice(0, index),
       ...selectedUsers.slice(index + 1)
     ]);
+  const clearUsers = () => {
+    onFilterChange?.([]);
+  };
+
   // perhaps display the user list in the search box, similar to atlassian?
 
   return (
     <FilterMenu onClose={(e) => onClose?.(e)}>
       <div className="w-80">
         {/* Selected list*/}
-        <div className="relative mb-4 overflow-x-scroll h-8 bg-gray-100 flex items-center text-xs">
+        <div className="relative overflow-x-scroll h-8 bg-gray-100 flex items-center text-xs">
           {selectedUsers.map((user: User, index) => (
             <div
               key={user.id}
@@ -149,6 +154,15 @@ export function UserFilter({
             </div>
           )}
         </div>
+
+        {/* Clear Button */}
+        <HoverOpacityButton
+          className="mt-2 mb-2 text-xs hover:enabled:scale-100"
+          disabled={selectedUsers.length == 0}
+          onClick={() => clearUsers()}
+        >
+          Clear
+        </HoverOpacityButton>
 
         {/* User search*/}
         <div className="relative mb-4">
