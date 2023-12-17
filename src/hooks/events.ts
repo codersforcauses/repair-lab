@@ -1,6 +1,7 @@
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
+import { DateFilterData } from "@/hooks/filters";
 import { httpClient } from "@/lib/base-http-client";
 import {
   CreateEvent,
@@ -33,21 +34,28 @@ export const useEvents = (
   sortKey: string,
   sortMethod: string,
   searchWord: string,
-  dateRange: { startDate: string; endDate: string },
-  eventType: string[],
-  eventStatus: string[],
-  createdBy: string[]
+  dateRange?: DateFilterData,
+  eventType?: string[],
+  eventStatus?: string[],
+  createdBy?: string[]
 ) => {
   const queryFn = async () => {
     const params = new URLSearchParams({
       sortKey,
       sortMethod,
       searchWord,
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
-      eventType: eventType.join(","),
-      eventStatus: eventStatus.join(","),
-      createdBy: createdBy.join(",")
+      startDate: dateRange?.startDate ?? "",
+      endDate: dateRange?.endDate ?? "",
+      ...(dateRange !== undefined &&
+        dateRange.startDate &&
+        dateRange.endDate && {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate
+        }),
+      ...(eventType !== undefined && { eventType: eventType.join(",") }),
+      ...(eventStatus !== undefined && { eventStatus: eventStatus.join(",") }),
+      ...(createdBy !== undefined &&
+        createdBy.length && { createdBy: createdBy.join(",") })
     });
 
     const url = `/event?${params.toString()}`;

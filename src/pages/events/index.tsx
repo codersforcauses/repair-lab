@@ -27,10 +27,9 @@ import {
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
+import { FilterType, useTableFilters } from "@/hooks/filters";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event, EventResponse, User } from "@/types";
-
-type FilterType = "daterange" | "option" | "user";
+import { CreateEvent, Event, EventResponse } from "@/types";
 
 function Table() {
   const router = useRouter();
@@ -54,28 +53,14 @@ function Table() {
 
   // Filtering
   const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
-  const [dateFilter, setDateFilter] = useState({ startDate: "", endDate: "" });
-  const [userFilter, setUserFilter] = useState<User[]>([]);
-  const [columnFilters, setColumnFilters] = useState<
-    Partial<Record<string, string[]>>
-  >({});
 
-  const updateColumnFilter = (column: string, filterList: string[]) => {
-    setColumnFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-      newFilters[column] = filterList;
-      return newFilters;
-    });
-  };
-  const isFilterActive = (column: string) => {
-    const header = headers.find((h) => h.key === column);
-    if (!header || !header.filterOptions) return;
-
-    const isAllClicked = header.filterOptions.every(
-      (element) => columnFilters?.[column]?.includes(element)
-    );
-    return !isAllClicked;
-  };
+  const {
+    columnFilters,
+    initialiseColumnFilter,
+    updateColumnFilter,
+    resetFilters,
+    isFilterActive
+  } = useTableFilters();
 
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -84,10 +69,19 @@ function Table() {
     sortKey,
     sortMethod,
     searchWord,
-    dateFilter,
-    columnFilters["eventType"] ?? [],
-    columnFilters["status"] ?? [],
-    userFilter.map((u) => u.id)
+    // TODO: find way to shorten this
+    columnFilters["startDate"]?.type == "daterange"
+      ? columnFilters["startDate"]?.filter
+      : undefined,
+    columnFilters["eventType"]?.type == "option"
+      ? columnFilters["eventType"]?.filter
+      : undefined,
+    columnFilters["status"]?.type == "option"
+      ? columnFilters["status"]?.filter
+      : undefined,
+    columnFilters["createdBy"]?.type == "user"
+      ? columnFilters["createdBy"]?.filter.map((u) => u.id)
+      : undefined
   );
   const { data: itemTypes } = useItemTypes();
 
@@ -132,19 +126,17 @@ function Table() {
     [itemTypes]
   );
 
-  const resetFilters = () => {
-    const newFilters = { ...columnFilters };
-    headers.forEach((header) => {
-      if (header.filterOptions) {
-        newFilters[header.key] = [...header.filterOptions];
-      }
-    });
-    setColumnFilters(newFilters);
-  };
-
   // Initialise filters
   useEffect(() => {
-    resetFilters();
+    headers.forEach((header) => {
+      if (header.filterType) {
+        initialiseColumnFilter(
+          header.key,
+          header.filterType,
+          header.filterOptions
+        );
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headers]);
 
@@ -209,48 +201,55 @@ function Table() {
       )
         setOpenFilterMenu("");
     };
-    const filterComponents: Record<FilterType, React.ReactNode> = {
-      user: (
-        <UserFilter
-          selectedUsers={userFilter}
-          onFilterChange={(users) => setUserFilter([...users])}
-          onClose={onFilterClose}
-        />
-      ),
-      daterange: (
-        <DateRangeFilter
-          startDate={dateFilter.startDate}
-          endDate={dateFilter.endDate}
-          onFilterChange={(startDate, endDate) =>
-            setDateFilter({ startDate, endDate })
-          }
-          onClose={onFilterClose}
-        />
-      ),
-      option: (
-        <OptionFilter
-          options={options ?? []}
-          selectedOptions={columnFilters[column] ?? []}
-          onFilterChange={(options) => updateColumnFilter(column, options)}
-          onClose={onFilterClose}
-        />
-      )
-    };
 
-    const filterPicker = filterComponents[filterType];
+    const filter = columnFilters[column];
+    if (!filter) return null;
+
+    const getFilterPicker = () => {
+      switch (filter.type) {
+        case "daterange":
+          return (
+            <DateRangeFilter
+              startDate={filter.filter.startDate}
+              endDate={filter.filter.endDate}
+              onFilterChange={(startDate, endDate) =>
+                updateColumnFilter(column, { startDate, endDate })
+              }
+              onClose={onFilterClose}
+            />
+          );
+        case "user":
+          return (
+            <UserFilter
+              selectedUsers={filter.filter}
+              onFilterChange={(users) => updateColumnFilter(column, users)}
+              onClose={onFilterClose}
+            />
+          );
+        default:
+          return (
+            <OptionFilter
+              options={options ?? []}
+              selectedOptions={filter.filter}
+              onFilterChange={(options) => updateColumnFilter(column, options)}
+              onClose={onFilterClose}
+            />
+          );
+      }
+    };
 
     return (
       <>
         <HoverOpacityButton
           ref={buttonRef}
           className={isFilterActive(column) ? "text-lightAqua-500" : ""}
-          onClick={() => {
-            setOpenFilterMenu((prev) => (prev === column ? "" : column));
-          }}
+          onClick={() =>
+            setOpenFilterMenu((prev) => (prev === column ? "" : column))
+          }
         >
           <FontAwesomeIcon icon={faFilter} />
         </HoverOpacityButton>
-        {openFilterMenu === column && filterPicker}
+        {openFilterMenu === column && getFilterPicker()}
       </>
     );
   }
