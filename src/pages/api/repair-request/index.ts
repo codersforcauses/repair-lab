@@ -11,14 +11,14 @@ export default apiHandler({
 
 async function createRepairRequest(
   req: NextApiRequest,
-  res: NextApiResponse<null>
+  res: NextApiResponse<{ id: string }>
 ) {
   const parsedData = createRepairRequestSchema.parse(req.body);
 
   const { userId } = getAuth(req);
 
   const { images, ...rest } = parsedData;
-  await prisma.repairRequest.create({
+  const record = await prisma.repairRequest.create({
     data: {
       ...rest,
       createdBy: userId!,
@@ -32,5 +32,5 @@ async function createRepairRequest(
     }
   });
 
-  return res.status(204).json(null);
+  return res.status(200).json({ id: record.id });
 }

@@ -10,10 +10,7 @@ export default apiHandler({
   patch: updateRepairRequest
 });
 
-async function updateRepairRequest(
-  req: NextApiRequest,
-  res: NextApiResponse<null>
-) {
+async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
   const parsedData = updateRepairRequestSchema.parse(req.body);
 
