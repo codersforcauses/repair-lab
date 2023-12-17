@@ -13,13 +13,17 @@ import Logo from "@/components/UI/logoSvg";
 import { useAuth } from "@/hooks/auth";
 
 export interface RegisterFormValues {
+  firstName: string;
+  lastName: string;
   emailAddress: string;
   password: string;
   confirmPassword: string;
   code: string;
 }
 
-const googleIcon = <Logo name="Google" viewBox="0 0 24 24" fill="#FFFFFF" />;
+const googleIcon = <Logo name="Google" viewBox="0 0 24 24" />;
+const microsoftIcon = <Logo name="Microsoft" viewBox="0 0 24 24" />;
+const facebookIcon = <Logo name="Facebook" viewBox="0 0 24 24" />;
 
 const RegisterForm = () => {
   const { isLoaded, signUp } = useSignUp();
@@ -65,11 +69,21 @@ const RegisterForm = () => {
     <div>
       {!pendingVerification && (
         <>
-          <div className="w-full">
+          <div className="relative flex justify-center pt-5 pb-4 gap-x-1">
             <SignInOAuthButton
+              ariaLabel="Click to sign up with Facebook"
+              strategy="oauth_facebook"
+              icon={facebookIcon}
+            />
+            <SignInOAuthButton
+              ariaLabel="Click to sign up with Google"
               strategy="oauth_google"
-              label="Continue with Google"
               icon={googleIcon}
+            />
+            <SignInOAuthButton
+              ariaLabel="Click to sign up with Microsoft Outlook"
+              strategy="oauth_microsoft"
+              icon={microsoftIcon}
             />
           </div>
 
@@ -81,7 +95,31 @@ const RegisterForm = () => {
                 <span className="text-red-500">{registerErrorMsg}</span>
               </div>
             )}
-            <div className="flex flex-col gap-4">
+
+            <div className="flex flex-col gap-4 pt-4">
+              <div className="flex gap-x-6">
+                <FieldInput
+                  width="w-1/2"
+                  name="firstName"
+                  control={control}
+                  rules={{
+                    required: "This field is required"
+                  }}
+                  placeholder="e.g. John"
+                  label="First Name"
+                />
+                <FieldInput
+                  width="w-1/2"
+                  name="lastName"
+                  control={control}
+                  rules={{
+                    required: "This field is required"
+                  }}
+                  placeholder="e.g. Smith"
+                  label="Last Name"
+                />
+              </div>
+
               <FieldInput
                 name="emailAddress"
                 control={control}
@@ -93,9 +131,8 @@ const RegisterForm = () => {
                       "Email address must be a valid address"
                   }
                 }}
-                placeholder="Enter email address"
+                placeholder="e.g. name@domain.com"
                 label="Email Address"
-                icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
               />
 
               <FieldInput
@@ -104,7 +141,7 @@ const RegisterForm = () => {
                 rules={{
                   required: "This field is required"
                 }}
-                placeholder="Enter password"
+                placeholder="Enter Password"
                 label="Password"
                 type="password"
               />
@@ -120,20 +157,28 @@ const RegisterForm = () => {
                     }
                   }
                 }}
-                placeholder="Confirm password"
+                placeholder="Confirm Password"
                 label="Confirm Password"
                 type="password"
               />
             </div>
 
-            <div className="m-4 text-center">
+            <div className="flex pt-5 pb-3 justify-center">
+              <Button
+                aria-label="Click to complete the Sign Up process"
+                height="h-10"
+              >
+                Sign Up
+              </Button>
+            </div>
+
+            <div className="m-1 text-center">
               <Link href="/auth/login">
-                <span className="text-xs text-gray-400 underline">
+                <span className="text-sm text-gray-400 underline">
                   Already have an account? Sign in
                 </span>
               </Link>
             </div>
-            <Button width="w-full">Sign Up</Button>
           </form>
         </>
       )}
