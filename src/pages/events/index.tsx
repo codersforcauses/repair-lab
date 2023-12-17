@@ -6,6 +6,7 @@ import {
   faChevronRight,
   faChevronUp,
   faFilter,
+  faFilterCircleXmark,
   faPlus,
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
@@ -58,25 +59,22 @@ function Table() {
   const [columnFilters, setColumnFilters] = useState<
     Partial<Record<string, string[]>>
   >({});
-  const toggleColumnFilterOption = (column: string, option: string) => {
-    setColumnFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-      const columnFilter = newFilters[column];
-      if (columnFilter) {
-        newFilters[column] = columnFilter.includes(option)
-          ? columnFilter.filter((prevItem) => prevItem !== option)
-          : [...columnFilter, option];
-      }
 
-      return newFilters;
-    });
-  };
   const updateColumnFilter = (column: string, filterList: string[]) => {
     setColumnFilters((prevFilters) => {
       const newFilters = { ...prevFilters };
       newFilters[column] = filterList;
       return newFilters;
     });
+  };
+  const isFilterActive = (column: string) => {
+    const header = headers.find((h) => h.key === column);
+    if (!header || !header.filterOptions) return;
+
+    const isAllClicked = header.filterOptions.every(
+      (element) => columnFilters?.[column]?.includes(element)
+    );
+    return !isAllClicked;
   };
 
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -106,6 +104,7 @@ function Table() {
   });
 
   // The label is what users see, the key is what the server uses
+  // TODO: make this a record?
   const headers: {
     key: string;
     label: string;
@@ -133,8 +132,7 @@ function Table() {
     [itemTypes]
   );
 
-  // Initialise filters
-  useEffect(() => {
+  const resetFilters = () => {
     const newFilters = { ...columnFilters };
     headers.forEach((header) => {
       if (header.filterOptions) {
@@ -142,6 +140,11 @@ function Table() {
       }
     });
     setColumnFilters(newFilters);
+  };
+
+  // Initialise filters
+  useEffect(() => {
+    resetFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headers]);
 
@@ -240,6 +243,7 @@ function Table() {
       <>
         <HoverOpacityButton
           ref={buttonRef}
+          className={isFilterActive(column) ? "text-lightAqua-500" : ""}
           onClick={() => {
             setOpenFilterMenu((prev) => (prev === column ? "" : column));
           }}
@@ -282,8 +286,22 @@ function Table() {
         </div>
       </div>
 
-      {/* Search bar above table */}
       <div className="flex justify-center">
+        {/* Clear filter button */}
+        <div className="p-4 text-center ">
+          <HoverOpacityButton
+            className="h-10 w-10 rounded-full bg-gray-200 text-gray-500"
+            title="Clear Filters"
+            onClick={() => resetFilters()}
+          >
+            <FontAwesomeIcon
+              icon={faFilterCircleXmark}
+              className="text-[1rem] transform translate-y-[2px]"
+            />
+          </HoverOpacityButton>
+        </div>
+
+        {/* Search bar above table */}
         <div className="relative w-5/12 p-4">
           <input
             className="h-10 w-full rounded-3xl border-none bg-gray-100 bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "

@@ -3,11 +3,11 @@ import { forwardRef } from "react";
 const HoverOpacityButton = forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ children, ...props }, ref) => {
+>(({ children, className, ...props }, ref) => {
   return (
     <button
       ref={ref}
-      className="hover:opacity-50 transition-opacity duration-150"
+      className={`hover:opacity-50 transition-opacity duration-150 ${className}`}
       {...props}
     >
       {children}
