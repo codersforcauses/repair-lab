@@ -14,6 +14,7 @@ import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
+import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
@@ -185,9 +186,9 @@ function Table() {
       : faChevronRight;
 
     return (
-      <button onClick={() => handleButtonClick(column)}>
+      <HoverOpacityButton onClick={() => handleButtonClick(column)}>
         <FontAwesomeIcon icon={icon} />
-      </button>
+      </HoverOpacityButton>
     );
   }
   function FilterButton(
@@ -237,14 +238,14 @@ function Table() {
 
     return (
       <>
-        <button
+        <HoverOpacityButton
           ref={buttonRef}
           onClick={() => {
             setOpenFilterMenu((prev) => (prev === column ? "" : column));
           }}
         >
           <FontAwesomeIcon icon={faFilter} />
-        </button>
+        </HoverOpacityButton>
         {openFilterMenu === column && filterPicker}
       </>
     );
@@ -323,17 +324,22 @@ function Table() {
       {/* main table*/}
       <div className="flex justify-center">
         <div className="container block w-full justify-center">
-          <table className="w-10/12 table-auto rounded-lg m-auto">
+          <table className="w-10/12 table-auto m-auto">
             <thead>
-              <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
+              <tr className="border-b pb-10 text-left ">
                 {headers.map((col) => (
-                  <th key={col.key} className="p-2.5 pl-5 font-normal relative">
+                  <th
+                    key={col.key}
+                    className="p-2.5 pl-5 font-normal relative bg-lightAqua-200 first:rounded-tl-lg"
+                  >
                     {" "}
                     {col.label} {ToggleChevron(col.key)}{" "}
                     {FilterButton(col.key, col.filterType, col.filterOptions)}
                   </th>
                 ))}
-                <th className="w-10 p-2.5 text-justify font-normal"> Edit </th>
+                <th className="w-10 p-2.5 text-justify font-normal bg-lightAqua-200 last:rounded-tr-lg">
+                  Edit
+                </th>
               </tr>
             </thead>
 
