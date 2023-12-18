@@ -120,7 +120,22 @@ export function UserFilter({
     <FilterMenu onClose={(e) => onClose?.(e)}>
       <div className="w-80">
         {/* Selected list*/}
-        <div className="relative overflow-x-scroll h-8 bg-gray-100 flex items-center text-xs">
+        <div className="relative mb-4 overflow-x-scroll h-8 bg-gray-100 flex items-center text-xs">
+          {selectedUsers.length == 0 ? (
+            <div className="w-min ml-2 opacity-30 pointer-events-none">
+              Empty
+            </div>
+          ) : (
+            <HoverOpacityButton
+              className="text-gray-500 text-[1.25rem] hover:enabled:scale-100 p-1"
+              disabled={selectedUsers.length == 0}
+              onClick={() => clearUsers()}
+              title="Clear all"
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </HoverOpacityButton>
+          )}
+
           {selectedUsers.map((user: User, index) => (
             <div
               key={user.id}
@@ -138,31 +153,17 @@ export function UserFilter({
               <div className="block overflow-hidden text-clip whitespace-nowrap">
                 {user.firstName} {user.lastName}
               </div>
-              <button
-                className="ml-2 hover:opacity-60"
+              <HoverOpacityButton
+                className="text-gray-500 text-xs hover:enabled:scale-100 ml-2 hover:opacity-60"
                 onClick={() => {
                   removeUserByIndex(index);
                 }}
               >
                 <FontAwesomeIcon icon={faXmark} />
-              </button>
+              </HoverOpacityButton>
             </div>
           ))}
-          {selectedUsers.length == 0 && (
-            <div className="w-min ml-2 opacity-30 pointer-events-none">
-              Empty
-            </div>
-          )}
         </div>
-
-        {/* Clear Button */}
-        <HoverOpacityButton
-          className="mt-2 mb-2 text-xs hover:enabled:scale-100"
-          disabled={selectedUsers.length == 0}
-          onClick={() => clearUsers()}
-        >
-          Clear
-        </HoverOpacityButton>
 
         {/* User search*/}
         <div className="relative mb-4">
