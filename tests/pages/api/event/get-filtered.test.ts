@@ -87,7 +87,6 @@ describe("GET /api/event", () => {
           }
         });
         const results: EventResponse[] = await res.json();
-
         expect(res.status).toBe(200);
         results.forEach((result, index) => {
           expect(result).toHaveProperty("id", expectedEvents[index]);

@@ -5,7 +5,11 @@ import {
 } from "@prisma/client";
 import { z, ZodIssue } from "zod";
 
-import { createEventSchema, updateEventSchema } from "@/schema/event";
+import {
+  createEventSchema,
+  getEventSchema,
+  updateEventSchema
+} from "@/schema/event";
 import {
   createRepairRequestSchema,
   updateRepairRequestSchema
@@ -22,6 +26,7 @@ export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 // Events
 export type Event = PrismaEvent;
 export type EventStatus = $Enums.EventStatus;
+export type GetEvents = z.infer<typeof getEventSchema>;
 export type CreateEvent = z.infer<typeof createEventSchema>;
 export type UpdateEvent = z.infer<typeof updateEventSchema>;
 

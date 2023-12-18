@@ -1,4 +1,40 @@
+import { EventStatus } from "@prisma/client";
 import { z } from "zod";
+
+import prisma from "@/lib/prisma";
+
+const stringOrArray = z.union([z.string(), z.array(z.string())]);
+
+const isValidEventStatus = (value: string[]): value is EventStatus[] => {
+  return value.every((status) => status in EventStatus);
+};
+
+/**
+ * Splits all strings by their comma delimitter into one large array
+ */
+const transformStringOrArray = (value: string | string[]) =>
+  (typeof value === "string"
+    ? value.length == 0
+      ? []
+      : value.split(",").map((item) => item.trim())
+    : value.flatMap((item) => item.split(",").map((item) => item.trim()))) ||
+  [];
+
+export const getEventSchema = z.object({
+  sortKey: z.string().refine((value) => value in prisma.event.fields, {
+    message: "Incorrect value for sortKey"
+  }),
+  sortMethod: z.enum(["asc", "desc"]),
+  searchWord: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  eventType: stringOrArray.transform(transformStringOrArray).optional(),
+  eventStatus: stringOrArray
+    .transform(transformStringOrArray)
+    .refine(isValidEventStatus)
+    .optional(),
+  createdBy: stringOrArray.transform(transformStringOrArray).optional()
+});
 
 export const createEventSchema = z
   .object({
