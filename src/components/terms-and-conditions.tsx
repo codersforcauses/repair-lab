@@ -14,7 +14,7 @@ interface TermsAndConditionsProps {
 }
 export const TermsAndConditions = ({
   control,
-  setValue
+  setValue,
 }: TermsAndConditionsProps) => {
   const { field, fieldState } = useController({
     control,
@@ -60,9 +60,9 @@ export const TermsAndConditions = ({
         <span>.</span>
       </label>
       <p className="-mt-4 text-xs text-red-500">{fieldState.error?.message}</p>
-
+      
       <Transition appear show={showPopup} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
+        <Dialog as="div" className="relative z-[60]" onClose={setShowPopup}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
