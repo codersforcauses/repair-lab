@@ -172,10 +172,10 @@ function Table() {
         case "daterange":
           return (
             <DateRangeFilter
-              startDate={filter.filter.startDate}
-              endDate={filter.filter.endDate}
-              onFilterChange={(startDate, endDate) =>
-                updateColumnFilter(column, { startDate, endDate })
+              minDate={filter.filter.minDate}
+              maxDate={filter.filter.maxDate}
+              onFilterChange={(minDate, maxDate) =>
+                updateColumnFilter(column, { minDate, maxDate })
               }
               onClose={onFilterClose}
             />

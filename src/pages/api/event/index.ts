@@ -21,8 +21,8 @@ async function getEvents(
     sortKey,
     sortMethod,
     searchWord,
-    startDate,
-    endDate,
+    minStartDate,
+    maxStartDate,
     eventType,
     eventStatus,
     createdBy
@@ -45,10 +45,10 @@ async function getEvents(
           // Add more fields to search if necessary
         ]
       }),
-      ...((startDate || endDate) && {
+      ...((minStartDate || maxStartDate) && {
         startDate: {
-          ...(startDate && { gte: new Date(startDate) }),
-          ...(endDate && { lte: new Date(endDate) })
+          ...(minStartDate && { gte: new Date(minStartDate) }),
+          ...(maxStartDate && { lte: new Date(maxStartDate) })
         }
       }),
       ...(eventType && {

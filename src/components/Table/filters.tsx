@@ -62,29 +62,29 @@ export function OptionFilter({
 export function DateRangeFilter({
   onClose,
   onFilterChange,
-  startDate,
-  endDate
+  minDate,
+  maxDate
 }: {
   onClose?: (event: MouseEvent) => void;
-  onFilterChange?: (startDate: string, endDate: string) => void;
-  startDate: string;
-  endDate: string;
+  onFilterChange?: (minDate: string, maxDate: string) => void;
+  minDate: string;
+  maxDate: string;
 }) {
   return (
     <FilterMenu onClose={(e) => onClose?.(e)}>
       <ConciseInput
         label="From"
-        id="startDate"
+        id="minDate"
         type="date"
-        value={startDate}
-        onChange={(value) => onFilterChange?.(value, endDate)}
+        value={minDate}
+        onChange={(value) => onFilterChange?.(value, maxDate)}
       />
       <ConciseInput
         label="To"
-        id="endDate"
+        id="maxDate"
         type="date"
-        value={endDate}
-        onChange={(value) => onFilterChange?.(startDate, value)}
+        value={maxDate}
+        onChange={(value) => onFilterChange?.(minDate, value)}
       />
     </FilterMenu>
   );

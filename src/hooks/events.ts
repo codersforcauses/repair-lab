@@ -34,7 +34,7 @@ export const useEvents = (
   sortKey: string,
   sortMethod: string,
   searchWord: string,
-  dateRange?: DateFilterData,
+  startDateRange?: DateFilterData,
   eventType?: string[],
   eventStatus?: string[],
   createdBy?: string[]
@@ -44,13 +44,13 @@ export const useEvents = (
       sortKey,
       sortMethod,
       searchWord,
-      startDate: dateRange?.startDate ?? "",
-      endDate: dateRange?.endDate ?? "",
-      ...(dateRange !== undefined &&
-        dateRange.startDate &&
-        dateRange.endDate && {
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate
+      minStartDate: startDateRange?.minDate ?? "",
+      maxStartDate: startDateRange?.maxDate ?? "",
+      ...(startDateRange !== undefined &&
+        startDateRange.minDate &&
+        startDateRange.maxDate && {
+          startDate: startDateRange.minDate,
+          endDate: startDateRange.maxDate
         }),
       ...(eventType !== undefined && { eventType: eventType.join(",") }),
       ...(eventStatus !== undefined && { eventStatus: eventStatus.join(",") }),
@@ -70,7 +70,7 @@ export const useEvents = (
       sortKey,
       sortMethod,
       searchWord,
-      dateRange,
+      startDateRange,
       eventType,
       eventStatus,
       createdBy

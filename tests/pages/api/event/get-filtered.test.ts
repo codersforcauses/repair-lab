@@ -64,8 +64,8 @@ describe("GET /api/event", () => {
     sortKey?: string;
     sortMethod?: string;
     searchWord?: string;
-    startDate?: string;
-    endDate?: string;
+    minStartDate?: string;
+    maxStartDate?: string;
     eventType?: string;
     eventStatus?: string;
     createdBy?: string;
@@ -129,8 +129,8 @@ describe("GET /api/event", () => {
   it("should be able to filter events by date", async () => {
     await testFilter(
       {
-        startDate: new Date("2023-11-25").toISOString(),
-        endDate: new Date("2023-12-1").toISOString()
+        minStartDate: new Date("2023-11-25").toISOString(),
+        maxStartDate: new Date("2023-12-1").toISOString()
       },
       ["ev-2"]
     );

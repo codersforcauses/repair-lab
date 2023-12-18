@@ -4,7 +4,7 @@ import { User } from "@/types";
 
 export type FilterType = "daterange" | "option" | "user";
 
-export type DateFilterData = { startDate: string; endDate: string };
+export type DateFilterData = { minDate: string; maxDate: string };
 
 type UserFilter = {
   type: "user";
@@ -39,7 +39,7 @@ export const useTableFilters = () => {
       else if (type === "daterange")
         newFilters[column] = {
           type: type,
-          filter: { startDate: "", endDate: "" }
+          filter: { minDate: "", maxDate: "" }
         };
       else if (type === "user") {
         newFilters[column] = {
@@ -64,11 +64,11 @@ export const useTableFilters = () => {
           existing.filter = newFilter;
         } else if (
           typeof existing.filter === "object" &&
-          "startDate" in existing.filter &&
-          "endDate" in existing.filter &&
+          "minDate" in existing.filter &&
+          "maxDate" in existing.filter &&
           typeof newFilter === "object" &&
-          "startDate" in newFilter &&
-          "endDate" in newFilter
+          "minDate" in newFilter &&
+          "maxDate" in newFilter
         ) {
           existing.filter = newFilter;
         } else {
@@ -91,7 +91,7 @@ export const useTableFilters = () => {
 
         if (newFilter.type === "user") newFilter.filter = [];
         else if (newFilter.type === "daterange")
-          newFilter.filter = { startDate: "", endDate: "" };
+          newFilter.filter = { minDate: "", maxDate: "" };
         else if (newFilter.type === "option")
           newFilter.filter = [...newFilter.options];
         acc[cur[0]] = newFilter;
@@ -108,8 +108,8 @@ export const useTableFilters = () => {
     switch (filter.type) {
       case "daterange":
         return (
-          filter.filter.startDate.length !== 0 ||
-          filter.filter.endDate.length !== 0
+          filter.filter.minDate.length !== 0 ||
+          filter.filter.maxDate.length !== 0
         );
       case "user":
         return filter.filter.length !== 0;
