@@ -45,5 +45,5 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
     }
   });
 
-  return res.status(204).json(null);
+  return res.status(204).end();
 }

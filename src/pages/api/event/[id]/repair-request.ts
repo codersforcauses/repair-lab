@@ -26,7 +26,10 @@ async function getRepairRequests(
   }
 
   const repairRequests = await prisma.repairRequest.findMany({
-    where: { event: { id: id as string } }
+    where: { event: { id: id as string } },
+    include: {
+      images: true
+    }
   });
 
   // TODO: make a singular version
