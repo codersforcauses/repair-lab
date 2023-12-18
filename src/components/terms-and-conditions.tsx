@@ -14,7 +14,7 @@ interface TermsAndConditionsProps {
 }
 export const TermsAndConditions = ({
   control,
-  setValue,
+  setValue
 }: TermsAndConditionsProps) => {
   const { field, fieldState } = useController({
     control,

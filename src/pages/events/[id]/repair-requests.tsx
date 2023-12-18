@@ -114,10 +114,7 @@ export default function RepairRequests() {
                   <div className="text-center">
                     <h1 className="text-xl font-bold">Add a repair request</h1>
                     <div className="max-w-full">
-                      <RepairAttemptForm onSignal={function (data: string): void {
-                        console.log("print" + data);
-                        hideForm();
-                      } } ></RepairAttemptForm>
+                      <RepairAttemptForm></RepairAttemptForm>
                     </div>
                   </div>
                 </Modal>

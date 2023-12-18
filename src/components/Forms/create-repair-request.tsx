@@ -23,17 +23,13 @@ export interface FormValues extends CreateRepairRequest {
   tncAccepted: boolean;
 }
 
-interface clickPermission {
-  onSignal: (data: string) => void;
-}
-
 const repairRequestFormSchema = createRepairRequestSchema.extend({
   tncAccepted: z.boolean().refine((val) => !!val, {
     message: "Please read through and accept the house rules."
   })
 });
 
-const Home: React.FC<clickPermission> = ({ onSignal }) => {
+const Home = () => {
   const { control, handleSubmit, setValue } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
@@ -62,16 +58,8 @@ const Home: React.FC<clickPermission> = ({ onSignal }) => {
     const [thumbnailImage, ...images] = keys;
     const updatedData = { ...data, thumbnailImage, images };
     createRepairRequest(updatedData);
-
-    
   };
 
-  
-  const permissionClicked = () => {
-    const message = 'close the modal'; 
-    onSignal(message); 
-  };
-  
   return (
     <div className="flex items-center justify-center p-4">
       <div className="flex w-screen flex-col justify-center gap-4 md:w-3/6 lg:w-full">
@@ -161,7 +149,7 @@ const Home: React.FC<clickPermission> = ({ onSignal }) => {
             control={control}
             rules={{ required: false }}
           />
-          
+
           <TermsAndConditions setValue={setValue} control={control} />
 
           <Button
@@ -179,4 +167,3 @@ const Home: React.FC<clickPermission> = ({ onSignal }) => {
 };
 
 export default Home;
-
