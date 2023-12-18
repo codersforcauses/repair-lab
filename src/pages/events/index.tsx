@@ -118,7 +118,8 @@ function Table() {
         );
       }
     });
-  }, [headers, initialiseColumnFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [headers]);
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
