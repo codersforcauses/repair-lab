@@ -3,7 +3,7 @@ import {
   Event as PrismaEvent,
   RepairRequest as PrismaRepairRequest
 } from "@prisma/client";
-import { z } from "zod";
+import { z, ZodIssue } from "zod";
 
 import { createEventSchema, updateEventSchema } from "@/schema/event";
 import {
@@ -95,4 +95,8 @@ export type RepairRequestResponse = {
   itemType: string;
   itemBrand: string;
   itemMaterial: string;
+};
+// TODO: standardise error response (string[] of messages?)
+export type ErrorResponse = {
+  message: string | ZodIssue[];
 };

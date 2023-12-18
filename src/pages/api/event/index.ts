@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
+import { EventStatus } from "@prisma/client";
 
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { EventResponse, EventStatus } from "@/types";
+import { ErrorResponse, EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -25,13 +26,18 @@ function paramToArray(param: string | string[] | undefined) {
   }
   return array;
 }
+function takeFirst(param: string | string[] | undefined) {
+  if (Array.isArray(param)) return param[0];
+  return param;
+}
+
 async function getEvents(
   req: NextApiRequest,
-  res: NextApiResponse<EventResponse[]>
+  res: NextApiResponse<EventResponse[] | ErrorResponse>
 ) {
   const {
-    sortKey,
-    sortMethod,
+    sortKey, // required
+    sortMethod, // required
     searchWord,
     startDate,
     endDate,
@@ -40,32 +46,48 @@ async function getEvents(
     createdBy
   } = req.query;
 
+  const safeSortMethod = takeFirst(sortMethod);
+  const safeSortKey = takeFirst(sortKey);
+  const safeSearchWord = takeFirst(searchWord);
+  const safeStartDate = takeFirst(startDate);
+  const safeEndDate = takeFirst(endDate);
+
+  if (!safeSortKey || !Object.keys(prisma.event.fields).includes(safeSortKey))
+    return res.status(400).json({ message: "Incorrect value for sortKey" });
+  if (!safeSortMethod || (safeSortMethod != "asc" && safeSortMethod != "desc"))
+    return res.status(400).json({ message: "Incorrect value for sortMethod" });
+
   const sortObj: { [key: string]: "asc" | "desc" } = {
-    [sortKey as string]: sortMethod as "asc" | "desc"
+    [safeSortKey]: safeSortMethod
   };
 
   const eventTypeList = paramToArray(eventType);
   const userIDList = paramToArray(createdBy);
-  const eventStatusList = paramToArray(eventStatus) as EventStatus[];
+  const eventStatusList = paramToArray(eventStatus);
+
+  const isEventStatus = (value: string): value is EventStatus =>
+    value in EventStatus;
+  if (eventStatusList && !eventStatusList.every(isEventStatus))
+    return res.status(400).json({ message: "Incorrect value for eventStatus" });
 
   const events = await prisma.event.findMany({
     where: {
-      ...(searchWord && {
+      ...(safeSearchWord && {
         OR: [
-          { name: { contains: searchWord as string, mode: "insensitive" } },
+          { name: { contains: safeSearchWord, mode: "insensitive" } },
           {
-            createdBy: { contains: searchWord as string, mode: "insensitive" }
+            createdBy: { contains: safeSearchWord, mode: "insensitive" }
           },
-          { location: { contains: searchWord as string, mode: "insensitive" } },
-          { eventType: { contains: searchWord as string, mode: "insensitive" } }
+          { location: { contains: safeSearchWord, mode: "insensitive" } },
+          { eventType: { contains: safeSearchWord, mode: "insensitive" } }
           // Add more fields to search if necessary
         ]
       }),
-      ...(startDate && {
-        startDate: { gte: new Date(startDate as string) }
-      }),
-      ...(endDate && {
-        startDate: { lte: new Date(endDate as string) }
+      ...((safeStartDate || safeEndDate) && {
+        startDate: {
+          ...(safeStartDate && { gte: new Date(safeStartDate) }),
+          ...(safeEndDate && { lte: new Date(safeEndDate) })
+        }
       }),
       ...(eventTypeList && {
         eventType: { in: eventTypeList }
