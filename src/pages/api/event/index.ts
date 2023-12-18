@@ -13,23 +13,6 @@ export default apiHandler({
   post: createEvent
 });
 
-function paramToArray(param: string | string[] | undefined) {
-  let array: string[] | undefined;
-  if (param === undefined) {
-    array = undefined;
-  } else if (typeof param === "string") {
-    if (!param) array = []; // empty string
-    else array = param.split(",").map((item) => item.trim());
-  } else if (Array.isArray(param)) {
-    array = param.flatMap((item) => item.split(",").map((item) => item.trim()));
-  }
-  return array;
-}
-function takeFirst(param: string | string[] | undefined) {
-  if (Array.isArray(param)) return param[0];
-  return param;
-}
-
 async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse[] | ErrorResponse>

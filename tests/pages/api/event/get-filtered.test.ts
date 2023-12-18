@@ -61,6 +61,8 @@ describe("GET /api/event", () => {
     });
   });
   type AllowedParams = {
+    sortKey?: string;
+    sortMethod?: string;
     searchWord?: string;
     startDate?: string;
     endDate?: string;
@@ -88,13 +90,34 @@ describe("GET /api/event", () => {
         });
         const results: EventResponse[] = await res.json();
         expect(res.status).toBe(200);
+        expect(results.length).toEqual(expectedEvents.length);
         results.forEach((result, index) => {
           expect(result).toHaveProperty("id", expectedEvents[index]);
         });
       }
     });
   };
+  const testBadFilter = async (filters: AllowedParams) => {
+    await testApiHandler({
+      handler,
+      params: {
+        sortKey: "startDate",
+        sortMethod: "asc",
+        ...filters
+      },
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        expect(res.status).toBe(400);
+      }
+    });
+  };
 
+  // RETURNS CORRECT VALUES
   it("should be able to filter events by search", async () => {
     await testFilter({ searchWord: "Jig" }, ["ev-1", "ev-2"]);
   });
@@ -121,5 +144,21 @@ describe("GET /api/event", () => {
   });
   it("should be able to filter events by multiple", async () => {
     await testFilter({ createdBy: "user_1", eventType: "Laptop" }, ["ev-1"]);
+  });
+  it("should return empty when none selected", async () => {
+    await testFilter({ eventType: "" }, []);
+  });
+
+  // CORRECTLY FAILS
+  it("should return 400 if invalid status passed", async () => {
+    await testBadFilter({ eventStatus: "WOOHOO" });
+  });
+  it("should return 400 if invalid sorting", async () => {
+    await testBadFilter({ sortKey: "WOOHOO" });
+    await testBadFilter({ sortMethod: "WOOHOO" });
+  });
+  it("should return 400 if no sorting", async () => {
+    await testBadFilter({ sortKey: undefined });
+    await testBadFilter({ sortMethod: undefined });
   });
 });
