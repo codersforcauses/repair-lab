@@ -60,7 +60,7 @@ export const TermsAndConditions = ({
         <span>.</span>
       </label>
       <p className="-mt-4 text-xs text-red-500">{fieldState.error?.message}</p>
-      
+
       <Transition appear show={showPopup} as={Fragment}>
         <Dialog as="div" className="relative z-[60]" onClose={setShowPopup}>
           <Transition.Child
