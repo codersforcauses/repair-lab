@@ -44,18 +44,12 @@ export const useEvents = (
       sortKey,
       sortMethod,
       searchWord,
-      minStartDate: startDateRange?.minDate ?? "",
-      maxStartDate: startDateRange?.maxDate ?? "",
-      ...(startDateRange !== undefined &&
-        startDateRange.minDate &&
-        startDateRange.maxDate && {
-          startDate: startDateRange.minDate,
-          endDate: startDateRange.maxDate
-        }),
+      ...(startDateRange?.minDate && { minStartDate: startDateRange.minDate }),
+      ...(startDateRange?.maxDate && { maxStartDate: startDateRange.maxDate }),
       ...(eventType !== undefined && { eventType: eventType.join(",") }),
       ...(eventStatus !== undefined && { eventStatus: eventStatus.join(",") }),
       ...(createdBy !== undefined &&
-        createdBy.length && { createdBy: createdBy.join(",") })
+        createdBy.length > 0 && { createdBy: createdBy.join(",") })
     });
 
     const url = `/event?${params.toString()}`;
