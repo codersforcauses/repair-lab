@@ -25,18 +25,13 @@ import {
   UserFilter
 } from "@/components/Table/filters";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { FilterType, useTableFilters } from "@/hooks/filters";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event, EventResponse } from "@/types";
+import { CreateEvent, EventResponse } from "@/types";
 
 function Table() {
   const router = useRouter();
-
-  const upcoming: EventStatus = "UPCOMING";
-  const ongoing: EventStatus = "ONGOING";
-  const completed: EventStatus = "COMPLETED";
 
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
@@ -62,8 +57,6 @@ function Table() {
     isFilterActive
   } = useTableFilters();
 
-  const [showCreateForm, setShowCreateForm] = useState(false);
-
   const { mutate: createEvent } = useCreateEvent();
   const { data: eventData, isLoading: isEventsLoading } = useEvents(
     sortKey,
@@ -84,18 +77,6 @@ function Table() {
       : undefined
   );
   const { data: itemTypes } = useItemTypes();
-
-  const { user, isLoaded, role } = useAuth();
-
-  const [formData, setFormData] = useState<Partial<Event>>({
-    id: undefined,
-    name: "",
-    createdBy: "",
-    location: "",
-    startDate: undefined,
-    eventType: "",
-    status: undefined
-  });
 
   // The label is what users see, the key is what the server uses
   // TODO: make this a record?
@@ -137,30 +118,10 @@ function Table() {
         );
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headers]);
+  }, [headers, initialiseColumnFilter]);
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
-
-  // formats input data before passing it on
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-
-    // Convert startDate to a Date object before assigning it
-    if (name === "startDate") {
-      const formattedDate = new Date(value);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: formattedDate
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value
-      }));
-    }
-  }
 
   function handleButtonClick(key: string) {
     // If the clicked column is already the sort key, toggle the sort method
@@ -303,7 +264,7 @@ function Table() {
         {/* Search bar above table */}
         <div className="relative w-5/12 p-4">
           <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
+            className="h-10 w-full rounded-3xl border-none bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"

@@ -223,19 +223,18 @@ function FilterMenu({
   const filterRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as HTMLDivElement)
+      )
+        onClose(event);
+    };
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
-  }, []);
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      filterRef.current &&
-      !filterRef.current.contains(event.target as HTMLDivElement)
-    )
-      onClose(event);
-  };
+  }, [onClose]);
 
   return (
     <div
