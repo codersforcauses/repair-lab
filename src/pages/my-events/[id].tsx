@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Tab } from '@headlessui/react'
 
+import RequestView from "@/components/EventBox/Request-view";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
 import { useRepairRequests } from "@/hooks/events";
@@ -69,10 +70,18 @@ const Home = () => {
           </Tab.List>
 
 
-          <Tab.Panels className="flex-col text-center break-words justify-center">
+          <Tab.Panels className="flex-col text-center break-words justify-center pb-3">
 
-            <Tab.Panel><div className=""> Content1 </div></Tab.Panel>
-            <Tab.Panel><div className="">Content 2</div></Tab.Panel>
+            <Tab.Panel><div className="">
+              <RequestView />
+              <RequestView />
+            </div></Tab.Panel>
+            <Tab.Panel><div className="">
+              <RequestView />
+              <RequestView />
+              <RequestView />
+              <RequestView />
+            </div></Tab.Panel>
 
 
 
