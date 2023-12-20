@@ -18,9 +18,9 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
   const sortObj: { [key: string]: "asc" | "desc" } = {};
   sortObj[sortKey as string] = sortMethod as "asc" | "desc";
   const { userId } = getAuth(req);
-  const Role = await userService.getRole(userId as string);
+  const role = await userService.getRole(userId as string);
   const isRepairer =
-    Role == UserRole.REPAIRER
+    role == UserRole.REPAIRER
       ? {
           volunteers: {
             has: userId
