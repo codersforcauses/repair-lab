@@ -1,3 +1,6 @@
+import { faGear, faWrench } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const LoadingSpinner = () => {
   return (
     <div className="flex justify-center">
@@ -17,6 +20,43 @@ const LoadingSpinner = () => {
           fill="currentFill"
         />
       </svg>
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+
+const LoadingSpinnerAlt2 = () => {
+  return (
+    <div className="flex justify-center relative">
+      <FontAwesomeIcon
+        icon={faGear}
+        className="animate-spin text-primary-500 text-[2.5rem]"
+      />
+      <div className=" bg-white rounded-full w-[1.2rem] h-[1.2rem] absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]" />
+      <FontAwesomeIcon
+        icon={faWrench}
+        className=" text-zinc-600 text-[1.5rem] absolute transform translate-x-[-20%] translate-y-[50%]"
+      />
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+
+const LoadingSpinnerAlt = () => {
+  return (
+    <div className="flex justify-center relative w-12 h-12 scale-[10]">
+      <div className="absolute top-[0] left-[0] transform w-1 h-1">
+        <FontAwesomeIcon
+          icon={faGear}
+          className="animate-spin text-primary-500 text-[1.5rem]"
+        />
+      </div>
+      <div className="absolute top-[30%] left-[30%] transform w-1 h-1">
+        <FontAwesomeIcon
+          icon={faGear}
+          className="animate-spin text-primary-500 text-[2rem]"
+        />
+      </div>
       <span className="sr-only">Loading...</span>
     </div>
   );
