@@ -1,9 +1,10 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { faSearch, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
+import SearchBar from "@/components/Search/SearchBar";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { isoToDatePickerValue } from "@/lib/datetime";
@@ -166,20 +167,11 @@ export function UserFilter({
         </div>
 
         {/* User search*/}
-        <div className="relative mb-4">
-          <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
-            type="search"
-            name="search"
-            placeholder="Search"
-            onChange={(e) => setUserSearch(e.target.value)}
-          />
+        <SearchBar
+          className="mb-4"
+          onSearchChange={(text) => setUserSearch(text)}
+        />
 
-          <FontAwesomeIcon
-            icon={faSearch}
-            className="absolute right-4 top-2/4 -translate-y-2/4 transform pointer-events-none text-gray-500"
-          />
-        </div>
         {/* Results list*/}
 
         {isLoading ? (

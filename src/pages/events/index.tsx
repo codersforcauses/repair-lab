@@ -7,8 +7,7 @@ import {
   faChevronUp,
   faFilter,
   faFilterCircleXmark,
-  faPlus,
-  faSearch
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
@@ -19,6 +18,7 @@ import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
+import SearchBar from "@/components/Search/SearchBar";
 import {
   DateRangeFilter,
   OptionFilter,
@@ -251,7 +251,7 @@ function Table() {
         {/* Clear filter button */}
         <div className="p-4 text-center ">
           <HoverOpacityButton
-            className="h-10 w-10 rounded-full bg-gray-200 text-gray-500"
+            className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
             title="Clear Filters"
             onClick={() => resetFilters()}
           >
@@ -263,25 +263,15 @@ function Table() {
         </div>
 
         {/* Search bar above table */}
-        <div className="relative w-5/12 p-4">
-          <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
-            type="search"
-            name="search"
-            placeholder="Search"
-            onChange={(e) => setSearchWord(e.target.value)}
-          />
-
-          <FontAwesomeIcon
-            className="absolute right-8 top-2/4 -translate-y-2/4 transform pointer-events-none text-gray-500"
-            icon={faSearch}
-          />
-        </div>
+        <SearchBar
+          className="w-5/12 p-4"
+          onSearchChange={(text) => setSearchWord(text)}
+        />
 
         {/* Add event button*/}
         <div className=" p-4 text-center ">
           <HoverOpacityButton
-            className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
+            className="h-10 w-10 rounded-full bg-gray-100 text-gray-500 focus:shadow-md"
             onClick={() => setShowAddModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
