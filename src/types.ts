@@ -81,6 +81,7 @@ export type EventResponse = {
   /** ISO date string */
   endDate: string;
 };
+
 export type RepairRequestResponse = {
   id: string;
   createdBy: User;
@@ -100,6 +101,7 @@ export type RepairRequestResponse = {
   itemType: string;
   itemBrand: string;
   itemMaterial: string;
+  images: string[];
 };
 // TODO: standardise error response (string[] of messages?)
 export type ErrorResponse = {
