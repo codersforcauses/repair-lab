@@ -70,9 +70,9 @@ export default function RepairRequests() {
                   </div>
                 </div>
               </div>
-              <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
+              <div className="relative grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
                 {!repairRequests ? (
-                  <div className="w-full h-full flex items-center justify-center ">
+                  <div className="w-full h-full flex items-center justify-center absolute">
                     <LoadingSpinner />
                   </div>
                 ) : (
