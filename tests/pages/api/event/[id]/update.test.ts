@@ -13,12 +13,8 @@ describe("PATCH /api/event/:id", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
-
-    vi.mock("@clerk/nextjs/server", () => {
-      return {
-        getAuth: vi.fn().mockReturnValue({ userId: "Test" })
-      };
-    });
+    vi.mock("@clerk/nextjs/server");
+    vi.mock("@clerk/nextjs");
   });
 
   it("should return 400 status code on invalid fields", async () => {

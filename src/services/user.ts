@@ -35,6 +35,18 @@ async function getMany(options: PaginationOptions) {
   );
 }
 
+async function getUserMapFromIds(userIds: string[]) {
+  const users = await clerkClient.users.getUserList({ userId: userIds });
+  const userMap = users.reduce(
+    (map, clerkUser) => {
+      map[clerkUser.id] = toResponse(clerkUser);
+      return map;
+    },
+    {} as Partial<Record<string, User>>
+  );
+  return userMap;
+}
+
 async function getUser(userId: string) {
   const user = await clerkClient.users.getUser(userId);
   return toResponse(user);
@@ -72,12 +84,25 @@ function toResponse(user: ClerkUser): User {
     emailAddress
   };
 }
+/** Used when a user cannot be found in clerk */
+function unknownUser(userId: string): User {
+  // TODO: stop force type casting userrole
+  return {
+    id: userId,
+    firstName: "Unknown",
+    lastName: "",
+    emailAddress: "Unknown",
+    role: "Unknown" as UserRole
+  };
+}
 
 const userService = {
   getMany,
   getUser,
   updateRole,
-  getRole
+  getRole,
+  getUserMapFromIds,
+  unknownUser
 };
 
 export default userService;
