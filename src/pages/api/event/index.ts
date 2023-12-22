@@ -22,8 +22,10 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
   const isRepairer =
     role == UserRole.REPAIRER
       ? {
-          volunteers: {
-            has: userId
+          eventRepairer: {
+            some: {
+              userId: userId as string
+            }
           }
         }
       : {};
@@ -31,6 +33,7 @@ async function getEvents(req: NextApiRequest, res: NextApiResponse<Event[]>) {
   const events = await prisma.event.findMany({
     where: {
       ...isRepairer,
+
       OR: searchWord
         ? [
             {
