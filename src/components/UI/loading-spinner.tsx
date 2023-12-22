@@ -4,14 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
     <div className={className}>
-      <div className="flex justify-center relative w-12 h-12 text-sm">
-        <div className="absolute top-[0] left-[0] transform w-1 h-1">
+      <div className="relative w-12 h-12 text-sm">
+        <div className="absolute w-1 h-1">
           <FontAwesomeIcon
             icon={faGear}
             className="animate-spin text-primary-500 text-[1.5rem]"
           />
         </div>
-        <div className="absolute top-[15px] left-[15px] transform w-1 h-1 bol">
+        <div className="absolute top-[15px] left-[15px] transform w-1 h-1">
           <FontAwesomeIcon
             icon={faGear}
             className="animate-reverse-spin text-primary-500 text-[2rem]"
