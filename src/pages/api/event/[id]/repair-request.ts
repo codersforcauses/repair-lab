@@ -26,10 +26,12 @@ async function getRepairRequests(
   }
 
   const repairRequests = await prisma.repairRequest.findMany({
-    where: { event: { id: eventId } }
+    where: { event: { id: eventId } },
+    include: {
+      images: true
+    }
   });
 
-  // TODO: Generate GET presigned urls for images in S3.
   // TODO: make a singular version
   const repairRequestResponse =
     await repairRequestService.toClientResponse(repairRequests);
