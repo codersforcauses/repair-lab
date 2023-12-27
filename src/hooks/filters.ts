@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { z } from "zod";
 
+import { httpClient } from "@/lib/base-http-client";
 import { User } from "@/types";
 
 export type FilterType = "daterange" | "option" | "user";
@@ -22,34 +24,151 @@ type OptionFilter = {
 
 type Filter = UserFilter | DateFilter | OptionFilter;
 
-export const useTableFilters = () => {
+export const useTableFilters = (
+  filters: {
+    columnKey: string;
+    filterType: FilterType;
+    filterOptions?: string[];
+  }[],
+  saveInURL: boolean = false
+) => {
+  const userCache = useRef<Partial<Record<string, User>>>();
+  // next router does not like frequent updates, using window.location
+
+  const initialiseUserFilter = (columnKey: string): UserFilter => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const savedState = saveInURL ? searchParams.get(columnKey) : null;
+    return {
+      type: "user",
+      filter:
+        savedState != null
+          ? savedState
+              .split(",")
+              .map((userId) => userCache.current?.[userId])
+              .filter((u): u is User => u !== undefined)
+          : []
+    };
+  };
+
+  const initialiseDateFilter = (columnKey: string): DateFilter => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const getValue = (suffix: string) =>
+      saveInURL
+        ? dateOrNull(searchParams.get(`${columnKey}-${suffix}`)) ?? ""
+        : "";
+
+    const min = getValue("min");
+    const max = getValue("max");
+
+    return { type: "daterange", filter: { minDate: min, maxDate: max } };
+  };
+
+  const initialiseOptionFilter = (
+    columnKey: string,
+    filterOptions: string[]
+  ): OptionFilter => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const savedState = saveInURL ? searchParams.get(columnKey) : null;
+    const initial =
+      savedState != null
+        ? // Ensure URL has actual options
+          savedState.split(",").filter((i) => filterOptions?.includes(i))
+        : filterOptions;
+
+    return {
+      type: "option",
+      filter: initial || [],
+      options: filterOptions || []
+    };
+  };
+
+  const initialise = () =>
+    filters.reduce(
+      (acc, { columnKey, filterType, filterOptions }) => {
+        const initialiserMap = {
+          user: initialiseUserFilter,
+          daterange: initialiseDateFilter,
+          option: () => initialiseOptionFilter(columnKey, filterOptions ?? [])
+        };
+
+        acc[columnKey] = initialiserMap[filterType]?.(columnKey);
+
+        return acc;
+      },
+      {} as Partial<Record<string, Filter>>
+    );
+
   const [columnFilters, setColumnFilters] = useState<
     Partial<Record<string, Filter>>
   >({});
 
-  function initialiseColumnFilter(
-    column: string,
-    type: FilterType,
-    options?: string[]
-  ) {
-    setColumnFilters((currentFilters) => {
-      const newFilters = { ...currentFilters };
-      if (type === "option" && options)
-        newFilters[column] = { type, options, filter: options };
-      else if (type === "daterange")
-        newFilters[column] = {
-          type: type,
-          filter: { minDate: "", maxDate: "" }
-        };
-      else if (type === "user") {
-        newFilters[column] = {
-          type: type,
-          filter: []
-        };
-      }
-      return newFilters;
+  const initialiseFilters = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const userIds: string[] = [];
+    filters.forEach((filter) => {
+      const urlVal = searchParams.get(filter.columnKey);
+      if (urlVal && filter.filterType === "user")
+        userIds.push(...urlVal.split(","));
     });
-  }
+    // If we have users to fetch, fetch them first and then initialise, otherwise just initialise
+    if (userIds.length > 0) {
+      const fetchUsers = async () => {
+        // todo: react query
+        const users = (
+          await httpClient.get<User[]>(`/user/list?ids=${userIds.join(",")}`)
+        ).data;
+        userCache.current = users.reduce(
+          (map, user) => {
+            map[user.id] = user;
+            return map;
+          },
+          {} as Partial<Record<string, User>>
+        );
+        setColumnFilters(initialise);
+      };
+      fetchUsers();
+    } else setColumnFilters(initialise);
+  };
+
+  useEffect(() => {
+    initialiseFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
+
+  const updateURL = (newFilters: Partial<Record<string, Filter>>) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (!saveInURL) return;
+    const params = new URLSearchParams(searchParams);
+    for (const key in newFilters) {
+      const value = newFilters[key];
+      if (!value) continue;
+      params.delete(key);
+      // SAVE USER IDS IN URL
+      if (value.type == "user" && value.filter.length > 0) {
+        params.append(key, value.filter.map((user) => user.id).join(","));
+      }
+      // SAVE OPTIONS IN URL
+      else if (
+        value.type == "option" &&
+        value.filter.length != value.options.length
+      ) {
+        params.append(key, value.filter.join(","));
+      }
+      // SAVE DATES IN URL
+      else if (value.type == "daterange") {
+        if (value.filter.minDate)
+          params.append(`${key}-min`, value.filter.minDate);
+        if (value.filter.maxDate)
+          params.append(`${key}-max`, value.filter.maxDate);
+      }
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      "",
+      newUrl
+    );
+  };
 
   function updateColumnFilter(
     column: string,
@@ -77,6 +196,7 @@ export const useTableFilters = () => {
 
         newFilters[column] = existing;
       }
+      updateURL(newFilters);
       return newFilters;
     });
   }
@@ -97,6 +217,7 @@ export const useTableFilters = () => {
         acc[cur[0]] = newFilter;
         return acc;
       }, {});
+      updateURL(newFilters);
       return newFilters;
     });
   };
@@ -122,9 +243,16 @@ export const useTableFilters = () => {
 
   return {
     columnFilters,
-    initialiseColumnFilter,
     updateColumnFilter,
     resetFilters,
     isFilterActive
   };
+};
+
+const dateOrNull = (value: string | null) => {
+  try {
+    return value ? z.string().datetime().parse(value) : undefined;
+  } catch {
+    return undefined;
+  }
 };

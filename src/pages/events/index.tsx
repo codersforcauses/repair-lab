@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import {
@@ -18,7 +18,7 @@ import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
-import SearchBar from "@/components/Search/SearchBar";
+import SearchBar, { SearchBarRef } from "@/components/Search/SearchBar";
 import {
   DateRangeFilter,
   OptionFilter,
@@ -41,45 +41,11 @@ function Table() {
 
     return `${day}/${month}/${year}`;
   }
-
-  const [sortKey, setSortKey] = useState<string>("startDate");
-  const [searchWord, setSearchWord] = useState<string>("");
-  const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
-
-  // Filtering
-  const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
-
-  const {
-    columnFilters,
-    initialiseColumnFilter,
-    updateColumnFilter,
-    resetFilters,
-    isFilterActive
-  } = useTableFilters();
-
   const { mutate: createEvent } = useCreateEvent();
-  const { data: eventData, isLoading: isEventsLoading } = useEvents(
-    sortKey,
-    sortMethod,
-    searchWord,
-    // TODO: find way to shorten this
-    columnFilters["startDate"]?.type == "daterange"
-      ? columnFilters["startDate"]?.filter
-      : undefined,
-    columnFilters["eventType"]?.type == "option"
-      ? columnFilters["eventType"]?.filter
-      : undefined,
-    columnFilters["status"]?.type == "option"
-      ? columnFilters["status"]?.filter
-      : undefined,
-    columnFilters["createdBy"]?.type == "user"
-      ? columnFilters["createdBy"]?.filter.map((u) => u.id)
-      : undefined
-  );
-  const { data: itemTypes } = useItemTypes();
+
+  const { data: itemTypes, isLoading: isItemTypesLoading } = useItemTypes();
 
   // The label is what users see, the key is what the server uses
-  // TODO: make this a record?
   const headers: {
     key: string;
     label: string;
@@ -107,19 +73,43 @@ function Table() {
     [itemTypes]
   );
 
-  // Initialise filters
-  useEffect(() => {
-    headers.forEach((header) => {
-      if (header.filterType) {
-        initialiseColumnFilter(
-          header.key,
-          header.filterType,
-          header.filterOptions
-        );
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headers]);
+  const filters = useMemo(
+    () =>
+      headers
+        .filter((h) => h.filterType)
+        .map((h) => ({
+          columnKey: h.key,
+          filterType: h.filterType as FilterType, // TS cannot figure out that its not null
+          filterOptions: h.filterOptions
+        })),
+    [headers]
+  );
+  // Filtering
+  const { columnFilters, updateColumnFilter, resetFilters, isFilterActive } =
+    useTableFilters(filters, true);
+  const [openFilterMenu, setOpenFilterMenu] = useState<string>("");
+  const [sortKey, setSortKey] = useState<string>("startDate");
+  const [searchWord, setSearchWord] = useState<string>("");
+  const searchBarRef = useRef<SearchBarRef>(null);
+  const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
+  const { data: eventData, isLoading: isEventsLoading } = useEvents(
+    sortKey,
+    sortMethod,
+    searchWord,
+    // TODO: find way to shorten this
+    columnFilters["startDate"]?.type == "daterange"
+      ? columnFilters["startDate"]?.filter
+      : undefined,
+    columnFilters["eventType"]?.type == "option"
+      ? columnFilters["eventType"]?.filter
+      : undefined,
+    columnFilters["status"]?.type == "option"
+      ? columnFilters["status"]?.filter
+      : undefined,
+    columnFilters["createdBy"]?.type == "user"
+      ? columnFilters["createdBy"]?.filter.map((u) => u.id)
+      : undefined
+  );
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
@@ -223,7 +213,6 @@ function Table() {
       }
     });
   };
-
   return (
     <div>
       {/* HEADER BAR*/}
@@ -253,7 +242,10 @@ function Table() {
           <HoverOpacityButton
             className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
             title="Clear Filters"
-            onClick={() => resetFilters()}
+            onClick={() => {
+              resetFilters();
+              searchBarRef.current?.clearSearch();
+            }}
           >
             <FontAwesomeIcon
               icon={faFilterCircleXmark}
@@ -266,6 +258,8 @@ function Table() {
         <SearchBar
           className="w-5/12 p-4"
           onSearchChange={(text) => setSearchWord(text)}
+          saveInURL={true}
+          ref={searchBarRef}
         />
 
         {/* Add event button*/}
@@ -287,7 +281,11 @@ function Table() {
       </div>
 
       {/* main table*/}
-      <div className="flex justify-center">
+      <div
+        className={`flex justify-center ${
+          isItemTypesLoading ? "opacity-50 pointer-events-none" : ""
+        }`}
+      >
         <div className="container block w-full justify-center">
           <table className="w-10/12 table-auto m-auto">
             <thead>
