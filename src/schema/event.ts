@@ -9,16 +9,7 @@ const isValidEventStatus = (value: string[]): value is EventStatus[] => {
   return value.every((status) => status in EventStatus);
 };
 
-/**
- * Splits all strings by their comma delimitter into one large array
- */
-const transformStringOrArray = (value: string | string[]) =>
-  (typeof value === "string"
-    ? value.length == 0
-      ? []
-      : value.split(",").map((item) => item.trim())
-    : value.flatMap((item) => item.split(",").map((item) => item.trim()))) ||
-  [];
+const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 
 export const getEventSchema = z.object({
   sortKey: z.string().refine((value) => value in prisma.event.fields, {
@@ -28,12 +19,12 @@ export const getEventSchema = z.object({
   searchWord: z.string().optional(),
   minStartDate: z.string().optional(),
   maxStartDate: z.string().optional(),
-  eventType: stringOrArray.transform(transformStringOrArray).optional(),
+  eventType: stringOrArray.transform(toArray<string>).optional(),
   eventStatus: stringOrArray
-    .transform(transformStringOrArray)
+    .transform(toArray<string>)
     .refine(isValidEventStatus)
     .optional(),
-  createdBy: stringOrArray.transform(transformStringOrArray).optional()
+  createdBy: stringOrArray.transform(toArray<string>).optional()
 });
 
 export const createEventSchema = z

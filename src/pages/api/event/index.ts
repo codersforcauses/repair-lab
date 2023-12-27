@@ -58,10 +58,9 @@ async function getEvents(
         status: { in: eventStatus }
       }),
       // positive search - do not allow length 0
-      ...(createdBy &&
-        createdBy.length != 0 && {
-          createdBy: { in: createdBy }
-        })
+      ...(createdBy && {
+        createdBy: { in: createdBy }
+      })
     },
     orderBy: sortObj
   });

@@ -66,9 +66,9 @@ describe("GET /api/event", () => {
     searchWord?: string;
     minStartDate?: string;
     maxStartDate?: string;
-    eventType?: string;
-    eventStatus?: string;
-    createdBy?: string;
+    eventType?: string[];
+    eventStatus?: string[];
+    createdBy?: string[];
   };
   const testFilter = async (
     filters: AllowedParams,
@@ -123,7 +123,7 @@ describe("GET /api/event", () => {
   });
 
   it("should be able to filter events by user", async () => {
-    await testFilter({ createdBy: "user_2" }, ["ev-3"]);
+    await testFilter({ createdBy: ["user_2"] }, ["ev-3"]);
   });
 
   it("should be able to filter events by date", async () => {
@@ -137,21 +137,23 @@ describe("GET /api/event", () => {
   });
 
   it("should be able to filter events by event types", async () => {
-    await testFilter({ eventType: "Clock,Sponge" }, ["ev-2", "ev-3"]);
+    await testFilter({ eventType: ["Clock", "Sponge"] }, ["ev-2", "ev-3"]);
   });
   it("should be able to filter events by event status", async () => {
-    await testFilter({ eventStatus: "COMPLETED" }, ["ev-1"]);
+    await testFilter({ eventStatus: ["COMPLETED"] }, ["ev-1"]);
   });
   it("should be able to filter events by multiple", async () => {
-    await testFilter({ createdBy: "user_1", eventType: "Laptop" }, ["ev-1"]);
+    await testFilter({ createdBy: ["user_1"], eventType: ["Laptop"] }, [
+      "ev-1"
+    ]);
   });
   it("should return empty when none selected", async () => {
-    await testFilter({ eventType: "" }, []);
+    await testFilter({ eventType: [] }, []);
   });
 
   // CORRECTLY FAILS
   it("should return 400 if invalid status passed", async () => {
-    await testBadFilter({ eventStatus: "WOOHOO" });
+    await testBadFilter({ eventStatus: ["WOOHOO"] });
   });
   it("should return 400 if invalid sorting", async () => {
     await testBadFilter({ sortKey: "WOOHOO" });

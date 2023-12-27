@@ -45,12 +45,16 @@ export const useEvents = (
       sortMethod,
       searchWord,
       ...(startDateRange?.minDate && { minStartDate: startDateRange.minDate }),
-      ...(startDateRange?.maxDate && { maxStartDate: startDateRange.maxDate }),
-      ...(eventType !== undefined && { eventType: eventType.join(",") }),
-      ...(eventStatus !== undefined && { eventStatus: eventStatus.join(",") }),
-      ...(createdBy !== undefined &&
-        createdBy.length > 0 && { createdBy: createdBy.join(",") })
+      ...(startDateRange?.maxDate && { maxStartDate: startDateRange.maxDate })
     });
+    // include the param even if empty array so that the API knows to return nothing (for UX)
+    const negativeSearch = (paramName: string, values?: string[]) => {
+      if (values?.length == 0) values = [""];
+      values?.forEach((v) => params.append(paramName, v));
+    };
+    negativeSearch("eventStatus", eventStatus);
+    negativeSearch("eventType", eventType);
+    createdBy?.forEach((v) => params.append("createdBy", v));
 
     const url = `/event?${params.toString()}`;
 
