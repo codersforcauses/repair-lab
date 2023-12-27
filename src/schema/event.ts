@@ -9,7 +9,13 @@ const isValidEventStatus = (value: string[]): value is EventStatus[] => {
   return value.every((status) => status in EventStatus);
 };
 
-const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
+const toArray = <T>(value: T | T[]) => {
+  if (typeof value === "string" && value.trim() === "") {
+    return [] as T[]; // Return an empty array for an empty string
+  }
+
+  return Array.isArray(value) ? value : [value];
+};
 
 export const getEventSchema = z.object({
   sortKey: z.string().refine((value) => value in prisma.event.fields, {
@@ -17,8 +23,8 @@ export const getEventSchema = z.object({
   }),
   sortMethod: z.enum(["asc", "desc"]),
   searchWord: z.string().optional(),
-  minStartDate: z.string().optional(),
-  maxStartDate: z.string().optional(),
+  minStartDate: z.string().datetime().optional(),
+  maxStartDate: z.string().datetime().optional(),
   eventType: stringOrArray.transform(toArray<string>).optional(),
   eventStatus: stringOrArray
     .transform(toArray<string>)

@@ -66,9 +66,9 @@ describe("GET /api/event", () => {
     searchWord?: string;
     minStartDate?: string;
     maxStartDate?: string;
-    eventType?: string[];
-    eventStatus?: string[];
-    createdBy?: string[];
+    eventType?: string | string[];
+    eventStatus?: string | string[];
+    createdBy?: string | string[];
   };
   const testFilter = async (
     filters: AllowedParams,
@@ -149,6 +149,9 @@ describe("GET /api/event", () => {
   });
   it("should return empty when none selected", async () => {
     await testFilter({ eventType: [] }, []);
+    await testFilter({ eventStatus: [] }, []);
+    await testFilter({ eventType: "" }, []);
+    await testFilter({ eventStatus: "" }, []);
   });
 
   // CORRECTLY FAILS
@@ -162,5 +165,8 @@ describe("GET /api/event", () => {
   it("should return 400 if no sorting", async () => {
     await testBadFilter({ sortKey: undefined });
     await testBadFilter({ sortMethod: undefined });
+  });
+  it("should return 400 if invalid date", async () => {
+    await testBadFilter({ minStartDate: "HAHA" });
   });
 });
