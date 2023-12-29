@@ -9,18 +9,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
+import { SortingState } from "@tanstack/react-table";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
+import { Pagination, PaginationState } from "@/components/pagination";
 import ProfilePopover from "@/components/ProfilePopover";
+import FilterGroup, { FilterState } from "@/components/table/filter-group";
+import Search from "@/components/table/search";
+import Table from "@/components/table/table";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, Event, EventResponse } from "@/types";
+import { CreateEvent, Event } from "@/types";
 
-function Table() {
+function EventTable() {
   const router = useRouter();
 
   const upcoming: EventStatus = "UPCOMING";
@@ -133,6 +138,12 @@ function Table() {
     });
   };
 
+  const [filterState, setFilterState] = useState<FilterState>({});
+  const [pagination, onPaginationChange] = useState<PaginationState>({
+    total: 100
+  });
+  const [sorting, onSortingChange] = useState<SortingState>([]);
+
   return (
     <div>
       {/* HEADER BAR*/}
@@ -156,111 +167,110 @@ function Table() {
         </div>
       </div>
 
-      {/* Search bar above table */}
-      <div className="flex justify-center">
-        <div className="relative w-5/12 p-4">
-          <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
-            type="search"
-            name="search"
-            placeholder="Search"
-            onChange={(e) => setSearchWord(e.target.value)}
+      <div className="pt-4 px-16 flex flex-col gap-4">
+        <div className="w-full flex justify-between">
+          <FilterGroup
+            value={filterState}
+            onChange={setFilterState}
+            filters={[
+              {
+                title: "Type",
+                name: "Type",
+                options: [
+                  { id: "All", text: "all" },
+                  { id: "test", text: "test" }
+                ]
+              },
+              {
+                title: "Type2",
+                name: "Type2",
+                options: [
+                  { id: "All", text: "all" },
+                  { id: "test", text: "test" }
+                ]
+              }
+            ]}
           />
-          <button
-            className="absolute right-8 top-2/4 -translate-y-2/4 transform cursor-pointer text-gray-500"
-            onClick={() => {
-              // Handle search submit action here
-              console.log("Search submitted");
+          <div className="flex gap-4 items-center">
+            <Search
+              className="relative w-5/12 flex-1 "
+              value={searchWord}
+              onChange={setSearchWord}
+              afterInput={
+                <button
+                  className="absolute right-8 top-1/2 -translate-y-1/2 transform cursor-pointer text-gray-500"
+                  onClick={() => {
+                    // Handle search submit action here
+                    console.log("Search submitted");
+                  }}
+                >
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+              }
+            />
+            <div className="text-center">
+              <button
+                className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
+                onClick={() => setShowAddModal(true)}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+              <Modal
+                setShowPopup={setShowAddModal}
+                showModal={showAddModal}
+                height="h-3/4"
+              >
+                <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
+              </Modal>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <Table
+            loading={isEventsLoading}
+            data={eventData}
+            state={{
+              sorting
             }}
-          >
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
+            onSortingChange={onSortingChange}
+            columns={[
+              {
+                accessorKey: "name",
+                header: "Event Name",
+                cell: (info) => (
+                  <a href={`/events/${info.row.original.id}/repair-requests`}>
+                    {info.getValue()}
+                  </a>
+                ),
+                enableSorting: true
+              },
+              {
+                accessorFn: (row) =>
+                  [row.createdBy.firstName, row.createdBy.lastName]
+                    .filter((n) => n)
+                    .join(" "),
+                header: "Created By"
+              },
+              { accessorKey: "location", header: "Location" },
+              {
+                accessorFn: (row) => formatDate(String(row.startDate)),
+                header: "Date"
+              },
+              { accessorKey: "eventType", header: "Type" },
+              { accessorKey: "status", header: "Status" },
+              {
+                header: "Edit",
+                cell: (info) => (
+                  <EventFormEditButton props={info.row.original} />
+                )
+              }
+            ]}
+          />
         </div>
-
-        {/* Add event button*/}
-        <div className=" p-4 text-center ">
-          <button
-            className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
-            onClick={() => setShowAddModal(true)}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-          <Modal
-            setShowPopup={setShowAddModal}
-            showModal={showAddModal}
-            height="h-3/4"
-          >
-            <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
-          </Modal>
-        </div>
-      </div>
-
-      {/* main table*/}
-      <div className="flex justify-center">
-        <div className="container flex w-full justify-center overflow-hidden">
-          {isEventsLoading ? (
-            "Loading..."
-          ) : (
-            <table className="w-10/12 table-auto overflow-hidden rounded-lg">
-              <thead>
-                <tr className="border-b bg-lightAqua-200 pb-10 text-left ">
-                  {headers.map((col) => (
-                    <th key={col.key} className="p-2.5 pl-5 font-normal">
-                      {" "}
-                      {col.label} {ToggleChevron(col.key)}{" "}
-                    </th>
-                  ))}
-                  <th className="w-10 p-2.5 text-justify font-normal">
-                    {" "}
-                    Edit{" "}
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody className="bg-secondary-50">
-                {eventData &&
-                  eventData.map((event: EventResponse) => {
-                    return (
-                      <tr
-                        key={event.name}
-                        className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200"
-                      >
-                        <td className="pl-5 font-light">
-                          <button
-                            className="text-sm"
-                            onClick={() =>
-                              router.push(
-                                "/events/" + event.id + "/repair-requests"
-                              )
-                            }
-                          >
-                            {event.name}
-                          </button>
-                        </td>
-                        <td className="p-2.5 text-sm font-light">
-                          {event.createdBy.firstName} {event.createdBy.lastName}
-                        </td>
-                        <td className="text-sm font-light">{event.location}</td>
-                        <td className="text-sm font-light">
-                          {formatDate(String(event.startDate))}
-                        </td>
-                        <td className="text-sm font-light">
-                          {event.eventType}
-                        </td>
-                        <td className="text-sm font-light">{event.status}</td>
-                        <td className="align-center ml-0 p-2.5 pl-0 text-center">
-                          <EventFormEditButton props={event} />
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          )}
-        </div>
+        <Pagination value={pagination} onChange={onPaginationChange} />
       </div>
     </div>
   );
 }
 
-export default Table;
+export default EventTable;
