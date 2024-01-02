@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
-import { getAuth } from "@clerk/nextjs/server";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import { EventRepairer } from "@/types";
 
 import prisma from "../../../../lib/prisma";
+import userService from "../../../../services/user";
 
 export default apiHandler({
   post: createRepairer
@@ -27,7 +27,7 @@ async function createRepairer(
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  const user = await getAuth(req);
+  const user = await userService.getUser(userId);
 
   if (!user) {
     throw new ApiError(HttpStatusCode.NotFound, "User not found");
