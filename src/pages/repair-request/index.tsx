@@ -30,7 +30,7 @@ const repairRequestFormSchema = createRepairRequestSchema.extend({
 });
 
 const Home = () => {
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
       itemBrand: "",
@@ -58,6 +58,7 @@ const Home = () => {
     const [thumbnailImage, ...images] = keys;
     const updatedData = { ...data, thumbnailImage, images };
     createRepairRequest(updatedData);
+    reset();
   };
 
   return (
