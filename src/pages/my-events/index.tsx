@@ -12,6 +12,19 @@ const Home = () => {
 
   const router = useRouter();
 
+  const [sortKey, setSortKey] = useState<string>("startDate");
+  const [searchWord, setSearchWord] = useState<string>("");
+  const [sortMethod, setSortMethod] = useState<string>("asc");
+
+  const { data: eventData, isLoading: isEventsLoading } = useEvents(
+    sortKey,
+    sortMethod,
+    searchWord
+  );
+
+  const { userId } = useAuth();
+  console.log(userId);
+
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
     const day = actualDate.getDate().toString().padStart(2, "0");
@@ -32,20 +45,8 @@ const Home = () => {
         location={location}
       />
     };
+    return null;
   }
-
-  const [sortKey, setSortKey] = useState<string>("startDate");
-  const [searchWord, setSearchWord] = useState<string>("");
-  const [sortMethod, setSortMethod] = useState<string>("asc");
-
-  const { data: eventData, isLoading: isEventsLoading } = useEvents(
-    sortKey,
-    sortMethod,
-    searchWord
-  );
-
-  const { userId } = useAuth();
-  console.log(userId);
 
   return (
     <div>
@@ -69,21 +70,18 @@ const Home = () => {
           <LoadingSpinner />
         </div>
       ) : (
-        /* Temporary test: will replace with a proper call to backend 
-        If you are testing, put your own userId in (find it in console)*/
-        (userId == "user_2YegcKa0KOns3791eORQdY7ERxY" || userId == "user_2YekxgT3DGBekKxfNK4xE0ndGkW")
-          ? (
-            <div className="relative flex-row items-center justify-center mb-10">
-              <ul>{eventData.map((event: Event) =>
-                createBox(event.id, event.name, event.startDate, event.endDate, event.description, event.location)
-              )}</ul>
-            </div>
-          )
-          : (
+        <>
+          <div className="relative flex-row items-center justify-center mb-10">
+            <ul id="eventList">{eventData.map((event: Event) =>
+              createBox(event.id, event.name, event.startDate, event.endDate, event.description, event.location)
+            )}</ul>
+          </div>
+
+          {(document.getElementById("eventList")?.innerHTML.trim() == "") ? (
             <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
               You have no assigned events.
-            </div>
-          )
+            </div>) : (null)}
+        </>
       )}
     </div>
   );
