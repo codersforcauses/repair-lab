@@ -7,36 +7,36 @@ import Select from "@/components/select";
 
 const OPTIONS = [
   {
-    id: 0,
-    text: "Option1"
+    value: 0,
+    name: "Option1"
   },
   {
-    id: 1,
-    text: "Option2"
+    value: 1,
+    name: "Option2"
   },
   {
-    id: 2,
-    text: "Option3"
+    value: 2,
+    name: "Option3"
   },
   {
-    id: 3,
-    text: "LongerOption4"
+    value: 3,
+    name: "LongerOption4"
   },
   {
-    id: 4,
-    text: "EvenLongerOption5"
+    value: 4,
+    name: "EvenLongerOption5"
   },
   {
-    id: 5,
-    text: "Option6"
+    value: 5,
+    name: "Option6"
   },
   {
-    id: 6,
-    text: "Option7"
+    value: 6,
+    name: "Option7"
   },
   {
-    id: 7,
-    text: "A really really long option for the purpose of testing"
+    value: 7,
+    name: "A really really long option for the purpose of testing"
   }
 ];
 
@@ -82,25 +82,29 @@ export default function TestSelect() {
         label="Brand"
         control={control}
         rules={{ required: true }}
-        options={OPTIONS}
+        options={OPTIONS.map((option) => ({
+          id: option.value,
+          text: option.name
+        }))}
       />
       <FieldMultiSelect
         name="itemBrand-M"
         label="Brand"
         control={control}
         rules={{ required: true }}
-        options={OPTIONS}
+        options={OPTIONS.map((option) => ({
+          id: option.value,
+          text: option.name
+        }))}
       />
 
       <Select
-        useIdValue
         label="newSelect_single_useId"
         options={OPTIONS}
         value={state0}
         onChange={setState0}
       />
       <Select
-        useIdValue
         multiple
         label="newSelect_multiple_useId"
         options={OPTIONS}
@@ -108,12 +112,14 @@ export default function TestSelect() {
         onChange={setState1}
       />
       <Select
+        useOption
         label="newSelect_single"
         options={OPTIONS}
         value={state2}
         onChange={setState2}
       />
       <Select
+        useOption
         placeholder=""
         multiple
         label="newSelect_multiple"

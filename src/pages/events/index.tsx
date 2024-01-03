@@ -177,16 +177,16 @@ function EventTable() {
                 title: "Type",
                 name: "Type",
                 options: [
-                  { id: "All", text: "all" },
-                  { id: "test", text: "test" }
+                  { value: "All", name: "all" },
+                  { value: "test", name: "test" }
                 ]
               },
               {
                 title: "Type2",
                 name: "Type2",
                 options: [
-                  { id: "All", text: "all" },
-                  { id: "test", text: "test" }
+                  { value: "All", name: "all" },
+                  { value: "test", name: "test" }
                 ]
               }
             ]}

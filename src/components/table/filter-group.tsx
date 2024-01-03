@@ -1,4 +1,4 @@
-import Select, { IdType, Option } from "@/components/select";
+import Select, { Option, ValueType } from "@/components/select";
 
 export interface Filter {
   title: string;
@@ -6,7 +6,7 @@ export interface Filter {
   options: Option[];
   mutiple?: boolean;
 }
-export type FilterState = Record<string, IdType | IdType[] | undefined>;
+export type FilterState = Record<string, ValueType | ValueType[] | undefined>;
 export interface FilterGroupProps {
   filters: Filter[];
   value?: FilterState;
@@ -23,7 +23,6 @@ export default function FilterGroup({
       {filters?.map(({ title, name, options, mutiple }) => (
         <div key={name} className="min-w-36">
           <Select
-            useIdValue
             width="w-full"
             multiple={mutiple}
             label={title}

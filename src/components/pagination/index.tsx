@@ -1,5 +1,8 @@
 import { useCallback } from "react";
 
+import Select from "@/components/select";
+
+const DEFAULT_OPTIONS = [10, 20, 50, 100];
 export interface PaginationState {
   total: number;
   perPage?: number;
@@ -10,10 +13,11 @@ export interface PaginationState {
 export interface PaginationProps {
   value: PaginationState;
   onChange: (nextState: PaginationState) => void;
+  options?: number[];
 }
 
 export function Pagination(props: PaginationProps) {
-  const { value, onChange } = props;
+  const { value, onChange, options = DEFAULT_OPTIONS } = props;
   const { total, perPage = 20, current = 1 } = value;
 
   const maxPage = Math.ceil(total / perPage);
@@ -30,9 +34,8 @@ export function Pagination(props: PaginationProps) {
   );
 
   const handlePerPageChange = useCallback(
-    (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const newPerPage = parseInt(event.target.value);
-      onChange({ ...value, perPage: newPerPage, current: 1 });
+    (perPage: number) => {
+      onChange({ ...value, perPage, current: 1 });
     },
     [onChange, value]
   );
@@ -49,16 +52,11 @@ export function Pagination(props: PaginationProps) {
         Entries
       </div>
       <div className="inline-flex">
-        <select
-          className="h-8 px-3 mx-4 text-sm font-medium text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-400 focus:border-primary-400"
+        <Select
           value={perPage}
           onChange={handlePerPageChange}
-        >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
+          options={options.map((n) => ({ name: String(n), value: n }))}
+        />
         <button
           className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
           onClick={() => toPage(current - 1)}

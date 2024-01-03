@@ -5,37 +5,37 @@ import { HiCheck, HiChevronDown } from "react-icons/hi";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
 
-export type IdType = string | number;
+export type ValueType = string | number;
 
-export interface Option<T extends IdType = IdType> {
-  id: T;
-  text: string;
+export interface Option<T extends ValueType = ValueType> {
+  value: T;
+  name: string;
 }
 
 type SelectValue<
-  O extends IdType,
-  M extends boolean,
-  R extends boolean
-> = M extends true
-  ? R extends true
-    ? O[]
-    : Option<O>[]
-  : R extends true
-    ? O
-    : Option<O>;
+  Type extends ValueType,
+  Mutiple extends boolean,
+  UseOption extends boolean
+> = Mutiple extends true
+  ? UseOption extends true
+    ? Option<Type>[]
+    : Type[]
+  : UseOption extends true
+    ? Option<Type>
+    : Type;
 
 export interface SelectProps<
-  O extends IdType,
-  M extends boolean,
-  R extends boolean
+  Type extends ValueType,
+  Multiple extends boolean,
+  UseOption extends boolean
 > {
   label?: string;
-  multiple?: M;
-  /** if true, the value will be the id of the option */
-  useIdValue?: R;
-  options?: Option<O>[];
-  value?: SelectValue<O, M, R>;
-  onChange?: (value: SelectValue<O, M, R>) => void;
+  multiple?: Multiple;
+  /** if true, the value will be option instead of value of option */
+  useOption?: UseOption;
+  options?: Option<Type>[];
+  value?: SelectValue<Type, Multiple, UseOption>;
+  onChange?: (value: SelectValue<Type, Multiple, UseOption>) => void;
   width?: string;
   height?: string;
   placeholder?: string;
@@ -50,14 +50,14 @@ export interface SelectProps<
  * todo: optimise animation
  */
 export default function Select<
-  O extends IdType,
-  M extends boolean = false,
-  R extends boolean = false
->(props: SelectProps<O, M, R>) {
+  Type extends ValueType,
+  Multiple extends boolean = false,
+  UseOption extends boolean = false
+>(props: SelectProps<Type, Multiple, UseOption>) {
   const {
     label,
     multiple = false,
-    useIdValue = false,
+    useOption = false,
     options = [],
     value,
     onChange,
@@ -70,31 +70,37 @@ export default function Select<
   const normalBorderStyle = `ring-grey-300`;
 
   const selectedOptions = useMemo(() => {
-    const optionsOrIds = (value && !Array.isArray(value) ? [value] : value) as
-      | SelectValue<O, M, R>[]
-      | undefined;
-    if (!optionsOrIds) return [];
-    return optionsOrIds.map((optionOrId) =>
-      useIdValue
-        ? options.find((option) => option.id === optionOrId)
-        : optionOrId
-    ) as Option<O>[];
-  }, [options, value, useIdValue]);
+    const optionsOrValues = (
+      value && !Array.isArray(value) ? [value] : value
+    ) as SelectValue<Type, Multiple, UseOption>[] | undefined;
+    if (!optionsOrValues) return [];
+    return optionsOrValues.map((optionOrId) =>
+      useOption
+        ? optionOrId
+        : options.find((option) => option.value === optionOrId)
+    ) as Option<Type>[];
+  }, [options, value, useOption]);
 
   const handleChange = useCallback(
-    (values: Option<O>[] | Option<O>) => {
-      if (!useIdValue) {
-        onChange?.(values as SelectValue<O, M, R>);
+    (values: Option<Type>[] | Option<Type>) => {
+      if (useOption) {
+        onChange?.(values as SelectValue<Type, Multiple, UseOption>);
       } else if (multiple) {
-        const ids = (values as Option<O>[]).map(
-          (option) => option.id
-        ) as SelectValue<O, M, R>;
+        const ids = (values as Option<Type>[]).map(
+          (option) => option.value
+        ) as SelectValue<Type, Multiple, UseOption>;
         onChange?.(ids);
       } else {
-        onChange?.((values as Option<O>).id as SelectValue<O, M, R>);
+        onChange?.(
+          (values as Option<Type>).value as SelectValue<
+            Type,
+            Multiple,
+            UseOption
+          >
+        );
       }
     },
-    [onChange, multiple, useIdValue]
+    [onChange, multiple, useOption]
   );
 
   return (
@@ -128,7 +134,7 @@ export default function Select<
             <span className="text-gray-500">{placeholder}</span>
           ) : (
             <span className="truncate text-grey-900">
-              {selectedOptions?.map((option) => option.text).join(", ")}
+              {selectedOptions?.map((option) => option.name).join(", ")}
             </span>
           )}
           <HiChevronDown
@@ -148,7 +154,7 @@ export default function Select<
           <Listbox.Options className="absolute left-0 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
             <div className="py-1">
               {options.map((option) => (
-                <Listbox.Option key={option.id} value={option} as={Fragment}>
+                <Listbox.Option key={option.value} value={option} as={Fragment}>
                   {({ active, selected }) => (
                     <li
                       className={cn(
@@ -165,11 +171,11 @@ export default function Select<
                             aria-hidden="true"
                           />
                           <span className="pl-2 font-medium">
-                            {option.text}
+                            {option.name ?? option.value}
                           </span>
                         </span>
                       ) : (
-                        <span className="pl-7">{option.text}</span>
+                        <span className="pl-7">{option.name}</span>
                       )}
                     </li>
                   )}
