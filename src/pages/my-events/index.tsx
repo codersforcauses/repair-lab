@@ -22,14 +22,16 @@ const Home = () => {
   }
 
   function createBox(id: string, name: string, startDate: Date, endDate: Date, description: string, location: string) {
-    return <Box key={id}
-      eventId={id}
-      eventTitle={name}
-      startDate={formatDate(String(startDate))}
-      endDate={formatDate(String(endDate))}
-      description={description}
-      location={location}
-    />
+    if (name == "Elegant Granite Chair") {
+      return <Box key={id}
+        eventId={id}
+        eventTitle={name}
+        startDate={formatDate(String(startDate))}
+        endDate={formatDate(String(endDate))}
+        description={description}
+        location={location}
+      />
+    };
   }
 
   const [sortKey, setSortKey] = useState<string>("startDate");
