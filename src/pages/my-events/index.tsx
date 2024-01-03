@@ -21,6 +21,17 @@ const Home = () => {
     return `${day}/${month}/${year}`;
   }
 
+  function createBox(id: string, name: string, startDate: Date, endDate: Date, description: string, location: string) {
+    return <Box key={id}
+      eventId={id}
+      eventTitle={name}
+      startDate={formatDate(String(startDate))}
+      endDate={formatDate(String(endDate))}
+      description={description}
+      location={location}
+    />
+  }
+
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<string>("asc");
@@ -53,22 +64,17 @@ const Home = () => {
 
       {isEventsLoading ? (
         <div className="flex justify-center">
-          <LoadingSpinner/>
+          <LoadingSpinner />
         </div>
       ) : (
         /* Temporary test: will replace with a proper call to backend 
         If you are testing, put your own userId in (find it in console)*/
         (userId == "user_2YegcKa0KOns3791eORQdY7ERxY" || userId == "user_2YekxgT3DGBekKxfNK4xE0ndGkW")
           ? (
-            <div className="relative flex-row items-center justify-center">
-              <ul>{eventData.map((event: Event) => <Box key={event.id}
-                eventId={event.id}
-                eventTitle={event.name}
-                startDate={formatDate(String(event.startDate))}
-                endDate={formatDate(String(event.startDate))}
-                description={event.description}
-                location={event.location}
-              />)}</ul>;
+            <div className="relative flex-row items-center justify-center mb-10">
+              <ul>{eventData.map((event: Event) =>
+                createBox(event.id, event.name, event.startDate, event.endDate, event.description, event.location)
+              )}</ul>
             </div>
           )
           : (
