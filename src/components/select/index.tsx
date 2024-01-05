@@ -4,10 +4,11 @@ import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
+import { User } from "@/types";
 
 export type ValueType = string | number;
 
-export interface Option<T extends ValueType = ValueType> {
+export interface OptionType<T extends ValueType = ValueType> {
   value: T;
   name: string;
 }
@@ -18,14 +19,15 @@ type SelectValue<
   UseOption extends boolean
 > = Mutiple extends true
   ? UseOption extends true
-    ? Option<Type>[]
+    ? OptionType<Type>[]
     : Type[]
   : UseOption extends true
-    ? Option<Type>
+    ? OptionType<Type>
     : Type;
 
 export interface SelectProps<
-  Type extends ValueType,
+  Value extends ValueType,
+  Option extends OptionType<Value>,
   Multiple extends boolean,
   UseOption extends boolean
 > {
@@ -33,12 +35,19 @@ export interface SelectProps<
   multiple?: Multiple;
   /** if true, the value will be option instead of value of option */
   useOption?: UseOption;
-  options?: Option<Type>[];
-  value?: SelectValue<Type, Multiple, UseOption>;
-  onChange?: (value: SelectValue<Type, Multiple, UseOption>) => void;
+  options?: Option[];
+  value?: SelectValue<Value, Multiple, UseOption>;
+  onChange?: (value: SelectValue<Value, Multiple, UseOption>) => void;
   width?: string;
   height?: string;
   placeholder?: string;
+  renderSelected?: (
+    values: SelectValue<Value, Multiple, UseOption>,
+    options: Option[],
+    onChange?: (value: SelectValue<Value, Multiple, UseOption>) => void
+  ) => JSX.Element;
+  renderOption?: (option: Option) => JSX.Element;
+  onSearch?: (search: string) => void;
 }
 
 /**
@@ -50,10 +59,11 @@ export interface SelectProps<
  * todo: optimise animation
  */
 export default function Select<
-  Type extends ValueType,
+  Value extends ValueType,
+  Option extends OptionType<Value>,
   Multiple extends boolean = false,
   UseOption extends boolean = false
->(props: SelectProps<Type, Multiple, UseOption>) {
+>(props: SelectProps<Value, Option, Multiple, UseOption>) {
   const {
     label,
     multiple = false,
@@ -63,7 +73,10 @@ export default function Select<
     onChange,
     width = "w-full",
     height = "h-10",
-    placeholder = "Please select"
+    placeholder = "Please select",
+    renderSelected,
+    renderOption,
+    onSearch
   } = props;
 
   const baseStyle = `flex items-center ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
@@ -72,28 +85,28 @@ export default function Select<
   const selectedOptions = useMemo(() => {
     const optionsOrValues = (
       value && !Array.isArray(value) ? [value] : value
-    ) as SelectValue<Type, Multiple, UseOption>[] | undefined;
+    ) as SelectValue<Value, Multiple, UseOption>[] | undefined;
     if (!optionsOrValues) return [];
     return optionsOrValues.map((optionOrId) =>
       useOption
         ? optionOrId
         : options.find((option) => option.value === optionOrId)
-    ) as Option<Type>[];
+    ) as OptionType<Value>[];
   }, [options, value, useOption]);
 
   const handleChange = useCallback(
-    (values: Option<Type>[] | Option<Type>) => {
+    (values: OptionType<Value>[] | OptionType<Value>) => {
       if (useOption) {
-        onChange?.(values as SelectValue<Type, Multiple, UseOption>);
+        onChange?.(values as SelectValue<Value, Multiple, UseOption>);
       } else if (multiple) {
-        const ids = (values as Option<Type>[]).map(
+        const ids = (values as OptionType<Value>[]).map(
           (option) => option.value
-        ) as SelectValue<Type, Multiple, UseOption>;
+        ) as SelectValue<Value, Multiple, UseOption>;
         onChange?.(ids);
       } else {
         onChange?.(
-          (values as Option<Type>).value as SelectValue<
-            Type,
+          (values as OptionType<Value>).value as SelectValue<
+            Value,
             Multiple,
             UseOption
           >
@@ -132,6 +145,8 @@ export default function Select<
           {/* {fieldState.invalid && <Error {...props} />} */}
           {isBlank(value) ? (
             <span className="text-gray-500">{placeholder}</span>
+          ) : renderSelected ? (
+            renderSelected(value!, options, onChange)
           ) : (
             <span className="truncate text-grey-900">
               {selectedOptions?.map((option) => option.name).join(", ")}
@@ -188,3 +203,45 @@ export default function Select<
     </div>
   );
 }
+
+// export const renderUserTag: SelectProps<
+//   ValueType,
+//   OptionType<User>,
+//   boolean,
+//   boolean
+// >["renderSelected"] = (value, options:User[], onChange) => {
+//   return (
+//     <div className="flex flex-col">
+//       {options.map((user: User, index) => {
+//         user = user as User;
+//         return (
+//           <div
+//             key={user.id}
+//             className="flex h-5/6 p-1 bg-gray-200 rounded-sm ml-1 mr-1"
+//           >
+//             <div className="h-full aspect-square rounded-full block mr-2 overflow-hidden flex-grow-0 flex-shrink-0">
+//               <Image
+//                 src="/images/repair_lab_logo.png"
+//                 width={30}
+//                 height={30}
+//                 alt="repair-labs"
+//                 className="h-full object-cover  "
+//               />
+//             </div>{" "}
+//             <div className="block overflow-hidden text-clip whitespace-nowrap">
+//               {user.firstName} {user.lastName}
+//             </div>
+//             <HoverOpacityButton
+//               className="text-gray-500 text-xs hover:enabled:scale-100 ml-2 hover:opacity-60"
+//               onClick={() => {
+//                 removeUserByIndex(index);
+//               }}
+//             >
+//               <FontAwesomeIcon icon={faXmark} />
+//             </HoverOpacityButton>
+//           </div>
+//         );
+//       })}
+//     </div>
+//   );
+// };

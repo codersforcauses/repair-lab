@@ -1,12 +1,11 @@
-import Select, { Option, ValueType } from "@/components/select";
-
 export interface Filter {
-  title: string;
   name: string;
-  options: Option[];
-  mutiple?: boolean;
+  render: (
+    value: unknown,
+    onChange: (nextValue: unknown) => void
+  ) => JSX.Element;
 }
-export type FilterState = Record<string, ValueType | ValueType[] | undefined>;
+export type FilterState = Record<string, unknown>;
 export interface FilterGroupProps {
   filters: Filter[];
   value?: FilterState;
@@ -20,21 +19,12 @@ export default function FilterGroup({
 }: FilterGroupProps) {
   return (
     <div className="flex flex-row gap-4">
-      {filters?.map(({ title, name, options, mutiple }) => (
+      {filters?.map(({ name, render }) => (
         <div key={name} className="min-w-36">
-          <Select
-            width="w-full"
-            multiple={mutiple}
-            label={title}
-            options={options}
-            value={value?.[name]}
-            onChange={(nextValue) => {
-              onChange?.({
-                ...value,
-                [name]: nextValue
-              });
-            }}
-          />
+          {render(
+            value?.[name],
+            (nextValue) => onChange?.({ ...value, [name]: nextValue })
+          )}
         </div>
       ))}
     </div>
