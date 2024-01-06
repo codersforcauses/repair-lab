@@ -18,14 +18,16 @@ export default function MenuList({ items }: Readonly<Props>) {
           <Tab
             key={item.item}
             className={`mx-16 px-2 font-medium text-black hover:text-primary-700 ${
-              router.asPath === item.path
-                ? "text-primary-700 border-b-4 border-primary-700"
-                : ""
+              router.asPath === item.path ? "text-primary-700" : ""
             }`}
+            //
           >
             <Link href={item.path}>
-              <div className="flex items-center justify-center h-full w-full">
+              <div className="relative flex flex-col items-center justify-center h-full w-full">
                 {item.item}
+                {router.asPath === item.path && (
+                  <span className="absolute -bottom-1 h-[3px] w-full bg-primary-700 rounded-full" />
+                )}
               </div>
             </Link>
           </Tab>
