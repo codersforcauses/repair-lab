@@ -35,7 +35,8 @@ const Home = () => {
   }
 
   function createBox(id: string, name: string, startDate: Date, endDate: Date, description: string, location: string) {
-    if (name == "Elegant Granite Chair") {
+    // Insert the correct conditional here
+    if (name == "anElegant Granite Chair") {
       return <Box key={id}
         eventId={id}
         eventTitle={name}
@@ -77,7 +78,7 @@ const Home = () => {
             )}</ul>
           </div>
 
-          {(document.getElementById("eventList")?.innerHTML.trim() == "") ? (
+          {(document.getElementById("eventList") == null) ? (
             <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
               You have no assigned events.
             </div>) : (null)}
