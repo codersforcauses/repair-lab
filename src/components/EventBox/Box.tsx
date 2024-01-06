@@ -42,7 +42,7 @@ const Box = ({
                 <svg fill="None" viewBox="0 0 30 30" strokeWidth={2}
                   stroke="black" className="flex w-7 h-7 mt-8 justify-right">;
                   <path
-                    // Used icons from https://heroicons.com/
+                    // Drop down/up icon from https://heroicons.com/
                     // Open source, MIT license. 
                     d={open ? "M4.5 15.75l7.5-7.5 7.5 7.5"
                       : "M19.5 8.25l-7.5 7.5-7.5-7.5"
@@ -69,7 +69,7 @@ const Box = ({
                   <button
                     className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
                     onClick={() =>
-                      //Will not work until linked to issue 118
+                      // For future use when linking to issue 118
                       router.push(
                         "/my-events/" + eventId
                       )}

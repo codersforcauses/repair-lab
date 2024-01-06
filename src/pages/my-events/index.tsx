@@ -1,16 +1,12 @@
 // Page for repairers to view their assigned events
 import { useState } from 'react'
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useAuth } from "@clerk/nextjs";
 
 import Box from "@/components/EventBox/Box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { Event } from "@/types";
 const Home = () => {
-
-  const router = useRouter();
 
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
@@ -22,8 +18,8 @@ const Home = () => {
     searchWord
   );
 
-  const { userId } = useAuth();
-  console.log(userId);
+  // For future use
+  // const { userId } = useAuth();
 
   function formatDate(dateString: string): string {
     const actualDate = new Date(dateString);
