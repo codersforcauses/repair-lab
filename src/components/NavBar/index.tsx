@@ -7,7 +7,10 @@ import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
 
 const adminItems = ["Home", "Events", "Repair Requests"];
-const clientItems = ["Home", "My Events"];
+const clientItems = ["Home", "Events", "My Events"];
+const guestItems = ["Home", "Events"]; // Shown when user it not logged in
+
+
 
 const pathMap: { [key: string]: string } = {
   Home: "/",
@@ -26,6 +29,17 @@ export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
   const { signOut } = useClerk();
 
+  let menuItems;
+  if (user) { // Check if user is logged in
+    if (adminRoles.includes(role)) {
+      menuItems = adminItems.map(item => ({ item, path: pathMap[item] }));
+    } else {
+      menuItems = clientItems.map(item => ({ item, path: pathMap[item] }));
+    }
+  } else {
+    menuItems = guestItems.map(item => ({ item, path: pathMap[item] })); 
+  }
+
   return (
     <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
@@ -38,19 +52,7 @@ export default function NavBar() {
               height={831}
               style={{ width: "50px", height: "50px" }}
             />
-            <MenuList
-              items={
-                adminRoles.includes(role)
-                  ? adminItems.map((item) => ({
-                      item,
-                      path: pathMap[item]
-                    }))
-                  : clientItems.map((item) => ({
-                      item,
-                      path: pathMap[item]
-                    }))
-              }
-            />
+            <MenuList items={menuItems} />
           </div>
           <Account role={role} isLoggedIn={!!user} onSignOut={signOut} />
         </div>
