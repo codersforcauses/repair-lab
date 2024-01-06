@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from "react";
-import { startCase } from "lodash";
 
 import TablePagination from "@/components/Table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
@@ -131,11 +130,12 @@ const UserRow = ({ user, index }: { user: User; index: number }) => {
           onChange={(e) => {
             updateUser(e.target.value as UserRole);
           }}
+          className="capitalize"
         >
           {Object.keys(UserRole).map((role) => {
             return (
               <option value={role} key={role}>
-                {startCase(role.trim().toLowerCase())}
+                {role.trim().toLowerCase().replace("_", " ")}
               </option>
             );
           })}
