@@ -23,7 +23,7 @@ export const useUsers = (
 
     const response = await httpClient.get<User[]>(url);
 
-    return await response.data;
+    return response.data;
   };
 
   return useQuery({
