@@ -14,11 +14,8 @@ describe("POST /api/event/[id]/repairers", () => {
     await cleanup();
     await seedTestData();
 
-    vi.mock("@clerk/nextjs/server", () => {
-      return {
-        getAuth: vi.fn().mockReturnValue({ userId: "Test" })
-      };
-    });
+    vi.mock("@clerk/nextjs");
+    vi.mock("@clerk/nextjs/server");
   });
 
   it("should be able to create an event repairer", async () => {
@@ -35,6 +32,7 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: "Test"
           })
         });
+
         expect(res.status).toBe(200);
       }
     });
@@ -54,6 +52,27 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: "Test"
           })
         });
+
+        expect(res.status).toBe(404);
+      }
+    });
+  });
+
+  it("should be able to catch an API error: can't find the repairer", async () => {
+    await testApiHandler({
+      handler,
+      params: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: "Feifan"
+          })
+        });
+
         expect(res.status).toBe(404);
       }
     });
