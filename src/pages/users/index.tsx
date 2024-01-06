@@ -131,7 +131,6 @@ const UserRow = ({ user, index }: { user: User; index: number }) => {
           onChange={(e) => {
             updateUser(e.target.value as UserRole);
           }}
-          className="capitalize"
         >
           {Object.keys(UserRole).map((role) => {
             return (
