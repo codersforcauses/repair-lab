@@ -3,6 +3,7 @@ import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
+import { addEventRepairerSchema } from "@/schema/event";
 import userService from "@/services/user";
 import { EventRepairer } from "@/types";
 
@@ -16,8 +17,10 @@ async function createRepairer(
   req: NextApiRequest,
   res: NextApiResponse<EventRepairer>
 ) {
-  const { userId } = req.body;
-  const { id } = req.query;
+  const { userId, id } = addEventRepairerSchema.parse({
+    ...req.body,
+    ...req.query
+  });
 
   const event = await prisma.event.findUnique({
     where: { id: id as string }
@@ -28,8 +31,6 @@ async function createRepairer(
   }
 
   const user = await userService.getUser(userId as string);
-
-  console.log(user);
 
   if (!user) {
     throw new ApiError(HttpStatusCode.NotFound, "User not found");

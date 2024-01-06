@@ -22,6 +22,11 @@ export const createEventSchema = z
     path: ["endDate"]
   });
 
+export const addEventRepairerSchema = z.object({
+  userId: z.string().min(1, { message: "User ID is required" }),
+  id: z.string().min(1, { message: "Event ID is required" })
+});
+
 export const updateEventSchema = z
   .object({
     name: z.string().optional(),
