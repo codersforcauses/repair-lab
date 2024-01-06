@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
+import Link from "next/link";
 
 interface Props {
   role: UserRole;
@@ -26,22 +27,22 @@ export default function Account({
     <div className="flex items-center">
       {isLoggedIn ? (
         <>
-          <button
-            onClick={() => router.push("/repair-request")}
+          <Link
+            href="/repair-request"
             className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Repair Request +
-          </button>
+          </Link>
 
           {adminRoles.includes(role) && (
-            <button
-              onClick={() => router.push("/events?openModal=true")}
+            <Link
+              href="/events?openModal=true"
               className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
             >
               New Event +
-            </button>
-          )}
-
+            </Link>
+          )} 
+          
           <ActionButton onClick={onSignOut} label="Log Out" />
 
           <ProfilePopover />
