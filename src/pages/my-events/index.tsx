@@ -49,6 +49,27 @@ const Home = () => {
     return null;
   }
 
+  function renderEvents() {
+    const events = eventData.map((event: Event) =>
+      createBox(event.id, event.name, event.startDate, event.endDate, event.description, event.location)
+    );
+
+    if (events.filter((value: never) => value != null).length) {
+      return (
+        <div className="relative flex-row items-center justify-center mb-10">
+          <ul id="eventList">{events}</ul>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+          You have no assigned events.
+        </div>
+      )
+    }
+  }
+
   return (
     <div>
 
@@ -71,18 +92,7 @@ const Home = () => {
           <LoadingSpinner />
         </div>
       ) : (
-        <>
-          <div className="relative flex-row items-center justify-center mb-10">
-            <ul id="eventList">{eventData.map((event: Event) =>
-              createBox(event.id, event.name, event.startDate, event.endDate, event.description, event.location)
-            )}</ul>
-          </div>
-
-          {(document.getElementById("eventList") == null) ? (
-            <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
-              You have no assigned events.
-            </div>) : (null)}
-        </>
+        renderEvents()
       )}
     </div>
   );
