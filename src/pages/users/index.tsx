@@ -122,7 +122,7 @@ const UserRow = ({ user, index }: { user: User; index: number }) => {
       >
         {user.firstName}
       </th>
-      <td className="px-6 py-4 capitalize">{user.lastName}</td>
+      <td className="px-6 py-4">{user.lastName}</td>
       <td className="px-6 py-4">{user.emailAddress}</td>
       <td className="px-6 py-4">
         <select
