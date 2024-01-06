@@ -49,6 +49,7 @@ export enum UserRole {
   ADMIN = "ADMIN",
   ORGANISATION_MANAGER = "ORGANISATION_MANAGER",
   EVENT_MANAGER = "EVENT_MANAGER",
-  REPAIRER = "REPAIRER",
-  CLIENT = "CLIENT"
+  REPAIRER = "REPAIRER"
 }
+// export type UserRole = $Enums.UserRole
+

@@ -49,6 +49,13 @@ enum RepairStatus {
   FAILED
 }
 
+enum UserRole {
+  ADMIN
+  ORGANISATION_MANAGER
+  EVENT_MANAGER
+  REPAIRER
+}
+
 model RepairRequest {
   id         String @id @default(uuid())
   createdBy  String //User id
@@ -112,13 +119,6 @@ model EventRepairer {
   @@unique([userId, eventId])
 }
 
-enum Role {
-  REPAIRER
-  EVENT_MANAGER
-  ORG_ADMIN
-  SUPER_ADMIN
-}
-
 model Organisation {
   id    String  @id @default(uuid())
   name  String  @unique
@@ -128,7 +128,7 @@ model Organisation {
 model Staff {
   id             String       @id @default(uuid())
   clerkId        String
-  role           Role
+  role           UserRole
   org            Organisation @relation(fields: [organisationId], references: [id])
   organisationId String
 }
