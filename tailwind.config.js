@@ -16,17 +16,17 @@ module.exports = {
           focus: "#035E58"
         },
         secondary: {
-          DEFAULT: "#A6DCDB",
-          focus: "#77C4C2"
+          DEFAULT: "#DCF1EF",
+          focus: "#A6DCDB"
         },
         accent: {
           DEFAULT: "#AACFEE",
           focus: "#84B1D6"
         },
         base: {
-          100: "#FFFFFF",
-          200: "#B2B2B2",
-          300: "343434"
+          100: "#F4F7F7",
+          200: "#56727E",
+          300: "224250"
         }
       }
     },
