@@ -64,7 +64,7 @@ function ActionButton({
   return (
     <button
       onClick={onClick}
-      className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:bg-slate-100 hover:text-primary-700"
+      className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:text-primary-700"
     >
       {label}
     </button>
