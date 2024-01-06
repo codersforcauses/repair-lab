@@ -10,60 +10,41 @@ export default function Home() {
   const { signOut } = useClerk();
 
   return (
-    <div className="bg-lightAqua-100">
-      <div className="relative h-44 w-full">
+    <div className="bg-lightAqua-50">
+      <div className="relative h-96 w-full">
         <Image
-          src="/images/sewing_box.jpg"
+          src="/images/blue_grid_vectorstock.jpg"
           alt="box of sewing equipment"
           fill={true}
           className="object-cover object-center"
         />
       </div>
-      <div className="relative z-10 -mt-16 flex w-full justify-center">
-        <Image
-          src="/images/repair_lab_logo.png"
-          alt="Repair Labs Logo"
-          width={112}
-          height={112}
-        />
-      </div>
-      <div className="mb-16">
-        <div className="mb-8 mt-6 text-center text-3xl font-bold">About Us</div>
-        <div className="text-ml flex flex-col pl-10 pr-10">
+      <div className="mb-16 bg-primary-600">
+        <div className="mb-8 mt-6 text-center text-3xl font-black text-white">
+          Hi, Welcome to Repair Lab!
+        </div>
+        <div className="flex flex-col pl-10 pr-10">
           <div className="flex flex-col justify-center">
-            <div className="relative flex w-full justify-center">
-              <Image
-                src="/images/generalToy.jpeg"
-                alt="toy repair"
-                width={400}
-                height={300}
-                className="rounded-lg"
-              />
+            <div className="relative flex w-full justify-center text-white font-bold mb-4">
+              When in doubt, don’t throw out!
             </div>
-
-            <ul className="tlex grid list-none justify-center gap-y-2 pr-4">
-              <li className="mt-6">
-                Repair Lab is a zero budget volunteer group with 100%
-                volunteers, consisting of a group of locals who care for their
-                community and the environment.
-              </li>
-
-              <li>
-                People who think that we can do more than only recycle and buy
-                new.
-              </li>
-
-              <li>
-                Who think that we can not only make an impact by repairing stuff
-                but also learning repair skills and enjoy doing so.
-              </li>
-
-              <li>
-                We hope that there will be many Repair Labs in Perth and the
-                rest of WA following after our pilot in October 2017.
-              </li>
-            </ul>
+            <div className="relative flex w-full justify-center text-white mb-4">
+              Bring it to the Repair Lab, a grassroots initiative to encourage
+              and help Perth folks come up with new and creative ways to salvage
+              perfectly usable things. Repair Lab gathers volunteers who work
+              with you to assess and fix your broken items, and hopefully give
+              you insight on how to repair other things around the house.
+            </div>
           </div>
+        </div>
+        <div className="relative flex w-full justify-center">
+          <svg height="50" width="1000">
+            <line x1="20" y1="20" x2="1000" y2="20" stroke="white" />
+          </svg>
+        </div>
+        <div className="relative flex w-full justify-center text-white mb-4">
+          It’s a collaborative and learning experience, a little antidote to
+          modern day throw-away mentality.
         </div>
       </div>
       <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
