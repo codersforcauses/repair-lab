@@ -4,50 +4,47 @@ import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
-import { User } from "@/types";
 
-export type ValueType = string | number;
-
-export interface OptionType<T extends ValueType = ValueType> {
-  value: T;
-  name: string;
-}
-
-type SelectValue<
-  Type extends ValueType,
+type SelectValueType<
+  Value,
+  Option,
   Mutiple extends boolean,
   UseOption extends boolean
 > = Mutiple extends true
   ? UseOption extends true
-    ? OptionType<Type>[]
-    : Type[]
+    ? Option[]
+    : Value[]
   : UseOption extends true
-    ? OptionType<Type>
-    : Type;
+    ? Option
+    : Value;
 
 export interface SelectProps<
-  Value extends ValueType,
-  Option extends OptionType<Value>,
-  Multiple extends boolean,
-  UseOption extends boolean
+  Option extends Record<NameKey | ValueKey, unknown>,
+  Multiple extends boolean = false,
+  UseOption extends boolean = false,
+  NameKey extends string = "name",
+  ValueKey extends string = "value",
+  SelectValue = SelectValueType<Option[ValueKey], Option, Multiple, UseOption>
 > {
   label?: string;
   multiple?: Multiple;
   /** if true, the value will be option instead of value of option */
   useOption?: UseOption;
   options?: Option[];
-  value?: SelectValue<Value, Multiple, UseOption>;
-  onChange?: (value: SelectValue<Value, Multiple, UseOption>) => void;
+  value?: SelectValue;
+  onChange?: (value: SelectValue) => void;
   width?: string;
   height?: string;
   placeholder?: string;
   renderSelected?: (
-    values: SelectValue<Value, Multiple, UseOption>,
+    values: SelectValue,
     options: Option[],
-    onChange?: (value: SelectValue<Value, Multiple, UseOption>) => void
+    onChange?: (value: SelectValue) => void
   ) => JSX.Element;
   renderOption?: (option: Option) => JSX.Element;
   onSearch?: (search: string) => void;
+  nameKey?: NameKey;
+  valueKey?: ValueKey;
 }
 
 /**
@@ -59,61 +56,63 @@ export interface SelectProps<
  * todo: optimise animation
  */
 export default function Select<
-  Value extends ValueType,
-  Option extends OptionType<Value>,
+  Option extends Record<NameKey | ValueKey, unknown>,
   Multiple extends boolean = false,
-  UseOption extends boolean = false
->(props: SelectProps<Value, Option, Multiple, UseOption>) {
+  UseOption extends boolean = false,
+  NameKey extends string = "name",
+  ValueKey extends string = "value",
+  SelectValue = SelectValueType<Option[ValueKey], Option, Multiple, UseOption>
+>(
+  props: SelectProps<
+    Option,
+    Multiple,
+    UseOption,
+    NameKey,
+    ValueKey,
+    SelectValue
+  >
+) {
   const {
     label,
     multiple = false,
     useOption = false,
     options = [],
-    value,
+    value = [] as SelectValue,
     onChange,
     width = "w-full",
     height = "h-10",
     placeholder = "Please select",
     renderSelected,
     renderOption,
-    onSearch
+    onSearch,
+    nameKey = "name" as NameKey,
+    valueKey = "value" as ValueKey
   } = props;
 
   const baseStyle = `flex items-center ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
 
   const selectedOptions = useMemo(() => {
-    const optionsOrValues = (
-      value && !Array.isArray(value) ? [value] : value
-    ) as SelectValue<Value, Multiple, UseOption>[] | undefined;
-    if (!optionsOrValues) return [];
-    return optionsOrValues.map((optionOrId) =>
+    const optionsOrValues = [...(Array.isArray(value) ? value : [value])];
+    return optionsOrValues.map((OptionOrValue) =>
       useOption
-        ? optionOrId
-        : options.find((option) => option.value === optionOrId)
-    ) as OptionType<Value>[];
-  }, [options, value, useOption]);
+        ? OptionOrValue // Value is option
+        : options.find((option) => option[valueKey] === OptionOrValue)
+    ) as Option[];
+  }, [value, useOption, options, valueKey]);
 
   const handleChange = useCallback(
-    (values: OptionType<Value>[] | OptionType<Value>) => {
+    (options: Option | Option[]) => {
       if (useOption) {
-        onChange?.(values as SelectValue<Value, Multiple, UseOption>);
+        onChange?.(options as SelectValue);
       } else if (multiple) {
-        const ids = (values as OptionType<Value>[]).map(
-          (option) => option.value
-        ) as SelectValue<Value, Multiple, UseOption>;
-        onChange?.(ids);
+        const values = (options as Option[]).map((option) => option[valueKey]);
+        onChange?.(values as SelectValue);
       } else {
-        onChange?.(
-          (values as OptionType<Value>).value as SelectValue<
-            Value,
-            Multiple,
-            UseOption
-          >
-        );
+        onChange?.((options as Option)[valueKey] as SelectValue);
       }
     },
-    [onChange, multiple, useOption]
+    [useOption, multiple, onChange, valueKey]
   );
 
   return (
@@ -146,10 +145,10 @@ export default function Select<
           {isBlank(value) ? (
             <span className="text-gray-500">{placeholder}</span>
           ) : renderSelected ? (
-            renderSelected(value!, options, onChange)
+            renderSelected(value, options, onChange)
           ) : (
             <span className="truncate text-grey-900">
-              {selectedOptions?.map((option) => option.name).join(", ")}
+              {selectedOptions?.map((option) => option[nameKey]).join(", ")}
             </span>
           )}
           <HiChevronDown
@@ -169,7 +168,11 @@ export default function Select<
           <Listbox.Options className="absolute left-0 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
             <div className="py-1">
               {options.map((option) => (
-                <Listbox.Option key={option.value} value={option} as={Fragment}>
+                <Listbox.Option
+                  key={`${option[valueKey]}`}
+                  value={option}
+                  as={Fragment}
+                >
                   {({ active, selected }) => (
                     <li
                       className={cn(
@@ -186,11 +189,13 @@ export default function Select<
                             aria-hidden="true"
                           />
                           <span className="pl-2 font-medium">
-                            {option.name ?? option.value}
+                            {`${option[nameKey] ?? option[valueKey]}`}
                           </span>
                         </span>
                       ) : (
-                        <span className="pl-7">{option.name}</span>
+                        <span className="pl-7">{`${
+                          option[nameKey] ?? option[valueKey]
+                        }`}</span>
                       )}
                     </li>
                   )}
@@ -204,12 +209,7 @@ export default function Select<
   );
 }
 
-// export const renderUserTag: SelectProps<
-//   ValueType,
-//   OptionType<User>,
-//   boolean,
-//   boolean
-// >["renderSelected"] = (value, options:User[], onChange) => {
+// export const renderUserTag: SelectProps<User>["renderSelected"] = (value, options:User[], onChange) => {
 //   return (
 //     <div className="flex flex-col">
 //       {options.map((user: User, index) => {

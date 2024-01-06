@@ -97,7 +97,6 @@ export default function TestSelect() {
           text: option.name
         }))}
       />
-
       <Select
         label="newSelect_single_useId"
         options={OPTIONS}
