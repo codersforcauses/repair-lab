@@ -31,16 +31,6 @@ const Box = ({
         {({ open }) => (
           <>
             <Disclosure.Button as="div" className={`flex justify-between flex-row text-lg rounded-lg transition-colors duration-300 ease-in-out  ${!open ? "bg-slate-200" : "bg-slate-300"} `}>
-              {/* transition-colors duration-300 ease-in-out ${!expanded ? "bg-slate-200" : "bg-slate-300"}*/}
-              {/* <span className="flex-none">
-          <Image
-            src={imagePath}
-            alt="event image"
-            width={500}
-            height={500}
-            className="w-20 h-20 ml-1 rounded-full scale-95"
-          />
-        </span> */}
               <div className="flex flex-col ml-2 mr-2">
                 <span className="font-bold pt-2">
                   {eventTitle}

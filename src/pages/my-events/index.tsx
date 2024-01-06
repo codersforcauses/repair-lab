@@ -72,7 +72,6 @@ const Home = () => {
 
   return (
     <div>
-
       {/* HEADER BAR*/}
       <div className="relative z-10 mt-2 flex w-full justify-center">
         <Image
@@ -87,6 +86,7 @@ const Home = () => {
       </h1>
       <hr className="mx-10" />
 
+      {/* CONTENT */}
       {isEventsLoading ? (
         <div className="flex justify-center">
           <LoadingSpinner />
