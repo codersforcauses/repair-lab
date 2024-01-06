@@ -190,7 +190,10 @@ function Table() {
             showModal={showAddModal}
             height="h-3/4"
           >
-            <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
+            <EventForm
+              itemTypes={itemTypes ?? []}
+              onSubmit={submitCreateEvent}
+            />
           </Modal>
         </div>
       </div>

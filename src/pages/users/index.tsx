@@ -77,7 +77,7 @@ const User = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.items.map((user: User, index: number) => {
+                {users?.items.map((user: User, index: number) => {
                   return <UserRow key={user.id} user={user} index={index} />;
                 })}
               </tbody>
@@ -86,14 +86,14 @@ const User = () => {
             <TablePagination
               perPage={perPage}
               page={page}
-              totalCount={Number(users.meta.totalCount)}
+              totalCount={Number(users?.meta.totalCount)}
               prevPage={() =>
                 setPage(Number(page) - 1 == 0 ? 1 : Number(page) - 1)
               }
               nextPage={() =>
                 setPage(
-                  Number(page) + 1 > Number(users.meta.lastPage)
-                    ? Number(users.meta.lastPage)
+                  Number(page) + 1 > Number(users?.meta.lastPage)
+                    ? Number(users?.meta.lastPage)
                     : Number(page) + 1
                 )
               }
@@ -131,6 +131,7 @@ const UserRow = ({ user, index }: { user: User; index: number }) => {
           onChange={(e) => {
             updateUser(e.target.value as UserRole);
           }}
+          className="capitalize"
         >
           {Object.keys(UserRole).map((role) => {
             return (
