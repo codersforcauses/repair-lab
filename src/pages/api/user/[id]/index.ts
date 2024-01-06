@@ -10,10 +10,7 @@ export default apiHandler({
   get: getUser
 });
 
-async function getUser(
-  req: NextApiRequest,
-  res: NextApiResponse<User | undefined>
-) {
+async function getUser(req: NextApiRequest, res: NextApiResponse<User>) {
   const { id } = req.query;
 
   const user = await userService.getUser(id as string);
