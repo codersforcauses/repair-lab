@@ -142,8 +142,6 @@ const Events: NextPageWithLayout = () => {
     });
   };
 
-  
-
   return (
     <div className="mt-20">
       {/* Search bar above table */}

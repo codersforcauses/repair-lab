@@ -10,8 +10,6 @@ const adminItems = ["Home", "Events", "Repair Requests"];
 const clientItems = ["Home", "Events", "My Events"];
 const guestItems = ["Home", "Events"]; // Shown when user it not logged in
 
-
-
 const pathMap: { [key: string]: string } = {
   Home: "/",
   Events: "/events",
@@ -30,14 +28,15 @@ export default function NavBar() {
   const { signOut } = useClerk();
 
   let menuItems;
-  if (user) { // Check if user is logged in
+  if (user) {
+    // Check if user is logged in
     if (adminRoles.includes(role)) {
-      menuItems = adminItems.map(item => ({ item, path: pathMap[item] }));
+      menuItems = adminItems.map((item) => ({ item, path: pathMap[item] }));
     } else {
-      menuItems = clientItems.map(item => ({ item, path: pathMap[item] }));
+      menuItems = clientItems.map((item) => ({ item, path: pathMap[item] }));
     }
   } else {
-    menuItems = guestItems.map(item => ({ item, path: pathMap[item] })); 
+    menuItems = guestItems.map((item) => ({ item, path: pathMap[item] }));
   }
 
   return (

@@ -18,7 +18,7 @@ export default function MenuList({ items }: Readonly<Props>) {
           <Tab
             key={item.item}
             className={`px-16 py-4 rounded-lg font-medium outline-none text-black hover:text-primary-700 ${
-              router.asPath === item.path ? " text-primary-700"  : ""
+              router.asPath === item.path ? " text-primary-700" : ""
             }`}
           >
             <Link href={item.path}>

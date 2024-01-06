@@ -41,8 +41,8 @@ export default function Account({
             >
               New Event +
             </Link>
-          )} 
-          
+          )}
+
           <ActionButton onClick={onSignOut} label="Log Out" />
 
           <ProfilePopover />
