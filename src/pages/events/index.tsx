@@ -140,7 +140,7 @@ function Table() {
     });
   };
 
-  console.log("role", role);
+  
 
   return (
     <div>
