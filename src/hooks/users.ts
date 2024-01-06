@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
 import { UserRole } from "@/types";
+import { User } from "@/types";
 
 export const useUsers = (
   perPage: number,
@@ -20,7 +21,7 @@ export const useUsers = (
 
     const url = `/user?${params.toString()}`;
 
-    const response = await httpClient.get(url);
+    const response = await httpClient.get<User[]>(url);
 
     return await response.data;
   };
