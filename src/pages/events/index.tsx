@@ -142,7 +142,7 @@ const Events: NextPageWithLayout = () => {
     });
   };
 
-  console.log("role", role);
+  
 
   return (
     <div className="mt-20">
