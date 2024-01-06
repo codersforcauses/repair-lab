@@ -19,8 +19,10 @@ import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import { CreateEvent, Event, EventResponse } from "@/types";
+import { NextPageWithLayout } from "@/pages/_app";
+import NavBar from "@/components/NavBar";
 
-function Table() {
+const Events: NextPageWithLayout = () => {
   const router = useRouter();
 
   const upcoming: EventStatus = "UPCOMING";
@@ -143,33 +145,12 @@ function Table() {
   console.log("role", role);
 
   return (
-    <div>
-      {/* HEADER BAR*/}
-      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
-        <Image
-          className="m-10 mb-5 mt-5"
-          src="/images/repair_lab_logo.jpg"
-          alt="logo"
-          width="90"
-          height="90"
-        />
-        <h1 className="mt-[50px] text-3xl font-semibold text-slate-600">
-          {" "}
-          Event Listings
-        </h1>
-
-        {/* ACCOUNT AREA*/}
-        <div className="absolute right-10 self-center justify-self-end">
-          {/* Profile Pop Over */}
-          <ProfilePopover />
-        </div>
-      </div>
-
+    <div className="mt-20">
       {/* Search bar above table */}
       <div className="flex justify-center">
         <div className="relative w-5/12 p-4">
           <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
+            className="h-10 w-full rounded-3xl border-none bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"
@@ -270,6 +251,14 @@ function Table() {
       </div>
     </div>
   );
-}
+};
 
-export default Table;
+Events.getLayout = function getLayout(page) {
+  return (
+    <>
+      <NavBar />
+      {page}
+    </>
+  );
+};
+export default Events;
