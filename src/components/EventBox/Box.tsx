@@ -5,13 +5,11 @@ import { Disclosure, Transition } from '@headlessui/react';
 type BoxProps = {
   eventId: string;
   eventTitle: string;
-  startDate: string; // Wanted to use the Date type, but had issues, will alter based off what the backend is
+  startDate: string;
   endDate: string;
   description: string;
   location: string;
   handleClick?: () => void;
-  // Add other data as required
-  // Add image stuff later once figure it out / if theres even an image that will be returned
 }
 
 const Box = ({
@@ -64,7 +62,6 @@ const Box = ({
               leaveFrom="transform  max-h-[800px]"
               leaveTo="transform  max-h-0"
             >
-
               <Disclosure.Panel className="pt-1 relative mb-2 mx-2">
                 <p>Location: {location} </p>
                 <p>Details: {description}</p>
@@ -72,6 +69,7 @@ const Box = ({
                   <button
                     className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-6 text-md hover:bg-primary-800 text-center"
                     onClick={() =>
+                      //Will not work until linked to issue 118
                       router.push(
                         "/my-events/" + eventId
                       )}
@@ -79,7 +77,6 @@ const Box = ({
                     See Repair Requests {">"}
                   </button>
                 </div>
-
               </Disclosure.Panel>
 
             </Transition>

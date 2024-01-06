@@ -35,8 +35,8 @@ const Home = () => {
   }
 
   function createBox(id: string, name: string, startDate: Date, endDate: Date, description: string, location: string) {
-    // Insert the correct conditional here
-    if (name == "anElegant Granite Chair") {
+    // To do: filter based off users assigned events
+    if (name != "Elegant Granite Chair") {
       return <Box key={id}
         eventId={id}
         eventTitle={name}
