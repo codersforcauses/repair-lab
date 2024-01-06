@@ -81,6 +81,7 @@ export type EventResponse = {
   /** ISO date string */
   endDate: string;
 };
+
 export type RepairRequestResponse = {
   id: string;
   createdBy: User;
@@ -100,4 +101,5 @@ export type RepairRequestResponse = {
   itemType: string;
   itemBrand: string;
   itemMaterial: string;
+  images: string[];
 };
