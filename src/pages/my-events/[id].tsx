@@ -43,51 +43,51 @@ const Home = () => {
       <hr className="mx-10" />
 
       <div className="mt-4 relative flex-row items-center justify-center text-lg mx-10 bg-slate-200 rounded-lg">
+        {event ?
+          <Tab.Group>
+            <Tab.List className="flex justify-center rounded-t-lg bg-slate-300 rounded-lg">
 
-        <Tab.Group>
-          <Tab.List className="flex justify-center rounded-t-lg bg-slate-300 rounded-lg">
+              <Tab as={Fragment}>
+                {({ selected }) => (
+                  <button
+                    className={`rounded-tl-lg grow ${selected ? 'bg-slate-200 ' : 'bg-slate-300'}`}
+                  >
+                    My Repairs
+                  </button>
+                )}
+              </Tab>
 
-            <Tab as={Fragment}>
-              {({ selected }) => (
-                <button
-                  className={`rounded-tl-lg grow ${selected ? 'bg-slate-200 ' : 'bg-slate-300'}`}
-                >
-                  My Repairs
-                </button>
-              )}
-            </Tab>
+              <Tab as={Fragment}>
+                {({ selected }) => (
+                  <button
+                    className={`rounded-tr-lg grow ${selected ? 'bg-slate-200 ' : 'bg-slate-300'}`}
+                  >
+                    Available
+                  </button>
+                )}
+              </Tab>
 
-            <Tab as={Fragment}>
-              {({ selected }) => (
-                <button
-                  className={`rounded-tr-lg grow ${selected ? 'bg-slate-200 ' : 'bg-slate-300'}`}
-                >
-                  Available
-                </button>
-              )}
-            </Tab>
-
-          </Tab.List>
-
-
-          <Tab.Panels className="flex-col text-center break-words justify-center pb-3">
-
-            <Tab.Panel><div className="">
-              <RequestView />
-              <RequestView />
-            </div></Tab.Panel>
-            <Tab.Panel><div className="">
-              <RequestView />
-              <RequestView />
-              <RequestView />
-              <RequestView />
-            </div></Tab.Panel>
+            </Tab.List>
 
 
+            <Tab.Panels className="flex-col text-center break-words justify-center pb-3">
 
-          </Tab.Panels>
-        </Tab.Group>
+              <Tab.Panel><div className="">
+                <RequestView />
+                <RequestView />
+              </div></Tab.Panel>
+              <Tab.Panel><div className="">
+                <RequestView />
+                <RequestView />
+                <RequestView />
+                <RequestView />
+              </div></Tab.Panel>
 
+
+
+            </Tab.Panels>
+          </Tab.Group>
+          : <LoadingSpinner />}
       </div>
 
     </div >
