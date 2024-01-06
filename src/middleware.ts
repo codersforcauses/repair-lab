@@ -65,8 +65,8 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   // TODO: organisation manager routes
   
   return {
-    CLIENT: clientRoutes,
-    REPAIRER: repairerRoutes,
+    [UserRole.CLIENT]: clientRoutes,
+    [UserRole.REPAIRER]: repairerRoutes,
     [UserRole.EVENT_MANAGER]: eventManagerRoutes,
     [UserRole.ADMIN]: adminRoutes,
     [UserRole.ORGANISATION_MANAGER]: eventManagerRoutes
