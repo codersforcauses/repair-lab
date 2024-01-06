@@ -1,7 +1,8 @@
 import {
+  $Enums,
   Event as PrismaEvent,
-  RepairRequest as PrismaRepairRequest
-} from "@prisma/client";
+  RepairRequest as PrismaRepairRequest,
+  UserRole as PrismaUserRole} from "@prisma/client";
 import { z } from "zod";
 
 import { createEventSchema, updateEventSchema } from "@/schema/event";
@@ -34,7 +35,7 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   emailAddress: string;
-  role: UserRole;
+  role: PrismaUserRole;
 }
 
 export enum SearchCriteria {
@@ -45,11 +46,12 @@ export enum SearchCriteria {
   All = "all"
 }
 
-export enum UserRole {
-  ADMIN = "ADMIN",
-  ORGANISATION_MANAGER = "ORGANISATION_MANAGER",
-  EVENT_MANAGER = "EVENT_MANAGER",
-  REPAIRER = "REPAIRER"
-}
-// export type UserRole = $Enums.UserRole
+// export enum UserRole {
+//   ADMIN = "ADMIN",
+//   ORGANISATION_MANAGER = "ORGANISATION_MANAGER",
+//   EVENT_MANAGER = "EVENT_MANAGER",
+//   REPAIRER = "REPAIRER"
+// }
+export const UserRole =  { ...PrismaUserRole, CLIENT: "CLIENT" as const }
+export type UserRole = PrismaUserRole;
 

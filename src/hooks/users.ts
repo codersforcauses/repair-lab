@@ -2,7 +2,6 @@ import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
-import { UserRole } from "@/types";
 
 export const useUsers = (
   perPage: number,

@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
 import userService from "@/services/user";
-import { UserRole } from "@/types";
+import { PrismaUserRole } from "@/types";
 
 export default apiHandler({
   patch: updateUserRole
@@ -22,7 +22,7 @@ async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
   const { userId: updaterId } = getAuth(req);
   // TODO: move this to a more generic function to check permissions.
   const updaterRole = await userService.getRole(updaterId!);
-  if (updaterRole !== UserRole.ADMIN) {
+  if (updaterRole !== PrismaUserRole.ADMIN) {
     throw new ApiError(
       HttpStatusCode.Unauthorized,
       "Not authorised to update user role"
@@ -35,7 +35,7 @@ async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
 }
 
 const validateRole = (role: string) => {
-  const roleSchema = z.nativeEnum(UserRole);
+  const roleSchema = z.nativeEnum(PrismaUserRole);
   const parsedData = roleSchema.parse(role);
 
   return parsedData;

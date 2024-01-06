@@ -5,7 +5,7 @@ import TablePagination from "@/components/Table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
-import { UserRole } from "@/types";
+import { PrismaUserRole } from "@/types";
 import { User } from "@/types";
 
 const User = () => {
@@ -132,7 +132,7 @@ const UserRow = ({ user, index }: { user: User; index: number }) => {
             updateUser(e.target.value as UserRole);
           }}
         >
-          {Object.keys(UserRole).map((role) => {
+          {Object.keys(PrismaUserRole).map((role) => {
             return (
               <option value={role} key={role}>
                 {startCase(role.trim().toLowerCase())}

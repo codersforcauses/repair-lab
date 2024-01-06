@@ -65,12 +65,12 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   // TODO: organisation manager routes
   
   return {
-    [UserRole.CLIENT]: clientRoutes,
-    [UserRole.REPAIRER]: repairerRoutes,
+    CLIENT: clientRoutes,
+    REPAIRER: repairerRoutes,
     [UserRole.EVENT_MANAGER]: eventManagerRoutes,
     [UserRole.ADMIN]: adminRoutes,
     [UserRole.ORGANISATION_MANAGER]: eventManagerRoutes
-  };
+  } as Record<UserRole, RegExp[]>;
 };
 
 // middleware route
