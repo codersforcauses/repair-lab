@@ -2,8 +2,8 @@ import React from "react";
 
 export interface SearchProps {
   className?: string;
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
   beforeInput?: React.ReactNode;
   afterInput?: React.ReactNode;
 }

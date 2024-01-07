@@ -2,6 +2,7 @@ import { Fragment, useCallback, useMemo } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 
+import Search from "@/components/Search";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
 
@@ -42,9 +43,12 @@ export interface SelectProps<
     onChange?: (value: SelectValue) => void
   ) => JSX.Element;
   renderOption?: (option: Option) => JSX.Element;
+  searchValue?: string;
   onSearch?: (search: string) => void;
   nameKey?: NameKey;
   valueKey?: ValueKey;
+  loading?: boolean;
+  renderList?: (options: Option[]) => JSX.Element;
 }
 
 /**
@@ -84,9 +88,11 @@ export default function Select<
     placeholder = "Please select",
     renderSelected,
     renderOption,
+    searchValue,
     onSearch,
     nameKey = "name" as NameKey,
-    valueKey = "value" as ValueKey
+    valueKey = "value" as ValueKey,
+    renderList
   } = props;
 
   const baseStyle = `flex items-center ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
@@ -145,7 +151,7 @@ export default function Select<
           {isBlank(value) ? (
             <span className="text-gray-500">{placeholder}</span>
           ) : renderSelected ? (
-            renderSelected(value, options, onChange)
+            renderSelected(value, selectedOptions, onChange)
           ) : (
             <span className="truncate text-grey-900">
               {selectedOptions?.map((option) => option[nameKey]).join(", ")}
@@ -165,42 +171,51 @@ export default function Select<
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Listbox.Options className="absolute left-0 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
-            <div className="py-1">
-              {options.map((option) => (
-                <Listbox.Option
-                  key={`${option[valueKey]}`}
-                  value={option}
-                  as={Fragment}
-                >
-                  {({ active, selected }) => (
-                    <li
-                      className={cn(
-                        active
-                          ? "bg-lightAqua-100 text-grey-900"
-                          : "text-grey-900",
-                        "block py-2 pl-2 pr-4 text-sm"
-                      )}
+          <Listbox.Options className="absolute w-full">
+            <div className="relative py-1 left-0 z-10 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
+              {onSearch && (
+                <Search
+                  className="sticky top-0"
+                  value={searchValue}
+                  onChange={onSearch}
+                />
+              )}
+              {renderList
+                ? renderList(options)
+                : options.map((option) => (
+                    <Listbox.Option
+                      key={`${option[valueKey]}`}
+                      value={option}
+                      as={Fragment}
                     >
-                      {selected ? (
-                        <span className="relative left-0 flex">
-                          <HiCheck
-                            className="h-5 w-5 text-darkAqua-600"
-                            aria-hidden="true"
-                          />
-                          <span className="pl-2 font-medium">
-                            {`${option[nameKey] ?? option[valueKey]}`}
-                          </span>
-                        </span>
-                      ) : (
-                        <span className="pl-7">{`${
-                          option[nameKey] ?? option[valueKey]
-                        }`}</span>
+                      {({ active, selected }) => (
+                        <li
+                          className={cn(
+                            active
+                              ? "bg-lightAqua-100 text-grey-900"
+                              : "text-grey-900",
+                            "block py-2 pl-2 pr-4 text-sm"
+                          )}
+                        >
+                          {selected ? (
+                            <span className="relative left-0 flex">
+                              <HiCheck
+                                className="h-5 w-5 text-darkAqua-600"
+                                aria-hidden="true"
+                              />
+                              <span className="pl-2 font-medium">
+                                {`${option[nameKey] ?? option[valueKey]}`}
+                              </span>
+                            </span>
+                          ) : (
+                            <span className="pl-7">{`${
+                              option[nameKey] ?? option[valueKey]
+                            }`}</span>
+                          )}
+                        </li>
                       )}
-                    </li>
-                  )}
-                </Listbox.Option>
-              ))}
+                    </Listbox.Option>
+                  ))}
             </div>
           </Listbox.Options>
         </Transition>
@@ -208,40 +223,3 @@ export default function Select<
     </div>
   );
 }
-
-// export const renderUserTag: SelectProps<User>["renderSelected"] = (value, options:User[], onChange) => {
-//   return (
-//     <div className="flex flex-col">
-//       {options.map((user: User, index) => {
-//         user = user as User;
-//         return (
-//           <div
-//             key={user.id}
-//             className="flex h-5/6 p-1 bg-gray-200 rounded-sm ml-1 mr-1"
-//           >
-//             <div className="h-full aspect-square rounded-full block mr-2 overflow-hidden flex-grow-0 flex-shrink-0">
-//               <Image
-//                 src="/images/repair_lab_logo.png"
-//                 width={30}
-//                 height={30}
-//                 alt="repair-labs"
-//                 className="h-full object-cover  "
-//               />
-//             </div>{" "}
-//             <div className="block overflow-hidden text-clip whitespace-nowrap">
-//               {user.firstName} {user.lastName}
-//             </div>
-//             <HoverOpacityButton
-//               className="text-gray-500 text-xs hover:enabled:scale-100 ml-2 hover:opacity-60"
-//               onClick={() => {
-//                 removeUserByIndex(index);
-//               }}
-//             >
-//               <FontAwesomeIcon icon={faXmark} />
-//             </HoverOpacityButton>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   );
-// };

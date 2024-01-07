@@ -21,33 +21,28 @@ import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import { Pagination, PaginationState } from "@/components/pagination";
 import ProfilePopover from "@/components/ProfilePopover";
+import Search from "@/components/Search";
 import SearchBar, { SearchBarRef } from "@/components/Search/SearchBar";
 import Select from "@/components/select";
-import { FilterState } from "@/components/table/filter-group";
+import SelectDate from "@/components/select-date";
+import SelectUser from "@/components/select-user";
 import {
   DateRangeFilter,
   OptionFilter,
   UserFilter
 } from "@/components/table/filters";
-import Search from "@/components/table/search";
 import Table from "@/components/table/table";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { FilterType, useTableFilters } from "@/hooks/filters";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
-import { CreateEvent, EventResponse } from "@/types";
+import useSearchParamsState from "@/hooks/search-params-state";
+import { formatDate } from "@/lib/datetime";
+import { CreateEvent, EventResponse, User } from "@/types";
 
 function EventTable() {
   const router = useRouter();
 
-  function formatDate(dateString: string): string {
-    const actualDate = new Date(dateString);
-    const day = actualDate.getDate().toString().padStart(2, "0");
-    const month = (actualDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = actualDate.getFullYear().toString();
-
-    return `${day}/${month}/${year}`;
-  }
   const { mutate: createEvent } = useCreateEvent();
 
   const { data: itemTypes, isLoading: isItemTypesLoading } = useItemTypes();
@@ -222,11 +217,25 @@ function EventTable() {
     });
   };
 
-  const [filterState, setFilterState] = useState<FilterState>({});
   const [pagination, onPaginationChange] = useState<PaginationState>({
     total: 100
   });
+
   const [sorting, onSortingChange] = useState<SortingState>([]);
+
+  const [filterState, setFilterState] = useSearchParamsState<{
+    user?: string[];
+    date?: string[];
+    itemType?: string;
+    status?: EventStatus;
+  }>({
+    user: undefined,
+    date: undefined,
+    itemType: undefined,
+    status: undefined
+  });
+
+  const [user, setUser] = useState<User[]>();
 
   return (
     <div>
@@ -386,10 +395,31 @@ function EventTable() {
             ]}
           /> */}
           <div className="flex flex-row gap-4">
-            <Select label="Create By" />
-            <Select label="Date" />
-            <Select label="Type" />
-            <Select label="Status" />
+            <SelectUser
+              label="Create By"
+              value={user}
+              onChange={setUser}
+              multiple
+            />
+            <SelectDate label="Date" value={date} onChange={setDate} />
+            <Select
+              label="Type"
+              options={(itemTypes as ItemType[])?.map(({ name }) => ({
+                name,
+                value: name
+              }))}
+              value={itemType}
+              onChange={setItemType}
+            />
+            <Select
+              label="Status"
+              options={Object.values(EventStatus).map((name) => ({
+                name,
+                value: name
+              }))}
+              value={status}
+              onChange={setStatus}
+            />
           </div>
           <div className="flex gap-4 items-center">
             <Search

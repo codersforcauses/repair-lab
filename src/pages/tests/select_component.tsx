@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import FieldMultiSelect from "@/components/FormFields/field-multi-select";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import Select from "@/components/select";
+import SelectUser from "@/components/select-user";
+import { User } from "@/types";
 
 const OPTIONS = [
   {
@@ -68,10 +70,13 @@ export default function TestSelect() {
   const [state1, setState1] = useState<number[]>();
   const [state2, setState2] = useState<(typeof OPTIONS)[number]>();
   const [state3, setState3] = useState<typeof OPTIONS>();
+  const [user, setUser] = useState<User[]>();
+  const [user1, setUser1] = useState<User[]>();
+
   usePrintValue(
     useMemo(
-      () => [state0, state1, state2, state3],
-      [state0, state1, state2, state3]
+      () => [state0, state1, state2, state3, user, user1],
+      [state0, state1, state2, state3, user, user1]
     )
   );
 
@@ -126,6 +131,8 @@ export default function TestSelect() {
         value={state3}
         onChange={setState3}
       />
+      <SelectUser value={user} onChange={setUser} />
+      <SelectUser multiple value={user1} onChange={setUser1} />
     </div>
   );
 }
