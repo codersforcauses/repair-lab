@@ -3,7 +3,8 @@ import { StrictMode } from "react";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import Toast from "@/components/Toast";
 
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <StrictMode>
       <ClerkProvider clerkJSVariant="headless" {...pageProps}>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
           <main className={`${inter.className}`}>
             <Component {...pageProps} />
             <Toast position="bottom-center" />
