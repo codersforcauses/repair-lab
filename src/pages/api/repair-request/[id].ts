@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
+import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
@@ -11,7 +12,7 @@ export default apiHandler({
 });
 
 async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
-  const repairRequestId = req.query.id as string;
+  const repairRequestId = z.string().parse(req.query.id);
   const parsedData = updateRepairRequestSchema.parse(req.body);
 
   const {

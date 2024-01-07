@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
+import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
@@ -17,7 +18,7 @@ async function getEvent(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse>
 ) {
-  const eventId = req.query.id as string;
+  const eventId = z.string().parse(req.query.id);
 
   const event = await prisma.event.findUnique({
     where: { id: eventId },

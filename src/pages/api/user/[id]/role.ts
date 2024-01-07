@@ -12,7 +12,7 @@ export default apiHandler({
 });
 
 async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
-  const { id: userId } = req.query;
+  const userId = z.string().parse(req.query.id);
   const { role } = req.body;
 
   const parsedRole = validateRole(role);
@@ -27,7 +27,7 @@ async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
     );
   }
 
-  await userService.updateRole(userId as string, parsedRole);
+  await userService.updateRole(userId, parsedRole);
 
   return res.status(204).end();
 }
