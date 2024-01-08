@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   faChevronDown,
@@ -14,7 +13,6 @@ import { SubmitHandler } from "react-hook-form";
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
-import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
