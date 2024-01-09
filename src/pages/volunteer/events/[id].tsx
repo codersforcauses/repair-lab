@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Tab } from "@headlessui/react";
 
-import RequestView from "@/components/EventBox/Request-view";
+import RequestView from "@/components/EventBox/request-view";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
 import { useRepairRequests } from "@/hooks/events";
