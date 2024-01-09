@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import Box from "@/components/EventBox/Box";
+import Box from "@/components/EventBox/box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { Event } from "@/types";
