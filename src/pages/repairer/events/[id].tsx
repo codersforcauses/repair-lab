@@ -69,6 +69,7 @@ const Home = () => {
             <Tab.Panels className="flex-col text-center break-words justify-center pb-3">
               <Tab.Panel>
                 <div className="">
+                  {/* Replace with a proper backend call */}
                   <RequestView />
                   <RequestView />
                 </div>
