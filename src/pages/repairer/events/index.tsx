@@ -38,19 +38,17 @@ const Home = () => {
     location: string
   ) {
     // To do: filter based off users assigned events
-    if (name != "Elegant Granite Chair") {
-      return (
-        <Box
-          key={id}
-          eventId={id}
-          eventTitle={name}
-          startDate={formatDate(String(startDate))}
-          endDate={formatDate(String(endDate))}
-          description={description}
-          location={location}
-        />
-      );
-    }
+    return (
+      <Box
+        key={id}
+        eventId={id}
+        eventTitle={name}
+        startDate={formatDate(String(startDate))}
+        endDate={formatDate(String(endDate))}
+        description={description}
+        location={location}
+      />
+    );
     return null;
   }
 

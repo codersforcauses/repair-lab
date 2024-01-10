@@ -76,10 +76,10 @@ const Box = ({
                 <p>Details: {description}</p>
                 <div className="p-2 pt-4 relative flex justify-center">
                   <button
-                    className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-10 text-md text-center"
+                    className="bg-primary-800 px-1000 w-48 opacity-50 rounded-lg text-white h-10 text-md text-center hover:bg-primary-700"
                     onClick={() =>
                       // For future use when linking to issue 118
-                      router.push("/volunteer/events/" + eventId)
+                      router.push("/repairer/events/" + eventId)
                     }
                   >
                     See Repair Requests {">"}
