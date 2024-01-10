@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from "react";
-import { startCase } from "lodash";
 import { NextPageWithLayout } from "@/pages/_app";
 import NavBar from "@/components/NavBar";
 import TablePagination from "@/components/Table/table-pagination";
