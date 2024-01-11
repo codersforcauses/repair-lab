@@ -19,36 +19,98 @@ export default function Home() {
           className="object-cover object-center"
         />
       </div>
-      <div className="mb-16 bg-primary-600">
-        <div className="mb-8 mt-6 text-center text-3xl font-black text-white">
-          Hi, Welcome to Repair Lab!
+      <div className="relative h-80 w-full">
+        <Image
+          src="/images/blue_grid_vectorstock.jpg"
+          alt="box of sewing equipment"
+          fill={true}
+          className="object-cover object-center"
+        />
+      </div>
+      <div className="bg-primary-600">
+        <div className="text-center">
+          <h1 className="pb-8 pt-6 inline-block w-1/4 leading-tight text-5xl font-black text-white">
+            Hi, Welcome to Repair Lab!
+          </h1>
         </div>
-        <div className="flex flex-col pl-10 pr-10">
-          <div className="flex flex-col justify-center">
-            <div className="relative flex w-full justify-center text-white font-bold mb-4">
-              When in doubt, don’t throw out!
-            </div>
-            <div className="relative flex w-full justify-center text-white mb-4">
-              Bring it to the Repair Lab, a grassroots initiative to encourage
-              and help Perth folks come up with new and creative ways to salvage
-              perfectly usable things. Repair Lab gathers volunteers who work
-              with you to assess and fix your broken items, and hopefully give
-              you insight on how to repair other things around the house.
-            </div>
-          </div>
+        <h3 className="relative flex w-full justify-center text-white font-bold pb-8 text-xl">
+          When in doubt, don’t throw out!
+        </h3>
+        <div className="text-center">
+          <p className="relative inline-block w-2/3 text-white pb-8 pl-28 pr-28 text-lg">
+            Bring it to the Repair Lab, a grassroots initiative to encourage and
+            help Perth folks come up with new and creative ways to salvage
+            perfectly usable things. Repair Lab gathers volunteers who work with
+            you to assess and fix your broken items, and hopefully give you
+            insight on how to repair other things around the house.
+          </p>
         </div>
         <div className="relative flex w-full justify-center">
-          <svg height="50" width="1000">
+          <svg height="50" width="500">
             <line x1="20" y1="20" x2="1000" y2="20" stroke="white" />
           </svg>
         </div>
-        <div className="relative flex w-full justify-center text-white mb-4">
-          It’s a collaborative and learning experience, a little antidote to
-          modern day throw-away mentality.
+        <div className="text-center">
+          <h3 className="relative inline-block w-1/4 text-white pb-20 font-semibold italic text-2xl">
+            It’s a collaborative and learning experience, a little antidote to
+            modern day throw-away mentality.
+          </h3>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center bg-lightAqua-300 p-10">
-        <span className="pb-6 text-2xl font-bold"> Upcoming Events </span>
+
+      <div className="white-text-area">
+        <div className="flex flex-col">
+          <div className="justify-start">
+            <h2 className="pb-8 pt-20 ml-64 text-left text-5xl font-black text-primary-600">
+              Learn new skills
+            </h2>
+          </div>
+          <div className="justify-start text-center h-4 w-1/2">
+            <p className="relative ml-44 mr-0 mb-0 pt-4 text-xl">
+              Want to learn how to repair your stuff? Or how to take care of it
+              so it will last longer? Come and join us at Repair Lab, where
+              volunteers will assist you in gaining these new skills!
+            </p>
+          </div>
+
+          <div className="sewing-image relative flex w-full justify-end right-72 p-0 bottom-20">
+            <Image
+              src="/images/Repair_Lab_sewing.jpg"
+              alt="bike repair"
+              width={500}
+              height={400}
+              className="rounded-2xl"
+            />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <h2 className=" relative pb-4 pt-0 mr-96 right-60 text-right text-5xl font-black text-primary-600 bottom-8">
+            Reduce Waste
+          </h2>
+        </div>
+        <div className="flex justify-end">
+          <p className="relative ml-0 mr-20 mb-0 right-20 pt-4 text-xl bottom-10 w-1/2">
+            If you think that we are all creating too much waste by discarding
+            of everything without even trying to repair, join us at Repair Lab!
+            Meet like minded locals and treasure your stuff.
+          </p>
+        </div>
+        <div className="relative pt-1 flex w-full justify-start pl-48 pb-0 mb-0 bottom-64">
+          <Image
+            src="/images/Repair_Lab_bikerepair.jpg"
+            alt="bike repair"
+            width={500}
+            height={400}
+            className="rounded-2xl"
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center justify-center bg-darkAqua-600 p-10 bottom-0">
+        <span className="pb-6 text-4xl font-extrabold text-white ">
+          {" "}
+          UPCOMING EVENTS{" "}
+        </span>
         <div className="flex flex-col">
           <Image
             src="/images/jeans_repair.jpg"
@@ -70,13 +132,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mb-16 h-auto bg-white p-3">
-        <div className="pb-5 pt-12 text-center text-2xl font-bold">
+      <div className="mb-16 h-auto  p-3">
+        <div className="pb-5 pt-12 text-center text-4xl font-extrabold text-primary-600">
           Submit item for Repair
         </div>
-        <div className="h-30 mb-10 mt-5 pb-3 pl-10 pr-10">
+        <div className="h-30 mb-10 mt-5 pb-3 pl-10 pr-10 ">
           <Link href="/repair-request">
-            <Button aria-label="button"> New Request </Button>
+            <Button aria-label="button" className=""> New Request </Button>
           </Link>
         </div>
       </div>
