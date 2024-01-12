@@ -7,14 +7,14 @@ import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateEventSchema } from "@/schema/event";
-import { Event } from "@/types";
+import { EventResponse } from "@/types";
 import { UpdateEvent } from "@/types";
 
 export default function PrepopulatedEventForm({
   props,
   onSubmit
 }: {
-  props: Event;
+  props: EventResponse;
   onSubmit: SubmitHandler<UpdateEvent>;
 }) {
   const { data: itemTypes } = useItemTypes();
