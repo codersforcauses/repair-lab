@@ -5,7 +5,7 @@ import Image from "next/image";
 import Box from "@/components/EventBox/box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
-import { Event } from "@/types";
+import { EventResponse } from "@/types";
 const Home = () => {
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
@@ -32,8 +32,8 @@ const Home = () => {
   function createBox(
     id: string,
     name: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: string,
+    endDate: string,
     description: string,
     location: string
   ) {
@@ -49,22 +49,26 @@ const Home = () => {
         location={location}
       />
     );
-    return null;
   }
 
   function renderEvents() {
-    const events = eventData.map((event: Event) =>
-      createBox(
-        event.id,
-        event.name,
-        event.startDate,
-        event.endDate,
-        event.description,
-        event.location
-      )
-    );
+    const events =
+      eventData &&
+      eventData.map((event: EventResponse) =>
+        createBox(
+          event.id,
+          event.name,
+          event.startDate,
+          event.endDate,
+          event.description,
+          event.location
+        )
+      );
 
-    if (events.filter((value: never) => value != null).length) {
+    if (
+      events?.filter((value: never) => value != null).length ||
+      events == undefined
+    ) {
       return (
         <div className="relative flex-row items-center justify-center mb-10">
           <ul id="eventList">{events}</ul>
