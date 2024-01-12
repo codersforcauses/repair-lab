@@ -1,4 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { ApiError } from "next/dist/server/api-utils";
+import { HttpStatusCode } from "axios";
+import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
@@ -17,14 +20,27 @@ export default apiHandler({
   get: getRepairers
 });
 
-async function getRepairers(
-  req: NextApiRequest,
-  res: NextApiResponse<Repairers[]>
-) {
-  const { id } = req.query;
-  const result = await getEventRepairers(id as string);
+async function getRepairers(req: NextApiRequest, res: NextApiResponse) {
+  // check if event exists
+  const eventId = z.string().parse(req.query.id);
+  const event = await prisma.event.findUnique({
+    where: { id: eventId },
+    include: {
+      eventRepairer: true
+    }
+  });
 
-  res.status(200).json(result);
+  if (!event) {
+    throw new ApiError(HttpStatusCode.NotFound, "Event not found");
+  }
+
+  // get event repairers
+  try {
+    const result = await getEventRepairers(eventId as string);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: "failed to get event repairers" });
+  }
 }
 
 async function getEventRepairers(id: string): Promise<Repairers[]> {
