@@ -4,13 +4,13 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 
 const eventStatusSchema = z.union([
-  z.literal("").transform(() => undefined),
+  z.literal("").transform(() => [] as EventStatus[]),
   z.nativeEnum(EventStatus).transform((s) => [s]),
   z.array(z.nativeEnum(EventStatus))
 ]);
 
 const stringOrArray = z.union([
-  z.literal("").transform(() => undefined),
+  z.literal("").transform(() => [] as string[]),
   z.string().transform((s) => [s]),
   z.array(z.string())
 ]);
@@ -23,8 +23,8 @@ export const getEventSchema = z.object({
   searchWord: z.string().optional(),
   minStartDate: z.string().datetime().optional(),
   maxStartDate: z.string().datetime().optional(),
-  eventType: stringOrArray,
-  eventStatus: eventStatusSchema,
+  eventType: stringOrArray.optional(),
+  eventStatus: eventStatusSchema.optional(),
   createdBy: stringOrArray.optional()
 });
 

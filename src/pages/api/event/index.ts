@@ -17,50 +17,56 @@ async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse[] | ErrorResponse>
 ) {
-  try {
-    const {
-      sortKey,
-      sortMethod,
-      searchWord,
-      minStartDate,
-      maxStartDate,
-      eventType,
-      eventStatus,
-      createdBy
-    } = getEventSchema.parse(req.query);
+  const {
+    sortKey,
+    sortMethod,
+    searchWord,
+    minStartDate,
+    maxStartDate,
+    eventType,
+    eventStatus,
+    createdBy
+  } = getEventSchema.parse(req.query);
 
-    const sortObj: Record<string, "asc" | "desc"> = {
-      [sortKey]: sortMethod
-    };
+  const sortObj: Record<string, "asc" | "desc"> = {
+    [sortKey]: sortMethod
+  };
 
-    const events = await prisma.event.findMany({
-      where: {
+  const events = await prisma.event.findMany({
+    where: {
+      ...(searchWord && {
         OR: [
           { name: { contains: searchWord, mode: "insensitive" } },
           { createdBy: { contains: searchWord, mode: "insensitive" } },
           { location: { contains: searchWord, mode: "insensitive" } },
           { eventType: { contains: searchWord, mode: "insensitive" } }
-        ],
+          // Add more fields to search if necessary
+        ]
+      }),
+      ...((minStartDate || maxStartDate) && {
         startDate: {
-          gte: minStartDate ? new Date(minStartDate) : undefined,
-          lte: maxStartDate ? new Date(maxStartDate) : undefined
-        },
-        eventType: { in: eventType },
-        status: { in: eventStatus },
+          ...(minStartDate && { gte: new Date(minStartDate) }),
+          ...(maxStartDate && { lte: new Date(maxStartDate) })
+        }
+      }),
+      ...(eventType && {
+        eventType: { in: eventType }
+      }),
+      ...(eventStatus && {
+        status: { in: eventStatus }
+      }),
+      // positive search - do not allow length 0
+      ...(createdBy && {
         createdBy: { in: createdBy }
-      },
-      orderBy: sortObj
-    });
+      })
+    },
+    orderBy: sortObj
+  });
 
-    const eventResponse: EventResponse[] =
-      await eventService.toClientResponse(events);
+  const eventResponse: EventResponse[] =
+    await eventService.toClientResponse(events);
 
-    res.status(200).json(eventResponse);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    res.status(500);
-  }
+  res.status(200).json(eventResponse);
 }
 
 async function createEvent(
