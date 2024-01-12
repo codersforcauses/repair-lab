@@ -1,6 +1,6 @@
 // Page for submitting a repair request
 // This form is copied from /repair-request/index.tsx
-import Image from "next/image";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -29,7 +29,7 @@ const repairRequestFormSchema = createRepairRequestSchema.extend({
   })
 });
 
-const Home = () => {
+export default function RepairRequest() {
   const { control, handleSubmit, setValue } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
@@ -63,25 +63,7 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center p-4">
       <div className="flex w-screen flex-col justify-center gap-4 md:w-3/6 lg:w-full">
-        {/* Logo of Repair Lab, which links to the main website. */}
-
-        <picture className="flex justify-center">
-          <a href="https://repairlab.myfreesites.net/" target="_blank">
-            <Image
-              src="/images/repair_lab_logo.jpg"
-              alt="Repair Labs Logo"
-              width={80}
-              height={80}
-            />
-          </a>
-        </picture>
-
         {/* Heading of the Page */}
-
-        <h1 className="flex justify-center text-xl font-bold">
-          {" "}
-          Add a repair request
-        </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Input field for Brand of Item */}
 
@@ -164,6 +146,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-export default Home;
+}
