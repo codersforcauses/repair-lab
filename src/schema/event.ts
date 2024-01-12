@@ -3,19 +3,17 @@ import { z } from "zod";
 
 import prisma from "@/lib/prisma";
 
-const stringOrArray = z.union([z.string(), z.array(z.string())]);
+const eventStatusSchema = z.union([
+  z.literal("").transform(() => undefined),
+  z.nativeEnum(EventStatus).transform((s) => [s]),
+  z.array(z.nativeEnum(EventStatus))
+]);
 
-const isValidEventStatus = (value: string[]): value is EventStatus[] => {
-  return value.every((status) => status in EventStatus);
-};
-
-const toArray = <T>(value: T | T[]) => {
-  if (typeof value === "string" && value.trim() === "") {
-    return [] as T[]; // Return an empty array for an empty string
-  }
-
-  return Array.isArray(value) ? value : [value];
-};
+const stringOrArray = z.union([
+  z.literal("").transform(() => undefined),
+  z.string().transform((s) => [s]),
+  z.array(z.string())
+]);
 
 export const getEventSchema = z.object({
   sortKey: z.string().refine((value) => value in prisma.event.fields, {
@@ -25,12 +23,9 @@ export const getEventSchema = z.object({
   searchWord: z.string().optional(),
   minStartDate: z.string().datetime().optional(),
   maxStartDate: z.string().datetime().optional(),
-  eventType: stringOrArray.transform(toArray<string>).optional(),
-  eventStatus: stringOrArray
-    .transform(toArray<string>)
-    .refine(isValidEventStatus)
-    .optional(),
-  createdBy: stringOrArray.transform(toArray<string>).optional()
+  eventType: stringOrArray,
+  eventStatus: eventStatusSchema,
+  createdBy: stringOrArray.optional()
 });
 
 export const createEventSchema = z
