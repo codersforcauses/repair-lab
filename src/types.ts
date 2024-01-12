@@ -5,6 +5,7 @@ import {
 } from "@prisma/client";
 import { z } from "zod";
 
+import { PaginationResponse } from "@/lib/pagination";
 import { createEventSchema, updateEventSchema } from "@/schema/event";
 import {
   createRepairRequestSchema,
@@ -56,6 +57,11 @@ export enum UserRole {
   CLIENT = "CLIENT"
 }
 
+export type NavPath = {
+  item: string;
+  path: string;
+};
+
 // API Responses on client
 // All dates are returned as ISO strings
 export type EventResponse = {
@@ -76,6 +82,7 @@ export type EventResponse = {
   /** ISO date string */
   endDate: string;
 };
+
 export type RepairRequestResponse = {
   id: string;
   createdBy: User;
@@ -95,4 +102,7 @@ export type RepairRequestResponse = {
   itemType: string;
   itemBrand: string;
   itemMaterial: string;
+  images: string[];
 };
+
+export type UserResponse = PaginationResponse<User>;
