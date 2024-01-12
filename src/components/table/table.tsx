@@ -1,5 +1,9 @@
 "use client";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSort,
+  faSortDown,
+  faSortUp
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   flexRender,
@@ -49,26 +53,40 @@ export default function Table<RecordType = unknown>(
             key={headerGroup.id}
             className="border-b bg-lightAqua-200 pb-10 text-left "
           >
-            {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                className="p-2.5 pl-5 font-normal"
-                onClick={header.column.getToggleSortingHandler()}
-              >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                {{
-                  asc: <FontAwesomeIcon icon={faChevronUp} className="pl-2" />,
-                  desc: (
-                    <FontAwesomeIcon icon={faChevronDown} className="pl-2" />
-                  )
-                }[header.column.getIsSorted() as string] ?? null}
-              </th>
-            ))}
+            {headerGroup.headers.map(
+              ({ id, column, isPlaceholder, getContext }) => (
+                <th
+                  key={id}
+                  className="p-2.5 pl-5 font-normal"
+                  onClick={column.getToggleSortingHandler()}
+                >
+                  {isPlaceholder
+                    ? null
+                    : flexRender(column.columnDef.header, getContext())}
+                  {{
+                    true: (
+                      <FontAwesomeIcon
+                        icon={faSort}
+                        className="pl-2 text-lightAqua-400"
+                      />
+                    ),
+                    asc: (
+                      <FontAwesomeIcon
+                        icon={faSortUp}
+                        className="pl-2 text-lightAqua-600"
+                      />
+                    ),
+                    desc: (
+                      <FontAwesomeIcon
+                        icon={faSortDown}
+                        className="pl-2 text-lightAqua-600"
+                      />
+                    )
+                  }[(column.getIsSorted() || column.getCanSort()) as string] ??
+                    null}
+                </th>
+              )
+            )}
           </tr>
         ))}
       </thead>

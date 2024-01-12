@@ -7,7 +7,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
-import { SortingState } from "@tanstack/react-table";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
@@ -32,6 +31,8 @@ const initialFilterState = {
   minDate: undefined,
   maxDate: undefined,
   search: undefined,
+  sortKey: undefined,
+  sortMethod: undefined as "asc" | "desc" | undefined,
   userIds: [] as string[],
   eventTypes: [] as string[],
   status: [] as EventStatus[]
@@ -39,9 +40,8 @@ const initialFilterState = {
 
 function EventTable() {
   const { mutate: createEvent } = useCreateEvent();
-  const { data: itemTypes, isLoading: isItemTypesLoading } = useItemTypes();
-  const [sortKey, setSortKey] = useState<string>("startDate");
-  const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
+  const { data: itemTypes } = useItemTypes();
+
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -57,10 +57,17 @@ function EventTable() {
     total: 100
   });
 
-  const [sorting, onSortingChange] = useState<SortingState>([]);
-
   const [
-    { minDate, maxDate, userIds, eventTypes, status, search },
+    {
+      minDate,
+      maxDate,
+      userIds,
+      eventTypes,
+      status,
+      search,
+      sortKey,
+      sortMethod
+    },
     setFilterState
   ] = useSearchParamsState(initialFilterState);
 
@@ -84,6 +91,17 @@ function EventTable() {
     setUsers([]);
     setTempSearch("");
   });
+
+  const sortingState = useMemo(() => {
+    return sortKey
+      ? [
+          {
+            id: sortKey,
+            desc: sortMethod === "desc"
+          }
+        ]
+      : undefined;
+  }, [sortKey, sortMethod]);
 
   return (
     <div>
@@ -209,9 +227,18 @@ function EventTable() {
             loading={isEventsLoading}
             data={eventData}
             state={{
-              sorting
+              sorting: sortingState
             }}
-            onSortingChange={onSortingChange}
+            onSortingChange={(updater) => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore Table TS Error // todo: fix this inside table
+              const nextState = updater(sortingState);
+              setFilterState((state) => ({
+                ...state,
+                sortKey: nextState[0]?.id,
+                sortMethod: nextState[0] && (nextState[0].desc ? "desc" : "asc")
+              }));
+            }}
             columns={[
               {
                 accessorKey: "name",
@@ -232,8 +259,10 @@ function EventTable() {
               },
               { accessorKey: "location", header: "Location" },
               {
+                accessorKey: "startDate",
                 accessorFn: (row) => formatDate(String(row.startDate)),
-                header: "Date"
+                header: "Date",
+                enableSorting: true
               },
               { accessorKey: "eventType", header: "Type" },
               { accessorKey: "status", header: "Status" },
