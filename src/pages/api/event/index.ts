@@ -18,8 +18,8 @@ async function getEvents(
   res: NextApiResponse<EventResponse[] | ErrorResponse>
 ) {
   const {
-    sortKey,
-    sortMethod,
+    sortKey = "startDate",
+    sortMethod = "asc",
     searchWord,
     minStartDate,
     maxStartDate,
@@ -34,31 +34,21 @@ async function getEvents(
 
   const events = await prisma.event.findMany({
     where: {
-      ...(searchWord && {
-        OR: [
-          { name: { contains: searchWord, mode: "insensitive" } },
-          { createdBy: { contains: searchWord, mode: "insensitive" } },
-          { location: { contains: searchWord, mode: "insensitive" } },
-          { eventType: { contains: searchWord, mode: "insensitive" } }
-          // Add more fields to search if necessary
-        ]
-      }),
-      ...((minStartDate || maxStartDate) && {
-        startDate: {
-          ...(minStartDate && { gte: new Date(minStartDate) }),
-          ...(maxStartDate && { lte: new Date(maxStartDate) })
-        }
-      }),
-      ...(eventType && {
-        eventType: { in: eventType }
-      }),
-      ...(eventStatus && {
-        status: { in: eventStatus }
-      }),
-      // positive search - do not allow length 0
-      ...(createdBy && {
-        createdBy: { in: createdBy }
-      })
+      OR: searchWord
+        ? [
+            { name: { contains: searchWord, mode: "insensitive" } },
+            { createdBy: { contains: searchWord, mode: "insensitive" } },
+            { location: { contains: searchWord, mode: "insensitive" } },
+            { eventType: { contains: searchWord, mode: "insensitive" } }
+          ]
+        : undefined,
+      startDate: {
+        gte: minStartDate ? new Date(minStartDate) : undefined,
+        lte: maxStartDate ? new Date(maxStartDate) : undefined
+      },
+      eventType: { in: eventType },
+      status: { in: eventStatus },
+      createdBy: { in: createdBy }
     },
     orderBy: sortObj
   });

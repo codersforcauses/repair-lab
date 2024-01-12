@@ -16,10 +16,13 @@ const stringOrArray = z.union([
 ]);
 
 export const getEventSchema = z.object({
-  sortKey: z.string().refine((value) => value in prisma.event.fields, {
-    message: "Incorrect value for sortKey"
-  }),
-  sortMethod: z.enum(["asc", "desc"]),
+  sortKey: z
+    .string()
+    .refine((value) => value in prisma.event.fields, {
+      message: "Incorrect value for sortKey"
+    })
+    .optional(),
+  sortMethod: z.enum(["asc", "desc"]).optional(),
   searchWord: z.string().optional(),
   minStartDate: z.string().datetime().optional(),
   maxStartDate: z.string().datetime().optional(),
