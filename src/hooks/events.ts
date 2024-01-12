@@ -30,9 +30,9 @@ export const useEvent = (eventId: string | undefined) => {
 };
 
 export const useEvents = (params: {
-  sortKey: string;
-  sortMethod: string;
-  searchWord: string;
+  sortKey?: string;
+  sortMethod?: string;
+  searchWord?: string;
   minDate?: string;
   maxDate?: string;
   eventType?: string[];
@@ -41,25 +41,12 @@ export const useEvents = (params: {
 }) => {
   return useQuery<EventResponse[]>({
     queryKey: ["events", params],
-    queryFn: async () => {
-      const response = await httpClient.get("/event", {
-        params,
-        paramsSerializer: (params) => {
-          // todo: maybe improve this
-          const newParams = { ...params };
-          // remove undefined value or empty array
-          Object.keys(newParams).forEach(
-            (key) =>
-              (newParams[key] == undefined ||
-                (Array.isArray(newParams[key]) &&
-                  newParams[key].length === 0)) &&
-              delete newParams[key]
-          );
-          return new URLSearchParams(newParams).toString();
-        }
-      });
-      return response.data;
-    }
+    queryFn: () =>
+      httpClient
+        .get("/event", {
+          params
+        })
+        .then((response) => response.data)
   });
 };
 

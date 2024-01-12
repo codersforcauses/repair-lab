@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   faFilterCircleXmark,
@@ -17,26 +17,31 @@ import Modal from "@/components/Modal";
 import { Pagination, PaginationState } from "@/components/pagination";
 import ProfilePopover from "@/components/ProfilePopover";
 import Search from "@/components/Search";
-import { SearchBarRef } from "@/components/Search/SearchBar";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
 import SelectUser from "@/components/select-user";
 import Table from "@/components/table/table";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
+import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { formatDate } from "@/lib/datetime";
 import { CreateEvent, User } from "@/types";
 
+const initialFilterState = {
+  minDate: undefined,
+  maxDate: undefined,
+  search: undefined,
+  userIds: [] as string[],
+  eventTypes: [] as string[],
+  status: [] as EventStatus[]
+};
+
 function EventTable() {
   const { mutate: createEvent } = useCreateEvent();
   const { data: itemTypes, isLoading: isItemTypesLoading } = useItemTypes();
-
   const [sortKey, setSortKey] = useState<string>("startDate");
-  const [searchWord, setSearchWord] = useState<string>("");
-  const searchBarRef = useRef<SearchBarRef>(null);
   const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
-
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -54,27 +59,30 @@ function EventTable() {
 
   const [sorting, onSortingChange] = useState<SortingState>([]);
 
-  const [{ minDate, maxDate, userIds, eventTypes, status }, setFilterState] =
-    useSearchParamsState({
-      minDate: undefined,
-      maxDate: undefined,
-      userIds: [] as string[],
-      eventTypes: [] as string[],
-      status: [] as EventStatus[]
-    });
+  const [
+    { minDate, maxDate, userIds, eventTypes, status, search },
+    setFilterState
+  ] = useSearchParamsState(initialFilterState);
 
+  const [tempSearch, setTempSearch] = useState<string>("");
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
   const [users, setUsers] = useState<User[]>([]);
 
   const { data: eventData, isLoading: isEventsLoading } = useEvents({
     sortKey,
     sortMethod,
-    searchWord,
     minDate,
     maxDate,
+    searchWord: search,
     eventType: eventTypes,
     eventStatus: status,
     createdBy: userIds
+  });
+
+  const resetQuery = useMemoizedFn(() => {
+    setFilterState(initialFilterState);
+    setUsers([]);
+    setTempSearch("");
   });
 
   return (
@@ -89,10 +97,8 @@ function EventTable() {
           height="90"
         />
         <h1 className="mt-[50px] text-3xl font-semibold text-slate-600">
-          {" "}
           Event Listings
         </h1>
-
         {/* ACCOUNT AREA*/}
         <div className="absolute right-10 self-center justify-self-end">
           {/* Profile Pop Over */}
@@ -153,7 +159,7 @@ function EventTable() {
               <HoverOpacityButton
                 className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
                 title="Clear Filters"
-                onClick={() => {}}
+                onClick={resetQuery}
               >
                 <FontAwesomeIcon
                   icon={faFilterCircleXmark}
@@ -165,14 +171,16 @@ function EventTable() {
           <div className="flex gap-4 items-center">
             <Search
               className="relative w-5/12 flex-1 "
-              value={searchWord}
-              onChange={setSearchWord}
+              value={tempSearch}
+              onChange={setTempSearch}
               afterInput={
                 <button
                   className="absolute right-8 top-1/2 -translate-y-1/2 transform cursor-pointer text-gray-500"
                   onClick={() => {
-                    // Handle search submit action here
-                    console.log("Search submitted");
+                    setFilterState((state) => ({
+                      ...state,
+                      search: tempSearch
+                    }));
                   }}
                 >
                   <FontAwesomeIcon icon={faSearch} />

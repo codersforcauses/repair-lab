@@ -19,9 +19,9 @@ async function getEvents(
 ) {
   try {
     const {
-      sortKey,
-      sortMethod,
-      searchWord,
+      sortKey = "startDate",
+      sortMethod = "asc",
+      searchWord = "",
       minStartDate,
       maxStartDate,
       eventType,

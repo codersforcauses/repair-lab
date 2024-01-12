@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import useConst from "@/hooks/const";
 import useMemoizedFn from "@/hooks/memorized-fn";
+import { paramsSerializer } from "@/lib/base-http-client";
 
 /**
  * useSearchParamsState
@@ -44,13 +45,14 @@ export default function useSearchParamsState<
         typeof valueOrFn === "function"
           ? valueOrFn(state as StateType)
           : valueOrFn;
+
       router.replace(
         {
           pathname: router.pathname,
-          query: {
+          query: paramsSerializer({
             ...router.query,
             ...newState
-          }
+          })
         },
         undefined,
         { shallow: true, scroll: false }
