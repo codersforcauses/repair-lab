@@ -1,6 +1,3 @@
-// Page for submitting a repair request
-// This form is copied from /repair-request/index.tsx
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
