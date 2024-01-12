@@ -47,8 +47,11 @@ export interface SelectProps<
   onSearch?: (search: string) => void;
   nameKey?: NameKey;
   valueKey?: ValueKey;
-  loading?: boolean;
   renderList?: (options: Option[]) => JSX.Element;
+  /** When use select as filter
+   * - Do not use with search and dynamic loading, could cause unexpected behaviour
+   */
+  treatEmptyAsAll?: boolean; // todo: support search and dynamic loading senario
 }
 
 /**
@@ -92,33 +95,52 @@ export default function Select<
     onSearch,
     nameKey = "name" as NameKey,
     valueKey = "value" as ValueKey,
-    renderList
+    renderList,
+    treatEmptyAsAll
   } = props;
 
   const baseStyle = `flex items-center ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
 
   const selectedOptions = useMemo(() => {
+    if (treatEmptyAsAll && isBlank(value)) {
+      return options;
+    }
     const optionsOrValues = [...(Array.isArray(value) ? value : [value])];
-    return optionsOrValues.map((OptionOrValue) =>
-      useOption
-        ? OptionOrValue // Value is option
-        : options.find((option) => option[valueKey] === OptionOrValue)
-    ) as Option[];
-  }, [value, useOption, options, valueKey]);
+    return (
+      optionsOrValues
+        .map((OptionOrValue) =>
+          useOption
+            ? options.find(
+                (option) => option[valueKey] === OptionOrValue[valueKey]
+              ) // Value is option
+            : options.find((option) => option[valueKey] === OptionOrValue)
+        )
+        // Because options may still loading or value is not in options
+        .filter((v) => v) as Option[]
+    );
+  }, [treatEmptyAsAll, value, options, useOption, valueKey]);
 
   const handleChange = useCallback(
-    (options: Option | Option[]) => {
-      if (useOption) {
-        onChange?.(options as SelectValue);
+    (nextOptions: Option | Option[]) => {
+      if (
+        treatEmptyAsAll &&
+        Array.isArray(nextOptions) &&
+        nextOptions.length === options.length
+      ) {
+        onChange?.([] as SelectValue);
+      } else if (useOption) {
+        onChange?.(nextOptions as SelectValue);
       } else if (multiple) {
-        const values = (options as Option[]).map((option) => option[valueKey]);
+        const values = (nextOptions as Option[]).map(
+          (option) => option[valueKey]
+        );
         onChange?.(values as SelectValue);
       } else {
-        onChange?.((options as Option)[valueKey] as SelectValue);
+        onChange?.((nextOptions as Option)[valueKey] as SelectValue);
       }
     },
-    [useOption, multiple, onChange, valueKey]
+    [treatEmptyAsAll, options.length, useOption, multiple, onChange, valueKey]
   );
 
   return (
@@ -129,7 +151,7 @@ export default function Select<
         multiple={multiple}
       >
         <Listbox.Button
-          as="button"
+          as="div"
           className={cn(
             `${baseStyle}`,
             normalBorderStyle
@@ -197,21 +219,21 @@ export default function Select<
                             "block py-2 pl-2 pr-4 text-sm"
                           )}
                         >
-                          {selected ? (
-                            <span className="relative left-0 flex">
-                              <HiCheck
-                                className="h-5 w-5 text-darkAqua-600"
-                                aria-hidden="true"
-                              />
-                              <span className="pl-2 font-medium">
-                                {`${option[nameKey] ?? option[valueKey]}`}
-                              </span>
+                          <span className="relative left-0 flex">
+                            <HiCheck
+                              className={cn("h-5 w-5 text-darkAqua-600", {
+                                invisible: !selected
+                              })}
+                              aria-hidden="true"
+                            />
+                            <span
+                              className={cn("pl-2", {
+                                "font-medium": selected
+                              })}
+                            >
+                              {`${option[nameKey] ?? option[valueKey]}`}
                             </span>
-                          ) : (
-                            <span className="pl-7">{`${
-                              option[nameKey] ?? option[valueKey]
-                            }`}</span>
-                          )}
+                          </span>
                         </li>
                       )}
                     </Listbox.Option>

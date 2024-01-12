@@ -1,70 +1,62 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/router";
-import { ParsedUrlQueryInput } from "querystring";
 
-import isBlank from "@/lib/is-blank";
+import useConst from "@/hooks/const";
+import useMemoizedFn from "@/hooks/memorized-fn";
 
-export default function useSearchParamsState<T extends ParsedUrlQueryInput>(
-  initialStates: T
-) {
-  const keys = Object.keys(initialStates);
+/**
+ * useSearchParamsState
+ * - Provide state and setState for search params
+ * @param initialState a const variable, its change will not trigger re-render
+ * @returns [state, setState]
+ */
+export default function useSearchParamsState<
+  T extends Partial<Record<string, string | string[]>>
+>(_initialState: T) {
+  type StateType = {
+    [K in keyof T]: T[K] extends undefined ? string | undefined : T[K];
+  };
+
   const router = useRouter();
+  const initialState = useConst(_initialState);
 
-  const setState = useCallback(
-    (valueOrFn: T | ((state: T) => T)) => {
+  const state = useMemo(() => {
+    const arrayKeys = Object.keys(initialState).filter((key) =>
+      Array.isArray(initialState[key])
+    );
+    // router.query is incorrectly initialze as a empty value even when rendering in client and window object is accessable, still thinking how to solve this, ref: https://nextjs.org/docs/pages/api-reference/functions/use-router
+    const query = router.query;
+    const newState = {} as Record<string, unknown>;
+    for (const key in initialState) {
+      if (arrayKeys.includes(key) && !Array.isArray(query[key])) {
+        newState[key] = query[key] ? [query[key]] : initialState[key];
+      } else {
+        newState[key] = query[key] ? query[key] : initialState[key];
+      }
+    }
+    return newState as StateType;
+  }, [initialState, router.query]);
+
+  const setState = useMemoizedFn(
+    (valueOrFn: StateType | ((state: StateType) => StateType)) => {
       const state = router.query;
       const newState =
-        typeof valueOrFn === "function" ? valu8eOrFn(state) : valueOrFn;
+        typeof valueOrFn === "function"
+          ? valueOrFn(state as StateType)
+          : valueOrFn;
       router.replace(
         {
           pathname: router.pathname,
-          query: {}
+          query: {
+            ...router.query,
+            ...newState
+          }
         },
         undefined,
         { shallow: true, scroll: false }
       );
-    },
-    [router]
+    }
   );
 
-  const [state0, setState0] = useState<T>(() => {
-    const params = new URLSearchParams(window.location.search);
-    const result = {} as T;
-    keys.forEach((key) => {
-      const storedValue = params.get(key);
-      if (storedValue !== null) {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (result as any)[key] = JSON.parse(storedValue);
-        } catch (e) {
-          console.error(
-            `Failed to parse stored value for key ${key}: ${storedValue}`
-          );
-        }
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (result as any)[key] = initialStates[key];
-      }
-    });
-
-    return result;
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    keys.forEach((key) => {
-      const value = state[key];
-
-      if (isBlank(value)) {
-        params.delete(key);
-      } else {
-        params.set(key, JSON.stringify(value));
-      }
-    });
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({}, "", newUrl);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
-
-  return [state, setState];
+  return [state, setState] as const;
 }

@@ -95,24 +95,6 @@ function EventTable() {
   const [searchWord, setSearchWord] = useState<string>("");
   const searchBarRef = useRef<SearchBarRef>(null);
   const [sortMethod, setSortMethod] = useState<"asc" | "desc">("asc");
-  const { data: eventData, isLoading: isEventsLoading } = useEvents(
-    sortKey,
-    sortMethod,
-    searchWord,
-    // TODO: find way to shorten this
-    columnFilters["startDate"]?.type == "daterange"
-      ? columnFilters["startDate"]?.filter
-      : undefined,
-    columnFilters["eventType"]?.type == "option"
-      ? columnFilters["eventType"]?.filter
-      : undefined,
-    columnFilters["status"]?.type == "option"
-      ? columnFilters["status"]?.filter
-      : undefined,
-    columnFilters["createdBy"]?.type == "user"
-      ? columnFilters["createdBy"]?.filter.map((u) => u.id)
-      : undefined
-  );
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
@@ -223,19 +205,28 @@ function EventTable() {
 
   const [sorting, onSortingChange] = useState<SortingState>([]);
 
-  const [filterState, setFilterState] = useSearchParamsState<{
-    user?: string[];
-    date?: string[];
-    itemType?: string;
-    status?: EventStatus;
-  }>({
-    user: undefined,
-    date: undefined,
-    itemType: undefined,
-    status: undefined
-  });
+  const [{ minDate, maxDate, userIds, eventTypes, status }, setFilterState] =
+    useSearchParamsState({
+      minDate: undefined,
+      maxDate: undefined,
+      userIds: [] as string[],
+      eventTypes: [] as string[],
+      status: [] as EventStatus[]
+    });
 
-  const [user, setUser] = useState<User[]>();
+  const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
+  const [users, setUsers] = useState<User[]>([]);
+
+  const { data: eventData, isLoading: isEventsLoading } = useEvents({
+    sortKey,
+    sortMethod,
+    searchWord,
+    minDate,
+    maxDate,
+    eventType: eventTypes,
+    eventStatus: status,
+    createdBy: userIds
+  });
 
   return (
     <div>
@@ -380,46 +371,65 @@ function EventTable() {
       </div>
       <div className="pt-4 px-16 flex flex-col gap-4">
         <div className="w-full flex justify-between">
-          {/* <FilterGroup
-            value={filterState}
-            onChange={setFilterState}
-            filters={[
-              {
-                name: "createdBy",
-                render: (value, onChange) => <Select label="Create By" />
-              },
-              {
-                name: "createdBy",
-                render: (value, onChange) => <Select label="Create By" />
-              }
-            ]}
-          /> */}
           <div className="flex flex-row gap-4">
             <SelectUser
               label="Create By"
-              value={user}
-              onChange={setUser}
+              value={users}
+              onChange={(user) => {
+                setUsers(user);
+                setFilterState((state) => ({
+                  ...state,
+                  userIds: user.map((u) => u.id)
+                }));
+              }}
               multiple
+              initialUserIds={userIds}
             />
-            <SelectDate label="Date" value={date} onChange={setDate} />
+            <SelectDate
+              label="Date"
+              value={date}
+              onChange={([minDate, maxDate]) =>
+                setFilterState((state) => ({ ...state, minDate, maxDate }))
+              }
+            />
             <Select
+              treatEmptyAsAll
+              multiple
               label="Type"
               options={(itemTypes as ItemType[])?.map(({ name }) => ({
                 name,
                 value: name
               }))}
-              value={itemType}
-              onChange={setItemType}
+              value={eventTypes}
+              onChange={(eventTypes) =>
+                setFilterState((state) => ({ ...state, eventTypes }))
+              }
             />
             <Select
+              treatEmptyAsAll
+              multiple
               label="Status"
               options={Object.values(EventStatus).map((name) => ({
                 name,
                 value: name
               }))}
               value={status}
-              onChange={setStatus}
+              onChange={(status) =>
+                setFilterState((state) => ({ ...state, status }))
+              }
             />
+            <div className="text-center ">
+              <HoverOpacityButton
+                className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
+                title="Clear Filters"
+                onClick={() => {}}
+              >
+                <FontAwesomeIcon
+                  icon={faFilterCircleXmark}
+                  className="text-[1rem] transform translate-y-[2px]"
+                />
+              </HoverOpacityButton>
+            </div>
           </div>
           <div className="flex gap-4 items-center">
             <Search

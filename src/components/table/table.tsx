@@ -8,7 +8,6 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 
-import NoSsr from "@/components/no-ssr";
 import cn from "@/lib/classnames";
 
 interface ExtraProps {
@@ -43,65 +42,65 @@ export default function Table<RecordType = unknown>(
   });
 
   return (
-    <NoSsr>
-      <table className="w-full h-full table-auto overflow-hidden rounded-lg">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr
-              key={headerGroup.id}
-              className="border-b bg-lightAqua-200 pb-10 text-left "
-            >
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="p-2.5 pl-5 font-normal"
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+    <table className="w-full h-full table-auto overflow-hidden rounded-lg">
+      <thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr
+            key={headerGroup.id}
+            className="border-b bg-lightAqua-200 pb-10 text-left "
+          >
+            {headerGroup.headers.map((header) => (
+              <th
+                key={header.id}
+                className="p-2.5 pl-5 font-normal"
+                onClick={header.column.getToggleSortingHandler()}
+              >
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                {{
+                  asc: <FontAwesomeIcon icon={faChevronUp} className="pl-2" />,
+                  desc: (
+                    <FontAwesomeIcon icon={faChevronDown} className="pl-2" />
+                  )
+                }[header.column.getIsSorted() as string] ?? null}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody className={cn("bg-secondary-50")}>
+        {!loading ? (
+          table.getRowModel().rows.map((row) => {
+            return (
+              <tr
+                key={row.id}
+                className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200 text-sm font-light"
+              >
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id} className="p-2.5">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                  {{
-                    asc: (
-                      <FontAwesomeIcon icon={faChevronUp} className="pl-2" />
-                    ),
-                    desc: (
-                      <FontAwesomeIcon icon={faChevronDown} className="pl-2" />
-                    )
-                  }[header.column.getIsSorted() as string] ?? null}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody className={cn("bg-secondary-50")}>
-          {!loading ? (
-            table.getRowModel().rows.map((row) => {
-              return (
-                <tr
-                  key={row.id}
-                  className="first:ml-50 border-b p-2.5 last:mr-10 even:bg-slate-100 hover:bg-slate-200 text-sm font-light"
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td key={cell.id} className="p-2.5">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })
-          ) : (
-            <div>loading...</div>
-          )}
-        </tbody>
-      </table>
-    </NoSsr>
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })
+        ) : (
+          <tr>
+            <td>
+              <div>loading...</div>
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }

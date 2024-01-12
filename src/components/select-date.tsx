@@ -45,8 +45,8 @@ function ConciseInput({
 }
 
 interface SelectDateProps {
-  value?: string[];
-  onChange?: (value: string[]) => void;
+  value?: Array<string | undefined>;
+  onChange?: (value: Array<string | undefined>) => void;
   label?: string;
 }
 

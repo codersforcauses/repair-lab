@@ -1,7 +1,6 @@
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { DateFilterData } from "@/hooks/filters";
 import { httpClient } from "@/lib/base-http-client";
 import {
   CreateEvent,
@@ -30,50 +29,37 @@ export const useEvent = (eventId: string | undefined) => {
   });
 };
 
-export const useEvents = (
-  sortKey: string,
-  sortMethod: string,
-  searchWord: string,
-  startDateRange?: DateFilterData,
-  eventType?: string[],
-  eventStatus?: string[],
-  createdBy?: string[]
-) => {
-  const queryFn = async () => {
-    const params = new URLSearchParams({
-      sortKey,
-      sortMethod,
-      searchWord,
-      ...(startDateRange?.minDate && { minStartDate: startDateRange.minDate }),
-      ...(startDateRange?.maxDate && { maxStartDate: startDateRange.maxDate })
-    });
-    // include the param even if empty array so that the API knows to return nothing (for UX)
-    const negativeSearch = (paramName: string, values?: string[]) => {
-      if (values?.length == 0) values = [""];
-      values?.forEach((v) => params.append(paramName, v));
-    };
-    negativeSearch("eventStatus", eventStatus);
-    negativeSearch("eventType", eventType);
-    createdBy?.forEach((v) => params.append("createdBy", v));
-
-    const url = `/event?${params.toString()}`;
-
-    const response = await httpClient.get(url);
-    return response.data;
-  };
-
+export const useEvents = (params: {
+  sortKey: string;
+  sortMethod: string;
+  searchWord: string;
+  minDate?: string;
+  maxDate?: string;
+  eventType?: string[];
+  eventStatus?: string[];
+  createdBy?: string[];
+}) => {
   return useQuery<EventResponse[]>({
-    queryKey: [
-      "events",
-      sortKey,
-      sortMethod,
-      searchWord,
-      startDateRange,
-      eventType,
-      eventStatus,
-      createdBy
-    ],
-    queryFn
+    queryKey: ["events", params],
+    queryFn: async () => {
+      const response = await httpClient.get("/event", {
+        params,
+        paramsSerializer: (params) => {
+          // todo: maybe improve this
+          const newParams = { ...params };
+          // remove undefined value or empty array
+          Object.keys(newParams).forEach(
+            (key) =>
+              (newParams[key] == undefined ||
+                (Array.isArray(newParams[key]) &&
+                  newParams[key].length === 0)) &&
+              delete newParams[key]
+          );
+          return new URLSearchParams(newParams).toString();
+        }
+      });
+      return response.data;
+    }
   });
 };
 
