@@ -1,6 +1,6 @@
 // page/_app.tsx
-import type { NextPage } from "next";
 import { ReactElement, ReactNode, StrictMode } from "react";
+import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
