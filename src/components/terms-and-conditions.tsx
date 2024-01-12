@@ -6,7 +6,7 @@ import { Control, useController, UseFormSetValue } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
-import { FormValues } from "@/pages/repair-request";
+import { FormValues } from "@/components/Forms/create-repair-request";
 
 interface TermsAndConditionsProps {
   control: Control<FormValues>;
