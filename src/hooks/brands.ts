@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { httpClient } from "@/lib/base-http-client";
 
@@ -9,7 +9,7 @@ export interface Brand {
 export const useBrands = () => {
   const queryFn = async () => {
     const url = `/brand`;
-    const response = await httpClient.get(url);
+    const response = await httpClient.get<Brand[]>(url);
 
     return response.data;
   };
