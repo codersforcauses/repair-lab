@@ -68,19 +68,19 @@ export default function Table<RecordType = unknown>(
                     true: (
                       <FontAwesomeIcon
                         icon={faSort}
-                        className="pl-2 text-lightAqua-400"
+                        className="pl-2 text-lightAqua-400 h-4"
                       />
                     ),
                     asc: (
                       <FontAwesomeIcon
                         icon={faSortUp}
-                        className="pl-2 text-lightAqua-600"
+                        className="pl-2 text-lightAqua-600 h-4"
                       />
                     ),
                     desc: (
                       <FontAwesomeIcon
                         icon={faSortDown}
-                        className="pl-2 text-lightAqua-600"
+                        className="pl-2 text-lightAqua-600 h-4"
                       />
                     )
                   }[(column.getIsSorted() || column.getCanSort()) as string] ??
