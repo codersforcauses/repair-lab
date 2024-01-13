@@ -1,6 +1,5 @@
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
-import { EventStatus } from "@prisma/client";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { cleanup } from "@/../tests/utils";
@@ -24,14 +23,12 @@ describe("GET /api/event", () => {
 
     // Create events - only id is important
     const baseEventDetails = {
-      disclaimer: "This is a disclaimer",
       location: "Curtin University",
       createdBy: "user_1",
       eventType: "Laptop",
       description: "Laptop repair event.",
       startDate: new Date("2023-11-16"),
-      endDate: new Date("2023-11-17"),
-      status: "COMPLETED" as EventStatus
+      endDate: new Date("2023-11-17")
     };
     const eventIds = ["ev-1", "ev-2"];
     await prisma.event.createMany({
@@ -71,6 +68,15 @@ describe("GET /api/event", () => {
           description: "My laptop is broken",
           itemType: "Laptop",
           itemBrand: "Dell"
+        },
+        {
+          ...baseRepairRequestDetails,
+          id: "rr-4",
+          eventId: "ev-2",
+          createdBy: "user_1",
+          description: "Yep",
+          itemType: "Laptop",
+          itemBrand: "Dell"
         }
       ]
     });
@@ -99,14 +105,14 @@ describe("GET /api/event", () => {
         });
         const results: EventResponse[] = await res.json();
         expect(res.status).toBe(200);
-        expect(results.length).toEqual(expectedEvents.length);
+        expect(results.length).toBe(expectedEvents.length);
         results.forEach((result, index) => {
           expect(result).toHaveProperty("id", expectedEvents[index]);
         });
       }
     });
   };
-  const testBadFilter = async (filters: AllowedParams) => {
+  const testBadFilter = async (filters: AllowedParams, code: number = 400) => {
     await testApiHandler({
       handler,
       params: { ...filters },
@@ -117,57 +123,52 @@ describe("GET /api/event", () => {
             "Content-Type": "application/json"
           }
         });
-        expect(res.status).toBe(400);
+        expect(res.status).toBe(code);
       }
     });
   };
 
   // RETURNS CORRECT VALUES
-  it("should be able to filter events by searching description", async () => {
+  it("should be able to get repair requests", async () => {
+    await testFilter({ id: "ev-1" }, ["rr-1", "rr-2"]);
+    await testFilter({ id: "ev-2" }, ["rr-3", "rr-4"]);
+  });
+
+  it("should be able to filter repair requests by searching description", async () => {
     await testFilter({ id: "ev-1", searchWord: "eggplant" }, ["rr-2"]);
   });
 
-  it("should be able to filter events by searching user", async () => {
+  it("should be able to filter repair requests by searching user", async () => {
+    await testFilter({ id: "ev-1", searchWord: "Justin" }, ["rr-1", "rr-2"]);
+    await testFilter({ id: "ev-2", searchWord: "spongebob" }, ["rr-3"]);
+  });
+
+  it("should be able to filter repair requests by brand", async () => {
     await testFilter({ id: "ev-1", searchWord: "Justin" }, ["rr-1", "rr-2"]);
   });
 
-  // it("should be able to filter events by date", async () => {
-  //   await testFilter(
-  //     {
-  //       minStartDate: new Date("2023-11-25").toISOString(),
-  //       maxStartDate: new Date("2023-12-1").toISOString()
-  //     },
-  //     ["ev-2"]
-  //   );
-  // });
+  it("should be able to filter repair requests by item type", async () => {
+    await testFilter({ id: "ev-1", item: "Laptop" }, ["rr-1"]);
+    await testFilter({ id: "ev-2", item: "Laptop" }, ["rr-3", "rr-4"]);
+  });
 
-  // it("should be able to filter events by event types", async () => {
-  //   await testFilter({ eventType: ["Clock", "Sponge"] }, ["ev-2", "ev-3"]);
-  // });
-  // it("should be able to filter events by event status", async () => {
-  //   await testFilter({ eventStatus: ["COMPLETED"] }, ["ev-1"]);
-  // });
-  // it("should be able to filter events by multiple", async () => {
-  //   await testFilter({ createdBy: ["user_1"], eventType: ["Laptop"] }, [
-  //     "ev-1"
-  //   ]);
-  // });
-  // it("should return empty when none selected", async () => {
-  //   await testFilter({ eventType: [] }, []);
-  //   await testFilter({ eventStatus: [] }, []);
-  //   await testFilter({ eventType: "" }, []);
-  //   await testFilter({ eventStatus: "" }, []);
-  // });
+  it("should return all repair requests when empty filter provided", async () => {
+    await testFilter({ id: "ev-1", item: "" }, ["rr-1", "rr-2"]);
+    await testFilter({ id: "ev-1", brand: "" }, ["rr-1", "rr-2"]);
+    await testFilter({ id: "ev-2", brand: "" }, ["rr-3", "rr-4"]);
+  });
 
-  // // CORRECTLY FAILS
-  // it("should return 400 if invalid status passed", async () => {
-  //   await testBadFilter({ eventStatus: ["WOOHOO"] });
-  // });
-  // it("should return 400 if invalid sorting", async () => {
-  //   await testBadFilter({ sortKey: "WOOHOO" });
-  //   await testBadFilter({ sortMethod: "WOOHOO" });
-  // });
-  // it("should return 400 if invalid date", async () => {
-  //   await testBadFilter({ minStartDate: "HAHA" });
-  // });
+  // CORRECTLY FAILS
+  it("should return 400 if no event id passed", async () => {
+    await testBadFilter({ searchWord: "eggplant" });
+  });
+
+  it("should return 404 if no event is found", async () => {
+    await testBadFilter({ id: "ev-3" }, 404);
+  });
+
+  it("should return 400 if invalid sorting", async () => {
+    await testBadFilter({ sortKey: "WOOHOO" });
+    await testBadFilter({ sortMethod: "WOOHOO" });
+  });
 });
