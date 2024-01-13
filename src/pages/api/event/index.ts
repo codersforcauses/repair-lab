@@ -17,50 +17,44 @@ async function getEvents(
   req: NextApiRequest,
   res: NextApiResponse<EventResponse[] | ErrorResponse>
 ) {
-  try {
-    const {
-      sortKey = "startDate",
-      sortMethod = "asc",
-      searchWord = "",
-      minStartDate,
-      maxStartDate,
-      eventType,
-      eventStatus,
-      createdBy
-    } = getEventSchema.parse(req.query);
+  const {
+    sortKey = "startDate",
+    sortMethod = "asc",
+    searchWord = "",
+    minStartDate,
+    maxStartDate,
+    eventType,
+    eventStatus,
+    createdBy
+  } = getEventSchema.parse(req.query);
 
-    const sortObj: Record<string, "asc" | "desc"> = {
-      [sortKey]: sortMethod
-    };
+  const sortObj: Record<string, "asc" | "desc"> = {
+    [sortKey]: sortMethod
+  };
 
-    const events = await prisma.event.findMany({
-      where: {
-        OR: [
-          { name: { contains: searchWord, mode: "insensitive" } },
-          { createdBy: { contains: searchWord, mode: "insensitive" } },
-          { location: { contains: searchWord, mode: "insensitive" } },
-          { eventType: { contains: searchWord, mode: "insensitive" } }
-        ],
-        startDate: {
-          gte: minStartDate ? new Date(minStartDate) : undefined,
-          lte: maxStartDate ? new Date(maxStartDate) : undefined
-        },
-        eventType: { in: eventType },
-        status: { in: eventStatus },
-        createdBy: { in: createdBy }
+  const events = await prisma.event.findMany({
+    where: {
+      OR: [
+        { name: { contains: searchWord, mode: "insensitive" } },
+        { createdBy: { contains: searchWord, mode: "insensitive" } },
+        { location: { contains: searchWord, mode: "insensitive" } },
+        { eventType: { contains: searchWord, mode: "insensitive" } }
+      ],
+      startDate: {
+        gte: minStartDate ? new Date(minStartDate) : undefined,
+        lte: maxStartDate ? new Date(maxStartDate) : undefined
       },
-      orderBy: sortObj
-    });
+      eventType: { in: eventType },
+      status: { in: eventStatus },
+      createdBy: { in: createdBy }
+    },
+    orderBy: sortObj
+  });
 
-    const eventResponse: EventResponse[] =
-      await eventService.toClientResponse(events);
+  const eventResponse: EventResponse[] =
+    await eventService.toClientResponse(events);
 
-    res.status(200).json(eventResponse);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    res.status(500);
-  }
+  res.status(200).json(eventResponse);
 }
 
 async function createEvent(

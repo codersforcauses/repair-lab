@@ -4,13 +4,13 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 
 const eventStatusSchema = z.union([
-  z.literal("").transform(() => undefined),
+  z.literal("").transform(() => [] as EventStatus[]),
   z.nativeEnum(EventStatus).transform((s) => [s]),
   z.array(z.nativeEnum(EventStatus))
 ]);
 
 const stringOrArray = z.union([
-  z.literal("").transform(() => undefined),
+  z.literal("").transform(() => [] as string[]),
   z.string().transform((s) => [s]),
   z.array(z.string())
 ]);

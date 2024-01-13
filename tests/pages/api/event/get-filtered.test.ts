@@ -76,11 +76,7 @@ describe("GET /api/event", () => {
   ) => {
     await testApiHandler({
       handler,
-      params: {
-        sortKey: "startDate",
-        sortMethod: "asc",
-        ...filters
-      },
+      params: { ...filters },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",
@@ -100,11 +96,7 @@ describe("GET /api/event", () => {
   const testBadFilter = async (filters: AllowedParams) => {
     await testApiHandler({
       handler,
-      params: {
-        sortKey: "startDate",
-        sortMethod: "asc",
-        ...filters
-      },
+      params: { ...filters },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",
@@ -161,10 +153,6 @@ describe("GET /api/event", () => {
   it("should return 400 if invalid sorting", async () => {
     await testBadFilter({ sortKey: "WOOHOO" });
     await testBadFilter({ sortMethod: "WOOHOO" });
-  });
-  it("should return 400 if no sorting", async () => {
-    await testBadFilter({ sortKey: undefined });
-    await testBadFilter({ sortMethod: undefined });
   });
   it("should return 400 if invalid date", async () => {
     await testBadFilter({ minStartDate: "HAHA" });
