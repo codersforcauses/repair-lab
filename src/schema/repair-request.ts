@@ -9,6 +9,7 @@ const stringOrArray = z.union([
 ]);
 
 export const getRepairRequestSchema = z.object({
+  id: z.string(),
   sortKey: z
     .string()
     .refine((value) => value in prisma.repairRequest.fields, {

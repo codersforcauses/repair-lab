@@ -22,7 +22,14 @@ async function getRepairRequests(
   req: NextApiRequest,
   res: NextApiResponse<RepairRequestResponse[]>
 ) {
-  const { id } = req.query;
+  const {
+    id,
+    sortKey = prisma.repairRequest.fields.requestDate.name,
+    sortMethod = "asc",
+    searchWord,
+    item,
+    brand
+  } = getRepairRequestSchema.parse(req.query);
 
   const event = await prisma.event.findUnique({
     where: { id: id as string }
@@ -31,14 +38,6 @@ async function getRepairRequests(
   if (!event) {
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
-
-  const {
-    sortKey = prisma.repairRequest.fields.requestDate.name,
-    sortMethod = "asc",
-    searchWord,
-    item,
-    brand
-  } = getRepairRequestSchema.parse(req.query);
 
   const sortObj: Record<string, "asc" | "desc"> = {
     [sortKey]: sortMethod
