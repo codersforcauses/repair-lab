@@ -23,24 +23,25 @@ async function createRepairer(
   });
 
   const event = await prisma.event.findUnique({
-    where: { id: id as string }
+    where: { id: id }
   });
 
   if (!event) {
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  const user = await userService.getUser(userId as string);
+  const userMap = await userService.getUserMapFromIds(userId as string[]);
 
-  if (!user) {
+  if (!userMap) {
     throw new ApiError(HttpStatusCode.NotFound, "User not found");
   }
 
-  const newEventRepairer = await prisma.eventRepairer.create({
-    data: {
+  const newEventRepairer = await prisma.eventRepairer.createMany({
+    data: userId.map((userId) => ({
       userId: userId as string,
       eventId: id as string
-    }
+    })),
+    skipDuplicates: true
   });
 
   res.status(200).json(newEventRepairer);

@@ -57,6 +57,10 @@ async function getUserMapFromIds(userIds: string[]) {
     },
     {} as Partial<Record<string, User>>
   );
+  if (Object.keys(userMap).length === 0) {
+    return undefined;
+  }
+
   return userMap;
 }
 
@@ -84,16 +88,14 @@ async function getRole(userId: string): Promise<UserRole> {
 }
 
 function toResponse(user: ClerkUser): User {
-  const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
+  const { emailAddresses, publicMetadata } = user;
   const role = publicMetadata.role
     ? (publicMetadata.role as UserRole)
     : UserRole.CLIENT;
   const emailAddress = emailAddresses[0].emailAddress;
 
   return {
-    id,
-    firstName,
-    lastName,
+    ...user,
     role,
     emailAddress
   };

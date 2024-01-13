@@ -31,9 +31,11 @@ export const createEventSchema = z
   });
 
 export const addEventRepairerSchema = z.object({
-  userId: z
-    .string({ required_error: "UserId is required" })
-    .min(1, { message: "UserId must be 1 or more characters long" }),
+  userId: z.array(
+    z
+      .string({ required_error: "UserId is required" })
+      .min(1, { message: "UserId must be 1 or more characters long" })
+  ),
   id: z
     .string({ required_error: "Event ID is required" })
     .min(1, { message: "Event ID must be 1 or more characters long" })
