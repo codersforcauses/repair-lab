@@ -57,17 +57,17 @@ async function getUserMapFromIds(userIds: string[]) {
     },
     {} as Partial<Record<string, User>>
   );
-  if (Object.keys(userMap).length === 0) {
-    return undefined;
-  }
 
   return userMap;
 }
 
 async function getUser(userId: string) {
   const user = await clerkClient.users.getUser(userId);
-
   return user ? toResponse(user) : undefined;
+}
+
+async function getUsers(userIds: string[]) {
+  return await Promise.all(userIds.map((userId) => getUser(userId)));
 }
 
 async function updateRole(userId: string, role: UserRole) {
@@ -117,6 +117,7 @@ const userService = {
   getAuth,
   getMany,
   getUser,
+  getUsers,
   updateRole,
   getRole,
   getUserMapFromIds,

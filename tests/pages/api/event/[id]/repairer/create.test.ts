@@ -33,6 +33,8 @@ describe("POST /api/event/[id]/repairers", () => {
           })
         });
 
+        // console.log(JSON.stringify(await res.json(), null, 2));
+
         expect(res.status).toBe(200);
       }
     });
@@ -52,6 +54,8 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: ["Test", "user_1", "user_2"]
           })
         });
+
+        // console.log(JSON.stringify(await res.json(), null, 2));
 
         expect(res.status).toBe(200);
       }
@@ -89,7 +93,27 @@ describe("POST /api/event/[id]/repairers", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            userId: "user_bruh"
+            userId: ["user_bruh", "user_bruh_1", "user_bruh_2"]
+          })
+        });
+
+        expect(res.status).toBe(404);
+      }
+    });
+  });
+
+  it("should be able to catch an API error: can't find the repairer", async () => {
+    await testApiHandler({
+      handler,
+      params: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userId: ["user_bruh"]
           })
         });
 
