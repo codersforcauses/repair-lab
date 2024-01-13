@@ -18,12 +18,14 @@ export default function RepairRequests() {
   const [eventModal, showEventModal] = useState(false);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const {
-    query: { id: eventId }
+    query: { id }
   } = useRouter();
 
-  const { data: repairRequests } = useRepairRequests(eventId as string);
+  // todo check if this is bad
+  const eventId = id?.toString();
 
-  const { data: event } = useEvent(eventId as string);
+  const { data: repairRequests } = useRepairRequests(eventId);
+  const { data: event } = useEvent(eventId);
 
   function newEvent() {
     showEventModal(true);
