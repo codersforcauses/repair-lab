@@ -123,7 +123,7 @@ function EventTable() {
           <ProfilePopover />
         </div>
       </div>
-      9{/* main table*/}
+      {/* main table*/}
       <div className="pt-4 px-16 flex flex-col gap-4">
         <div className="w-full flex justify-between gap-x-2 gap-y-4 flex-wrap-reverse">
           <div className="flex flex-row gap-2">
