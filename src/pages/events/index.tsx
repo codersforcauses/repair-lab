@@ -5,7 +5,6 @@ import {
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
@@ -26,6 +25,7 @@ import useSearchParamsState from "@/hooks/search-params-state";
 import { formatDate } from "@/lib/datetime";
 import { NextPageWithLayout } from "@/pages/_app";
 import { CreateEvent, User } from "@/types";
+import { EventStatus } from "@prisma/client";
 
 const initialFilterState = {
   openModal: undefined,
