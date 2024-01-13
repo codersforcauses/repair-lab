@@ -1,5 +1,6 @@
 // Page for repairers to view the repair requests associated with
 // a given event. This page is accessed via the my-events page.
+// Review / replace page once issue 118 is merged.
 import { Fragment } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
