@@ -105,4 +105,9 @@ export type RepairRequestResponse = {
   images: string[];
 };
 
+// TODO: standardise error response (string[] of messages?)
+export type ErrorResponse = {
+  message: string | ZodIssue[];
+};
+
 export type UserResponse = PaginationResponse<User>;
