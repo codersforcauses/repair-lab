@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { VscChromeClose, VscMenu } from "react-icons/vsc";
 
-import ProfilePopover from "@/components/ProfilePopover";
 import { MenuItems } from "@/components/NavBar";
+import ProfilePopover from "@/components/ProfilePopover";
 
 interface NavItems {
   menuItems: MenuItems[];
+  isLoggedIn: boolean;
+  onSignOut: () => void;
 }
 
 const VerticalBar = (props: NavItems) => {
@@ -35,18 +37,18 @@ const VerticalBar = (props: NavItems) => {
               <VscChromeClose />
             </button>
           </div>
-          {menuItems.map((item) => (
+          {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
-              <a className="block p-4 border-b hover:bg-gray-100">
+              <p className="block p-4 border-b hover:bg-gray-100">
                 {item.item}
-              </a>
+              </p>
             </Link>
           ))}
           <div className="absolute bottom-0 w-full">
-            {props. ? (
+            {props.isLoggedIn ? (
               <>
                 <button
-                  onClick={onSignOut}
+                  onClick={props.onSignOut}
                   className="w-full p-4 border-b hover:bg-gray-100"
                 >
                   Log Out
