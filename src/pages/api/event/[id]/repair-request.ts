@@ -46,12 +46,6 @@ async function getRepairRequests(
   let repairRequests = await prisma.repairRequest.findMany({
     where: {
       event: { id: id as string },
-      OR: searchWord
-        ? [
-            { id: { contains: searchWord, mode: "insensitive" } },
-            { description: { contains: searchWord, mode: "insensitive" } }
-          ]
-        : undefined,
       item: { name: { in: item } },
       itemBrand: { in: brand }
     },
@@ -61,8 +55,9 @@ async function getRepairRequests(
     orderBy: sortObj
   });
 
+  // Filter by search word after initial query so we have user data
   if (searchWord)
-    repairRequests = await filterByUsers(searchWord, repairRequests);
+    repairRequests = await filterBySearch(searchWord, repairRequests);
 
   const repairRequestResponse =
     await repairRequestService.toClientResponse(repairRequests);
@@ -73,10 +68,12 @@ async function getRepairRequests(
 /**
  * Filters users by name through search term
  */
-const filterByUsers = async (
+const filterBySearch = async (
   search: string,
   repairRequests: RepairRequestWithImages[]
 ) => {
+  const lowercaseSearch = search.toLowerCase();
+
   // Filter users by the search
   const users = await userService.getMany({
     query: search,
@@ -94,6 +91,12 @@ const filterByUsers = async (
   );
 
   return repairRequests.filter(
-    (r) => userMap[r.createdBy] || userMap[r.assignedTo]
+    (r) =>
+      // users
+      userMap[r.createdBy] != undefined ||
+      userMap[r.assignedTo] != undefined ||
+      // other
+      r.id.toLowerCase().includes(lowercaseSearch) ||
+      r.description.toLowerCase().includes(lowercaseSearch)
   );
 };
