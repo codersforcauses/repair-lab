@@ -13,6 +13,7 @@ import { User } from "@/types";
  * @param setShowModal - A useState function to set the showModal state (if used in a modal).
  * @param volunteersArray - An array of volunteer ids that are already assigned to the event.
  * @param onSubmit - A custom function to call when the form is submitted.
+ * @returns A div that contains a search bar, table, and submit button for modifying an event's volunteers
  */
 export default function VolunteerManageForm({
   volunteersArray,
@@ -50,102 +51,100 @@ export default function VolunteerManageForm({
   };
 
   return (
-    <div className="m-1 flex flex-wrap justify-center gap-2 w-full h-full">
-      <div className="p-3 w-full">
-        {/* Search Bar - taken from /users */}
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <svg
-              className="h-4 w-4 text-gray-500 "
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-          </div>
-          <input
-            type="text"
-            id="default-search"
-            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-            placeholder="Search User ID, First name, Last name"
-            value={query}
-            onChange={(e) => search(e)}
+    <div className="m-1 flex flex-col justify-between gap-2 w-full h-full p-3">
+      {/* Search Bar - taken from /users */}
+      <div className="flex flex-row gap-0 relative items-center">
+        <svg
+          className="h-4 w-4 text-gray-500 absolute left-3"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
           />
-        </div>
+        </svg>
+        <input
+          type="text"
+          id="default-search"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          placeholder="Search User ID, First name, Last name"
+          value={query}
+          onChange={(e) => search(e)}
+        />
+      </div>
 
-        {/* Table - taken from /users */}
-        {isLoading ? (
-          <div className="pt-5">
-            <LoadingSpinner />
+      {/* Table - taken from /users */}
+      {isLoading ? (
+        <div className="pt-5">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <>
+          <div className="relative p-2 shadow-md sm:rounded-lg">
+            <table className="w-full text-left text-sm text-gray-500 truncate">
+              <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+                <tr className="px-6">
+                  <th scope="col" className="px-6 py-2">
+                    Full Name
+                  </th>
+                  <th scope="col" className="px-6 py-2">
+                    Email
+                  </th>
+                  <th scope="col" className="px-6 py-2 text-center">
+                    Add/Remove
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {users?.items.map((user: User, index: number) => {
+                  return (
+                    <VolunteerRow
+                      key={user.id}
+                      user={user}
+                      index={index}
+                      volunteersArray={volunteers}
+                      setVolunteersArray={setVolunteers}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+
+            <TablePagination
+              perPage={perPage}
+              page={page}
+              totalCount={Number(users?.meta.totalCount)}
+              prevPage={() =>
+                setPage(Number(page) - 1 == 0 ? 1 : Number(page) - 1)
+              }
+              nextPage={() =>
+                setPage(
+                  Number(page) + 1 > Number(users?.meta.lastPage)
+                    ? Number(users?.meta.lastPage)
+                    : Number(page) + 1
+                )
+              }
+            />
           </div>
-        ) : (
-          <>
-            <div className="relative p-5 shadow-md sm:rounded-lg">
-              <table className="w-full text-left text-sm text-gray-500 ">
-                <thead className="bg-gray-50 text-xs uppercase text-gray-700">
-                  <tr>
-                    <th scope="col" className="px-6 py-2">
-                      Full Name
-                    </th>
-                    <th scope="col" className="px-6 py-2">
-                      Email
-                    </th>
-                    <th scope="col" className="px-6 py-2"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.items.map((user: User, index: number) => {
-                    return (
-                      <VolunteerRow
-                        key={user.id}
-                        user={user}
-                        index={index}
-                        volunteersArray={volunteers}
-                        setVolunteersArray={setVolunteers}
-                      />
-                    );
-                  })}
-                </tbody>
-              </table>
-
-              <TablePagination
-                perPage={perPage}
-                page={page}
-                totalCount={Number(users.meta.totalCount)}
-                prevPage={() =>
-                  setPage(Number(page) - 1 == 0 ? 1 : Number(page) - 1)
-                }
-                nextPage={() =>
-                  setPage(
-                    Number(page) + 1 > Number(users.meta.lastPage)
-                      ? Number(users.meta.lastPage)
-                      : Number(page) + 1
-                  )
-                }
-              />
-            </div>
-          </>
-        )}
-        {/* Submit */}
-        <div className="mt-3 flex flex-col">
-          <p className="text-sm pb-2">Adding {volunteers.length} volunteers</p>
-          <Button
-            onClick={onSubmit ? onSubmit : defaultOnSubmit}
-            height="h-9"
-            width="w-1/3"
-            textSize="text-base"
-          >
-            Save
-          </Button>
-        </div>
+        </>
+      )}
+      {/* Submit */}
+      <div className="mt-3 flex flex-col">
+        <p className="text-sm pb-2">Adding {volunteers.length} volunteers</p>
+        <Button
+          onClick={onSubmit ? onSubmit : defaultOnSubmit}
+          height="h-9"
+          width="w-1/3"
+          textSize="text-base"
+        >
+          Save
+        </Button>
       </div>
     </div>
   );
@@ -185,34 +184,31 @@ const VolunteerRow = ({
         index % 2 === 0 ? "bg-white" : "bg-secondary-50"
       } h-8 border-b hover:bg-gray-100`}
     >
-      <th
-        scope="row"
-        className="whitespace-nowrap px-6 py-3 font-medium text-gray-900"
-      >
+      <th scope="row" className="px-6 py-2 font-medium text-gray-900">
         {user.firstName} {user.lastName}
       </th>
-      <td className="px-6 py-3">{user.emailAddress}</td>
-      <td className="px-0 py-3 flex">
+      <td className="px-6 py-2">{user.emailAddress}</td>
+      <td className="px-6 py-2 flex justify-center text-center">
         {/** check if this volunteer is in the array of volunteers to add, if so display minus, else plus.
          * If button is clicked on, add/delete from volunteersArray
          */}
         {volunteersArray?.includes(user.id) ? (
           <Button
-            height="h-10"
-            width="w-10"
+            height="h-8 flex justify-center align-middle items-center"
+            width="w-8"
             color="bg-red-500"
             hover="hover:bg-red-700"
             onClick={minusClick}
           >
-            <div className="flex justify-center">
-              <FaMinus />
-            </div>
+            <FaMinus />
           </Button>
         ) : (
-          <Button height="h-10" width="w-10" onClick={addClick}>
-            <div className="flex justify-center">
-              <FaPlus />
-            </div>
+          <Button
+            height="h-8 flex justify-center align-middle items-center"
+            width="w-8"
+            onClick={addClick}
+          >
+            <FaPlus />
           </Button>
         )}
       </td>
