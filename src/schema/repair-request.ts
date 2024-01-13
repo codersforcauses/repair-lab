@@ -1,5 +1,26 @@
 import { z } from "zod";
 
+import prisma from "@/lib/prisma";
+
+const stringOrArray = z.union([
+  z.literal("").transform(() => undefined),
+  z.string().transform((s) => [s]),
+  z.array(z.string())
+]);
+
+export const getRepairRequestSchema = z.object({
+  sortKey: z
+    .string()
+    .refine((value) => value in prisma.repairRequest.fields, {
+      message: "Incorrect value for sortKey"
+    })
+    .optional(),
+  sortMethod: z.enum(["asc", "desc"]).optional(),
+  searchWord: z.string().optional(),
+  item: stringOrArray.optional(),
+  brand: stringOrArray.optional()
+});
+
 export const createRepairRequestSchema = z.object({
   eventId: z.string().min(1, { message: "Event is required" }),
   description: z.string().min(5, {

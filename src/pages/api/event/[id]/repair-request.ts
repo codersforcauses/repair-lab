@@ -1,15 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { Prisma } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
+import { getRepairRequestSchema } from "@/schema/repair-request";
 import repairRequestService from "@/services/repairRequest";
-import { RepairRequestResponse } from "@/types";
+import userService from "@/services/user";
+import { RepairRequestResponse, User } from "@/types";
 
 export default apiHandler({
   get: getRepairRequests
 });
+
+type RepairRequestWithImages = Prisma.RepairRequestGetPayload<{
+  include: { images: true };
+}>;
 
 async function getRepairRequests(
   req: NextApiRequest,
@@ -25,16 +32,64 @@ async function getRepairRequests(
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  const repairRequests = await prisma.repairRequest.findMany({
-    where: { event: { id: id as string } },
+  const {
+    sortKey = prisma.repairRequest.fields.requestDate.name,
+    sortMethod = "asc",
+    searchWord,
+    item,
+    brand
+  } = getRepairRequestSchema.parse(req.query);
+
+  const sortObj: Record<string, "asc" | "desc"> = {
+    [sortKey]: sortMethod
+  };
+
+  let repairRequests = await prisma.repairRequest.findMany({
+    where: {
+      event: { id: id as string },
+      id: { contains: searchWord, mode: "insensitive" },
+      item: { name: { in: item } },
+      itemBrand: { in: brand }
+    },
     include: {
       images: true
-    }
+    },
+    orderBy: sortObj
   });
 
-  // TODO: make a singular version
+  if (searchWord)
+    repairRequests = await filterByUsers(searchWord, repairRequests);
+
   const repairRequestResponse =
     await repairRequestService.toClientResponse(repairRequests);
 
   return res.status(200).json(repairRequestResponse);
 }
+
+/**
+ * Filters users by name through search term
+ */
+const filterByUsers = async (
+  search: string,
+  repairRequests: RepairRequestWithImages[]
+) => {
+  // Filter users by the search
+  const users = await userService.getMany({
+    query: search,
+    perPage: 500,
+    orderBy: "created_at",
+    page: 1
+  });
+  // Turn users into a record for fast lookup
+  const userMap = users.items.reduce(
+    (map, user) => {
+      map[user.id] = user;
+      return map;
+    },
+    {} as Partial<Record<string, User>>
+  );
+
+  return repairRequests.filter(
+    (r) => userMap[r.createdBy] || userMap[r.assignedTo]
+  );
+};
