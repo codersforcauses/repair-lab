@@ -40,6 +40,12 @@ export default function RepairRequests() {
     });
   }, [event]);
 
+  const sortBy = [
+    { key: "status", label: "Status" },
+    { key: "itemType", label: "Item Type" },
+    { key: "brand", label: "Brand" }
+  ];
+
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
@@ -63,7 +69,7 @@ export default function RepairRequests() {
                     </span>
                   </div>
                   <div className="flex justify-end items-center">
-                    <SortBy options={["opt 1", "opt 2", "opt 3"]} />
+                    <SortBy options={sortBy} />
                     <SearchBar />
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
