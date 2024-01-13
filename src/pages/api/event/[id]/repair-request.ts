@@ -23,7 +23,7 @@ async function getRepairRequests(
   res: NextApiResponse<RepairRequestResponse[]>
 ) {
   const {
-    id,
+    id: eventId,
     sortKey = prisma.repairRequest.fields.requestDate.name,
     sortMethod = "asc",
     searchWord,
@@ -32,7 +32,7 @@ async function getRepairRequests(
   } = getRepairRequestSchema.parse(req.query);
 
   const event = await prisma.event.findUnique({
-    where: { id: id as string }
+    where: { id: eventId }
   });
 
   if (!event) {
@@ -45,7 +45,7 @@ async function getRepairRequests(
 
   let repairRequests = await prisma.repairRequest.findMany({
     where: {
-      event: { id: id as string },
+      event: { id: eventId as string },
       item: { name: { in: item } },
       itemBrand: { in: brand }
     },
