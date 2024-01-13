@@ -43,25 +43,26 @@ const Home = () => {
       ) : eventData ? (
         <div className="relative flex-row items-center justify-center mb-10">
           <ul id="eventList">
-          eventData.map(
-            ({
-              id,
-              name,
-              startDate,
-              endDate,
-              description,
-              location
-            }: EventResponse) => (
-              <Box
-                key={id}
-                eventId={id}
-                eventTitle={name}
-                startDate={formatDate(String(startDate))}
-                endDate={formatDate(String(endDate))}
-                description={description}
-                location={location}
-              />
-            )
+            {eventData.map(
+              ({
+                id,
+                name,
+                startDate,
+                endDate,
+                description,
+                location
+              }: EventResponse) => (
+                <Box
+                  key={id}
+                  eventId={id}
+                  eventTitle={name}
+                  startDate={formatDate(String(startDate))}
+                  endDate={formatDate(String(endDate))}
+                  description={description}
+                  location={location}
+                />
+              )
+            )}
           </ul>
         </div>
       ) : (
