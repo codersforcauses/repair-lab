@@ -7,9 +7,9 @@ import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { EventResponse } from "@/types";
 const Home = () => {
-  const [sortKey, setSortKey] = useState<string>("startDate");
-  const [searchWord, setSearchWord] = useState<string>("");
-  const [sortMethod, setSortMethod] = useState<string>("asc");
+  const [sortKey] = useState<string>("startDate");
+  const [searchWord] = useState<string>("");
+  const [sortMethod] = useState<string>("asc");
 
   const { data: eventData, isLoading: isEventsLoading } = useEvents(
     sortKey,

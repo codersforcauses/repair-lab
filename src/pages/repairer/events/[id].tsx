@@ -8,16 +8,12 @@ import { Tab } from "@headlessui/react";
 import RequestView from "@/components/EventBox/request-view";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
-import { useRepairRequests } from "@/hooks/events";
 
 const Home = () => {
   const {
     query: { id: eventId }
   } = useRouter();
 
-  const { isLoading, data: repairRequests } = useRepairRequests(
-    eventId as string
-  );
   const { data: event } = useEvent(eventId as string);
 
   return (
