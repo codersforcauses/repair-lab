@@ -1,8 +1,10 @@
+import React from "react";
 import Image from "next/image";
 import { useClerk } from "@clerk/nextjs";
 
 import Account from "@/components/NavBar/account";
 import MenuList from "@/components/NavBar/menu-list";
+import VerticalBar from "@/components/NavBar/VerticalBar";
 import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
 
@@ -22,6 +24,10 @@ const adminRoles = [
   UserRole.ORGANISATION_MANAGER,
   UserRole.EVENT_MANAGER
 ];
+export interface MenuItems {
+  item: string;
+  path: string;
+}
 
 export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
@@ -43,7 +49,9 @@ export default function NavBar() {
     <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
         <div className="flex justify-between items-center mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center">
+          <div className="hidden md:flex items-center">
+            {" "}
+            {/* Hide on mobile */}
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -52,6 +60,16 @@ export default function NavBar() {
               style={{ width: "50px", height: "50px" }}
             />
             <MenuList items={menuItems} />
+          </div>
+          <div className="md:hidden">
+            {" "}
+            {/* Show only on mobile */}
+            <VerticalBar
+              menuItems={menuItems}
+              // role={role}
+              isLoggedIn={!!user}
+              onSignOut={signOut}
+            />
           </div>
           <Account role={role} isLoggedIn={!!user} onSignOut={signOut} />
         </div>
