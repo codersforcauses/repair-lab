@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse, PageConfig } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
 import { PaginationResponse } from "@/lib/pagination";
