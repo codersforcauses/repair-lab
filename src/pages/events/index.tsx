@@ -1,5 +1,4 @@
-import { useMemo, useState } from "react";
-import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import {
   faFilterCircleXmark,
   faPlus,
@@ -13,8 +12,8 @@ import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
+import NavBar from "@/components/NavBar";
 import { Pagination, PaginationState } from "@/components/pagination";
-import ProfilePopover from "@/components/ProfilePopover";
 import Search from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
@@ -25,9 +24,11 @@ import { ItemType, useItemTypes } from "@/hooks/item-types";
 import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { formatDate } from "@/lib/datetime";
+import { NextPageWithLayout } from "@/pages/_app";
 import { CreateEvent, User } from "@/types";
 
 const initialFilterState = {
+  openModal: undefined,
   minDate: undefined,
   maxDate: undefined,
   search: undefined,
@@ -38,9 +39,9 @@ const initialFilterState = {
   status: [] as EventStatus[]
 };
 
-function EventTable() {
+const Events: NextPageWithLayout = () => {
   const { mutate: createEvent } = useCreateEvent();
-  const { data: itemTypes } = useItemTypes();
+  const { data: itemTypes = [] } = useItemTypes();
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
@@ -66,7 +67,8 @@ function EventTable() {
       status,
       search,
       sortKey,
-      sortMethod
+      sortMethod,
+      openModal
     },
     setFilterState
   ] = useSearchParamsState(initialFilterState);
@@ -103,26 +105,15 @@ function EventTable() {
       : undefined;
   }, [sortKey, sortMethod]);
 
+  // Allows Navbar 'New Event +' button to open /events with the Add new event modal open.
+  useEffect(() => {
+    if (openModal === "true") {
+      setShowAddModal(true);
+    }
+  }, [openModal]);
+
   return (
-    <div>
-      {/* HEADER BAR*/}
-      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
-        <Image
-          className="m-10 mb-5 mt-5"
-          src="/images/repair_lab_logo.jpg"
-          alt="logo"
-          width="90"
-          height="90"
-        />
-        <h1 className="mt-[50px] text-3xl font-semibold text-slate-600">
-          Event Listings
-        </h1>
-        {/* ACCOUNT AREA*/}
-        <div className="absolute right-10 self-center justify-self-end">
-          {/* Profile Pop Over */}
-          <ProfilePopover />
-        </div>
-      </div>
+    <div className="mt-20">
       {/* main table*/}
       <div className="pt-4 px-16 flex flex-col gap-4">
         <div className="w-full flex justify-between gap-x-2 gap-y-4 flex-wrap-reverse">
@@ -279,6 +270,14 @@ function EventTable() {
       </div>
     </div>
   );
-}
+};
 
-export default EventTable;
+Events.getLayout = function getLayout(page) {
+  return (
+    <>
+      <NavBar />
+      {page}
+    </>
+  );
+};
+export default Events;
