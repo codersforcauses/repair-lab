@@ -88,9 +88,7 @@ export default function Volunteers() {
             </Modal>
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center ">
-            <LoadingSpinner />
-          </div>
+          <LoadingSpinner className="w-full h-full flex items-center justify-center " />
         )}
       </main>
     </Sidebar>
