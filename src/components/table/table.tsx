@@ -12,6 +12,7 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 
+import LoadingSpinner from "@/components/UI/loading-spinner";
 import cn from "@/lib/classnames";
 
 interface ExtraProps {
@@ -114,7 +115,7 @@ export default function Table<RecordType = unknown>(
         ) : (
           <tr>
             <td>
-              <div>loading...</div>
+              <LoadingSpinner />
             </td>
           </tr>
         )}
