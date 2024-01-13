@@ -1,5 +1,5 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
 import {
@@ -43,7 +43,7 @@ export const useEvents = (
 
     const url = `/event?${params.toString()}`;
 
-    const response = await httpClient.get(url);
+    const response = await httpClient.get<EventResponse[]>(url);
     return response.data;
   };
 
