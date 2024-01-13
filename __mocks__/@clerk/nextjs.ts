@@ -31,7 +31,8 @@ export const mockClerkUsers = [
 ];
 
 // query partially matches userId, emailAddress, phoneNumber, username, web3Wallet, firstName, lastName
-const queryUsers = ({ query }: { query?: string }) => {
+type BasicSearchParams = { query?: string };
+const queryUsers = ({ query }: BasicSearchParams) => {
   if (!query) return mockClerkUsers;
 
   const partialMatch = (string1: string) =>
@@ -49,6 +50,10 @@ const queryUsers = ({ query }: { query?: string }) => {
 export const clerkClient = {
   users: {
     getUserList: vi.fn().mockImplementation(queryUsers),
-    getCount: vi.fn().mockReturnValue(mockClerkUsers.length)
+    getCount: vi
+      .fn()
+      .mockImplementation(
+        (search: BasicSearchParams) => queryUsers(search).length
+      )
   }
 };
