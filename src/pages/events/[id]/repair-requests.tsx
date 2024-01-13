@@ -63,7 +63,7 @@ export default function RepairRequests() {
                     </span>
                   </div>
                   <div className="flex justify-end items-center">
-                    <SortBy />
+                    <SortBy options={["opt 1", "opt 2", "opt 3"]} />
                     <SearchBar />
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
