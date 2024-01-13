@@ -6,6 +6,8 @@ import Box from "@/components/EventBox/box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { EventResponse } from "@/types";
+import { formatDate } from "@/utils";
+
 const Home = () => {
   const [sortKey] = useState<string>("startDate");
   const [searchWord] = useState<string>("");
@@ -16,69 +18,6 @@ const Home = () => {
     sortMethod,
     searchWord
   );
-
-  // For future use
-  // const { userId } = useAuth();
-
-  function formatDate(dateString: string): string {
-    const actualDate = new Date(dateString);
-    const day = actualDate.getDate().toString().padStart(2, "0");
-    const month = (actualDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = actualDate.getFullYear().toString();
-
-    return `${day}/${month}/${year}`;
-  }
-
-  function createBox(
-    id: string,
-    name: string,
-    startDate: string,
-    endDate: string,
-    description: string,
-    location: string
-  ) {
-    // To do: filter based off users assigned events
-    return (
-      <Box
-        key={id}
-        eventId={id}
-        eventTitle={name}
-        startDate={formatDate(String(startDate))}
-        endDate={formatDate(String(endDate))}
-        description={description}
-        location={location}
-      />
-    );
-  }
-
-  function renderEvents() {
-    const events =
-      eventData &&
-      eventData.map((event: EventResponse) =>
-        createBox(
-          event.id,
-          event.name,
-          event.startDate,
-          event.endDate,
-          event.description,
-          event.location
-        )
-      );
-
-    if (events) {
-      return (
-        <div className="relative flex-row items-center justify-center mb-10">
-          <ul id="eventList">{events}</ul>
-        </div>
-      );
-    } else {
-      return (
-        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
-          You have no assigned events.
-        </div>
-      );
-    }
-  }
 
   return (
     <div>
@@ -101,8 +40,34 @@ const Home = () => {
         <div className="flex justify-center">
           <LoadingSpinner />
         </div>
+      ) : eventData ? (
+        <div className="relative flex-row items-center justify-center mb-10">
+          <ul id="eventList">
+          eventData.map(
+            ({
+              id,
+              name,
+              startDate,
+              endDate,
+              description,
+              location
+            }: EventResponse) => (
+              <Box
+                key={id}
+                eventId={id}
+                eventTitle={name}
+                startDate={formatDate(String(startDate))}
+                endDate={formatDate(String(endDate))}
+                description={description}
+                location={location}
+              />
+            )
+          </ul>
+        </div>
       ) : (
-        renderEvents()
+        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+          You have no assigned events.
+        </div>
       )}
     </div>
   );
