@@ -3,7 +3,7 @@ import Image from "next/image";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Listbox } from "@headlessui/react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
