@@ -27,7 +27,7 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
   const { field } = useController(props);
 
   const [dragging, setDragging] = useState(false);
-  const [files, setFiles] = useState<File[]>([]);
+  const files = field.value as File[];
   const inputRef = useRef<HTMLInputElement>(null);
 
   const previews = useMemo(() => {
@@ -68,22 +68,15 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
     if (!isValid) return; // TODO set rhf errors
 
     if (!multiple) {
-      setFiles(() => {
-        // update internal state
-        const newState = fileArray[0];
-        // update rhf state
-        field.onChange([newState]);
-        return [newState];
-      });
-      return;
-    }
-    setFiles((state) => {
       // update internal state
-      const newState = [...state, ...fileArray];
+      const newState = fileArray[0];
       // update rhf state
-      field.onChange(newState);
-      return newState;
-    });
+      field.onChange([newState]);
+    }
+    // update internal state
+    const newState = [...files, ...fileArray];
+    // update rhf state
+    field.onChange(newState);
   };
 
   // handle drag events

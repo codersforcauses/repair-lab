@@ -82,7 +82,6 @@ const RepairRequest: NextPageWithLayout = () => {
         {/* Heading of the Page */}
 
         <h1 className="flex justify-center text-xl font-bold">
-          {" "}
           Submit a Repair Request
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
