@@ -49,7 +49,7 @@ describe("POST /api/event/[id]/repairers", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            userId: "Test"
+            userId: "user_1"
           })
         });
 
@@ -69,7 +69,7 @@ describe("POST /api/event/[id]/repairers", () => {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            userId: "Feifan"
+            userId: "user_bruh"
           })
         });
 
