@@ -144,7 +144,7 @@ export default function Select<
   );
 
   return (
-    <div className={`relative mb-2 inline-block ${width} text-left`}>
+    <div className={`relative inline-block ${width} text-left`}>
       <Listbox
         value={selectedOptions}
         onChange={handleChange}
@@ -171,7 +171,7 @@ export default function Select<
 
           {/* {fieldState.invalid && <Error {...props} />} */}
           {isBlank(value) ? (
-            <span className="text-gray-500">{placeholder}</span>
+            <span className="text-gray-500 text-nowrap">{placeholder}</span>
           ) : renderSelected ? (
             renderSelected(value, selectedOptions, onChange)
           ) : (

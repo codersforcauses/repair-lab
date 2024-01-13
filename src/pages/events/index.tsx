@@ -123,10 +123,10 @@ function EventTable() {
           <ProfilePopover />
         </div>
       </div>
-      {/* main table*/}
+      9{/* main table*/}
       <div className="pt-4 px-16 flex flex-col gap-4">
-        <div className="w-full flex justify-between">
-          <div className="flex flex-row gap-4">
+        <div className="w-full flex justify-between gap-x-2 gap-y-4 flex-wrap-reverse">
+          <div className="flex flex-row gap-2">
             <SelectUser
               label="Create By"
               value={users}
@@ -186,7 +186,7 @@ function EventTable() {
               </HoverOpacityButton>
             </div>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center">
             <Search
               className="relative w-5/12 flex-1 "
               value={tempSearch}

@@ -52,11 +52,14 @@ export function Pagination(props: PaginationProps) {
         Entries
       </div>
       <div className="inline-flex">
-        <Select
-          value={perPage}
-          onChange={handlePerPageChange}
-          options={options.map((n) => ({ name: String(n), value: n }))}
-        />
+        <div className="pr-2">
+          <Select
+            height="h-8"
+            value={perPage}
+            onChange={handlePerPageChange}
+            options={options.map((n) => ({ name: String(n), value: n }))}
+          />
+        </div>
         <button
           className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
           onClick={() => toPage(current - 1)}
