@@ -30,8 +30,25 @@ export const mockClerkUsers = [
   }
 ];
 
+// query partially matches userId, emailAddress, phoneNumber, username, web3Wallet, firstName, lastName
+const queryUsers = ({ query }: { query?: string }) => {
+  if (!query) return mockClerkUsers;
+
+  const partialMatch = (string1: string) =>
+    string1.toLowerCase().includes(query.toLowerCase());
+
+  return mockClerkUsers.filter(
+    (u) =>
+      partialMatch(u.id) ||
+      u.emailAddresses.some((e) => partialMatch(e.emailAddress)) ||
+      partialMatch(u.firstName) ||
+      partialMatch(u.lastName)
+  );
+};
+
 export const clerkClient = {
   users: {
-    getUserList: vi.fn().mockReturnValue(mockClerkUsers)
+    getUserList: vi.fn().mockImplementation(queryUsers),
+    getCount: vi.fn().mockReturnValue(mockClerkUsers.length)
   }
 };
