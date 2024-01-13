@@ -114,7 +114,7 @@ export default function RepairRequests() {
                   <div className="text-center">
                     <h1 className="text-xl font-bold">Add a repair request</h1>
                     <div className="max-w-full">
-                      <RepairAttemptForm></RepairAttemptForm>
+                      <RepairAttemptForm eventId={eventId as string} />
                     </div>
                   </div>
                 </Modal>

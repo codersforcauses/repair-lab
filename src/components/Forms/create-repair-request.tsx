@@ -26,7 +26,7 @@ const repairRequestFormSchema = createRepairRequestSchema.extend({
   })
 });
 
-export default function RepairRequest() {
+export default function RepairRequestForm({ eventId }: { eventId?: string }) {
   const { control, handleSubmit, setValue } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
@@ -63,7 +63,6 @@ export default function RepairRequest() {
         {/* Heading of the Page */}
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Input field for Brand of Item */}
-
           <SingleSelect
             name="itemBrand"
             control={control}
@@ -78,7 +77,6 @@ export default function RepairRequest() {
                 : []
             }
           />
-
           <SingleSelect
             name="itemType"
             control={control}
@@ -93,9 +91,7 @@ export default function RepairRequest() {
                 : []
             }
           />
-
           {/* Input field for Description of Item */}
-
           <FieldTextArea
             name="description"
             label="Description"
@@ -103,24 +99,23 @@ export default function RepairRequest() {
             control={control}
             rules={{ required: true }}
           />
-
           <FieldImageUpload multiple name="images" control={control} />
-
-          {/* Input field for Event Date */}
-          <SingleSelect
-            name="eventId"
-            control={control}
-            placeholder="Select an event"
-            label="Event"
-            options={
-              eventOptions
-                ? eventOptions.map((event: EventOption) => {
-                    return { id: event.id, text: event.name };
-                  })
-                : []
-            }
-          />
-
+          {/* Input field for Event */}
+          {!eventId && (
+            <SingleSelect
+              name="eventId"
+              control={control}
+              placeholder="Select an event"
+              label="Event"
+              options={
+                eventOptions
+                  ? eventOptions.map((event: EventOption) => {
+                      return { id: event.id, text: event.name };
+                    })
+                  : []
+              }
+            />
+          )}
           <FieldTextArea
             name="comment"
             label="Additional Comment"
@@ -128,9 +123,7 @@ export default function RepairRequest() {
             control={control}
             rules={{ required: false }}
           />
-
           <TermsAndConditions setValue={setValue} control={control} />
-
           <Button
             type="submit"
             height="h-9"
