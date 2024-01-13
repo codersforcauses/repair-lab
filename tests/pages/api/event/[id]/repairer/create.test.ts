@@ -32,7 +32,6 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: ["Test"]
           })
         });
-        console.log(await res.json());
 
         expect(res.status).toBe(200);
       }
@@ -53,7 +52,6 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: ["Test", "user_1", "user_2"]
           })
         });
-        console.log(JSON.stringify(await res.json(), null, 2));
 
         expect(res.status).toBe(200);
       }
@@ -74,7 +72,6 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: ["user_1"]
           })
         });
-        console.log(JSON.stringify(await res.json(), null, 2));
 
         expect(res.status).toBe(404);
       }
@@ -95,7 +92,6 @@ describe("POST /api/event/[id]/repairers", () => {
             userId: "user_bruh"
           })
         });
-        console.log(await res.json());
 
         expect(res.status).toBe(404);
       }
