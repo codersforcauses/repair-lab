@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import SingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
+import NavBar from "@/components/NavBar";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
 import { Brand, useBrands } from "@/hooks/brands";
 import { EventOption, useEventOptions } from "@/hooks/events";
@@ -16,10 +17,9 @@ import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { useCreateRepairRequest } from "@/hooks/repair-request";
 import generateThumbnail from "@/lib/gen-thumbnail";
 import uploadImage from "@/lib/upload-image";
+import { NextPageWithLayout } from "@/pages/_app";
 import { createRepairRequestSchema } from "@/schema/repair-request";
 import { CreateRepairRequest } from "@/types";
-import { NextPageWithLayout } from "@/pages/_app";
-import NavBar from "@/components/NavBar";
 
 export interface FormValues extends CreateRepairRequest {
   tncAccepted: boolean;
