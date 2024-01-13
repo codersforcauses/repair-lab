@@ -70,11 +70,9 @@ export default function RepairRequests() {
                   </div>
                 </div>
               </div>
-              <div className="relative grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5">
+              <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 relative">
                 {!repairRequests ? (
-                  <div className="w-full h-full flex items-center justify-center absolute">
-                    <LoadingSpinner />
-                  </div>
+                  <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
                 ) : (
                   repairRequests.map((item: RepairRequestResponse) => (
                     <div key={item.id}>
@@ -110,9 +108,7 @@ export default function RepairRequests() {
             </div>
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center ">
-            <LoadingSpinner />
-          </div>
+          <LoadingSpinner className="w-full h-full flex items-center justify-center" />
         )}
       </main>
     </Sidebar>

@@ -6,11 +6,7 @@ import {
 import { z, ZodIssue } from "zod";
 
 import { PaginationResponse } from "@/lib/pagination";
-import {
-  createEventSchema,
-  getEventSchema,
-  updateEventSchema
-} from "@/schema/event";
+import { createEventSchema, updateEventSchema } from "@/schema/event";
 import {
   createRepairRequestSchema,
   updateRepairRequestSchema
@@ -27,7 +23,6 @@ export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 // Events
 export type Event = PrismaEvent;
 export type EventStatus = $Enums.EventStatus;
-export type GetEvents = z.infer<typeof getEventSchema>;
 export type CreateEvent = z.infer<typeof createEventSchema>;
 export type UpdateEvent = z.infer<typeof updateEventSchema>;
 
@@ -108,10 +103,6 @@ export type RepairRequestResponse = {
   itemBrand: string;
   itemMaterial: string;
   images: string[];
-};
-// TODO: standardise error response (string[] of messages?)
-export type ErrorResponse = {
-  message: string | ZodIssue[];
 };
 
 export type UserResponse = PaginationResponse<User>;
