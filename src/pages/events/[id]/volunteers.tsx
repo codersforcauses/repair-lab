@@ -56,7 +56,7 @@ export default function Volunteers() {
                   onClick={manageVolunteer}
                   onKeyDown={manageVolunteer}
                 >
-                  Add Volunteers
+                  Manage Volunteers
                 </button>
               </div>
               <div className="container mx-auto">
@@ -80,9 +80,9 @@ export default function Volunteers() {
             >
               {" "}
               <div className="text-center">
-                <h1 className="text-xl font-bold">Add Volunteers</h1>
+                <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>
                 <div>
-                  <VolunteerManageForm />
+                  <VolunteerManageForm setShowModal={showVolunteerModal} />
                 </div>
               </div>
             </Modal>

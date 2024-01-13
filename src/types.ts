@@ -6,9 +6,6 @@ import {
 import { z } from "zod";
 
 import { createEventSchema, updateEventSchema } from "@/schema/event";
-import { 
-  manageVolunteerSchema
-} from "@/schema/manage-volunteer";
 import {
   createRepairRequestSchema,
   updateRepairRequestSchema
@@ -21,9 +18,6 @@ export type RepairRequest = PrismaRepairRequest;
 export type RepairStatus = $Enums.RepairStatus;
 export type CreateRepairRequest = z.infer<typeof createRepairRequestSchema>;
 export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
-
-// Volunteer Management
-export type VolunteerManageAttempt= z.infer<typeof manageVolunteerSchema>;
 
 // Events
 export type Event = PrismaEvent;
