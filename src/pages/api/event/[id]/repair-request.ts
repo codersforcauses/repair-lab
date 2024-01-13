@@ -47,7 +47,12 @@ async function getRepairRequests(
   let repairRequests = await prisma.repairRequest.findMany({
     where: {
       event: { id: id as string },
-      id: { contains: searchWord, mode: "insensitive" },
+      OR: searchWord
+        ? [
+            { id: { contains: searchWord, mode: "insensitive" } },
+            { description: { contains: searchWord, mode: "insensitive" } }
+          ]
+        : undefined,
       item: { name: { in: item } },
       itemBrand: { in: brand }
     },
