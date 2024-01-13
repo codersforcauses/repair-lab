@@ -65,10 +65,7 @@ const Home = () => {
         )
       );
 
-    if (
-      events?.filter((value: never) => value != null).length ||
-      events == undefined
-    ) {
+    if (events) {
       return (
         <div className="relative flex-row items-center justify-center mb-10">
           <ul id="eventList">{events}</ul>
