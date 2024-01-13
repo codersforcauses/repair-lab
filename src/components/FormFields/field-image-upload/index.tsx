@@ -142,7 +142,6 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
                 alt={`Image preview for ${file.name}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  setFiles(files.filter((_, index) => index !== i));
                 }}
               />
             ))
