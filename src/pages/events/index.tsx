@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   faFilterCircleXmark,
   faPlus,
@@ -17,13 +17,12 @@ import { Pagination, PaginationState } from "@/components/pagination";
 import Search from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
-import SelectUser from "@/components/select-user";
+import { SelectUser, useUsersFromIds } from "@/components/select-user";
 import Table from "@/components/table/table";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
-import { httpClient } from "@/lib/base-http-client";
 import { formatDate } from "@/lib/datetime";
 import { NextPageWithLayout } from "@/pages/_app";
 import { CreateEvent, User } from "@/types";
@@ -71,27 +70,13 @@ const Events: NextPageWithLayout = () => {
       sortMethod,
       openModal
     },
-    isReady,
     setFilterState
   ] = useSearchParamsState(initialFilterState);
 
   const [tempSearch, setTempSearch] = useState<string>("");
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
   const [users, setUsers] = useState<User[]>([]);
-  const initialised = useRef(false);
-  useEffect(() => {
-    if (isReady && !initialised.current) {
-      const initUsers = async () => {
-        initialised.current = true;
-        setUsers(
-          (await httpClient.get(`/user?query=${userIds.join(",")}`)).data.items
-        );
-      };
-
-      initUsers();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReady]);
+  useUsersFromIds(userIds, setUsers);
 
   const { data: eventData, isLoading: isEventsLoading } = useEvents({
     sortKey,

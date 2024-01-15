@@ -3,17 +3,18 @@ import Image from "next/image";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Listbox } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
+import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
+import isBlank from "@/lib/is-blank";
 import { User } from "@/types";
-
 const NAME_KEY = "emailAddress";
 const VALUE_KEY = "id";
-
 interface SelectUserProps {
   value?: User[];
   onChange?: (value: User[]) => void;
@@ -23,11 +24,7 @@ interface SelectUserProps {
 
 // todo: improve UX
 // todo: add dynamic loading when scroll to bottom
-export default function SelectUser({
-  value,
-  onChange,
-  ...rest
-}: SelectUserProps) {
+export function SelectUser({ value, onChange, ...rest }: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
   const { data, isLoading } = useUsers(10, 1, "-created_at", search);
   const users = data?.items as User[];
@@ -118,3 +115,33 @@ export default function SelectUser({
     />
   );
 }
+
+/**
+ * Helper hook to get users from ids, used to initialize user-selector from ids,
+ * after loading, it will call onChange function.
+ * @param ids
+ * @param onChange
+ */
+export function useUsersFromIds(
+  ids: string[],
+  onChange: (value: User[]) => void
+) {
+  const [initialized, setInitialized] = useState<boolean>(false);
+
+  return useQuery({
+    enabled: !initialized,
+    queryKey: ["users", ids],
+    queryFn: async () => {
+      if (!isBlank(ids)) {
+        // this blank check is because unstable of useRouter of next.js
+        const res = await httpClient.get<User[]>(
+          `/user/list?ids=${ids.join(",")}`
+        );
+        onChange(res.data);
+        setInitialized(true);
+      }
+    }
+  });
+}
+
+export default SelectUser;
