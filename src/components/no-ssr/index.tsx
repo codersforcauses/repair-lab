@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import dynamic from "next/dynamic";
 
 const NoSsr = (props: { children: ReactNode }) => (
-  <React.Fragment>{props.children}</React.Fragment>
+  <Fragment>{props.children}</Fragment>
 );
 
 export default dynamic(() => Promise.resolve(NoSsr), {

@@ -1,5 +1,13 @@
 import Select from "@/components/select";
 
+interface ConciseInputProps {
+  label: string;
+  id: string;
+  type: React.HTMLInputTypeAttribute;
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
 /** Displays label over the border */
 function ConciseInput({
   label,
@@ -7,13 +15,7 @@ function ConciseInput({
   type,
   value = "", // If value is undefined, React gives a warning
   onChange
-}: {
-  label: string;
-  id: string;
-  type: React.HTMLInputTypeAttribute;
-  value?: string;
-  onChange?: (value: string) => void;
-}) {
+}: ConciseInputProps) {
   return (
     <div className="border-gray-500 border p-2 relative rounded-lg mb-4 last:mb-0">
       <label

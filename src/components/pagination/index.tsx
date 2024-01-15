@@ -16,9 +16,12 @@ export interface PaginationProps {
   options?: number[];
 }
 
-export function Pagination(props: PaginationProps) {
-  const { value, onChange, options = DEFAULT_OPTIONS } = props;
-  const { total, perPage = 20, current = 1 } = value;
+export function Pagination({
+  value: paginationState,
+  onChange,
+  options = DEFAULT_OPTIONS
+}: PaginationProps) {
+  const { total, perPage = 20, current = 1 } = paginationState;
 
   const maxPage = Math.ceil(total / perPage);
   const firstRecord = perPage * (current - 1) + 1;
@@ -28,16 +31,16 @@ export function Pagination(props: PaginationProps) {
     (page: number) => {
       if (page < 1) return 1;
       if (page > maxPage) return maxPage;
-      onChange({ ...value, current: page });
+      onChange({ ...paginationState, current: page });
     },
-    [maxPage, onChange, value]
+    [maxPage, onChange, paginationState]
   );
 
   const handlePerPageChange = useCallback(
     (perPage: number) => {
-      onChange({ ...value, perPage, current: 1 });
+      onChange({ ...paginationState, perPage, current: 1 });
     },
-    [onChange, value]
+    [onChange, paginationState]
   );
 
   return (

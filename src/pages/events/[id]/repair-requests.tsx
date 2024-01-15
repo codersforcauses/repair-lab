@@ -54,7 +54,7 @@ export default function RepairRequests() {
                   </div>
                   <div className="flex justify-end items-center">
                     <SortBy />
-                    <SearchBar className="sd:w-auto m-4" />
+                    <SearchBar className="sm:w-auto m-4" />
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
                       role="presentation"
