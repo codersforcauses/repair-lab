@@ -3,48 +3,34 @@ import Image from "next/image";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Listbox } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
-import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
-import isBlank from "@/lib/is-blank";
 import { User } from "@/types";
+
 const NAME_KEY = "emailAddress";
 const VALUE_KEY = "id";
+
 interface SelectUserProps {
   value?: User[];
   onChange?: (value: User[]) => void;
   multiple?: boolean;
   label?: string;
-  initialUserIds?: string[];
 }
 
 // todo: improve UX
 // todo: add dynamic loading when scroll to bottom
-export default function SelectUser(props: SelectUserProps) {
-  const { initialUserIds, value, onChange, ...rest } = props;
+export default function SelectUser({
+  value,
+  onChange,
+  ...rest
+}: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
   const { data, isLoading } = useUsers(10, 1, "-created_at", search);
   const users = data?.items as User[];
-  const [initialized, setInitialized] = useState<boolean>(false);
-
-  useQuery({
-    enabled: !initialized,
-    queryKey: ["users", initialUserIds],
-    queryFn: async () => {
-      if (!isBlank(initialUserIds)) {
-        const res = await httpClient.get<User[]>(
-          `/user/list?ids=${initialUserIds.join(",")}`
-        );
-        onChange?.(res.data);
-        setInitialized(true);
-      }
-    }
-  });
 
   return (
     <Select
@@ -95,7 +81,7 @@ export default function SelectUser(props: SelectUserProps) {
       renderList={(options) => (
         <>
           {isLoading ? (
-            <LoadingSpinner />
+            <LoadingSpinner className="w-full h-full flex items-center justify-center " />
           ) : (
             options.map((user) => (
               <Listbox.Option
@@ -103,7 +89,7 @@ export default function SelectUser(props: SelectUserProps) {
                 value={user}
                 as={Fragment}
               >
-                {({ active, selected }) => (
+                {({ selected }) => (
                   <li
                     className={cn(
                       { "bg-lightAqua-200": selected },

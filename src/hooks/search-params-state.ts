@@ -60,5 +60,5 @@ export default function useSearchParamsState<
     }
   );
 
-  return [state, setState] as const;
+  return [state, router.isReady, setState] as const;
 }

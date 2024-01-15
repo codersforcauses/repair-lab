@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   faFilterCircleXmark,
   faPlus,
   faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
@@ -22,10 +23,10 @@ import { useCreateEvent, useEvents } from "@/hooks/events";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
+import { httpClient } from "@/lib/base-http-client";
 import { formatDate } from "@/lib/datetime";
 import { NextPageWithLayout } from "@/pages/_app";
 import { CreateEvent, User } from "@/types";
-import { EventStatus } from "@prisma/client";
 
 const initialFilterState = {
   openModal: undefined,
@@ -70,12 +71,27 @@ const Events: NextPageWithLayout = () => {
       sortMethod,
       openModal
     },
+    isReady,
     setFilterState
   ] = useSearchParamsState(initialFilterState);
 
   const [tempSearch, setTempSearch] = useState<string>("");
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
   const [users, setUsers] = useState<User[]>([]);
+  const initialised = useRef(false);
+  useEffect(() => {
+    if (isReady && !initialised.current) {
+      const initUsers = async () => {
+        initialised.current = true;
+        setUsers(
+          (await httpClient.get(`/user?query=${userIds.join(",")}`)).data.items
+        );
+      };
+
+      initUsers();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady]);
 
   const { data: eventData, isLoading: isEventsLoading } = useEvents({
     sortKey,
@@ -119,7 +135,7 @@ const Events: NextPageWithLayout = () => {
         <div className="w-full flex justify-between gap-x-2 gap-y-4 flex-wrap-reverse">
           <div className="flex flex-row gap-2">
             <SelectUser
-              label="Create By"
+              label="Created By"
               value={users}
               onChange={(user) => {
                 setUsers(user);
@@ -129,7 +145,6 @@ const Events: NextPageWithLayout = () => {
                 }));
               }}
               multiple
-              initialUserIds={userIds}
             />
             <SelectDate
               label="Date"
