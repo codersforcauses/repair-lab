@@ -1,9 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  faFilterCircleXmark,
-  faPlus,
-  faSearch
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilterCircleXmark, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
@@ -14,7 +10,7 @@ import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
 import { Pagination, PaginationState } from "@/components/pagination";
-import Search from "@/components/Search";
+import { Search, SearchButton } from "@/components/search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
 import { SelectUser, useUsersFromIds } from "@/components/select-user";
@@ -183,17 +179,14 @@ const Events: NextPageWithLayout = () => {
               value={tempSearch}
               onChange={setTempSearch}
               afterInput={
-                <button
-                  className="absolute right-8 top-1/2 -translate-y-1/2 transform cursor-pointer text-gray-500"
+                <SearchButton
                   onClick={() => {
                     setFilterState((state) => ({
                       ...state,
                       search: tempSearch
                     }));
                   }}
-                >
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
+                />
               }
             />
             <div className="text-center">

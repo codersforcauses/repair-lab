@@ -2,7 +2,7 @@ import { Fragment, useCallback, useMemo } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 
-import Search from "@/components/Search";
+import Search from "@/components/search";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
 
