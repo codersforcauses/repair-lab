@@ -163,7 +163,7 @@ const Home: NextPageWithLayout = () => {
           Logout
         </Button>
       </div>
-      <Link className="py-4" href="/events">
+      <Link className="py-4" href="/manage/events">
         <Button>Admin Dashboard</Button>
       </Link>
     </div>
