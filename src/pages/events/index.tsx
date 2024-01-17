@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   faChevronDown,
@@ -13,12 +12,14 @@ import { SubmitHandler } from "react-hook-form";
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
-import ProfilePopover from "@/components/ProfilePopover";
+import NavBar from "@/components/NavBar";
+import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
+import { NextPageWithLayout } from "@/pages/_app";
 import { CreateEvent, EventResponse } from "@/types";
 
-function Table() {
+const Events: NextPageWithLayout = () => {
   const router = useRouter();
 
   function formatDate(dateString: string): string {
@@ -55,6 +56,13 @@ function Table() {
 
   // will toggle modal visibility for editing events
   const [showAddModal, setShowAddModal] = useState(false);
+
+  // Allows Navbar 'New Event +' button to open /events with the Add new event modal open.
+  useEffect(() => {
+    if (router.query.openModal === "true") {
+      setShowAddModal(true);
+    }
+  }, [router.query.openModal]);
 
   function handleButtonClick(key: string) {
     if (expandedButton === key) {
@@ -95,33 +103,12 @@ function Table() {
   };
 
   return (
-    <div>
-      {/* HEADER BAR*/}
-      <div className=" flex w-full flex-row border-b-[2px] border-slate-300 ">
-        <Image
-          className="m-10 mb-5 mt-5"
-          src="/images/repair_lab_logo.jpg"
-          alt="logo"
-          width="90"
-          height="90"
-        />
-        <h1 className="mt-[50px] text-3xl font-semibold text-slate-600">
-          {" "}
-          Event Listings
-        </h1>
-
-        {/* ACCOUNT AREA*/}
-        <div className="absolute right-10 self-center justify-self-end">
-          {/* Profile Pop Over */}
-          <ProfilePopover />
-        </div>
-      </div>
-
+    <div className="mt-20">
       {/* Search bar above table */}
       <div className="flex justify-center">
         <div className="relative w-5/12 p-4">
           <input
-            className="h-10 w-full rounded-3xl border-none bg-gray-100 bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
+            className="h-10 w-full rounded-3xl border-none bg-gray-200 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
             type="search"
             name="search"
             placeholder="Search"
@@ -145,7 +132,10 @@ function Table() {
             showModal={showAddModal}
             height="h-3/4"
           >
-            <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
+            <EventForm
+              itemTypes={itemTypes ?? []}
+              onSubmit={submitCreateEvent}
+            />
           </Modal>
         </div>
       </div>
@@ -154,7 +144,7 @@ function Table() {
       <div className="flex justify-center">
         <div className="container flex w-full justify-center overflow-hidden">
           {isEventsLoading ? (
-            "Loading..."
+            <LoadingSpinner />
           ) : (
             <table className="w-10/12 table-auto overflow-hidden rounded-lg">
               <thead>
@@ -216,6 +206,14 @@ function Table() {
       </div>
     </div>
   );
-}
+};
 
-export default Table;
+Events.getLayout = function getLayout(page) {
+  return (
+    <>
+      <NavBar />
+      {page}
+    </>
+  );
+};
+export default Events;
