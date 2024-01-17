@@ -77,7 +77,7 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
 export enum PageRouteRegex {
   ROOT = "/$",
   AUTH = "/auth",
-  EVENTS = "/events",
+  EVENTS = "/manage/events",
   REPAIR_REQUEST = "/repair-request$",
   REPAIR_ATTEMPT = "/repair-request",
   ALL = "/"
