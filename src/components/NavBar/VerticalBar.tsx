@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { VscChromeClose, VscMenu } from "react-icons/vsc";
 
 import { MenuItems } from "@/components/NavBar";
-import ProfilePopover from "@/components/ProfilePopover";
 
 interface NavItems {
   menuItems: MenuItems[];
@@ -19,14 +18,31 @@ const VerticalBar = (props: NavItems) => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
+  // Set the isOpen state as false if the screen width is greater than 767px
+  const checkScreenWidth = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth >= 768) {
+      setIsOpen(false);
+    }
+  };
+
+  // Window resize event listener for updating the isOpen state
+  useEffect(() => {
+    window.addEventListener("resize", checkScreenWidth);
+    checkScreenWidth();
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
+
   return (
     <div className="relative">
       <button onClick={toggleSidebar}>
-        {isOpen ? <VscChromeClose /> : <VscMenu />}
+        {isOpen ? <VscChromeClose /> : <VscMenu size="28" />}
       </button>
       {isOpen && (
-        <div className="absolute top-0 left-0 z-50 w-64 h-screen bg-white">
-          <div className="p-4 border-b">
+        <div className="absolute top-0 left-0 z-50 w-60 h-auto bg-white">
+          <div className="flex justify-between items-center p-2 border-b">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -34,31 +50,38 @@ const VerticalBar = (props: NavItems) => {
               height={50}
             />
             <button onClick={toggleSidebar}>
-              <VscChromeClose />
+              <VscChromeClose size="40" />
             </button>
           </div>
           {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
-              <p className="block p-4 border-b hover:bg-gray-100">
+              <p className="block p-4 border-b hover:bg-app-base-100">
                 {item.item}
               </p>
             </Link>
           ))}
-          <div className="absolute bottom-0 w-full">
+          {props.isLoggedIn && (
+            <Link
+              href="/repair-request"
+              className="block p-4 border-b bg-app-primary hover:bg-app-primary-focus text-white"
+            >
+              New Repair Request +
+            </Link>
+          )}
+          <div className="flex bottom-4 w-full">
             {props.isLoggedIn ? (
               <>
                 <button
                   onClick={props.onSignOut}
-                  className="w-full p-4 border-b hover:bg-gray-100"
+                  className="w-full p-4 border-b bg-app-accent hover:bg-app-accent-focus"
                 >
                   Log Out
                 </button>
-                <ProfilePopover />
               </>
             ) : (
               <button
                 onClick={() => router.push("/login")}
-                className="w-full p-4 border-b hover:bg-gray-100"
+                className="w-full p-4 border-b bg-app-accent hover:bg-app-accent-focus"
               >
                 Sign In
               </button>

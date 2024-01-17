@@ -5,12 +5,13 @@ import { useClerk } from "@clerk/nextjs";
 import Account from "@/components/NavBar/account";
 import MenuList from "@/components/NavBar/menu-list";
 import VerticalBar from "@/components/NavBar/VerticalBar";
+import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
 
 const adminItems = ["Home", "Events", "Repair Requests"];
 const clientItems = ["Home", "Events", "My Events"];
-const guestItems = ["Home", "Events"]; // Shown when user it not logged in
+const guestItems = ["Home", "Events"]; // Shown when user is not logged in
 
 const pathMap: { [key: string]: string } = {
   Home: "/",
@@ -49,9 +50,8 @@ export default function NavBar() {
     <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
         <div className="flex justify-between items-center mx-auto px-4 sm:px-6 lg:px-8">
+          {/* For larger screen (768px width or above) - horizontal nav bar */}
           <div className="hidden md:flex items-center">
-            {" "}
-            {/* Hide on mobile */}
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -61,17 +61,21 @@ export default function NavBar() {
             />
             <MenuList items={menuItems} />
           </div>
-          <div className="md:hidden">
-            {" "}
-            {/* Show only on mobile */}
+          <div className="hidden md:flex items-center">
+            <Account role={role} isLoggedIn={!!user} onSignOut={signOut} />
+          </div>
+
+          {/* For smaller screen (below 768px width) - expandable vertical nav bar */}
+          <div className="md:hidden flex items-center mt-1.5">
             <VerticalBar
               menuItems={menuItems}
-              // role={role}
               isLoggedIn={!!user}
               onSignOut={signOut}
             />
           </div>
-          <Account role={role} isLoggedIn={!!user} onSignOut={signOut} />
+          <div className="md:hidden flex items-center mt-1.5">
+            <ProfilePopover />
+          </div>
         </div>
       )}
     </div>
