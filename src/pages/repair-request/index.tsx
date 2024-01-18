@@ -61,6 +61,7 @@ const RepairRequest: NextPageWithLayout = () => {
     const updatedData = { ...data, thumbnailImage, images };
     createRepairRequest(updatedData);
     reset();
+    window.location.href = "/request-success";
   };
 
   return (
