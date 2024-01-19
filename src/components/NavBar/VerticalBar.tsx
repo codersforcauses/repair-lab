@@ -35,6 +35,19 @@ const VerticalBar = (props: NavItems) => {
     };
   }, []);
 
+  // Set the isOpen state as false when a user navigates to a different page
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsOpen(false);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router]);
+
   return (
     <div className="relative">
       <button onClick={toggleSidebar}>
