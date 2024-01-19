@@ -17,7 +17,7 @@ export default function MenuList({ items }: Readonly<Props>) {
         {items.map((item) => (
           <Tab
             key={item.item}
-            className={`mx-16 px-2 font-medium text-black hover:text-primary-700 ${
+            className={`mx-16 px-2 font-medium text-black text-xl hover:text-primary-700 ${
               router.asPath === item.path ? "text-primary-700" : ""
             }`}
             //

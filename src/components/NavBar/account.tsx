@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
-import Link from "next/link";
 
 interface Props {
   role: UserRole;
@@ -29,7 +29,7 @@ export default function Account({
         <>
           <Link
             href="/repair-request"
-            className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
+            className="flex items-center justify-center px-3 py-6 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Repair Request +
           </Link>

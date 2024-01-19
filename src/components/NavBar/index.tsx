@@ -40,16 +40,16 @@ export default function NavBar() {
   }
 
   return (
-    <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
+    <div className="sticky top-0 z-50 h-[100px] text-lg bg-white drop-shadow-md">
       {isLoaded && (
         <div className="flex justify-between items-center mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center">
+          <div className="flex items-center mt-2">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
               width={721}
               height={831}
-              style={{ width: "50px", height: "50px" }}
+              style={{ width: "80px", height: "80px" }}
             />
             <MenuList items={menuItems} />
           </div>
