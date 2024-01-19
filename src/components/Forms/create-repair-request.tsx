@@ -34,7 +34,7 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
       itemType: "",
       description: "",
       images: [],
-      eventId: "",
+      eventId: eventId || "",
       comment: "",
       tncAccepted: false
     }
