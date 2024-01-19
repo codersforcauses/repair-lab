@@ -58,82 +58,72 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
   };
 
   return (
-    <div className="flex items-center justify-center p-4">
-      <div className="flex w-screen flex-col justify-center gap-4 md:w-3/6 lg:w-full">
-        {/* Heading of the Page */}
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {/* Input field for Brand of Item */}
-          <SingleSelect
-            name="itemBrand"
-            control={control}
-            placeholder="Select a brand"
-            label="Brand"
-            rules={{ required: true }}
-            options={
-              brandList
-                ? brandList.map((brand: Brand) => {
-                    return { id: brand.name, text: brand.name };
-                  })
-                : []
-            }
-          />
-          <SingleSelect
-            name="itemType"
-            control={control}
-            placeholder="Select an item type"
-            label="Item Type"
-            rules={{ required: true }}
-            options={
-              itemTypeList
-                ? itemTypeList.map((itemType: ItemType) => {
-                    return { id: itemType.name, text: itemType.name };
-                  })
-                : []
-            }
-          />
-          {/* Input field for Description of Item */}
-          <FieldTextArea
-            name="description"
-            label="Description"
-            placeholder="Enter a description"
-            control={control}
-            rules={{ required: true }}
-          />
-          <FieldImageUpload multiple name="images" control={control} />
-          {/* Input field for Event */}
-          {!eventId && (
-            <SingleSelect
-              name="eventId"
-              control={control}
-              placeholder="Select an event"
-              label="Event"
-              options={
-                eventOptions
-                  ? eventOptions.map((event: EventOption) => {
-                      return { id: event.id, text: event.name };
-                    })
-                  : []
-              }
-            />
-          )}
-          <FieldTextArea
-            name="comment"
-            label="Additional Comment"
-            placeholder="Enter additional comments"
-            control={control}
-            rules={{ required: false }}
-          />
-          <TermsAndConditions setValue={setValue} control={control} />
-          <Button
-            type="submit"
-            height="h-9"
-            width="w-full"
-            textSize="text-base"
-          >
-            Submit
-          </Button>
-        </form>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      {/* Input field for Brand of Item */}
+      <SingleSelect
+        name="itemBrand"
+        control={control}
+        placeholder="Select a brand"
+        label="Brand"
+        rules={{ required: true }}
+        options={
+          brandList
+            ? brandList.map((brand: Brand) => {
+                return { id: brand.name, text: brand.name };
+              })
+            : []
+        }
+      />
+      <SingleSelect
+        name="itemType"
+        control={control}
+        placeholder="Select an item type"
+        label="Item Type"
+        rules={{ required: true }}
+        options={
+          itemTypeList
+            ? itemTypeList.map((itemType: ItemType) => {
+                return { id: itemType.name, text: itemType.name };
+              })
+            : []
+        }
+      />
+      {/* Input field for Description of Item */}
+      <FieldTextArea
+        name="description"
+        label="Description"
+        placeholder="Enter a description"
+        control={control}
+        rules={{ required: true }}
+      />
+      <FieldImageUpload multiple name="images" control={control} />
+      {/* Input field for Event */}
+      {!eventId && (
+        <SingleSelect
+          name="eventId"
+          control={control}
+          placeholder="Select an event"
+          label="Event"
+          options={
+            eventOptions
+              ? eventOptions.map((event: EventOption) => {
+                  return { id: event.id, text: event.name };
+                })
+              : []
+          }
+        />
+      )}
+      <FieldTextArea
+        name="comment"
+        label="Additional Comment"
+        placeholder="Enter additional comments"
+        control={control}
+        rules={{ required: false }}
+      />
+      <TermsAndConditions setValue={setValue} control={control} />
+      <Button type="submit" height="h-9" width="w-full" textSize="text-base">
+        Submit
+      </Button>
+    </form>
   );
 }

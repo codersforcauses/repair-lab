@@ -32,6 +32,7 @@ export default function RepairRequests() {
   function hideForm() {
     showEventModal(false);
   }
+
   useEffect(() => {
     if (!event) return;
     setHeaderValues({
