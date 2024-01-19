@@ -34,24 +34,21 @@ export interface SelectProps<
   options?: Option[];
   value?: SelectValue;
   onChange?: (value: SelectValue) => void;
-  width?: string;
-  height?: string;
   placeholder?: string;
   renderSelected?: (
     values: SelectValue,
     options: Option[],
     onChange?: (value: SelectValue) => void
   ) => JSX.Element;
-  renderOption?: (option: Option) => JSX.Element;
+  // renderOption?: (option: Option) => JSX.Element; // Not Implement yet
   searchValue?: string;
   onSearch?: (search: string) => void;
   nameKey?: NameKey;
   valueKey?: ValueKey;
   renderList?: (options: Option[]) => JSX.Element;
-  /** When use select as filter
-   * - Do not use with search and dynamic loading, could cause unexpected behaviour
-   */
-  treatEmptyAsAll?: boolean; // todo: support search and dynamic loading senario
+  className?: string;
+  afterLabel?: JSX.Element;
+  underInput?: JSX.Element;
 }
 
 /**
@@ -86,26 +83,19 @@ export default function Select<
     options = [],
     value = [] as SelectValue,
     onChange,
-    width = "w-full",
-    height = "h-10",
     placeholder = "Please select",
     renderSelected,
-    renderOption,
     searchValue,
     onSearch,
     nameKey = "name" as NameKey,
     valueKey = "value" as ValueKey,
     renderList,
-    treatEmptyAsAll
+    className,
+    afterLabel,
+    underInput
   } = props;
 
-  const baseStyle = `flex items-center ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
-  const normalBorderStyle = `ring-grey-300`;
-
   const selectedOptions = useMemo(() => {
-    if (treatEmptyAsAll && isBlank(value)) {
-      return options;
-    }
     const optionsOrValues = [...(Array.isArray(value) ? value : [value])];
     return (
       optionsOrValues
@@ -119,17 +109,11 @@ export default function Select<
         // Because options may still loading or value is not in options
         .filter((v) => v) as Option[]
     );
-  }, [treatEmptyAsAll, value, options, useOption, valueKey]);
+  }, [value, options, useOption, valueKey]);
 
   const handleChange = useCallback(
     (nextOptions: Option | Option[]) => {
-      if (
-        treatEmptyAsAll &&
-        Array.isArray(nextOptions) &&
-        nextOptions.length === options.length
-      ) {
-        onChange?.([] as SelectValue);
-      } else if (useOption) {
+      if (useOption) {
         onChange?.(nextOptions as SelectValue);
       } else if (multiple) {
         const values = (nextOptions as Option[]).map(
@@ -140,58 +124,49 @@ export default function Select<
         onChange?.((nextOptions as Option)[valueKey] as SelectValue);
       }
     },
-    [treatEmptyAsAll, options.length, useOption, multiple, onChange, valueKey]
+    [useOption, multiple, onChange, valueKey]
   );
 
   return (
-    <div className={`relative inline-block ${width} text-left`}>
-      <Listbox
-        value={selectedOptions}
-        onChange={handleChange}
-        multiple={multiple}
+    <Listbox
+      value={selectedOptions}
+      onChange={handleChange}
+      multiple={multiple}
+    >
+      <Listbox.Button
+        as="div"
+        className={cn(
+          "relative flex items-center h-10 w-full justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
+          className
+        )}
       >
-        <Listbox.Button
-          as="div"
-          className={cn(
-            `${baseStyle}`,
-            normalBorderStyle
-            // fieldState.invalid
-            //   ? `${errorBorderStyle}`
-            //   : `${normalBorderStyle}`,
-          )}
-        >
-          <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black">
-            {label}
-            {/* {props.rules?.required ? (
-                <span className="text-xs font-semibold text-red-500"> *</span>
-              ) : (
-                ""
-              )} */}
-          </label>
-
-          {/* {fieldState.invalid && <Error {...props} />} */}
-          {isBlank(value) ? (
-            <span className="text-gray-500 text-nowrap">{placeholder}</span>
-          ) : renderSelected ? (
-            renderSelected(value, selectedOptions, onChange)
-          ) : (
-            <span className="truncate text-grey-900">
-              {selectedOptions?.map((option) => option[nameKey]).join(", ")}
-            </span>
-          )}
-          <HiChevronDown
-            className="ml-auto h-6 w-5 text-grey-600"
-            aria-hidden="true"
-          />
-        </Listbox.Button>
+        <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black">
+          {label}
+          {afterLabel}
+        </label>
+        {isBlank(value) ? (
+          <span className="text-gray-500 text-nowrap">{placeholder}</span>
+        ) : renderSelected ? (
+          renderSelected(value, selectedOptions, onChange)
+        ) : (
+          <span className="truncate text-grey-900">
+            {selectedOptions?.map((option) => option[nameKey]).join(", ")}
+          </span>
+        )}
+        <HiChevronDown
+          className="ml-auto h-6 w-5 text-grey-600"
+          aria-hidden="true"
+        />
+        <div className="absolute">{underInput}</div>
         <Transition
-          className="z-10 relative"
+          className="z-10 absolute w-full left-0 top-10"
           enter="transition ease-out duration-100"
           enterFrom="transform opacity-0 scale-95"
           enterTo="transform opacity-100 scale-100"
           leave="transition ease-in duration-100"
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
+          onClick={(e) => e.stopPropagation()}
         >
           <Listbox.Options className="absolute w-full">
             <div className="relative py-1 left-0 z-10 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
@@ -241,7 +216,7 @@ export default function Select<
             </div>
           </Listbox.Options>
         </Transition>
-      </Listbox>
-    </div>
+      </Listbox.Button>
+    </Listbox>
   );
 }

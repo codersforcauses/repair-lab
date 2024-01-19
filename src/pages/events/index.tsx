@@ -135,7 +135,6 @@ const Events: NextPageWithLayout = () => {
               }
             />
             <Select
-              treatEmptyAsAll
               multiple
               label="Type"
               options={(itemTypes as ItemType[])?.map(({ name }) => ({
@@ -148,7 +147,6 @@ const Events: NextPageWithLayout = () => {
               }
             />
             <Select
-              treatEmptyAsAll
               multiple
               label="Status"
               options={Object.values(EventStatus).map((name) => ({

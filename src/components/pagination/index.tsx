@@ -57,7 +57,7 @@ export function Pagination({
       <div className="inline-flex">
         <div className="pr-2">
           <Select
-            height="h-8"
+            className="h-8"
             value={perPage}
             onChange={handlePerPageChange}
             options={options.map((n) => ({ name: String(n), value: n }))}

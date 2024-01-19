@@ -62,7 +62,8 @@ export function SelectUser({ value, onChange, ...rest }: SelectUserProps) {
                 </div>
                 <HoverOpacityButton
                   className="text-gray-500 text-xs hover:enabled:scale-100 ml-2 hover:opacity-60"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     const newValues = [...values];
                     newValues.splice(index, 1);
                     onChange?.(newValues);
