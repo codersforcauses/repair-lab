@@ -6,7 +6,7 @@ import Card from "@/components/Cards/card";
 import RepairAttemptForm from "@/components/Forms/repair-request-form";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
-import { Search, SearchButton } from "@/components/search";
+import { Search } from "@/components/search";
 import SortBy from "@/components/search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
@@ -68,7 +68,6 @@ export default function RepairRequests() {
                           search: value
                         }))
                       }
-                      afterInput={<SearchButton />}
                     />
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"

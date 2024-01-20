@@ -10,7 +10,7 @@ import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
 import { Pagination, PaginationState } from "@/components/pagination";
-import { Search, SearchButton } from "@/components/search";
+import { Search } from "@/components/search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
 import { SelectUser, useUsersFromIds } from "@/components/select-user";
@@ -69,7 +69,6 @@ const Events: NextPageWithLayout = () => {
     setFilterState
   ] = useSearchParamsState(initialFilterState);
 
-  const [tempSearch, setTempSearch] = useState<string>("");
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
   const [users, setUsers] = useState<User[]>([]);
   useUsersFromIds(userIds, setUsers);
@@ -88,7 +87,6 @@ const Events: NextPageWithLayout = () => {
   const resetQuery = useMemoizedFn(() => {
     setFilterState(initialFilterState);
     setUsers([]);
-    setTempSearch("");
   });
 
   const sortingState = useMemo(() => {
@@ -174,17 +172,9 @@ const Events: NextPageWithLayout = () => {
           <div className="flex gap-2 items-center">
             <Search
               className="relative w-5/12 flex-1 "
-              value={tempSearch}
-              onChange={setTempSearch}
-              afterInput={
-                <SearchButton
-                  onClick={() => {
-                    setFilterState((state) => ({
-                      ...state,
-                      search: tempSearch
-                    }));
-                  }}
-                />
+              value={search}
+              onChange={(value) =>
+                setFilterState((state) => ({ ...state, search: value }))
               }
             />
             <div className="text-center">

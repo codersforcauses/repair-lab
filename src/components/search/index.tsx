@@ -1,51 +1,57 @@
+import { type ReactNode, useState } from "react";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { ReactNode } from "react";
 
+import useDebounceFn from "@/hooks/debounce-fn";
 import cn from "@/lib/classnames";
+
+import styles from "./index.module.css";
 
 export interface SearchProps {
   className?: string;
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string) => void | Promise<unknown>;
   beforeInput?: ReactNode;
-  afterInput?: ReactNode;
 }
 
 export function Search({
   className,
   value,
   onChange,
-  beforeInput,
-  afterInput
+  beforeInput
 }: SearchProps) {
+  const [tempValue, setTempValue] = useState<string>();
+  const onSearch = useDebounceFn(async (value: string) => {
+    await onChange?.(value);
+    setTempValue(undefined);
+  });
+
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative group", className, styles.search)}>
       {beforeInput}
       <input
-        className="h-10 w-full rounded-3xl border-none bg-gray-100 px-5 py-2 text-sm focus:shadow-md focus:outline-none "
+        className="h-10 w-full rounded-3xl border-none bg-gray-100 px-4 py-2 text-sm focus:shadow-md focus:outline-none"
         type="search"
         name="search"
         placeholder="Search"
-        value={value}
-        onChange={(event) => onChange?.(event.target.value)}
+        value={tempValue ?? value}
+        onChange={(event) => {
+          setTempValue(event.target.value);
+          onSearch(event.target.value);
+        }}
       />
-      {afterInput}
+      <div
+        className={cn(
+          "absolute right-5 top-1/2 -translate-y-1/2 transform text-gray-500",
+          {
+            "group-focus-within:invisible": !!value,
+            "group-hover:invisible": !!value
+          }
+        )}
+      >
+        <FontAwesomeIcon icon={faSearch} width={20} height={20} />
+      </div>
     </div>
-  );
-}
-
-export function SearchButton({ onClick }: { onClick?: () => void }) {
-  return (
-    <button
-      className={cn(
-        "absolute right-8 top-1/2 -translate-y-1/2 transform cursor-pointer text-gray-500",
-        { "pointer-events-none": !onClick }
-      )}
-      onClick={onClick}
-    >
-      <FontAwesomeIcon icon={faSearch} />
-    </button>
   );
 }
 

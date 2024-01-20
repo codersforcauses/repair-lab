@@ -46,7 +46,7 @@ export default function useSearchParamsState<
           ? valueOrFn(state as StateType)
           : valueOrFn;
 
-      router.replace(
+      return router.replace(
         {
           pathname: router.pathname,
           query: paramsSerializer({

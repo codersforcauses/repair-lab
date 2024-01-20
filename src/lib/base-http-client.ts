@@ -1,13 +1,12 @@
 import axios from "axios";
 
+import isBlank from "@/lib/is-blank";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function paramsSerializer(params: Record<string, any>) {
   const urlParams = new URLSearchParams();
   Object.keys(params).forEach((key) => {
-    if (
-      params[key] === undefined ||
-      (Array.isArray(params[key]) && params[key].length === 0)
-    ) {
+    if (isBlank(params[key])) {
       // remove undefined value or empty array
       return;
     } else if (Array.isArray(params[key])) {
