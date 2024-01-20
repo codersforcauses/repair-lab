@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 import Button from "@/components/Button";
-import SearchBar from "@/components/Search/SearchBar";
-import TablePagination from "@/components/Table/table-pagination";
+import Search from "@/components/Search";
+import TablePagination from "@/components/table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { User } from "@/types";
@@ -37,10 +37,10 @@ export default function VolunteerManageForm({
   // TODO - update this to use a new hook or endpoint instead of useUsers
   // It is currently using the same endpoint as /users
   const { data: users, isLoading } = useUsers(perPage, page, orderBy, query);
-  const search = (e: ChangeEvent<HTMLInputElement>) => {
+  const search = (value: string) => {
     // will need to setPage back to 1 otherwise it will be looking at the last page
     setPage(1);
-    setQuery(e.target.value);
+    setQuery(value);
   };
 
   // TODO implement backend to handle this - check issue 113 or 116
@@ -53,8 +53,8 @@ export default function VolunteerManageForm({
 
   return (
     <div className="m-1 flex flex-col justify-between gap-2 w-full h-full p-3">
-      {/* Search Bar - taken from /users */}
-      <SearchBar onChange={search} />
+      {/* Search Bar */}
+      <Search onChange={search} />
 
       {/* Table - taken from /users */}
       {isLoading ? (
@@ -93,6 +93,7 @@ export default function VolunteerManageForm({
               </tbody>
             </table>
 
+            {/* TODO update to new Pagination component */}
             <TablePagination
               perPage={perPage}
               page={page}
