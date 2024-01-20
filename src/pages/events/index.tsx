@@ -21,20 +21,13 @@ const Events: NextPageWithLayout = () => {
   );
 
   return (
-    <div className="mt-4 mx-4 ">
+    <div className="mt-4 mx-4 flex justify-center">
       {isEventsLoading ? (
         <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
       ) : eventData ? (
-        <div className="grid gap-4 relative sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 ">
+        <div className="grid gap-4 relative sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 ">
           {eventData.map(
-            ({
-              id,
-              name,
-              startDate,
-              endDate,
-              description,
-              location
-            }: EventResponse) => (
+            ({ id, name, startDate, description, location }: EventResponse) => (
               <div key={id}>
                 <Card
                   props={{
