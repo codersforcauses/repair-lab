@@ -13,7 +13,7 @@ const Success: NextPageWithLayout = () => {
     <div className="min-h-screen bg-lightAqua-100 flex justify-center">
       <div className="relative flex flex-row h-screen items-center justify-center gap-x-12">
         <div>
-          <Image src="/images/duck.png" alt="Duck" width={400} height={400} />
+          <Image src="/images/duck.png" alt="Duck" width={200} height={200} />
         </div>
 
         <div className="w-1/2">
