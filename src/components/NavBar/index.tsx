@@ -73,6 +73,14 @@ export default function NavBar() {
               onSignOut={signOut}
             />
           </div>
+          <div className="flex md:hidden justify-between items-center">
+            <Image
+              src="/images/repair_lab_logo.png"
+              alt="Repair Labs Logo"
+              width={50}
+              height={50}
+            />
+          </div>
           <div className="md:hidden flex items-center mt-1.5">
             <ProfilePopover />
           </div>
