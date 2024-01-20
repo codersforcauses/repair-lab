@@ -55,14 +55,12 @@ export function Pagination({
         Entries
       </div>
       <div className="inline-flex">
-        <div className="pr-2">
-          <Select
-            className="h-8"
-            value={perPage}
-            onChange={handlePerPageChange}
-            options={options.map((n) => ({ name: String(n), value: n }))}
-          />
-        </div>
+        <Select
+          className="h-8 mr-2"
+          value={perPage}
+          onChange={handlePerPageChange}
+          options={options.map((n) => ({ name: String(n), value: n }))}
+        />
         <button
           className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
           onClick={() => toPage(current - 1)}
