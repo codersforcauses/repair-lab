@@ -55,7 +55,6 @@ export interface SelectProps<
  * Select component (Nonstable)
  * test page: http://localhost:3000/tests/select_component
  * ref: https://headlessui.com/react/listbox
- * todo: support error state
  * todo: merge with FieldSelct
  * todo: optimise animation
  */

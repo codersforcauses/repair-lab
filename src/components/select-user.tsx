@@ -20,11 +20,17 @@ interface SelectUserProps {
   onChange?: (value: User[]) => void;
   multiple?: boolean;
   label?: string;
+  maxTag?: number;
 }
 
 // todo: improve UX
 // todo: add dynamic loading when scroll to bottom
-export function SelectUser({ value, onChange, ...rest }: SelectUserProps) {
+export function SelectUser({
+  value,
+  onChange,
+  maxTag = 2,
+  ...rest
+}: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
   const { data, isLoading } = useUsers(10, 1, "-created_at", search);
   const users = data?.items as User[];
@@ -42,7 +48,7 @@ export function SelectUser({ value, onChange, ...rest }: SelectUserProps) {
       valueKey={VALUE_KEY}
       renderSelected={(values, options, onChange) => (
         <div className="flex-1 flex h-full gap-1">
-          {options.map((user: User, index) => {
+          {options.slice(0, maxTag).map((user: User, index) => {
             return (
               <div
                 key={user.id}
@@ -74,6 +80,11 @@ export function SelectUser({ value, onChange, ...rest }: SelectUserProps) {
               </div>
             );
           })}
+          {options.length > maxTag && (
+            <div className="flex items-center justify-center text-gray-500 text-xs">
+              +{options.length - maxTag}
+            </div>
+          )}
         </div>
       )}
       renderList={(options) => (
