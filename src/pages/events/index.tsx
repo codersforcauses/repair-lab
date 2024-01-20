@@ -13,6 +13,7 @@ import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
+import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -143,7 +144,7 @@ const Events: NextPageWithLayout = () => {
       <div className="flex justify-center">
         <div className="container flex w-full justify-center overflow-hidden">
           {isEventsLoading ? (
-            "Loading..."
+            <LoadingSpinner />
           ) : (
             <table className="w-10/12 table-auto overflow-hidden rounded-lg">
               <thead>

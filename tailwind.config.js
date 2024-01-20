@@ -10,6 +10,8 @@ module.exports = {
       boxShadow: {
         custom: "0px 0px 8px rgba(0, 0, 0, 0.30)"
       },
+      /* Per review comment of i74, keep both the old and simplified colour palettes until the colours are streamlined */
+      /* Old palette */
       colors: {
         primary: {
           50: "#f0fdfa",
@@ -75,6 +77,36 @@ module.exports = {
           800: "#2f565b",
           900: "#2b494e",
           950: "#182f34"
+        },
+        /* Simplified palette */
+        app: {
+          primary: {
+            DEFAULT: "#098D85",
+            focus: "#035E58"
+          },
+          secondary: {
+            DEFAULT: "#DCF1EF",
+            focus: "#A6DCDB"
+          },
+          accent: {
+            DEFAULT: "#AACFEE",
+            focus: "#84B1D6"
+          },
+          base: {
+            100: "#F4F7F7",
+            200: "#56727E",
+            300: "224250"
+          }
+        }
+      },
+      animation: {
+        "reverse-spin": "reverse-spin 1s linear infinite"
+      },
+      keyframes: {
+        "reverse-spin": {
+          from: {
+            transform: "rotate(360deg)"
+          }
         }
       }
     },
