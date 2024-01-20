@@ -73,7 +73,7 @@ export default function NavBar() {
               onSignOut={signOut}
             />
           </div>
-          <div className="md:hidden flex items-center mt-1.5">
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 md:hidden ">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
