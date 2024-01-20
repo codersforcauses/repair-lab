@@ -3,7 +3,7 @@ import {
   Event as PrismaEvent,
   RepairRequest as PrismaRepairRequest
 } from "@prisma/client";
-import { z } from "zod";
+import { z, ZodIssue } from "zod";
 
 import { PaginationResponse } from "@/lib/pagination";
 import { createEventSchema, updateEventSchema } from "@/schema/event";
@@ -103,6 +103,11 @@ export type RepairRequestResponse = {
   itemBrand: string;
   itemMaterial: string;
   images: string[];
+};
+
+// TODO: standardise error response (string[] of messages?)
+export type ErrorResponse = {
+  message: string | ZodIssue[];
 };
 
 export type UserResponse = PaginationResponse<User>;

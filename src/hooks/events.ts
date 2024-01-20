@@ -29,27 +29,24 @@ export const useEvent = (eventId: string | undefined) => {
   });
 };
 
-export const useEvents = (
-  sortKey: string,
-  sortMethod: string,
-  searchWord: string
-) => {
-  const queryFn = async () => {
-    const params = new URLSearchParams({
-      sortKey,
-      sortMethod,
-      searchWord
-    });
-
-    const url = `/event?${params.toString()}`;
-
-    const response = await httpClient.get<EventResponse[]>(url);
-    return response.data;
-  };
-
-  return useQuery({
-    queryKey: ["events", sortKey, sortMethod, searchWord],
-    queryFn
+export const useEvents = (params: {
+  sortKey?: string;
+  sortMethod?: string;
+  searchWord?: string;
+  minDate?: string;
+  maxDate?: string;
+  eventType?: string[];
+  eventStatus?: string[];
+  createdBy?: string[];
+}) => {
+  return useQuery<EventResponse[]>({
+    queryKey: ["events", params],
+    queryFn: () =>
+      httpClient
+        .get("/event", {
+          params
+        })
+        .then((response) => response.data)
   });
 };
 
