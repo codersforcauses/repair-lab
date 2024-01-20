@@ -1,7 +1,8 @@
-import Modal from "@/components/Modal";
-import Image from "next/image";
 import { SyntheticEvent, useState } from "react";
+import Image from "next/image";
+
 import VolunteerCard from "@/components/Cards/volunteer-card";
+import Modal from "@/components/Modal";
 
 type Props = {
   firstName?: string;
@@ -19,6 +20,8 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
     setShowAssigneeModal(true);
   };
 
+
+
   // window.addEventListener("keydown", (ev) => {
   //   if (ev.key === "Escape") {
   //     setShowAssigneeModal(false);
@@ -31,8 +34,12 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
     <>
       <div
         onClick={handleClick}
+        onKeyDown={handleClick}
+        role="button"
+        tabIndex={0}
         className="rounded-lg bg-grey-200 p-2 hover:cursor-pointer"
       >
+        
         <div>
           <div className="flex flex-row gap-2">
             <Image

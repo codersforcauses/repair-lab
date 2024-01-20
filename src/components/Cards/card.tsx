@@ -71,6 +71,8 @@ export default function Card({ props }: { props: CardProps }) {
           onClick={props.handleClick ? props.handleClick : handleClick}
           onKeyDown={props.handleClick ? props.handleClick : handleClick}
           className="hover:cursor-pointer hover:underline"
+          role="button"
+          tabIndex={0}
         >
           <div className="flex flex-row items-start justify-between">
             <h3 className="h-18 flex w-full flex-col  self-start text-xl font-bold">
