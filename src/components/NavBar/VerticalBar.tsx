@@ -50,12 +50,12 @@ const VerticalBar = (props: NavItems) => {
 
   return (
     <div className="relative">
-      <button onClick={toggleSidebar}>
+      <button onClick={toggleSidebar} className="px-4">
         {isOpen ? <VscChromeClose /> : <VscMenu size="28" />}
       </button>
       {isOpen && (
-        <div className="absolute top-0 left-0 z-50 w-60 h-auto bg-white">
-          <div className="flex justify-between items-center p-2 border-b">
+        <div className="absolute top-[44px] z-50 w-screen h-screen bg-white">
+          {/* <div className="flex justify-between items-center p-2 border-b">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -65,7 +65,7 @@ const VerticalBar = (props: NavItems) => {
             <button onClick={toggleSidebar}>
               <VscChromeClose size="40" />
             </button>
-          </div>
+          </div> */}
           {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
               <p className="block p-4 border-b hover:bg-app-base-100">
