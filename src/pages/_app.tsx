@@ -7,7 +7,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import NavBar from "@/components/NavBar";
 import Toast from "@/components/Toast";
 
 import "@/styles/globals.css";
@@ -38,7 +37,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={false} />
           <main className={`${inter.className}`}>
-            {/* <NavBar /> */}
             {getLayout(<Component {...pageProps} />)}
             <Toast position="bottom-center" />
           </main>

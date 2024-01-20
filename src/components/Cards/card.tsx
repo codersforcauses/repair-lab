@@ -40,10 +40,8 @@ export default function Card({ props }: { props: CardProps }) {
 
   return (
     <div
-      onClick={props.handleClick ? props.handleClick : handleClick}
-      onKeyDown={props.handleClick ? props.handleClick : handleClick}
       role="presentation"
-      className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
+      className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:bg-grey-50"
     >
       <Modal setShowPopup={setShowModal} showModal={showModal}>
         <div className="text-center">
@@ -69,16 +67,22 @@ export default function Card({ props }: { props: CardProps }) {
         />
       </div>
       <div className="p-2">
-        <div className="flex flex-row items-start justify-between">
-          <h3 className="h-18 flex w-full flex-col  self-start text-xl font-bold">
-            Repair ID:
-          </h3>
+        <div
+          onClick={props.handleClick ? props.handleClick : handleClick}
+          onKeyDown={props.handleClick ? props.handleClick : handleClick}
+          className="hover:cursor-pointer hover:underline"
+        >
+          <div className="flex flex-row items-start justify-between">
+            <h3 className="h-18 flex w-full flex-col  self-start text-xl font-bold">
+              Repair ID:
+            </h3>
 
-          <div className="pr-2">
-            <StatusPill status={props.status} />
+            <div className="pr-2">
+              <StatusPill status={props.status} />
+            </div>
           </div>
+          <p className="mb-3 w-full text-sm font-semibold">{props.title}</p>
         </div>
-        <p className="mb-3 w-full text-sm font-semibold">{props.title}</p>
         <div>
           <p className="mb-3 h-32 overflow-y-scroll text-ellipsis text-sm font-light">
             {props.description}
