@@ -1,8 +1,10 @@
 import { useState } from "react";
 
+import NavBar from "@/components/NavBar";
 import { useEvents } from "@/hooks/events";
+import { NextPageWithLayout } from "@/pages/_app";
 
-const Events = () => {
+const Events: NextPageWithLayout = () => {
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
   const [sortMethod, setSortMethod] = useState<string>("asc");
@@ -12,6 +14,17 @@ const Events = () => {
     sortKey,
     sortMethod,
     searchWord
+  );
+
+  return <div>text</div>;
+};
+
+Events.getLayout = function getLayout(page) {
+  return (
+    <>
+      <NavBar />
+      {page}
+    </>
   );
 };
 
