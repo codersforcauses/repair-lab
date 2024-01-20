@@ -11,7 +11,7 @@ import { useEvent } from "@/hooks/events";
 import { User } from "@/types";
 
 export default function Volunteers() {
-  const [volunteers] = useState<User[]>([]);
+  const [volunteers, _setVolunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
   const {
