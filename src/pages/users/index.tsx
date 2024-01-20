@@ -7,7 +7,7 @@ import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
 import { NextPageWithLayout } from "@/pages/_app";
 import { UserRole } from "@/types";
-import { User } from "@/types";
+import { type User } from "@/types";
 
 const User: NextPageWithLayout = () => {
   const [orderBy, _setOrderBy] = useState("-created_at");
