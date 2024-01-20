@@ -49,9 +49,9 @@ export default function NavBar() {
   return (
     <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
-        <div className="flex justify-between items-center mx-auto ">
+        <div className="flex justify-between items-center mx-auto px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
-          <div className="hidden md:flex items-center px-4">
+          <div className="hidden md:flex items-center">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -61,7 +61,7 @@ export default function NavBar() {
             />
             <MenuList items={menuItems} />
           </div>
-          <div className="hidden md:flex items-center px-4">
+          <div className="hidden md:flex items-center">
             <Account role={role} isLoggedIn={!!user} onSignOut={signOut} />
           </div>
 
@@ -73,7 +73,7 @@ export default function NavBar() {
               onSignOut={signOut}
             />
           </div>
-          <div className="md:hidden flex items-center mt-1.5 px-4">
+          <div className="md:hidden flex items-center mt-1.5">
             <ProfilePopover />
           </div>
         </div>

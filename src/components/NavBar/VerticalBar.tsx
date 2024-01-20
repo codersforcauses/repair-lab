@@ -44,11 +44,11 @@ const VerticalBar = (props: NavItems) => {
 
   return (
     <div className="relative">
-      <button onClick={toggleSidebar} className="px-4">
+      <button onClick={toggleSidebar} >
         {isOpen ? <VscChromeClose /> : <VscMenu size="28" />}
       </button>
       {isOpen && (
-        <div className="absolute top-[44px] z-9 w-screen h-screen bg-white">
+        <div className="fixed top-[44px] z-9  inset-0 w-screen h-screen bg-white">
           {/* <div className="flex justify-between items-center p-2 border-b">
             <Image
               src="/images/repair_lab_logo.png"
