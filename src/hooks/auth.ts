@@ -1,11 +1,11 @@
 import { useUser } from "@clerk/nextjs";
 
-import { PrismaUserRole } from "@/types";
+import { UserRole } from "@/types";
 
 export const useAuth = () => {
   const { user, isSignedIn, isLoaded } = useUser();
 
-  const role = (user?.publicMetadata.role ?? PrismaUserRole.CLIENT) as UserRole; // default to CLIENT if no roles set.
+  const role = (user?.publicMetadata.role ?? UserRole.CLIENT) as UserRole; // default to CLIENT if no roles set.
 
   return {
     user,

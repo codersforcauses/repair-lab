@@ -63,13 +63,12 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   ];
   const adminRoutes = [new RegExp(PageRouteRegex.ALL)];
   // TODO: organisation manager routes
-  
+
   return {
     [UserRole.CLIENT]: clientRoutes,
     [UserRole.REPAIRER]: repairerRoutes,
     [UserRole.EVENT_MANAGER]: eventManagerRoutes,
-    [UserRole.ADMIN]: adminRoutes,
-    [UserRole.ORGANISATION_MANAGER]: eventManagerRoutes
+    [UserRole.ADMIN]: adminRoutes
   } as Record<UserRole, RegExp[]>;
 };
 

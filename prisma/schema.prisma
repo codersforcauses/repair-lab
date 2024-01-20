@@ -51,7 +51,6 @@ enum RepairStatus {
 
 enum UserRole {
   ADMIN
-  ORGANISATION_MANAGER
   EVENT_MANAGER
   REPAIRER
 }

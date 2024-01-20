@@ -39,7 +39,7 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   emailAddress: string;
-  role: PrismaUserRole;
+  role: UserRole;
 }
 
 export enum SearchCriteria {
@@ -56,8 +56,8 @@ export enum SearchCriteria {
 //   EVENT_MANAGER = "EVENT_MANAGER",
 //   REPAIRER = "REPAIRER"
 // }
-export const UserRole = { ...PrismaUserRole, CLIENT: "CLIENT" as const };
-export type UserRole = PrismaUserRole;
+export const UserRole = { ...PrismaUserRole, CLIENT: "CLIENT" } as const;
+export type UserRole = keyof typeof UserRole;
 
 export type NavPath = {
   item: string;

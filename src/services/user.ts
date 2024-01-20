@@ -6,7 +6,7 @@ import { User as ClerkUser } from "@clerk/nextjs/server";
 import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
 import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
-import { PrismaUserRole,User } from "@/types";
+import { User, UserRole } from "@/types";
 
 type ClerkOrderBy =
   | "created_at"
@@ -77,7 +77,7 @@ async function getRole(userId: string): Promise<UserRole> {
   const user = await clerkClient.users.getUser(userId);
   const role = user.publicMetadata.role
     ? (user.publicMetadata.role as UserRole)
-    : PrismaUserRole.CLIENT;
+    : UserRole.CLIENT;
 
   return role;
 }
@@ -86,7 +86,7 @@ function toResponse(user: ClerkUser): User {
   const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
   const role = publicMetadata.role
     ? (publicMetadata.role as UserRole)
-    : PrismaUserRole.CLIENT;
+    : UserRole.CLIENT;
   const emailAddress = emailAddresses[0].emailAddress;
 
   return {

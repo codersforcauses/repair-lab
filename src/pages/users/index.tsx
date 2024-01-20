@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import { NextPageWithLayout } from "@/pages/_app";
+
 import NavBar from "@/components/NavBar";
 import TablePagination from "@/components/Table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
-import { PrismaUserRole } from "@/types";
+import { NextPageWithLayout } from "@/pages/_app";
+import { UserRole } from "@/types";
 import { User } from "@/types";
 
 const User: NextPageWithLayout = () => {
@@ -142,7 +143,7 @@ const UserRow = ({ user, index }: { user: User; index: number }) => {
             updateUser(e.target.value as UserRole);
           }}
         >
-          {Object.keys(PrismaUserRole).map((role) => {
+          {Object.keys(UserRole).map((role) => {
             return (
               <option value={role} key={role}>
                 {role.trim().toLowerCase().replace("_", " ")}
