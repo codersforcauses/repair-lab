@@ -2,8 +2,10 @@ import { useState } from "react";
 
 import Card from "@/components/Cards/event-card";
 import NavBar from "@/components/NavBar";
+import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { NextPageWithLayout } from "@/pages/_app";
+import { EventResponse } from "@/types";
 
 const Events: NextPageWithLayout = () => {
   const [sortKey, setSortKey] = useState<string>("startDate");
@@ -18,15 +20,36 @@ const Events: NextPageWithLayout = () => {
   );
 
   return (
-    <div className="mt-4 mx-4">
-      <div className="grid gap-4 relative grid-cols-4 ">
-        <Card props={{ title: "sdjkgnds" }} />
-        <Card props={{ title: "sdjkgnds" }} />
-        <Card props={{ title: "sdjkgnds" }} />
-        <Card props={{ title: "sdjkgnds" }} />
-        <Card props={{ title: "sdjkgnds" }} />
-        <Card props={{ title: "sdjkgnds" }} />
-      </div>
+    <div className="mt-4 mx-4 ">
+      {isEventsLoading ? (
+        <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
+      ) : eventData ? (
+        <div className="grid gap-4 relative grid-cols-4 ">
+          {eventData.map(
+            ({
+              id,
+              name,
+              startDate,
+              endDate,
+              description,
+              location
+            }: EventResponse) => (
+              <div key={id}>
+                <Card
+                  props={{
+                    title: name,
+                    description: description
+                  }}
+                />
+              </div>
+            )
+          )}
+        </div>
+      ) : (
+        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+          No upcoming events.
+        </div>
+      )}
     </div>
   );
 };
