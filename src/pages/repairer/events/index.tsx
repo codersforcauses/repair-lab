@@ -13,11 +13,11 @@ const Home = () => {
   const [searchWord] = useState<string>("");
   const [sortMethod] = useState<string>("asc");
 
-  const { data: eventData, isLoading: isEventsLoading } = useEvents(
+  const { data: eventData, isLoading: isEventsLoading } = useEvents({
     sortKey,
     sortMethod,
     searchWord
-  );
+  });
 
   return (
     <div>
