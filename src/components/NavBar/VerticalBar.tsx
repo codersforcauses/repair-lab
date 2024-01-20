@@ -57,9 +57,8 @@ const VerticalBar = (props: NavItems) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        {isOpen && (
-          <div className="fixed top-[60px] z-9  inset-0 w-screen h-screen bg-white">
-            {/* <div className="flex justify-between items-center p-2 border-b">
+        <div className="fixed top-[60px] z-9  inset-0 w-screen h-screen bg-white">
+          {/* <div className="flex justify-between items-center p-2 border-b">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -70,48 +69,47 @@ const VerticalBar = (props: NavItems) => {
               <VscChromeClose size="40" />
             </button>
           </div> */}
-            {props.menuItems.map((item) => (
-              <Link href={item.path} key={item.item}>
-                <p
-                  className={`block p-2 hover:-translate-x-1 hover:bg-app-base-100  duration-500 hover:opacity-100 ${
-                    router.asPath === item.path ? "opacity-100" : "opacity-40"
-                  }`}
-                >
-                  {item.item}
-                </p>
-              </Link>
-            ))}
-            {props.isLoggedIn && (
-              <Link
-                href="/repair-request"
-                className={`block p-2 hover:-translate-x-1 hover:bg-app-base-100 text-app-primary duration-500 hover:opacity-100 ${
-                  router.asPath === "/repair-request"
-                    ? "opacity-100"
-                    : "opacity-40"
+          {props.menuItems.map((item) => (
+            <Link href={item.path} key={item.item}>
+              <p
+                className={`block p-2 hover:-translate-x-1 hover:bg-app-base-100  duration-500 hover:opacity-100 ${
+                  router.asPath === item.path ? "opacity-100" : "opacity-40"
                 }`}
               >
-                New Repair Request +
-              </Link>
+                {item.item}
+              </p>
+            </Link>
+          ))}
+          {props.isLoggedIn && (
+            <Link
+              href="/repair-request"
+              className={`block p-2 hover:-translate-x-1 hover:bg-app-base-100 text-app-primary duration-500 hover:opacity-100 ${
+                router.asPath === "/repair-request"
+                  ? "opacity-100"
+                  : "opacity-40"
+              }`}
+            >
+              New Repair Request +
+            </Link>
+          )}
+          <div className="flex bottom-4 w-full">
+            {props.isLoggedIn ? (
+              <button
+                onClick={props.onSignOut}
+                className="w-full p-2 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
+              >
+                Log Out
+              </button>
+            ) : (
+              <button
+                onClick={() => router.push("/login")}
+                className="w-full p-2 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
+              >
+                Sign In
+              </button>
             )}
-            <div className="flex bottom-4 w-full">
-              {props.isLoggedIn ? (
-                <button
-                  onClick={props.onSignOut}
-                  className="w-full p-2 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
-                >
-                  Log Out
-                </button>
-              ) : (
-                <button
-                  onClick={() => router.push("/login")}
-                  className="w-full p-2 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
-                >
-                  Sign In
-                </button>
-              )}
-            </div>
           </div>
-        )}
+        </div>
       </Transition>
     </div>
   );
