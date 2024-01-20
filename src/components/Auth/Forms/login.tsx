@@ -15,7 +15,9 @@ interface LoginFormValues {
   password: string;
 }
 
-const googleIcon = <Logo name="Google" viewBox="0 0 24 24" fill="#FFFFFF" />;
+const googleIcon = <Logo name="Google" viewBox="0 0 24 24" />;
+const microsoftIcon = <Logo name="Microsoft" viewBox="0 0 24 24" />;
+const facebookIcon = <Logo name="Facebook" viewBox="0 0 24 24" />;
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -58,11 +60,21 @@ const LoginForm = () => {
 
   return (
     <div>
-      <div className="w-full">
+      <div className="relative flex justify-center pt-5 pb-4 gap-x-1">
         <SignInOAuthButton
+          ariaLabel="Click to sign in with Facebook"
+          strategy="oauth_facebook"
+          icon={facebookIcon}
+        />
+        <SignInOAuthButton
+          ariaLabel="Click to sign in with Google"
           strategy="oauth_google"
-          label="Continue with Google"
           icon={googleIcon}
+        />
+        <SignInOAuthButton
+          ariaLabel="Click to sign in with Microsoft Outlook"
+          strategy="oauth_microsoft"
+          icon={microsoftIcon}
         />
       </div>
 
@@ -75,10 +87,10 @@ const LoginForm = () => {
           </div>
         )}
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pt-4">
           <FieldInput
             name="emailAddress"
-            placeholder="Enter email address"
+            placeholder="e.g. name@domain.com"
             control={control}
             rules={{
               required: "This field is required",
@@ -95,33 +107,42 @@ const LoginForm = () => {
 
           <FieldInput
             name="password"
-            placeholder="Enter password"
+            placeholder="Enter Password"
             control={control}
             rules={{
               required: "This field is required"
             }}
             label="Password"
+            icon="/images/passwordIcon.svg"
             type="password"
           />
         </div>
 
-        <div className="m-4 text-center">
+        <div className="flex pt-5 pb-3 justify-center">
+          <Button
+            aria-label="Click to complete the sign in process"
+            height="h-10"
+          >
+            Sign In
+          </Button>
+        </div>
+
+        <div className="m-2 text-center">
           <div>
             <Link href="/auth/forgot-password">
-              <span className="text-xs text-gray-400 underline">
+              <span className="text-sm text-gray-400 underline">
                 Forgot your password?
               </span>
             </Link>
           </div>
           <div>
             <Link href="/auth/register">
-              <span className="text-xs text-gray-400 underline">
+              <span className="text-sm text-gray-400 underline">
                 Do not have an account? Sign up
               </span>
             </Link>
           </div>
         </div>
-        <Button width="w-full">Sign In</Button>
       </form>
     </div>
   );

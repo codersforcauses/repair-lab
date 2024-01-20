@@ -67,7 +67,7 @@ model RepairRequest {
   status         RepairStatus @default(PENDING)
   description    String
   comment        String       @default("") //comment for client
-  thumbnailImage String //s3 key to compressed image of object
+  thumbnailImage String? //s3 key to compressed image of object
 
   repairComment String  @default("") //comment for volunteer to document process
   spareParts    String  @default("") //this should be filled out later by volunteer

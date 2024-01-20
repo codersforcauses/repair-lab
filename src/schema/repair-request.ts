@@ -7,14 +7,10 @@ export const createRepairRequestSchema = z.object({
   }),
   itemType: z.string().min(1, { message: "Item type is required" }),
   itemBrand: z.string().min(1, { message: "Item brand is required" }),
-  images: z.string().array().optional(),
+  thumbnailImage: z.string().optional(), // an optional string that is a URL
+  images: z.array(z.any()).optional(),
   comment: z.string().optional()
 });
-
-const preprocessBooleanInput = (input: unknown) => {
-  const processedInput = z.string().trim().transform(Boolean).safeParse(input);
-  return processedInput.success ? processedInput.data : input;
-};
 
 export const updateRepairRequestSchema = z.object({
   item: z.string().min(1, { message: "Item name is required" }),

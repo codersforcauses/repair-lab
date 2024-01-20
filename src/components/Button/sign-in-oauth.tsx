@@ -5,12 +5,12 @@ import { OAuthStrategy } from "@clerk/nextjs/dist/types/server";
 import Button from "@/components/Button";
 
 interface Props {
+  ariaLabel: string;
   strategy: OAuthStrategy;
-  label: string;
   icon: ReactNode;
 }
 
-const SignInOAuthButton = ({ strategy, label, icon }: Props) => {
+const SignInOAuthButton = ({ ariaLabel, strategy, icon }: Props) => {
   const { signIn } = useSignIn();
 
   const signInWith = (strategy: OAuthStrategy) => {
@@ -22,10 +22,17 @@ const SignInOAuthButton = ({ strategy, label, icon }: Props) => {
   };
 
   return (
-    <Button onClick={() => signInWith(strategy)} width="w-full">
+    <Button
+      onClick={() => signInWith(strategy)}
+      aria-label={ariaLabel}
+      color="white"
+      border="border-2"
+      width="w-20"
+      height="h-16"
+      hover="white"
+    >
       <div className="relative flex items-center justify-center space-x-4">
         <div className="w-5">{icon}</div>
-        <span className="">{label}</span>
       </div>
     </Button>
   );

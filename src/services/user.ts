@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 
+import { NextApiRequest } from "next";
 import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
+import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
 import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
 import { PrismaUserRole,User } from "@/types";
@@ -13,6 +15,17 @@ type ClerkOrderBy =
   | "+updated_at"
   | "-created_at"
   | "-updated_at";
+
+async function getAuth(req: NextApiRequest) {
+  const auth = getClerkAuth(req);
+
+  const role = await getRole(auth.userId!);
+
+  return {
+    ...auth,
+    role
+  };
+}
 
 async function getMany(options: PaginationOptions) {
   const { orderBy, perPage, page, query } = options;
@@ -33,6 +46,18 @@ async function getMany(options: PaginationOptions) {
     options,
     totalCount
   );
+}
+
+async function getUserMapFromIds(userIds: string[]) {
+  const users = await clerkClient.users.getUserList({ userId: userIds });
+  const userMap = users.reduce(
+    (map, clerkUser) => {
+      map[clerkUser.id] = toResponse(clerkUser);
+      return map;
+    },
+    {} as Partial<Record<string, User>>
+  );
+  return userMap;
 }
 
 async function getUser(userId: string) {
@@ -73,11 +98,26 @@ function toResponse(user: ClerkUser): User {
   };
 }
 
+/** Used when a user cannot be found in clerk */
+function unknownUser(userId: string): User {
+  // TODO: stop force type casting userrole
+  return {
+    id: userId,
+    firstName: "Unknown",
+    lastName: "",
+    emailAddress: "Unknown",
+    role: "Unknown" as UserRole
+  };
+}
+
 const userService = {
+  getAuth,
   getMany,
   getUser,
   updateRole,
-  getRole
+  getRole,
+  getUserMapFromIds,
+  unknownUser
 };
 
 export default userService;

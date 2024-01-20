@@ -15,12 +15,8 @@ describe("PATCH /api/repair-request/:id", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
-
-    vi.mock("@clerk/nextjs/server", () => {
-      return {
-        getAuth: vi.fn().mockReturnValue({ userId: "Test" })
-      };
-    });
+    vi.mock("@clerk/nextjs/server");
+    vi.mock("@clerk/nextjs");
   });
 
   it("should return 400 status code on invalid fields", async () => {
@@ -75,9 +71,10 @@ describe("PATCH /api/repair-request/:id", () => {
   });
 
   it("should be able to update a repair request", async () => {
+    const id = "56005d72-2614-11ee-be56-0242ac120002";
     await testApiHandler({
       handler,
-      params: { id: "56005d72-2614-11ee-be56-0242ac120002" },
+      params: { id },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "PATCH",
@@ -96,15 +93,12 @@ describe("PATCH /api/repair-request/:id", () => {
           })
         });
 
-        expect(res.status).toBe(200);
-
-        const result = await res.json();
-        const repairRequestId = result.id;
+        expect(res.status).toBe(204);
 
         const expectedRepairRequest: RepairRequest | null =
           await prisma.repairRequest.findUnique({
             where: {
-              id: repairRequestId
+              id
             }
           });
 
