@@ -34,9 +34,8 @@ async function getRepairRequests(
   });
 
   // TODO: make a singular version
-  const repairRequestResponse = await repairRequestService.toClientResponse(
-    repairRequests
-  );
+  const repairRequestResponse =
+    await repairRequestService.toClientResponse(repairRequests);
 
   return res.status(200).json(repairRequestResponse);
 }

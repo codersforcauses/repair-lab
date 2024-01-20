@@ -59,9 +59,8 @@ async function getEvents(
     orderBy: sortObj
   });
 
-  const eventResponse: EventResponse[] = await eventService.toClientResponse(
-    events
-  );
+  const eventResponse: EventResponse[] =
+    await eventService.toClientResponse(events);
 
   res.status(200).json(eventResponse);
 }
