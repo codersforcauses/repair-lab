@@ -18,18 +18,10 @@ import { useCreateEvent, useEvents } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import { NextPageWithLayout } from "@/pages/_app";
 import { CreateEvent, EventResponse } from "@/types";
+import { formatDate } from "@/utils";
 
 const Events: NextPageWithLayout = () => {
   const router = useRouter();
-
-  function formatDate(dateString: string): string {
-    const actualDate = new Date(dateString);
-    const day = actualDate.getDate().toString().padStart(2, "0");
-    const month = (actualDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = actualDate.getFullYear().toString();
-
-    return `${day}/${month}/${year}`;
-  }
 
   const [sortKey, setSortKey] = useState<string>("startDate");
   const [searchWord, setSearchWord] = useState<string>("");
