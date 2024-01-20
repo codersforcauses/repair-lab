@@ -8,7 +8,7 @@ import { Tab } from "@headlessui/react";
 
 import RequestView from "@/components/EventBox/request-view";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useEvent, useRepairRequests } from '@/hooks/events';
+import { useEvent, useRepairRequests } from "@/hooks/events";
 import { RepairRequestResponse } from "@/types";
 import { formatDate } from "@/utils";
 
@@ -19,7 +19,8 @@ const Home = () => {
 
   const { data: event } = useEvent(eventId as string);
 
-  const { data: repairRequests, isLoading: isRepairRequestsLoading } = useRepairRequests(eventId as string);
+  const { data: repairRequests, isLoading: isRepairRequestsLoading } =
+    useRepairRequests(eventId as string);
 
   return (
     <div>
@@ -71,37 +72,37 @@ const Home = () => {
               <Tab.Panel>
                 {/* CONTENT */}
                 {isRepairRequestsLoading ? (
-                        <div className="flex justify-center">
-                          <LoadingSpinner />
-                        </div>
-                      ) : repairRequests && repairRequests.length > 0 ?(
-                        <div>
-                          <ul id="repairRequestList">
-                            {repairRequests.map(
-                              ({
-                                id,
-                                requestDate,
-                                itemType,
-                                itemBrand,
-                                description,
-                              }: RepairRequestResponse) => (
-                                <RequestView
-                                  key={id}
-                                  repairRequestId={id}
-                                  requestDate={formatDate(String(requestDate))}
-                                  itemType={itemType}
-                                  itemBrand={itemBrand}
-                                  description={description}
-                                />
-                              )
-                            )}
-                          </ul>
-                        </div>
-                      ) : (
-                        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
-                          No repair requests found for this event.
-                        </div>
+                  <div className="flex justify-center">
+                    <LoadingSpinner />
+                  </div>
+                ) : repairRequests && repairRequests.length > 0 ? (
+                  <div>
+                    <ul id="repairRequestList">
+                      {repairRequests.map(
+                        ({
+                          id,
+                          requestDate,
+                          itemType,
+                          itemBrand,
+                          description
+                        }: RepairRequestResponse) => (
+                          <RequestView
+                            key={id}
+                            repairRequestId={id}
+                            requestDate={formatDate(String(requestDate))}
+                            itemType={itemType}
+                            itemBrand={itemBrand}
+                            description={description}
+                          />
+                        )
                       )}
+                    </ul>
+                  </div>
+                ) : (
+                  <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+                    No repair requests found for this event.
+                  </div>
+                )}
               </Tab.Panel>
               <Tab.Panel>
                 <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">

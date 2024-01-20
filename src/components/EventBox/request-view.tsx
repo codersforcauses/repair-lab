@@ -18,7 +18,6 @@ const RequestView = ({
   itemBrand,
   description
 }: RequestProps) => {
-
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
       <Disclosure>
