@@ -48,7 +48,7 @@ const VerticalBar = (props: NavItems) => {
         {isOpen ? <VscChromeClose /> : <VscMenu size="28" />}
       </button>
       {isOpen && (
-        <div className="absolute top-[44px] z-50 w-screen h-screen bg-white">
+        <div className="absolute top-[44px] z-9 w-screen h-screen bg-white">
           {/* <div className="flex justify-between items-center p-2 border-b">
             <Image
               src="/images/repair_lab_logo.png"
