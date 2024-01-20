@@ -17,11 +17,11 @@ const Success: NextPageWithLayout = () => {
         </div>
 
         <div className="w-1/2">
-          <div className="relative flex text-center mb-3 mt-6 text-3xl font-bold text-grey-900">
+          <div className="relative flex text-center mb-8 mt-6 text-3xl font-bold text-grey-900">
             Thank you!
           </div>
 
-          <div className="text-slate-500 text-xl mb-3 gap-y-4">
+          <div className="text-slate-500 text-xl mb-8 gap-y-4 leading-relaxed">
             We have received your repair request, and you should receive a
             confirmation email shortly. We are currently experiencing high
             volumes of requests, and will aim to get back to you within 3-5
@@ -30,10 +30,16 @@ const Success: NextPageWithLayout = () => {
 
           <div className="relative flex text-center gap-x-8">
             <Link href="/repair-request">
-              <Button radius="rounded-3xl"> Submit another request </Button>
+              <Button aria-label="Submit another request" radius="rounded-3xl">
+                {" "}
+                Submit another request{" "}
+              </Button>
             </Link>
             <Link href="/index">
-              <Button radius="rounded-3xl"> Return to Homepage </Button>
+              <Button aria-label="Return to Homepage" radius="rounded-3xl">
+                {" "}
+                Return to Homepage{" "}
+              </Button>
             </Link>
           </div>
         </div>
@@ -42,13 +48,13 @@ const Success: NextPageWithLayout = () => {
   );
 };
 
-Success.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <>
-      <NavBar />
-      {page}
-    </>
-  );
+  Success.getLayout = function getLayout(page: ReactElement) {
+    return (
+      <>
+        <NavBar />
+        {page}
+      </>
+    );
 };
 
 export default Success;
