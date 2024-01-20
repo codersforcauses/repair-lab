@@ -5,7 +5,11 @@ interface TablePaginationProps {
   nextPage: () => unknown;
   prevPage: () => unknown;
 }
-
+/**
+ * @deprecated Use new pagination component
+ *
+ * todo: use new pagination component to replace this
+ */
 const TablePagination = ({
   page,
   perPage,
