@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
 
 import apiHandler from "@/lib/api-handler";
-import { createEventSchema } from "@/schema/event";
+import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { EventResponse } from "@/types";
+import { ErrorResponse, EventResponse } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -15,47 +15,39 @@ export default apiHandler({
 
 async function getEvents(
   req: NextApiRequest,
-  res: NextApiResponse<EventResponse[]>
+  res: NextApiResponse<EventResponse[] | ErrorResponse>
 ) {
-  const { sortKey, sortMethod, searchWord } = req.query;
-  const sortObj: { [key: string]: "asc" | "desc" } = {};
-  sortObj[sortKey as string] = sortMethod as "asc" | "desc";
+  const {
+    sortKey = "startDate",
+    sortMethod = "asc",
+    searchWord = "",
+    minStartDate,
+    maxStartDate,
+    eventType,
+    eventStatus,
+    createdBy
+  } = getEventSchema.parse(req.query);
 
-  // Use 'search' query parameter to filter events
+  const sortObj: Record<string, "asc" | "desc"> = {
+    [sortKey]: sortMethod
+  };
+
   const events = await prisma.event.findMany({
-    ...(searchWord
-      ? {
-          where: {
-            OR: [
-              {
-                name: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              },
-              {
-                createdBy: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              },
-              {
-                location: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              },
-              {
-                eventType: {
-                  contains: searchWord as string,
-                  mode: "insensitive"
-                }
-              }
-              // Add more fields to search if necessary
-            ]
-          }
-        }
-      : {}),
+    where: {
+      OR: [
+        { name: { contains: searchWord, mode: "insensitive" } },
+        { createdBy: { contains: searchWord, mode: "insensitive" } },
+        { location: { contains: searchWord, mode: "insensitive" } },
+        { eventType: { contains: searchWord, mode: "insensitive" } }
+      ],
+      startDate: {
+        gte: minStartDate ? new Date(minStartDate) : undefined,
+        lte: maxStartDate ? new Date(maxStartDate) : undefined
+      },
+      eventType: { in: eventType },
+      status: { in: eventStatus },
+      createdBy: { in: createdBy }
+    },
     orderBy: sortObj
   });
 
