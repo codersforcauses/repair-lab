@@ -24,7 +24,7 @@ const Events: NextPageWithLayout = () => {
       {isEventsLoading ? (
         <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
       ) : eventData ? (
-        <div className="grid gap-4 relative grid-cols-4 ">
+        <div className="grid gap-4 relative sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 ">
           {eventData.map(
             ({
               id,
