@@ -58,21 +58,10 @@ const VerticalBar = (props: NavItems) => {
         leaveTo="opacity-0"
       >
         <div className="fixed top-[60px] z-9  inset-0 w-screen h-screen bg-white">
-          {/* <div className="flex justify-between items-center p-2 border-b">
-            <Image
-              src="/images/repair_lab_logo.png"
-              alt="Repair Labs Logo"
-              width={50}
-              height={50}
-            />
-            <button onClick={toggleSidebar}>
-              <VscChromeClose size="40" />
-            </button>
-          </div> */}
           {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
               <p
-                className={`block p-2 hover:-translate-x-1 hover:bg-app-base-100  duration-500 hover:opacity-100 ${
+                className={`block p-2 ml-3 hover:-translate-x-1 hover:bg-app-base-100  duration-500 hover:opacity-100 ${
                   router.asPath === item.path ? "opacity-100" : "opacity-40"
                 }`}
               >
@@ -83,7 +72,7 @@ const VerticalBar = (props: NavItems) => {
           {props.isLoggedIn && (
             <Link
               href="/repair-request"
-              className={`block p-2 hover:-translate-x-1 hover:bg-app-base-100 text-app-primary duration-500 hover:opacity-100 ${
+              className={`block p-2 ml-3 hover:-translate-x-1 hover:bg-app-base-100 text-app-primary duration-500 hover:opacity-100 ${
                 router.asPath === "/repair-request"
                   ? "opacity-100"
                   : "opacity-40"
@@ -96,7 +85,7 @@ const VerticalBar = (props: NavItems) => {
             {props.isLoggedIn ? (
               <button
                 onClick={props.onSignOut}
-                className="w-full p-2 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
+                className="w-full p-2 ml-3 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
               >
                 Log Out
               </button>
