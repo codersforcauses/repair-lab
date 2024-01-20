@@ -12,8 +12,12 @@ import {
   createRepairRequestSchema,
   updateRepairRequestSchema
 } from "@/schema/repair-request";
+import { getManyUsersSchema } from "@/schema/user";
 
 // TODO: Not sure if we should be exposing prisma model types in the frontend??
+
+// User
+export type UserSearchQuery = z.infer<typeof getManyUsersSchema>;
 
 // Repair Requests
 export type RepairRequest = PrismaRepairRequest;
