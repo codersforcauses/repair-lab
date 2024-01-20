@@ -6,6 +6,7 @@ import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { NextPageWithLayout } from "@/pages/_app";
 import { EventResponse } from "@/types";
+import { formatDate } from "@/utils";
 
 const Events: NextPageWithLayout = () => {
   const [sortKey, setSortKey] = useState<string>("startDate");
@@ -38,6 +39,8 @@ const Events: NextPageWithLayout = () => {
                 <Card
                   props={{
                     title: name,
+                    date: formatDate(String(startDate)),
+                    location: location,
                     description: description
                   }}
                 />
