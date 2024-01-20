@@ -73,7 +73,7 @@ export default function NavBar() {
               onSignOut={signOut}
             />
           </div>
-          <div className="flex md:hidden justify-between items-center">
+          <div className="md:hidden flex items-center mt-1.5">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
