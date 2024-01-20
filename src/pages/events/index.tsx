@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Card from "@/components/Cards/event-card";
 import NavBar from "@/components/NavBar";
 import { useEvents } from "@/hooks/events";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -16,7 +17,18 @@ const Events: NextPageWithLayout = () => {
     searchWord
   );
 
-  return <div>text</div>;
+  return (
+    <div className="mt-4 mx-4">
+      <div className="grid gap-4 relative grid-cols-4 ">
+        <Card props={{ title: "sdjkgnds" }} />
+        <Card props={{ title: "sdjkgnds" }} />
+        <Card props={{ title: "sdjkgnds" }} />
+        <Card props={{ title: "sdjkgnds" }} />
+        <Card props={{ title: "sdjkgnds" }} />
+        <Card props={{ title: "sdjkgnds" }} />
+      </div>
+    </div>
+  );
 };
 
 Events.getLayout = function getLayout(page) {
