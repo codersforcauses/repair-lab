@@ -11,36 +11,27 @@ import { useEvent } from "@/hooks/events";
 import { User } from "@/types";
 
 export default function Volunteers() {
-  const [volunteers, setVolunteers] = useState<User[]>([]);
+  const [volunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
-  const [VolunteerModal, showVolunteerModal] = useState(false);
+  const [showVolunteerModal, setShowVolunteerModal] = useState(false);
   const {
     query: { id: eventId }
   } = useRouter();
 
   const { data: event } = useEvent(eventId as string);
-
   useEffect(() => {
-    if (!eventId) return;
-
-    // TODO: Complete when endpoint is changed to /api/event/[id]/repairers
-    fetch(`/api/event/${eventId}`)
-      .then((res) => res.json())
-      .then((event) => {
-        console.log(event);
-        // setVolunteers(event.volunteers); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
-        setHeaderValues({
-          name: event.name,
-          location: event.location,
-          startDate: new Date(event.startDate),
-          endDate: new Date(event.endDate),
-          createdBy: event.createdBy // TODO: Later get name from clerk, given userID
-        });
-      });
-  }, [eventId]);
+    if (!event) return;
+    setHeaderValues({
+      name: event.name,
+      location: event.location,
+      startDate: new Date(event.startDate),
+      endDate: new Date(event.endDate),
+      createdBy: event.createdBy
+    });
+  }, [event]);
 
   function manageVolunteer() {
-    showVolunteerModal(true);
+    setShowVolunteerModal(true);
   }
   return (
     <Sidebar>
@@ -74,15 +65,14 @@ export default function Volunteers() {
               </div>
             </div>
             <Modal
-              showModal={VolunteerModal}
-              setShowPopup={showVolunteerModal}
+              showModal={showVolunteerModal}
+              setShowPopup={setShowVolunteerModal}
               height="h-full"
             >
-              {" "}
               <div className="text-center">
                 <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>
                 <div>
-                  <VolunteerManageForm setShowModal={showVolunteerModal} />
+                  <VolunteerManageForm setShowModal={setShowVolunteerModal} />
                 </div>
               </div>
             </Modal>

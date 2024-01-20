@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 import Button from "@/components/Button";
+import SearchBar from "@/components/Search/SearchBar";
 import TablePagination from "@/components/Table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
@@ -53,31 +54,7 @@ export default function VolunteerManageForm({
   return (
     <div className="m-1 flex flex-col justify-between gap-2 w-full h-full p-3">
       {/* Search Bar - taken from /users */}
-      <div className="flex flex-row gap-0 relative items-center">
-        <svg
-          className="h-4 w-4 text-gray-500 absolute left-3"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 20 20"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-          />
-        </svg>
-        <input
-          type="text"
-          id="default-search"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-          placeholder="Search User ID, First name, Last name"
-          value={query}
-          onChange={(e) => search(e)}
-        />
-      </div>
+      <SearchBar onChange={search} />
 
       {/* Table - taken from /users */}
       {isLoading ? (
@@ -171,11 +148,9 @@ const VolunteerRow = ({
 }) => {
   const minusClick = () => {
     setVolunteersArray(volunteersArray.filter((id) => id != user.id));
-    console.log("removed user from volunteersArray");
   };
   const addClick = () => {
     setVolunteersArray([...volunteersArray, user.id]);
-    console.log("pushed user to volunteersArray");
   };
   return (
     /** have a check to see if volunter id is in final array of volunteers, if it is dont list this volunteer */

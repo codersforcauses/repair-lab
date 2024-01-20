@@ -1,6 +1,10 @@
 import { AiOutlineSearch } from "react-icons/ai";
 
-export default function SearchBar() {
+interface ButtonProps {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function SearchBar({ onChange }: ButtonProps) {
   return (
     <div className="sd:w-auto relative z-10 w-full p-4 text-gray-600">
       <input
@@ -8,6 +12,7 @@ export default function SearchBar() {
         type="search"
         name="search"
         placeholder="Search"
+        onChange={onChange}
       />
       <button
         type="submit"
