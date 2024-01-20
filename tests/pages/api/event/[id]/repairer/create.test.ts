@@ -19,7 +19,7 @@ describe("POST /api/event/[id]/repairers", () => {
     vi.mock("@clerk/nextjs/server");
   });
 
-  it.only("should be able to create an event repairer", async () => {
+  it("should be able to create an event repairer", async () => {
     await testApiHandler({
       handler,
       params: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
@@ -35,8 +35,6 @@ describe("POST /api/event/[id]/repairers", () => {
         });
 
         const eventId = "acf5ed50-19a2-11ee-be56-0242ac120002";
-
-        // console.log(JSON.stringify(await res.json(), null, 2));
 
         const createdEvent = await prisma.eventRepairer.findMany({
           where: { eventId: eventId }
@@ -55,6 +53,7 @@ describe("POST /api/event/[id]/repairers", () => {
       }
     });
   });
+  async () => await cleanup();
 
   it("should be able to create an event repairer with multiple volunteers", async () => {
     await testApiHandler({
@@ -102,6 +101,7 @@ describe("POST /api/event/[id]/repairers", () => {
       }
     });
   });
+  async () => await cleanup();
 
   it("should be able to catch an API error: can't find the event", async () => {
     await testApiHandler({
@@ -124,11 +124,12 @@ describe("POST /api/event/[id]/repairers", () => {
           where: { eventId: eventId }
         });
 
+        expect(createdEvent).toStrictEqual([]);
         expect(res.status).toBe(404);
-        expect(createdEvent).toBe(null);
       }
     });
   });
+  async () => await cleanup();
 
   it("should be able to catch an API error: can't find the repairer", async () => {
     await testApiHandler({
@@ -145,17 +146,40 @@ describe("POST /api/event/[id]/repairers", () => {
           })
         });
 
-        const eventId = "acf5ed50-19a2-11ee-be56-0242ac120002";
+        const userIds = ["user_bruh", "user_bruh_1", "user_bruh_2"];
 
-        const createdEvent = await prisma.eventRepairer.findMany({
-          where: { eventId: eventId }
+        const createdEvent_0 = await prisma.eventRepairer.findMany({
+          where: {
+            userId: {
+              contains: userIds[0] as string
+            }
+          }
         });
 
-        expect(createdEvent).toBe(null);
+        const createdEvent_1 = await prisma.eventRepairer.findMany({
+          where: {
+            userId: {
+              contains: userIds[0] as string
+            }
+          }
+        });
+
+        const createdEvent_2 = await prisma.eventRepairer.findMany({
+          where: {
+            userId: {
+              contains: userIds[0] as string
+            }
+          }
+        });
+
+        expect(createdEvent_0).toStrictEqual([]);
+        expect(createdEvent_1).toStrictEqual([]);
+        expect(createdEvent_2).toStrictEqual([]);
         expect(res.status).toBe(404);
       }
     });
   });
+  async () => await cleanup();
 
   it("should be able to catch an API error: can't find the repairer", async () => {
     await testApiHandler({
@@ -178,8 +202,8 @@ describe("POST /api/event/[id]/repairers", () => {
           where: { eventId: eventId }
         });
 
+        expect(createdEvent).toStrictEqual([]);
         expect(res.status).toBe(404);
-        expect(createdEvent).toBe(null);
       }
     });
   });
