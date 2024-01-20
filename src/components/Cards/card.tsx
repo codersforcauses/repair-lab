@@ -61,8 +61,8 @@ export default function Card({ props }: { props: CardProps }) {
       </Modal>
       <div className="flex justify-center">
         <Image
-          src={props.image || ""}
-          alt="hello"
+          src={props.image || "/images/broken-clock-sad.jpg"}
+          alt={"img for " + props.title}
           className="object-fit max-h-32 w-full"
           width={100}
           height={100}

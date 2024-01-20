@@ -79,7 +79,7 @@ export default function RepairRequests() {
                       <Card
                         props={{
                           title: item.id,
-                          image: "/images/broken-clock-sad.jpg",
+                          image: item.thumbnailImage,
                           description: item.description,
                           status: item.status,
                           firstName:
