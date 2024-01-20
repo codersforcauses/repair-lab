@@ -2,21 +2,15 @@ import { z } from "zod";
 
 export const createEventSchema = z
   .object({
-    name: z
-      .string({ required_error: "Event name is required" })
-      .min(1, { message: "Event name must be 1 or more characters long" }),
-    location: z
-      .string({ required_error: "Event location is required" })
-      .min(1, { message: "Event location must be 1 or more characters long" }),
+    name: z.string({ required_error: "Event name is required" }),
+    location: z.string({ required_error: "Event location is required" }),
     description: z
       .string({ required_error: "Description of the event is required" })
       .min(5, {
         message: "Description of the event must be more than 5 characters long."
       }),
     disclaimer: z.string().optional(),
-    eventType: z
-      .string({ required_error: "Event type is required" })
-      .min(1, { message: "Event type must be 1 or more characters long" }),
+    eventType: z.string({ required_error: "Event type is required" }),
     startDate: z
       .string({ required_error: "startDate is required" })
       .datetime({ offset: true, message: "Invalid date format for startDate" }),
@@ -31,26 +25,15 @@ export const createEventSchema = z
   });
 
 export const addEventRepairerSchema = z.object({
-  userId: z.array(
-    z
-      .string({ required_error: "UserId is required" })
-      .min(1, { message: "UserId must be 1 or more characters long" })
-  ),
-  id: z
-    .string({ required_error: "Event ID is required" })
-    .min(1, { message: "Event ID must be 1 or more characters long" })
+  userId: z.array(z.string({ required_error: "UserId is required" })),
+  id: z.string({ required_error: "Event ID is required" })
 });
 
 export const updateEventSchema = z
   .object({
     name: z.string().optional(),
     location: z.string().optional(),
-    description: z
-      .string({ required_error: "Description of the event is required" })
-      .min(5, {
-        message: "Description of the event must be more than 5 characters long."
-      })
-      .optional(),
+    description: z.string().optional(),
     disclaimer: z.string().optional(),
     eventType: z.string().optional(),
     startDate: z
