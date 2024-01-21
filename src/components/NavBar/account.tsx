@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
-import Link from "next/link";
 
 interface Props {
   role: UserRole;

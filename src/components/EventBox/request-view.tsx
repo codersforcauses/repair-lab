@@ -1,9 +1,12 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa6";
 
+import { User } from "@/types";
+
 // Contains type of info stored in our event box.
 type RequestProps = {
   repairRequestId: string;
+  createdBy: User;
   requestDate: string;
   itemType: string;
   itemBrand: string;
@@ -13,6 +16,7 @@ type RequestProps = {
 
 const RequestView = ({
   repairRequestId,
+  createdBy,
   requestDate,
   itemType,
   itemBrand,
@@ -51,6 +55,10 @@ const RequestView = ({
                 <p className="space-x-1">
                   <span className="font-semibold">Request Date:</span>
                   <span>{requestDate}</span>
+                </p>
+                <p className="space-x-1">
+                  <span className="font-semibold">Client Name:</span>
+                  <span>{createdBy.id}</span>
                 </p>
                 <p className="space-x-1">
                   <span className="font-semibold">Item Type:</span>

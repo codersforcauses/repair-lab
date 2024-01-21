@@ -81,6 +81,7 @@ const Home = () => {
                       {repairRequests.map(
                         ({
                           id,
+                          createdBy,
                           requestDate,
                           itemType,
                           itemBrand,
@@ -90,6 +91,7 @@ const Home = () => {
                             key={id}
                             repairRequestId={id}
                             requestDate={formatDate(String(requestDate))}
+                            createdBy={createdBy}
                             itemType={itemType}
                             itemBrand={itemBrand}
                             description={description}
