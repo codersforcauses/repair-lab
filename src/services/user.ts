@@ -6,22 +6,9 @@ import { User as ClerkUser } from "@clerk/nextjs/server";
 import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
 import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
-import { ClerkSortOrder, User, UserRole } from "@/types";
+import { User, UserRole } from "@/types";
 
-type ClerkOrderBy = "created_at" | "updated_at" | ClerkSortOrder;
-
-type UserListParams = {
-  limit: number;
-  offset: number;
-  orderBy: ClerkSortOrder;
-  emailAddress?: string[];
-  phoneNumber?: string[];
-  username?: string[];
-  web3Wallet?: string[];
-  query?: string;
-  userId?: string[];
-  externalId?: string[];
-};
+type ClerkOrderBy = "created_at" | "updated_at";
 
 async function getAuth(req: NextApiRequest) {
   const auth = getClerkAuth(req);
@@ -53,11 +40,6 @@ async function getMany(options: PaginationOptions) {
     options,
     totalCount
   );
-}
-
-async function getUserList(params: UserListParams) {
-  const users = await clerkClient.users.getUserList(params);
-  return users.map((user) => toResponse(user));
 }
 
 async function getUserMapFromIds(userIds: string[]) {
@@ -128,7 +110,6 @@ function unknownUser(userId: string): User {
 const userService = {
   getAuth,
   getMany,
-  getUserList,
   getUser,
   getUsers,
   updateRole,

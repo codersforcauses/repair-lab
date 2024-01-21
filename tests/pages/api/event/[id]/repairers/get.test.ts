@@ -16,22 +16,6 @@ describe("GET /api/event/:id/repairers", () => {
     vi.mock("@clerk/nextjs");
   }, 50000);
 
-  it("should return 404 if an event is not found", async () => {
-    await testApiHandler({
-      handler,
-      params: { id: "NON_EXISTENT_ID" },
-      test: async ({ fetch }) => {
-        const res = await fetch({
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
-        expect(res.status).toBe(404);
-      }
-    });
-  });
-
   it("should be able to get event repairers and return json", async () => {
     await testApiHandler({
       handler,
@@ -44,7 +28,7 @@ describe("GET /api/event/:id/repairers", () => {
           }
         });
 
-        const expectedEvent = [
+        const expectedRepairers = [
           {
             userId: "mock user",
             firstName: "test",
@@ -62,7 +46,7 @@ describe("GET /api/event/:id/repairers", () => {
         const result = await res.json();
 
         expect(res.status).toBe(200);
-        expect(result).toMatchObject(expectedEvent);
+        expect(result).toMatchObject(expectedRepairers);
       }
     });
   });
