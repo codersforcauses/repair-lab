@@ -1,12 +1,13 @@
 import { ChangeEvent, useState } from "react";
-import { NextPageWithLayout } from "@/pages/_app";
+
 import NavBar from "@/components/NavBar";
-import TablePagination from "@/components/Table/table-pagination";
+import TablePagination from "@/components/table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
+import { NextPageWithLayout } from "@/pages/_app";
 import { UserRole } from "@/types";
-import { User } from "@/types";
+import { type User } from "@/types";
 
 const User: NextPageWithLayout = () => {
   const [orderBy, _setOrderBy] = useState("-created_at");
@@ -56,7 +57,7 @@ const User: NextPageWithLayout = () => {
 
       {/* Table */}
       {isLoading ? (
-        <LoadingSpinner />
+        <LoadingSpinner className="flex items-center justify-center m-16" />
       ) : (
         <>
           <div className="relative overflow-x-auto p-10 shadow-md sm:rounded-lg">

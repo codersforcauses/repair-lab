@@ -69,12 +69,17 @@ async function getUserMapFromIds(userIds: string[]) {
     },
     {} as Partial<Record<string, User>>
   );
+
   return userMap;
 }
 
 async function getUser(userId: string) {
   const user = await clerkClient.users.getUser(userId);
-  return toResponse(user);
+  return user ? toResponse(user) : undefined;
+}
+
+async function getUsers(userIds: string[]) {
+  return await Promise.all(userIds.map((userId) => getUser(userId)));
 }
 
 async function updateRole(userId: string, role: UserRole) {
@@ -95,16 +100,14 @@ async function getRole(userId: string): Promise<UserRole> {
 }
 
 function toResponse(user: ClerkUser): User {
-  const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
+  const { emailAddresses, publicMetadata } = user;
   const role = publicMetadata.role
     ? (publicMetadata.role as UserRole)
     : UserRole.CLIENT;
   const emailAddress = emailAddresses[0].emailAddress;
 
   return {
-    id,
-    firstName,
-    lastName,
+    ...user,
     role,
     emailAddress
   };
@@ -127,6 +130,7 @@ const userService = {
   getMany,
   getUserList,
   getUser,
+  getUsers,
   updateRole,
   getRole,
   getUserMapFromIds,
