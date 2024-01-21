@@ -56,12 +56,6 @@ export enum SearchCriteria {
   All = "all"
 }
 
-// export enum UserRole {
-//   ADMIN = "ADMIN",
-//   ORGANISATION_MANAGER = "ORGANISATION_MANAGER",
-//   EVENT_MANAGER = "EVENT_MANAGER",
-//   REPAIRER = "REPAIRER"
-// }
 export const UserRole = { ...PrismaUserRole, CLIENT: "CLIENT" } as const;
 export type UserRole = keyof typeof UserRole;
 
