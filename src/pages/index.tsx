@@ -33,7 +33,7 @@ const Home: NextPageWithLayout = () => {
             src="/images/right_green_curve.png"
             alt="right green curve"
             fill={true}
-            className="object-contain object-right "
+            className="object-contain object-right"
           />
         </div>
         <div className="saw absolute top-60 left-36">
@@ -117,7 +117,15 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="absolute border-1 border-black w-[1300px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="relative border-1 border-black w-full h-[530px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          {/* <div>
+            <Image
+              src="/images/circle_images.png"
+              alt="circle images"
+              fill={true}
+              className="object-contain object-left"
+            />
+          </div> */}
           <div className="absolute bottom-[260px] left-[360px] rounded-full w-[280px] h-[280px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/bikerepair_arm.jpg')] shadow-md"></div>
           <div className="absolute bottom-[40px] left-[125px] rounded-full w-[350px] h-[350px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/jeans_sewing.jpg')] shadow-md"></div>
           <div className="absolute bottom-[80px] left-[835px] rounded-full w-[320px] h-[320px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/stitching.jpg')] shadow-md"></div>
@@ -126,16 +134,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
 
-      {/* <div className="absolute h-32 w-full bottom-[100px]">
-        <Image
-          src="/images/big_green_curve.png"
-          alt="green curve"
-          fill={true}
-          className="object-cover object-center"
-        />
-      </div> */}
-
-      <div className="big_green_area absolute w-full mb-0 pb-0 z-30 top-[750px]">
+      <div className="big_green_area block relative w-full mb-0 pb-0 z-20 bottom-10">
         <svg
           width="100%"
           height="100%"
@@ -189,9 +188,7 @@ const Home: NextPageWithLayout = () => {
             </filter>
           </defs>
         </svg>
-      </div>
-      <div className="relative">
-        <div className="drill absolute z-30 right-32 top-36">
+        <div className="drill absolute z-30 right-[5rem] top-[8rem]">
           <svg
             width="202"
             height="225"
@@ -208,7 +205,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="wrench absolute z-30">
+        <div className="wrench absolute z-30 bottom-[5rem] left-[5rem]">
           <svg
             width="186"
             height="253"
@@ -223,7 +220,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="gear absolute z-30 top-[500px] right-20">
+        <div className="gear absolute z-30 -bottom-[18rem] right-[2rem]">
           <svg
             width="565"
             height="565"
@@ -237,33 +234,35 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="flex justify-center text-center z-30">
-          <h1 className="absolute z-40 pb-8 pt-6 w-[500px] leading-tght text-6xl font-black text-white top-10">
-            Hi, Welcome to Repair Lab!
-          </h1>
-          <h3 className="absolute z-40 w-full text-white font-bold pb-8 text-xl top-52">
-            When in doubt, don’t throw out!
-          </h3>
-          <p className="absolute z-40 inline-block w-2/3 text-white pb-8 pl-28 pr-28 text-lg top-[270px]">
-            Bring it to the Repair Lab, a grassroots initiative to encourage and
-            help Perth folks come up with new and creative ways to salvage
-            perfectly usable things. Repair Lab gathers volunteers who work with
-            you to assess and fix your broken items, and hopefully give you
-            insight on how to repair other things around the house.
-          </p>
-          <div className="absolute z-40 flex w-full justify-center top-[390px]">
-            <svg height="50" width="500">
-              <line x1="20" y1="20" x2="1000" y2="20" stroke="white" />
-            </svg>
+        <div className="flex justify-center">
+          <div className="text-area flex justify-center text-center z-30  border-red-500 border-4 w-3/4">
+            <h1 className="absolute z-40 pb-8 pt-6 w-[500px] leading-tight text-6xl font-black text-white top-[2rem]">
+              Hi, Welcome to Repair Lab!
+            </h1>
+            <h3 className="absolute z-40 w-full text-white font-bold pb-8 text-xl top-[14rem] italic">
+              When in doubt, don’t throw out!
+            </h3>
+            <p className="absolute z-40 inline-block w-3/4 text-white pb-8 pl-28 pr-28 text-lg top-[18rem]">
+              Bring it to the Repair Lab, a grassroots initiative to encourage
+              and help Perth folks come up with new and creative ways to salvage
+              perfectly usable things. Repair Lab gathers volunteers who work
+              with you to assess and fix your broken items, and hopefully give
+              you insight on how to repair other things around the house.
+            </p>
+            <div className="absolute z-40 flex w-full justify-center top-[25rem]">
+              <svg height="50" width="600">
+                <line x1="20" y1="20" x2="10000" y2="20" stroke="white" />
+              </svg>
+            </div>
+            <h3 className="absolute z-40 inline-block w-1/3 text-white pb-20 font-medium text-3xl top-[28rem]">
+              It’s a collaborative and learning experience, a little antidote to
+              modern day throw-away mentality.
+            </h3>
           </div>
-          <h3 className="absolute z-40 inline-block w-1/3 text-white pb-20 font-medium italic text-3xl top-[430px]">
-            It’s a collaborative and learning experience, a little antidote to
-            modern day throw-away mentality.
-          </h3>
         </div>
       </div>
 
-      <div className="white-text-area mt-[800px]">
+      <div className="white-text-area mt-[1rem]">
         <div className="hammer absolute z-20 right-[100px] mt-36">
           <svg
             width="105"
@@ -431,7 +430,7 @@ const Home: NextPageWithLayout = () => {
           />
         </div>
 
-        <ul className="tlex grid list-none justify-center gap-y-2 pb-10 pl-8 pr-8">
+        <ul className="grid list-none justify-center gap-y-2 pb-10 pl-8 pr-8">
           <li className="mt-6">
             We are always on the lookout for more volunteers.
           </li>
