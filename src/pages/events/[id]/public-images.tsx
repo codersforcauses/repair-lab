@@ -102,6 +102,13 @@ export default function Images() {
                 <div className="flex justify-end"></div>
               </div>
               <div className="grid gap-4 p-4 lg:grid-cols-5 ">
+                <div
+                  className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+                  role="presentation"
+                  onClick={() => setShowModal(true)}
+                >
+                  <CiCirclePlus color="rgb(82 82 91)" size={100} />
+                </div>
                 {imagesToShow.map((image, index) => (
                   <div key={index} className="w-40 h-30">
                     <Image
@@ -112,37 +119,31 @@ export default function Images() {
                     />
                   </div>
                 ))}
-                <div
-                  className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
-                  role="presentation"
-                  onClick={() => setShowModal(true)}
-                >
-                  <CiCirclePlus color="rgb(82 82 91)" size={100} />
-                </div>
               </div>
               <Modal
                 showModal={showModal}
                 setShowPopup={setShowModal}
-                title="Upload Image"
+                title="Upload Images"
               >
                 <form
                   onSubmit={handleSubmit(onSubmit)}
                   className="text-left p-4"
                 >
                   <FieldImageUpload multiple name="images" control={control} />
-                  <div className="flex justify-end p-4">
-                    <button
-                      type="submit"
-                      className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Submit
-                    </button>
+                  <div className="flex justify-center p-4">
+                    <div className="w-1/3">
+                      <button
+                        type="submit"
+                        className="bg-primary-500 hover:bg-primary-700 text-white rounded h-9 w-full"
+                      >
+                        Submit
+                      </button>
+                    </div>
                   </div>
                 </form>
               </Modal>
-              <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
-              <Pagination value={pagination} onChange={setPagination} />
             </div>
+            <Pagination value={pagination} onChange={setPagination} />
           </>
         ) : (
           <div className="w-full h-full flex items-center justify-center ">
