@@ -15,12 +15,12 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <div>
-      <div className="grid_bg_container w-full h-[700px]">
+      <div className="grid_bg_container relative w-full h-[50rem]">
         <Image
           src="/images/big_blue_grid.jpg"
           alt="big blue grid bg"
           fill={true}
-          className="object-cover object-center h-[700px] opacity-80 z-0"
+          className="object-cover object-center h-full opacity-80 z-0"
         />
         <Image
           src="/images/left_green_curve.png"
@@ -36,7 +36,7 @@ const Home: NextPageWithLayout = () => {
             className="object-contain object-right"
           />
         </div>
-        <div className="saw absolute top-60 left-36">
+        <div className="saw absolute top-[12%] left-[9%]">
           <svg
             width="225"
             height="270"
@@ -53,7 +53,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="gear absolute right-72">
+        <div className="gear absolute right-[10%] top-[2%]">
           <svg
             width="239"
             height="239"
@@ -82,7 +82,7 @@ const Home: NextPageWithLayout = () => {
             </defs>
           </svg>
         </div>
-        <div className="wrench absolute left-40 top-72">
+        <div className="wrench absolute left-[12rem] top-[14rem]">
           <svg
             width="149"
             height="151"
@@ -99,7 +99,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="hammer absolute right-96 bottom-32">
+        <div className="hammer absolute right-[20rem] bottom-[8rem]">
           <svg
             width="105"
             height="170"
@@ -117,7 +117,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="relative border-1 border-black w-full h-[530px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="relative border-1 border-black border-4 h-3/4 w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           {/* <div>
             <Image
               src="/images/circle_images.png"
@@ -126,19 +126,19 @@ const Home: NextPageWithLayout = () => {
               className="object-contain object-left"
             />
           </div> */}
-          <div className="absolute bottom-[260px] left-[360px] rounded-full w-[280px] h-[280px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/bikerepair_arm.jpg')] shadow-md"></div>
-          <div className="absolute bottom-[40px] left-[125px] rounded-full w-[350px] h-[350px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/jeans_sewing.jpg')] shadow-md"></div>
-          <div className="absolute bottom-[80px] left-[835px] rounded-full w-[320px] h-[320px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/stitching.jpg')] shadow-md"></div>
-          <div className="absolute bottom-[250px] left-[610px] rounded-full w-[330px] h-[330px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/beads_on_green_mat.jpg')] shadow-md"></div>
-          <div className="absolute bottom-[25px] left-[530px] rounded-full w-[290px] h-[290px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/electronic_repair.jpg')] shadow-md"></div>
+          <div className="absolute top-[1%] left-[25%] rounded-full w-[280px] h-[280px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/bikerepair_arm.jpg')] shadow-md"></div>
+          <div className="absolute bottom-[8%] left-[10%] rounded-full w-[350px] h-[350px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/jeans_sewing.jpg')] shadow-md"></div>
+          <div className="absolute bottom-[15%] right-[15%] rounded-full w-[320px] h-[320px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/stitching.jpg')] shadow-md"></div>
+          <div className="absolute top-[0.5%] right-[33%] rounded-full w-[330px] h-[330px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/beads_on_green_mat.jpg')] shadow-md"></div>
+          <div className="absolute bottom-[5%] left-[40%] rounded-full w-[290px] h-[290px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/electronic_repair.jpg')] shadow-md"></div>
         </div>
       </div>
 
-      <div className="big_green_area block relative w-full mb-0 pb-0 z-20 bottom-10">
-        <svg
+      <div className="big green area relative w-full min-h-[44rem] mb-0 pb-0 z-10 bottom-[6rem] border-blue-500 border-4">
+        {/* <svg
           width="100%"
           height="100%"
-          viewBox="0 0 2580 1150"
+          viewBox="0 0 2580 1200"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -146,7 +146,7 @@ const Home: NextPageWithLayout = () => {
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
-              d="M2580 117.476C1565.95 -14.8601 1005.57 -10.1022 0.0006 117.476H0V117.476V1374.67H2580V117.476Z"
+              d="M2580 117.476C1565.95 -14.8601 1005.57 -10.1022 0.0006 117.476H0V117.476V1200H2580V117.476Z"
               fill="#098D85"
             />
           </g>
@@ -156,7 +156,7 @@ const Home: NextPageWithLayout = () => {
               x="0"
               y="0"
               width="2580"
-              height="1374.67"
+              height="1200"
               filterUnits="userSpaceOnUse"
               color-interpolation-filters="sRGB"
             >
@@ -187,8 +187,14 @@ const Home: NextPageWithLayout = () => {
               />
             </filter>
           </defs>
-        </svg>
-        <div className="drill absolute z-30 right-[5rem] top-[8rem]">
+        </svg> */}
+        <Image
+          src="/images/big_green_area.png"
+          alt="big green area"
+          fill={true}
+          className="object-fill object-center w-full h-full z-10"
+        />
+        <div className="drill absolute z-20 right-[7%] top-[18%]">
           <svg
             width="202"
             height="225"
@@ -205,7 +211,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="wrench absolute z-30 bottom-[5rem] left-[5rem]">
+        <div className="wrench absolute z-20 bottom-[5rem] left-[5rem]">
           <svg
             width="186"
             height="253"
@@ -220,7 +226,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="gear absolute z-30 -bottom-[18rem] right-[2rem]">
+        <div className="gear absolute z-20 -bottom-[40%] right-[3%]">
           <svg
             width="565"
             height="565"
@@ -235,26 +241,26 @@ const Home: NextPageWithLayout = () => {
           </svg>
         </div>
         <div className="flex justify-center">
-          <div className="text-area flex justify-center text-center z-30  border-red-500 border-4 w-3/4">
-            <h1 className="absolute z-40 pb-8 pt-6 w-[500px] leading-tight text-6xl font-black text-white top-[2rem]">
+          <div className="text-area flex justify-center text-center z-20  border-red-500 border-4 ">
+            <h1 className="absolute z-15 pb-8 pt-6 w-[31rem] leading-tight text-6xl font-black text-white top-[2.5rem]">
               Hi, Welcome to Repair Lab!
             </h1>
-            <h3 className="absolute z-40 w-full text-white font-bold pb-8 text-xl top-[14rem] italic">
+            <h3 className="absolute z-15 w-full text-white font-bold pb-8 text-xl top-[15rem] italic">
               When in doubt, don’t throw out!
             </h3>
-            <p className="absolute z-40 inline-block w-3/4 text-white pb-8 pl-28 pr-28 text-lg top-[18rem]">
+            <p className="absolute z-15 inline-block w-3/4 text-white pb-8 pl-28 pr-28 text-lg top-[19rem]">
               Bring it to the Repair Lab, a grassroots initiative to encourage
               and help Perth folks come up with new and creative ways to salvage
               perfectly usable things. Repair Lab gathers volunteers who work
               with you to assess and fix your broken items, and hopefully give
               you insight on how to repair other things around the house.
             </p>
-            <div className="absolute z-40 flex w-full justify-center top-[25rem]">
+            <div className="absolute z-15 flex w-full justify-center top-[26rem]">
               <svg height="50" width="600">
                 <line x1="20" y1="20" x2="10000" y2="20" stroke="white" />
               </svg>
             </div>
-            <h3 className="absolute z-40 inline-block w-1/3 text-white pb-20 font-medium text-3xl top-[28rem]">
+            <h3 className="absolute z-15 inline-block w-1/3 text-white pb-20 font-medium text-3xl top-[29rem]">
               It’s a collaborative and learning experience, a little antidote to
               modern day throw-away mentality.
             </h3>
@@ -262,8 +268,8 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
 
-      <div className="white-text-area mt-[1rem]">
-        <div className="hammer absolute z-20 right-[100px] mt-36">
+      <div className="white-text-area mt-[1rem] relative">
+        <div className="hammer absolute z-10 right-[6.5rem] mt-36">
           <svg
             width="105"
             height="170"
@@ -281,7 +287,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="saw absolute z-20 right-[600px] mt-[280px]">
+        <div className="saw absolute z-10 right-[38rem] mt-[17.5rem]">
           <svg
             width="197"
             height="201"
@@ -298,7 +304,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="pliers absolute z-20 mt-72 ml-40">
+        <div className="pliers absolute z-10 top-72 left-40">
           <svg
             width="131"
             height="187"
@@ -315,7 +321,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="wrench absolute z-20">
+        <div className="wrench absolute z-10">
           <svg
             width="214"
             height="228"
@@ -330,9 +336,9 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col border-green-500 border-4">
           <div className="justify-start">
-            <h2 className="pb-8 pt-20 ml-72 text-left text-5xl font-black text-primary-600">
+            <h2 className="pb-8 pt-0 ml-72 text-left text-5xl font-black text-primary-600">
               Learn new skills
             </h2>
           </div>
@@ -350,30 +356,30 @@ const Home: NextPageWithLayout = () => {
               alt="bike repair"
               width={500}
               height={400}
-              className="rounded-2xl z-40 shadow-md"
+              className="rounded-2xl z-20 shadow-md"
             />
           </div>
-        </div>
-        <div className="flex justify-end">
-          <h2 className=" relative pb-4 pt-0 mr-0 right-[400px] text-right text-5xl font-black text-primary-600 bottom-4">
-            Reduce Waste
-          </h2>
-        </div>
-        <div className="flex justify-end text-center">
-          <p className="relative ml-0 mr-0 mb-0 right-64 pt-4 text-xl bottom-2 w-1/3">
-            If you think that we are all creating too much waste by discarding
-            of everything without even trying to repair, join us at Repair Lab!
-            Meet like minded locals and treasure your stuff.
-          </p>
-        </div>
-        <div className="relative pt-1 flex w-full justify-start pl-48 pb-0 mb-0 bottom-64">
-          <Image
-            src="/images/Repair_Lab_bikerepair.jpg"
-            alt="bike repair"
-            width={500}
-            height={400}
-            className="rounded-2xl z-30 shadow-md"
-          />
+          <div className="flex justify-end">
+            <h2 className=" relative pb-4 pt-0 mr-0 right-[400px] text-right text-5xl font-black text-primary-600 bottom-4">
+              Reduce Waste
+            </h2>
+          </div>
+          <div className="flex justify-end text-center">
+            <p className="relative ml-0 mr-0 mb-0 right-64 pt-4 text-xl bottom-2 w-1/3">
+              If you think that we are all creating too much waste by discarding
+              of everything without even trying to repair, join us at Repair
+              Lab! Meet like minded locals and treasure your stuff.
+            </p>
+          </div>
+          <div className="relative pt-1 flex w-full justify-start pl-48 pb-0 mb-0 bottom-64">
+            <Image
+              src="/images/Repair_Lab_bikerepair.jpg"
+              alt="bike repair"
+              width={500}
+              height={400}
+              className="rounded-2xl z-20 shadow-md"
+            />
+          </div>
         </div>
       </div>
 
