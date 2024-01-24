@@ -26,9 +26,13 @@ export default function Card({ props }: { props: CardProps }) {
       className="h-full w-full group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
     >
       <Modal setShowPopup={setShowModal} showModal={showModal}>
-        <div>Text!!! {props.title}</div>
-        <div>{props.date}</div>
-        <div>{props.description}</div>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">{props.title}</h1>
+          <h2 className="text-xl italic">
+            {props.date} - {props.location}
+          </h2>
+          <p>{props.description}</p>
+        </div>
       </Modal>
       <div>
         <Image
