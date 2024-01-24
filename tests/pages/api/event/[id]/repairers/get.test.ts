@@ -18,7 +18,7 @@ describe("GET /api/event/:id/repairers", () => {
   it("have matched event, repariers, should be able to return valid ones ", async () => {
     await testApiHandler({
       handler,
-      params: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
+      params: { id: "acf5ed50-19a2-11ee-be56-0242ac120003" },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",
