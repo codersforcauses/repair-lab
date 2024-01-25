@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CiCirclePlus } from "react-icons/ci";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
+import VolunteerManageForm from "@/components/Forms/volunteer-manage-form";
 import Header, { HeaderProps } from "@/components/Header";
+import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
@@ -12,12 +13,12 @@ import { User } from "@/types";
 export default function Volunteers() {
   const [volunteers, _setVolunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
+  const [showVolunteerModal, setShowVolunteerModal] = useState(false);
   const {
     query: { id: eventId }
   } = useRouter();
 
   const { data: event } = useEvent(eventId as string);
-
   useEffect(() => {
     if (!event) return;
     setHeaderValues({
@@ -27,9 +28,11 @@ export default function Volunteers() {
       endDate: new Date(event.endDate),
       createdBy: event.createdBy
     });
-    // setVolunteers(event.eventRepairer); // TODO: issue 109: GET endpoint to get repairers for an event
   }, [event]);
 
+  function manageVolunteer() {
+    setShowVolunteerModal(true);
+  }
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
@@ -37,8 +40,15 @@ export default function Volunteers() {
           <>
             <Header {...headerValues} />
             <div className="container">
-              <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
+              <div className="flex flex-row w-auto p-4 text-2xl font-bold text-zinc-400 content-center justify-between">
                 <span>Volunteers ({volunteers.length})</span>
+                <button
+                  className="flex rounded-lg border bg-primary-500 p-2 w-1/5 shadow-md transition hover:cursor-pointer hover:bg-primary-300 text-sm text-white justify-center"
+                  onClick={manageVolunteer}
+                  onKeyDown={manageVolunteer}
+                >
+                  Manage Volunteers
+                </button>
               </div>
               <div className="container mx-auto">
                 <div className="flex justify-end"></div>
@@ -52,15 +62,20 @@ export default function Volunteers() {
                     />
                   </div>
                 ))}
-                <div
-                  className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
-                  role="presentation"
-                >
-                  <CiCirclePlus color="rgb(82 82 91)" size={100} />
+              </div>
+            </div>
+            <Modal
+              showModal={showVolunteerModal}
+              setShowPopup={setShowVolunteerModal}
+              height="h-full"
+            >
+              <div className="text-center">
+                <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>
+                <div>
+                  <VolunteerManageForm setShowModal={setShowVolunteerModal} />
                 </div>
               </div>
-              <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
-            </div>
+            </Modal>
           </>
         ) : (
           <LoadingSpinner className="w-full h-full flex items-center justify-center " />
