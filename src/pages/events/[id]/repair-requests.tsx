@@ -28,11 +28,18 @@ export default function RepairRequests() {
     { key: "itemType", label: "Item Type" },
     { key: "brand", label: "Brand" }
   ];
-  const [{ search, sortKey, sortDir }, setSearchParams] = useSearchParamsState({
-    search: "",
-    sortKey: "",
-    sortDir: "asc"
-  });
+  const assignedToOptions = [
+    { key: "me", label: "Assigned to me" },
+    { key: "unassigned", label: "Unassigned" }
+  ];
+
+  const [{ search, sortKey, sortDir, assignedTo }, setSearchParams] =
+    useSearchParamsState({
+      search: "",
+      sortKey: "",
+      sortDir: "asc",
+      assignedTo: ""
+    });
 
   const validatedSortDir =
     sortDir == "asc" || sortDir == "desc" ? sortDir : "asc";
@@ -77,6 +84,16 @@ export default function RepairRequests() {
                     <span>Repair Requests ({repairRequests?.length})</span>
                   </div>
                   <div className="flex justify-end items-center">
+                    <RadioButtons
+                      options={assignedToOptions}
+                      checkedKey={assignedTo}
+                      onChange={(selectedKey) => {
+                        setSearchParams((state) => ({
+                          ...state,
+                          assignedTo: selectedKey
+                        }));
+                      }}
+                    />
                     <SortBy
                       options={sortBy}
                       sortKey={sortKey}
@@ -163,5 +180,40 @@ export default function RepairRequests() {
         )}
       </main>
     </Sidebar>
+  );
+}
+
+function RadioButtons({
+  checkedKey,
+  options,
+  onChange
+}: {
+  checkedKey?: string;
+  options: { key: string; label: string }[];
+  onChange?: (selectedKey: string) => void;
+}) {
+  return (
+    <fieldset className="flex flex-col">
+      {options.map(({ key, label }) => (
+        <label key={key}>
+          <input
+            type="radio"
+            id={key}
+            value={key}
+            name="assigned"
+            checked={key === checkedKey}
+            // onClick to allow for deselecting radio buttons
+            onClick={(e) =>
+              onChange?.(
+                e.currentTarget.value === checkedKey
+                  ? ""
+                  : e.currentTarget.value
+              )
+            }
+          />
+          {label}
+        </label>
+      ))}
+    </fieldset>
   );
 }
