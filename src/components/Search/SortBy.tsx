@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
@@ -9,9 +9,10 @@ function classNames(...classes: string[]) {
 
 interface SortByProps {
   options: { key: string; label: string }[];
+  onChange?: (sortKey: string, sortDir: "asc" | "desc") => void;
 }
 
-export default function SortBy({ options }: SortByProps) {
+export default function SortBy({ options, onChange }: SortByProps) {
   const [sortAscending, setSortAscending] = useState(true);
   const [currentSort, setCurrentSort] = useState("");
 
@@ -23,6 +24,10 @@ export default function SortBy({ options }: SortByProps) {
   const sortLabel =
     options.find((o) => o.key == currentSort)?.label ?? "Sort By";
 
+  useEffect(() => {
+    onChange?.(currentSort, sortAscending ? "asc" : "desc");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortAscending, currentSort]);
   return (
     <div>
       <Menu as="div" className="relative w-full p-4 text-left">

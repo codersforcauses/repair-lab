@@ -52,7 +52,9 @@ export default function RepairRequests() {
     { key: "brand", label: "Brand" }
   ];
   const [{ search }, setSearchParams] = useSearchParamsState({
-    search: undefined
+    search: undefined,
+    sortKey: undefined,
+    sortDir: undefined
   });
 
   return (
@@ -68,7 +70,17 @@ export default function RepairRequests() {
                     <span>Repair Requests ({repairRequests?.length})</span>
                   </div>
                   <div className="flex justify-end items-center">
-                    <SortBy options={sortBy} />
+                    <SortBy
+                      options={sortBy}
+                      onChange={(sortKey, sortDir) => {
+                        setSearchParams((state) => ({
+                          ...state,
+                          sortKey,
+                          // Only store if the key is not empty
+                          sortDir: sortKey ? sortDir : ""
+                        }));
+                      }}
+                    />
                     <Search
                       className="sm:w-auto m-4"
                       value={search}
