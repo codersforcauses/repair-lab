@@ -7,7 +7,7 @@ import ConfettiCanvas from "@/components/confetti_overlay";
 import NavBar from "@/components/NavBar";
 import { useMouseRotation } from "@/hooks/mouse-rotation";
 
-const triggerDistance = 5;
+const triggerDistance = 50;
 
 export default function NotFound() {
   const gearRef = useRef<HTMLDivElement>(null);
