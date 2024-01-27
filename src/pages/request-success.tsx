@@ -18,7 +18,7 @@ const Success: NextPageWithLayout = () => {
           </div>
 
           <div className="relative text-center mb-8 mt-6 text-3xl font-bold text-grey-900">
-            Thank you!
+            Thank you!!
           </div>
 
           <div className="text-slate-500 text-xl text-center mb-8 gap-y-4 leading-relaxed">
