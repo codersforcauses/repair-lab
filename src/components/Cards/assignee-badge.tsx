@@ -1,6 +1,7 @@
 import { SyntheticEvent, useState } from "react";
 import Image from "next/image";
 
+import Circle from "@/components/Cards/circle";
 import VolunteerCard from "@/components/Cards/volunteer-card";
 import Modal from "@/components/Modal";
 
@@ -20,8 +21,6 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
     setShowAssigneeModal(true);
   };
 
-
-
   // window.addEventListener("keydown", (ev) => {
   //   if (ev.key === "Escape") {
   //     setShowAssigneeModal(false);
@@ -39,7 +38,6 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
         tabIndex={0}
         className="rounded-lg bg-grey-200 p-2 hover:cursor-pointer"
       >
-        
         <div>
           <div className="flex flex-row gap-2">
             <Image
@@ -62,9 +60,13 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
         height="h-3/4"
       >
         <div className="text-center mb-6">
-          <h1 className="text-xl font-bold">Assign Volunteer</h1>
+          <h1 className="text-xl font-bold mb-2">Assign Volunteer</h1>
+          <div className="flex space-x-2 items-center justify-center">
+            <Circle />
+            <p className="font-medium">Task Assigned</p>
+          </div>
         </div>
-        <div className="w-full flex flex-row flex-wrap gap-4 justify-center">
+        <div className="w-full flex flex-row flex-wrap gap-5 justify-center">
           {volunteers.map((volunteer, index) => (
             <VolunteerCard key={index} />
           ))}
