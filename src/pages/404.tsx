@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { FaGear } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
@@ -60,7 +61,7 @@ export default function NotFound() {
         const distance = signedAngleDistance(initialAngle.current, angle);
         // if (distance < 0) return;
         setRotation((currentAngle) => currentAngle + deltaAngle);
-        totalDist.current += distance;
+        totalDist.current += Math.abs(distance);
 
         if (movementStore.current.length > 5) movementStore.current.shift();
         movementStore.current.push(distance);
@@ -109,11 +110,11 @@ export default function NotFound() {
 
         <div>
           {totalDist.current > 100
-            ? "Here's some confetti to make you feel better!"
+            ? "Here's some confetti to cheer you up!"
             : "Sorry, the page you are looking for doesn't exist."}
         </div>
         <HoverOpacityButton className="mt-4 p-3 bg-primary-600 text-white rounded-md font-bold">
-          Back Home
+          <Link href="/"> Back Home</Link>
         </HoverOpacityButton>
       </div>
       {totalDist.current > 100 && <ConfettiCanvas />}
