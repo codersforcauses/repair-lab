@@ -18,7 +18,7 @@ const Modal = ({
   setShowPopup,
   title,
   width = "w-full sm:max-w-lg md:max-w-2xl",
-  height = "h-fit",
+  height = "max-h-svh",
   children
 }: ModalProps) => {
   return (

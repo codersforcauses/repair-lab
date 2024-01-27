@@ -57,6 +57,18 @@ export default function Card({ props }: { props: CardProps }) {
               onSubmit={onSubmit}
             ></PrepopulatedRepairAttemptForm>
           </div>
+          <h3 className="text-xl font-bold text-left">Images:</h3>
+          <div className="flex flex-row gap-2 overflow-x-scroll">
+            {props.repairRequestProps.images?.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                alt={"image" + index}
+                width={300}
+                height={300}
+              />
+            ))}
+          </div>
         </div>
       </Modal>
       <div className="flex justify-center">
