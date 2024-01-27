@@ -76,39 +76,41 @@ const Events: NextPageWithLayout = () => {
   }, [sortKey, sortMethod]);
 
   return (
-    <div>
-      <div className="flex justify-center mt-5">
-        <SelectDate
-          label="Date"
-          value={date}
-          onChange={([minDate, maxDate]) =>
-            setFilterState((state) => ({ ...state, minDate, maxDate }))
-          }
-        />
+    <div className="w-full">
+      <div className="flex justify-center">
+        <div className="flex justify-center mt-5 mx-5 gap-2 w-1/2">
+          <SelectDate
+            label="Date"
+            value={date}
+            onChange={([minDate, maxDate]) =>
+              setFilterState((state) => ({ ...state, minDate, maxDate }))
+            }
+          />
 
-        <Select
-          multiple
-          label="Type"
-          options={(itemTypes as ItemType[])?.map(({ name }) => ({
-            name,
-            value: name
-          }))}
-          value={eventTypes}
-          onChange={(eventTypes) =>
-            setFilterState((state) => ({ ...state, eventTypes }))
-          }
-        />
-        <div className="text-center ">
-          <HoverOpacityButton
-            className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
-            title="Clear Filters"
-            onClick={resetQuery}
-          >
-            <FontAwesomeIcon
-              icon={faFilterCircleXmark}
-              className="text-[1rem] transform translate-y-[2px]"
-            />
-          </HoverOpacityButton>
+          <Select
+            multiple
+            label="Type"
+            options={(itemTypes as ItemType[])?.map(({ name }) => ({
+              name,
+              value: name
+            }))}
+            value={eventTypes}
+            onChange={(eventTypes) =>
+              setFilterState((state) => ({ ...state, eventTypes }))
+            }
+          />
+          <div className="text-center ">
+            <HoverOpacityButton
+              className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
+              title="Clear Filters"
+              onClick={resetQuery}
+            >
+              <FontAwesomeIcon
+                icon={faFilterCircleXmark}
+                className="text-[1rem] transform translate-y-[2px]"
+              />
+            </HoverOpacityButton>
+          </div>
         </div>
       </div>
       <div className="mt-4 mx-4 flex justify-center align-items">
