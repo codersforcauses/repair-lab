@@ -6,12 +6,13 @@ import Card from "@/components/Cards/card";
 import RepairAttemptForm from "@/components/Forms/repair-request-form";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
-import SearchBar from "@/components/Search/SearchBar";
+import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useRepairRequests } from "@/hooks/events";
 import { useEvent } from "@/hooks/events";
+import useSearchParamsState from "@/hooks/search-params-state";
 import { RepairRequestResponse } from "@/types";
 
 export default function RepairRequests() {
@@ -40,6 +41,10 @@ export default function RepairRequests() {
     });
   }, [event]);
 
+  const [{ search }, setSearchParams] = useSearchParamsState({
+    search: undefined
+  });
+
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
@@ -54,7 +59,16 @@ export default function RepairRequests() {
                   </div>
                   <div className="flex justify-end items-center">
                     <SortBy />
-                    <SearchBar />
+                    <Search
+                      className="sm:w-auto m-4"
+                      value={search}
+                      onChange={(value) =>
+                        setSearchParams((state) => ({
+                          ...state,
+                          search: value
+                        }))
+                      }
+                    />
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
                       role="presentation"
