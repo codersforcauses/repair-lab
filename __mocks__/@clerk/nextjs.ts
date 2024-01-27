@@ -27,6 +27,15 @@ export const mockClerkUsers = [
     publicMetadata: {
       role: "CLIENT"
     }
+  },
+  {
+    id: "Test",
+    firstName: "Spongebob",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "spongebob@gmail.com" }],
+    publicMetadata: {
+      role: "CLIENT"
+    }
   }
 ];
 
@@ -54,6 +63,9 @@ export const clerkClient = {
       .fn()
       .mockImplementation(
         (search: BasicSearchParams) => queryUsers(search).length
-      )
+      ),
+    getUser: vi.fn().mockImplementation((id) => {
+      return mockClerkUsers.find((user) => user.id === id);
+    })
   }
 };
