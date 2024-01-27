@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form"; // For using FieldImageUpload
@@ -33,18 +33,28 @@ export default function Images() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const { control, handleSubmit, reset } = useForm<ImageFormValues>();
   const [pagination, setPagination] = useState({
-    currentPage: 1,
-    pageSize: 20,
-    total: images.length
+    total: images.length,
+    perPage: 20,
+    current: 1
   });
   const {
     query: { id: eventId }
   } = useRouter();
 
+  const imagesToShow = useMemo(() => {
+    const startIndex = (pagination.current - 1) * pagination.perPage;
+    const endIndex = startIndex + pagination.perPage;
+    return images.slice(startIndex, endIndex);
+  }, [images, pagination]);
+
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, total: images.length }));
+  }, [images]);
+
   const { data: event } = useEvent(eventId as string);
 
+  // The 'data' parameter will be used when the backend is set
   const onSubmit: SubmitHandler<ImageFormValues> = (data) => {
-    // The 'data' parameter will be used when the backend is set
     setShowModal(false);
     const newImage = dummyImages[currentImageIndex]; // Use dummy images for now
     setImages((prevImages) => [...prevImages, newImage]);
@@ -70,6 +80,7 @@ export default function Images() {
     setPagination((prev) => ({ ...prev, total: images.length }));
   }, [images]);
 
+  // This function will be used when the backend is set
   function renderImages() {
     const content = [];
     // TODO: extract image from s3*/}
@@ -84,10 +95,6 @@ export default function Images() {
     return content;
   }
 
-  const startIndex = (pagination.currentPage - 1) * pagination.pageSize;
-  const endIndex = startIndex + pagination.pageSize;
-  const imagesToShow = images.slice(startIndex, endIndex);
-
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
@@ -95,19 +102,19 @@ export default function Images() {
           <>
             <Header {...headerValues} />
             <div className="container">
-              <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-                <span>Images ({renderImages().length})</span>
+              <div className="w-auto p-4 text-2xl font-bold text-app-base-200">
+                <span>Images ({images.length})</span>
               </div>
               <div className="container mx-auto">
                 <div className="flex justify-end"></div>
               </div>
               <div className="grid gap-4 p-4 lg:grid-cols-5 ">
                 <div
-                  className="flex w-full items-center justify-center rounded-lg border bg-grey-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-secondary-50"
+                  className="flex w-full items-center justify-center rounded-lg border bg-app-base-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-app-secondary"
                   role="presentation"
                   onClick={() => setShowModal(true)}
                 >
-                  <CiCirclePlus color="rgb(82 82 91)" size={100} />
+                  <CiCirclePlus className="text-app-base-200" size={100} />
                 </div>
                 {imagesToShow.map((image, index) => (
                   <div key={index} className="w-40 h-30">
@@ -134,7 +141,7 @@ export default function Images() {
                     <div className="w-1/3">
                       <button
                         type="submit"
-                        className="bg-primary-500 hover:bg-primary-700 text-white rounded h-9 w-full"
+                        className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-full"
                       >
                         Submit
                       </button>
@@ -143,7 +150,12 @@ export default function Images() {
                 </form>
               </Modal>
             </div>
-            <Pagination value={pagination} onChange={setPagination} />
+            <Pagination
+              value={pagination}
+              onChange={(nextState) =>
+                setPagination((prevState) => ({ ...prevState, ...nextState }))
+              }
+            />
           </>
         ) : (
           <div className="w-full h-full flex items-center justify-center ">
