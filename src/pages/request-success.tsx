@@ -29,18 +29,25 @@ const Success: NextPageWithLayout = () => {
           </div>
 
           <div className="relative flex text-center gap-x-8">
-            <Link href="/repair-request">
-              <Button aria-label="Submit another request" radius="rounded-3xl">
-                {" "}
-                Submit another request{" "}
-              </Button>
-            </Link>
-            <Link href="/index">
-              <Button aria-label="Return to Homepage" radius="rounded-3xl">
-                {" "}
-                Return to Homepage{" "}
-              </Button>
-            </Link>
+            <div className="w-1/2">
+              <Link href="/repair-request">
+                <Button
+                  aria-label="Submit another request"
+                  radius="rounded-3xl"
+                >
+                  {" "}
+                  Submit another request{" "}
+                </Button>
+              </Link>
+            </div>
+            <div className="w-1/2">
+              <Link href="/index">
+                <Button aria-label="Return to Homepage" radius="rounded-3xl">
+                  {" "}
+                  Return to Homepage{" "}
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -48,13 +55,13 @@ const Success: NextPageWithLayout = () => {
   );
 };
 
-  Success.getLayout = function getLayout(page: ReactElement) {
-    return (
-      <>
-        <NavBar />
-        {page}
-      </>
-    );
+Success.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <>
+      <NavBar />
+      {page}
+    </>
+  );
 };
 
 export default Success;
