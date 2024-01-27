@@ -61,7 +61,7 @@ const VerticalBar = (props: NavItems) => {
           {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
               <p
-                className={`flex block p-4 border-b hover:bg-app-base-100 ${
+                className={`flex p-4 border-b hover:bg-app-base-100 ${
                   router.asPath === item.path ? "text-primary-700" : ""
                 }`}
               >
