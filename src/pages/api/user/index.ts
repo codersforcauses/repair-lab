@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
 import { PaginationResponse } from "@/lib/pagination";
-import { paginationSchema } from "@/lib/pagination";
+import { getManyUsersSchema } from "@/schema/user";
 import userService from "@/services/user";
 import { User } from "@/types";
 
@@ -14,7 +14,7 @@ async function getUsers(
   req: NextApiRequest,
   res: NextApiResponse<PaginationResponse<User>>
 ) {
-  const parsedQuery = paginationSchema.parse(req.query);
+  const parsedQuery = getManyUsersSchema.parse(req.query);
 
   const users = await userService.getMany(parsedQuery);
 
