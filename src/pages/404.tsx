@@ -30,7 +30,7 @@ export default function NotFound() {
       if (!gearRef.current) return;
       const rect = gearRef.current.getBoundingClientRect();
 
-      // if not in bounds
+      // Only allow dragging if initial click is in bounds
       if (
         e.clientX < rect.left ||
         e.clientX > rect.right ||
@@ -59,7 +59,7 @@ export default function NotFound() {
         const deltaAngle = angle - initialAngle.current;
 
         const distance = signedAngleDistance(initialAngle.current, angle);
-        // if (distance < 0) return;
+
         setRotation((currentAngle) => currentAngle + deltaAngle);
         totalDist.current += Math.abs(distance);
 
@@ -126,6 +126,7 @@ export default function NotFound() {
 const COLOURS = ["#f50f26", "#e310a7", "#1744e6", "#20e36e", "#e2fa2f"];
 const getRandomColor = () =>
   COLOURS[Math.floor(Math.random() * COLOURS.length)];
+
 class Particle {
   ctx: CanvasRenderingContext2D | null;
   width: number;
@@ -155,14 +156,14 @@ class Particle {
     this.velocity = velocity;
     this.color = color;
   }
-
-  update() {
-    this.rotation += 0.01;
-    this.y += this.velocity;
-  }
   draw() {
     if (!this.ctx) return;
 
+    // update position and rotation
+    this.rotation += 0.01;
+    this.y += this.velocity;
+
+    // draw
     const rotate = (x: number, y: number) => ({
       x:
         (x - this.x) * Math.cos(this.rotation) -
@@ -174,6 +175,7 @@ class Particle {
         this.y
     });
 
+    // Draws rotated squares around a center point
     this.ctx.fillStyle = this.color;
     this.ctx.beginPath();
     const tl = rotate(this.x - this.width / 2, this.y - this.height / 2);
@@ -196,18 +198,15 @@ const ConfettiCanvas = () => {
   let particles: Particle[] = [];
 
   function createParticles() {
-    if (!canvasRef || !canvasRef.current) {
-      return;
-    }
-    const width = window.innerWidth;
+    if (!canvasRef || !canvasRef.current) return;
 
     const context = canvasRef.current.getContext("2d");
     particles = [];
 
     let total = 100;
-    if (width > 1080) total = 400;
-    else if (width > 760) total = 300;
-    else if (width > 520) total = 200;
+    if (window.innerWidth > 1080) total = 400;
+    else if (window.innerWidth > 760) total = 300;
+    else if (window.innerWidth > 520) total = 200;
 
     for (let i = 0; i < total; ++i) {
       particles.push(
@@ -216,7 +215,7 @@ const ConfettiCanvas = () => {
           randBetween(10, 15),
           randBetween(4, 15),
           randBetween(0, 360),
-          randBetween(0, width),
+          randBetween(0, window.innerWidth),
           randBetween(-300, 0),
           randBetween(2, 3),
           getRandomColor()
@@ -225,26 +224,18 @@ const ConfettiCanvas = () => {
     }
   }
 
-  function animationFunc() {
-    if (!canvasRef || !canvasRef.current) return;
+  function animateCanvas() {
+    const context = canvasRef.current?.getContext("2d");
+    if (!context || !canvasRef.current) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    particles.forEach((p) => p.draw());
 
-    const context = canvasRef.current.getContext("2d");
-    if (!context) return;
-
-    requestAnimationFrame(animationFunc);
-    context.clearRect(0, 0, width, height);
-
-    for (const p of particles) {
-      p.update();
-      p.draw();
-    }
+    requestAnimationFrame(animateCanvas);
   }
 
   useEffect(() => {
-    if (!canvasRef || !canvasRef.current) return;
+    if (!canvasRef.current) return;
 
     const handleResize = () => {
       if (!canvasRef.current) return;
@@ -253,10 +244,9 @@ const ConfettiCanvas = () => {
       canvasRef.current.height = window.innerHeight;
     };
 
-    // Initial setup
     handleResize();
     createParticles();
-    animationFunc();
+    animateCanvas();
 
     window.addEventListener("resize", handleResize);
     return () => {
