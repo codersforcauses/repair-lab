@@ -8,14 +8,13 @@ const getRandomColor = () =>
 
 export default function ConfettiCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  let particles: ConfettiParticle[] = [];
+  const particles = useRef<ConfettiParticle[]>([]);
 
   function createParticles() {
     if (!canvasRef || !canvasRef.current) return;
 
     const context = canvasRef.current.getContext("2d");
-    particles = [];
+    particles.current = [];
 
     let total = 100;
     if (window.innerWidth > 1080) total = 400;
@@ -23,7 +22,7 @@ export default function ConfettiCanvas() {
     else if (window.innerWidth > 520) total = 200;
 
     for (let i = 0; i < total; ++i) {
-      particles.push(
+      particles.current.push(
         new ConfettiParticle(
           context,
           randBetween(10, 15),
@@ -42,10 +41,19 @@ export default function ConfettiCanvas() {
     const context = canvasRef.current?.getContext("2d");
     if (!context || !canvasRef.current) return;
 
-    context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    particles.forEach((p) => p.draw());
+    const height = canvasRef.current.height;
 
-    requestAnimationFrame(animateCanvas);
+    context.clearRect(0, 0, canvasRef.current.width, height);
+    // Simulate & delete particles out of bounds
+    particles.current.forEach((p) => p.draw());
+    particles.current = particles.current.filter((p) => p.y < height + 20);
+
+    if (particles.current.length <= 0) return;
+    const animationHandle = requestAnimationFrame(animateCanvas);
+
+    return () => {
+      cancelAnimationFrame(animationHandle);
+    };
   }
 
   useEffect(() => {
@@ -60,11 +68,12 @@ export default function ConfettiCanvas() {
 
     handleResize();
     createParticles();
-    animateCanvas();
+    const cancelAnimation = animateCanvas();
 
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
+      cancelAnimation?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
