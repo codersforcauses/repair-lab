@@ -78,8 +78,8 @@ const Events: NextPageWithLayout = () => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-center">
-        <div className="flex justify-center mt-5 mx-5 gap-2 md:w-1/2">
+      <div className="flex mt-5 mx-5 justify-between">
+        <div className="flex gap-2 ">
           <SelectDate
             label="Date"
             value={date}
@@ -111,16 +111,15 @@ const Events: NextPageWithLayout = () => {
               />
             </HoverOpacityButton>
           </div>
-
-          <div>
-            <Search
-              className="relative w-5/12 flex-1 "
-              value={search}
-              onChange={(value) =>
-                setFilterState((state) => ({ ...state, search: value }))
-              }
-            />
-          </div>
+        </div>
+        <div className="flex gap-2 items-center">
+          <Search
+            className="relative w-5/12 flex-1 "
+            value={search}
+            onChange={(value) =>
+              setFilterState((state) => ({ ...state, search: value }))
+            }
+          />
         </div>
       </div>
       <div className="mt-4 mx-4 flex justify-center align-items">
