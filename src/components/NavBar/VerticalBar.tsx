@@ -61,8 +61,8 @@ const VerticalBar = (props: NavItems) => {
           {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
               <p
-                className={`block p-2 ml-3 hover:-translate-x-1 hover:bg-app-base-100  duration-500 hover:opacity-100 ${
-                  router.asPath === item.path ? "opacity-100" : "opacity-40"
+                className={`block p-4 border-b hover:bg-app-base-100 ${
+                  router.asPath === item.path ? "text-primary-700" : ""
                 }`}
               >
                 {item.item}
@@ -72,27 +72,23 @@ const VerticalBar = (props: NavItems) => {
           {props.isLoggedIn && (
             <Link
               href="/repair-request"
-              className={`block p-2 ml-3 hover:-translate-x-1 hover:bg-app-base-100 text-app-primary duration-500 hover:opacity-100 ${
-                router.asPath === "/repair-request"
-                  ? "opacity-100"
-                  : "opacity-40"
-              }`}
+              className="block p-4 border-b bg-app-primary hover:bg-app-primary-focus text-white"
             >
               New Repair Request +
             </Link>
           )}
-          <div className="flex bottom-4 w-full">
+          <div className="flex bottom-4">
             {props.isLoggedIn ? (
               <button
                 onClick={props.onSignOut}
-                className="w-full p-2 ml-3 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
+                className="w-full p-4 border-b bg-app-accent hover:bg-app-accent-focus"
               >
                 Log Out
               </button>
             ) : (
               <button
                 onClick={() => router.push("/login")}
-                className="w-full p-2 text-left hover:-translate-x-1 hover:bg-app-base-100  duration-500 opacity-40 hover:opacity-100"
+                className="w-full p-4 border-b bg-app-accent hover:bg-app-accent-focus"
               >
                 Sign In
               </button>
