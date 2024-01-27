@@ -57,44 +57,48 @@ const VerticalBar = (props: NavItems) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="fixed top-[60px] z-9 inset-0 w-screen h-screen bg-white">
-          {props.menuItems.map((item) => (
-            <Link href={item.path} key={item.item}>
-              <p
-                className={`flex p-4 border-b hover:bg-app-base-100 ${
-                  router.asPath === item.path ? "text-primary-700" : ""
-                }`}
+        <div className="fixed top-[60px] z-9 inset-0 bg-white flex flex-col justify-between">
+          <div>
+            {props.menuItems.map((item) => (
+              <Link href={item.path} key={item.item}>
+                <p
+                  className={`flex p-4 border-b hover:bg-app-base-100 ${
+                    router.asPath === item.path ? "text-primary-700" : ""
+                  }`}
+                >
+                  <div className="relative flex flex-col">
+                    {item.item}
+                    {router.asPath === item.path && (
+                      <span className="absolute -bottom-1 h-[3px] w-full bg-primary-700 rounded-full" />
+                    )}
+                  </div>
+                </p>
+              </Link>
+            ))}
+          </div>
+          <div>
+            {props.isLoggedIn && (
+              <Link
+                href="/repair-request"
+                className="block p-4 border-b bg-app-primary hover:bg-app-primary-focus text-white"
               >
-                <div className="relative flex flex-col">
-                  {item.item}
-                  {router.asPath === item.path && (
-                    <span className="absolute -bottom-1 h-[3px] w-full bg-primary-700 rounded-full" />
-                  )}
-                </div>
-              </p>
-            </Link>
-          ))}
-          {props.isLoggedIn && (
-            <Link
-              href="/repair-request"
-              className="block p-4 border-b bg-app-primary hover:bg-app-primary-focus text-white"
-            >
-              New Repair Request +
-            </Link>
-          )}
-          <div className="flex bottom-4">
-            {props.isLoggedIn ? (
-              <button onClick={props.onSignOut} className="flex p-4">
-                Log Out
-              </button>
-            ) : (
-              <button
-                onClick={() => router.push("/login")}
-                className="flex p-4"
-              >
-                Sign In
-              </button>
+                New Repair Request +
+              </Link>
             )}
+            <div className="flex flex-col w-full">
+              {props.isLoggedIn ? (
+                <button onClick={props.onSignOut} className="flex p-4">
+                  Log Out
+                </button>
+              ) : (
+                <button
+                  onClick={() => router.push("/login")}
+                  className="flex p-4"
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </Transition>
