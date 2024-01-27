@@ -1,5 +1,4 @@
 // Page for submitting a repair request
-
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -20,16 +19,6 @@ import uploadImage from "@/lib/upload-image";
 import { NextPageWithLayout } from "@/pages/_app";
 import { createRepairRequestSchema } from "@/schema/repair-request";
 import { CreateRepairRequest } from "@/types";
-
-export interface FormValues extends CreateRepairRequest {
-  tncAccepted: boolean;
-}
-
-const repairRequestFormSchema = createRepairRequestSchema.extend({
-  tncAccepted: z.boolean().refine((val) => !!val, {
-    message: "Please read through and accept the house rules."
-  })
-});
 
 const RepairRequest: NextPageWithLayout = () => {
   const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
@@ -85,85 +74,7 @@ const RepairRequest: NextPageWithLayout = () => {
         <h1 className="flex justify-center text-xl font-bold">
           Submit a Repair Request
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          {/* Input field for Brand of Item */}
-
-          <SingleSelect
-            name="itemBrand"
-            control={control}
-            placeholder="Select a brand"
-            label="Brand"
-            rules={{ required: true }}
-            options={
-              brandList
-                ? brandList.map((brand: Brand) => {
-                    return { id: brand.name, text: brand.name };
-                  })
-                : []
-            }
-          />
-
-          <SingleSelect
-            name="itemType"
-            control={control}
-            placeholder="Select an item type"
-            label="Item Type"
-            rules={{ required: true }}
-            options={
-              itemTypeList
-                ? itemTypeList.map((itemType: ItemType) => {
-                    return { id: itemType.name, text: itemType.name };
-                  })
-                : []
-            }
-          />
-
-          {/* Input field for Description of Item */}
-
-          <FieldTextArea
-            name="description"
-            label="Description"
-            placeholder="Enter a description"
-            control={control}
-            rules={{ required: true }}
-          />
-
-          <FieldImageUpload multiple name="images" control={control} />
-
-          {/* Input field for Event Date */}
-          <SingleSelect
-            name="eventId"
-            control={control}
-            placeholder="Select an event"
-            label="Event"
-            options={
-              eventOptions
-                ? eventOptions.map((event: EventOption) => {
-                    return { id: event.id, text: event.name };
-                  })
-                : []
-            }
-          />
-
-          <FieldTextArea
-            name="comment"
-            label="Additional Comment"
-            placeholder="Enter additional comments"
-            control={control}
-            rules={{ required: false }}
-          />
-
-          <TermsAndConditions setValue={setValue} control={control} />
-
-          <Button
-            type="submit"
-            height="h-9"
-            width="w-full"
-            textSize="text-base"
-          >
-            Submit
-          </Button>
-        </form>
+        <RepairRequestForm />
       </div>
     </div>
   );
