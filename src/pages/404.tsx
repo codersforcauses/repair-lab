@@ -203,15 +203,12 @@ const ConfettiCanvas = () => {
 
     const context = canvasRef.current.getContext("2d");
     particles = [];
-    let total = 100;
 
-    if (width > 1080) {
-      total = 400;
-    } else if (width > 760) {
-      total = 300;
-    } else if (width > 520) {
-      total = 200;
-    }
+    let total = 100;
+    if (width > 1080) total = 400;
+    else if (width > 760) total = 300;
+    else if (width > 520) total = 200;
+
     for (let i = 0; i < total; ++i) {
       particles.push(
         new Particle(
@@ -249,19 +246,23 @@ const ConfettiCanvas = () => {
   useEffect(() => {
     if (!canvasRef || !canvasRef.current) return;
 
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
+    const handleResize = () => {
+      if (!canvasRef.current) return;
+
+      canvasRef.current.width = window.innerWidth;
+      canvasRef.current.height = window.innerHeight;
+    };
+
+    // Initial setup
+    handleResize();
     createParticles();
     animationFunc();
 
-    // if (stopAfterMs) {
-    //   setTimeout(() => {
-    //     setRunning(false);
-    //   }, stopAfterMs - 1000);
-    //   setTimeout(() => {
-    //     setHide(true);
-    //   }, stopAfterMs);
-    // }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
