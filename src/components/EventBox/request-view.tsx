@@ -33,7 +33,7 @@ const RequestView = ({
               } `}
             >
               <div className=" flex flex-col text-left py-2">
-                <span className="font-bold">{repairRequestId}</span>
+                <span className="font-bold">{repairRequestId}- {createdBy.id}</span>
               </div>
               <FaChevronDown
                 className={`transition duration-300 ease-in-out ${
@@ -55,10 +55,6 @@ const RequestView = ({
                 <p className="space-x-1">
                   <span className="font-semibold">Request Date:</span>
                   <span>{requestDate}</span>
-                </p>
-                <p className="space-x-1">
-                  <span className="font-semibold">Client Name:</span>
-                  <span>{createdBy.id}</span>
                 </p>
                 <p className="space-x-1">
                   <span className="font-semibold">Item Type:</span>
