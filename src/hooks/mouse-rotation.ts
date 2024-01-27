@@ -1,16 +1,10 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
-function signedAngleDistance(theta1: number, theta2: number) {
-  const rawDifference = theta2 - theta1;
-
-  // Normalize to the range [-180, 180)
-  const normalizedDifference =
-    ((((rawDifference + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) %
-      (2 * Math.PI)) -
-    Math.PI;
-  return normalizedDifference;
-}
-
+/**
+ * Used to update the rotation around a central div based on mouse click and drag movement
+ * @param clickableRef The div ref that the user can click and drag
+ * @returns
+ */
 export const useMouseRotation = (clickableRef: RefObject<HTMLDivElement>) => {
   const [rotation, setRotation] = useState(0);
   const [totalDistance, setTotalDistance] = useState(0);
@@ -92,3 +86,14 @@ export const useMouseRotation = (clickableRef: RefObject<HTMLDivElement>) => {
 
   return [rotation, totalDistance] as const;
 };
+
+function signedAngleDistance(theta1: number, theta2: number) {
+  const rawDifference = theta2 - theta1;
+
+  // Normalize to the range [-180, 180)
+  const normalizedDifference =
+    ((((rawDifference + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) %
+      (2 * Math.PI)) -
+    Math.PI;
+  return normalizedDifference;
+}
