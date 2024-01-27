@@ -84,16 +84,13 @@ const VerticalBar = (props: NavItems) => {
           )}
           <div className="flex bottom-4">
             {props.isLoggedIn ? (
-              <button
-                onClick={props.onSignOut}
-                className="w-full p-4 border-b bg-app-accent hover:bg-app-accent-focus"
-              >
+              <button onClick={props.onSignOut} className="flex p-4">
                 Log Out
               </button>
             ) : (
               <button
                 onClick={() => router.push("/login")}
-                className="w-full p-4 border-b bg-app-accent hover:bg-app-accent-focus"
+                className="flex p-4"
               >
                 Sign In
               </button>
