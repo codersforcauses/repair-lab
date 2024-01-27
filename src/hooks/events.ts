@@ -119,6 +119,7 @@ export const useRepairRequests = (params: {
   sortKey?: string;
   sortMethod?: SortDirection;
   searchWord?: string;
+  assignedTo?: string;
 }) => {
   return useQuery<RepairRequestResponse[]>({
     queryKey: ["repair-requests", params],

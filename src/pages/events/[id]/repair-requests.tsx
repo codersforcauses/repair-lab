@@ -10,6 +10,7 @@ import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
+import { useAuth } from "@/hooks/auth";
 import { useRepairRequests } from "@/hooks/events";
 import { useEvent } from "@/hooks/events";
 import useSearchParamsState from "@/hooks/search-params-state";
@@ -33,6 +34,8 @@ export default function RepairRequests() {
     { key: "unassigned", label: "Unassigned" }
   ];
 
+  const { user } = useAuth();
+
   const [{ search, sortKey, sortDir, assignedTo }, setSearchParams] =
     useSearchParamsState({
       search: "",
@@ -48,7 +51,8 @@ export default function RepairRequests() {
     eventId,
     sortKey,
     sortMethod: validatedSortDir,
-    searchWord: search
+    searchWord: search,
+    assignedTo: assignedTo === "me" ? user?.id : assignedTo
   });
   const { data: event } = useEvent(eventId);
 
@@ -152,7 +156,7 @@ export default function RepairRequests() {
                             description: item.description,
                             status: item.status,
                             firstName: assignedTo,
-                            lastName: "",
+                            lastName: item.assignedTo?.lastName ?? "",
                             avatar: "/images/repair_lab_logo.jpg",
                             repairRequestProps: item
                           }}

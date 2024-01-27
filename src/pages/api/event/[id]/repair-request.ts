@@ -32,6 +32,9 @@ async function getRepairRequests(
     assignedTo
   } = getRepairRequestSchema.parse(req.query);
 
+  const findUnassigned =
+    assignedTo?.length == 1 && assignedTo[0] == "unassigned";
+
   const event = await prisma.event.findUnique({
     where: { id: eventId }
   });
@@ -49,7 +52,9 @@ async function getRepairRequests(
       event: { id: eventId as string },
       item: { name: { in: item } },
       itemBrand: { in: brand },
-      assignedTo: { in: assignedTo }
+      ...(findUnassigned
+        ? { assignedTo: "" }
+        : { assignedTo: { in: assignedTo } })
     },
     include: {
       images: true
