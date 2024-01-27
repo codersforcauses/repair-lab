@@ -49,7 +49,8 @@ describe("GET /api/event", () => {
           createdBy: "user_1",
           description: "My laptop is broken",
           itemType: "Laptop",
-          itemBrand: "Apple"
+          itemBrand: "Apple",
+          assignedTo: "user_2"
         },
         {
           ...baseRepairRequestDetails,
@@ -88,6 +89,7 @@ describe("GET /api/event", () => {
     searchWord?: string;
     item?: string | string[];
     brand?: string | string[];
+    assignedTo?: string | string[];
   };
   const testFilter = async (
     filters: AllowedParams,
@@ -150,6 +152,11 @@ describe("GET /api/event", () => {
   it("should be able to filter repair requests by item type", async () => {
     await testFilter({ id: "ev-1", item: "Laptop" }, ["rr-1"]);
     await testFilter({ id: "ev-2", item: "Laptop" }, ["rr-3", "rr-4"]);
+  });
+
+  it("should be able to filter repair requests by assignee", async () => {
+    await testFilter({ id: "ev-1", assignedTo: "user_2" }, ["rr-1"]);
+    await testFilter({ id: "ev-1", assignedTo: "unassigned" }, ["rr-2"]);
   });
 
   it("should return all repair requests when empty filter provided", async () => {
