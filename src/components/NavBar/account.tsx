@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
-import Link from "next/link";
 
 interface Props {
   role: UserRole;
@@ -10,17 +10,7 @@ interface Props {
   onSignOut: () => void;
 }
 
-const adminRoles = [
-  UserRole.ADMIN,
-  UserRole.ORGANISATION_MANAGER,
-  UserRole.EVENT_MANAGER
-];
-
-export default function Account({
-  role,
-  isLoggedIn,
-  onSignOut
-}: Readonly<Props>) {
+export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   const router = useRouter();
 
   return (
