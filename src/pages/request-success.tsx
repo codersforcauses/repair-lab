@@ -10,11 +10,10 @@ import type { NextPageWithLayout } from "./_app";
 // #TODO: Refactor this
 const Success: NextPageWithLayout = () => {
   return (
-    <div className="min-h-screen min-w-screen flex justify-center">
+    <div className="fixed min-h-screen min-w-screen flex flex-grow justify-center">
       <div className="relative flex h-screen items-center justify-center gap-x-12">
         <div className="w-1/2">
-          <div className="relative flex justify-center">
-            {/* <Image src="/images/duck.png" alt="Duck" width={200} height={200} /> */}
+          <div className="relative flex justify-center mt-8">
             <Image
               src="/images/submission-success.svg"
               alt="Man with giant pencil in front of computer"
@@ -64,8 +63,10 @@ const Success: NextPageWithLayout = () => {
 Success.getLayout = function getLayout(page: ReactElement) {
   return (
     <>
-      <NavBar />
-      {page}
+      <div className="min-h-screen flex flex-col">
+        <NavBar />
+        {page}
+      </div>
     </>
   );
 };
