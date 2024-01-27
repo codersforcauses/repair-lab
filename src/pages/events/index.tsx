@@ -30,7 +30,6 @@ const initialFilterState = {
 };
 
 const Events: NextPageWithLayout = () => {
-
   const { data: itemTypes = [] } = useItemTypes();
 
   const [
@@ -77,71 +76,73 @@ const Events: NextPageWithLayout = () => {
   }, [sortKey, sortMethod]);
 
   return (
-    <div className="mt-4 mx-4 flex justify-center">
+    <div>
+      <div className="flex justify-center mt-5">
+        <SelectDate
+          label="Date"
+          value={date}
+          onChange={([minDate, maxDate]) =>
+            setFilterState((state) => ({ ...state, minDate, maxDate }))
+          }
+        />
 
-      {isEventsLoading ? (
-        <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
-      ) : eventData ? (
-        <div className="grid gap-4 relative sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 ">
-         
-         <div> 
-
-          <SelectDate
-            label="Date"
-            value={date}
-            onChange={([minDate, maxDate]) =>
-              setFilterState((state) => ({ ...state, minDate, maxDate }))
-            }
-          />
-
-          <Select
-            multiple
-            label="Type"
-            options={(itemTypes as ItemType[])?.map(({ name }) => ({
-              name,
-              value: name
-            }))}
-            value={eventTypes}
-            onChange={(eventTypes) =>
-              setFilterState((state) => ({ ...state, eventTypes }))
-            }
-          />
-
-        </div> 
-
+        <Select
+          multiple
+          label="Type"
+          options={(itemTypes as ItemType[])?.map(({ name }) => ({
+            name,
+            value: name
+          }))}
+          value={eventTypes}
+          onChange={(eventTypes) =>
+            setFilterState((state) => ({ ...state, eventTypes }))
+          }
+        />
         <div className="text-center ">
-              <HoverOpacityButton
-                className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
-                title="Clear Filters"
-                onClick={resetQuery}
-              >
-                <FontAwesomeIcon
-                  icon={faFilterCircleXmark}
-                  className="text-[1rem] transform translate-y-[2px]"
-                />
-              </HoverOpacityButton>
+          <HoverOpacityButton
+            className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
+            title="Clear Filters"
+            onClick={resetQuery}
+          >
+            <FontAwesomeIcon
+              icon={faFilterCircleXmark}
+              className="text-[1rem] transform translate-y-[2px]"
+            />
+          </HoverOpacityButton>
         </div>
-          
-          {eventData.map(
-            ({ id, name, startDate, description, location }: EventResponse) => (
-              <div key={id}>
-                <Card
-                  props={{
-                    title: name,
-                    date: formatDate(String(startDate)),
-                    location: location,
-                    description: description
-                  }}
-                />
-              </div>
-            )
-          )}
-        </div>
-      ) : (
-        <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
-          No upcoming events.
-        </div>
-      )}
+      </div>
+      <div className="mt-4 mx-4 flex justify-center align-items">
+        {isEventsLoading ? (
+          <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
+        ) : eventData ? (
+          <div className="grid gap-4 relative sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 ">
+            {eventData.map(
+              ({
+                id,
+                name,
+                startDate,
+                description,
+                location
+              }: EventResponse) => (
+                <div key={id}>
+                  <Card
+                    props={{
+                      title: name,
+                      date: formatDate(String(startDate)),
+                      location: location,
+                      description: description
+                    }}
+                  />
+                </div>
+              )
+            )}
+          </div>
+        ) : (
+          <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+            No upcoming events.
+          </div>
+        )}
+      </div>
     </div>
   );
 };
