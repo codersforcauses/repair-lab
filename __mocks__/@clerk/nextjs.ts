@@ -1,5 +1,9 @@
 import { vi } from "vitest";
 
+import { UserRole } from "@/types";
+
+import prisma from "../../tests/setup";
+
 export const mockClerkUsers = [
   {
     id: "mock user",
@@ -36,6 +40,24 @@ export const mockClerkUsers = [
     publicMetadata: {
       role: "CLIENT"
     }
+  },
+  {
+    id: "RepairerTesterNic",
+    firstName: "Niccccc",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "Niccccc@gmail.com" }],
+    publicMetadata: {
+      role: "REPAIRER"
+    }
+  },
+  {
+    id: "RepairerTesterFF",
+    firstName: "FFAAAAN",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "FFAAAAN@gmail.com" }],
+    publicMetadata: {
+      role: "REPAIRER"
+    }
   }
 ];
 
@@ -56,6 +78,42 @@ const queryUsers = ({ query }: BasicSearchParams) => {
   );
 };
 
+prisma.event.createMany({
+  data: [
+    {
+      id: "ev-3",
+      createdBy: "user_2",
+      name: "Test Event",
+      eventType: "Sponge",
+      description: "Sponge repair event.",
+      startDate: new Date("2023-12-16"),
+      endDate: new Date("2023-12-17"),
+      location: "McDonalds"
+    }
+  ]
+});
+
+prisma.eventRepairer.create({
+  data: {
+    userId: "RepairerTesterNic",
+    eventId: "aaaaaaaa-19a2-11ee-be56-0242ac120002"
+  }
+});
+
+prisma.eventRepairer.create({
+  data: {
+    userId: "RepairerTesterFF",
+    eventId: "aaaaaaaa-19a2-11ee-be56-0242ac120002"
+  }
+});
+
+prisma.eventRepairer.create({
+  data: {
+    userId: "RepairerTesterFF",
+    eventId: "aaaaaaaa-19a2-11ee-be56-0242ac120002"
+  }
+});
+
 export const clerkClient = {
   users: {
     getUserList: vi.fn().mockImplementation(queryUsers),
@@ -66,6 +124,9 @@ export const clerkClient = {
       ),
     getUser: vi.fn().mockImplementation((id) => {
       return mockClerkUsers.find((user) => user.id === id);
+    }),
+    getRole: vi.fn().mockImplementation(() => {
+      return UserRole.REPAIRER;
     })
   }
 };

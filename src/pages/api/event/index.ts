@@ -4,7 +4,8 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { ErrorResponse, EventResponse } from "@/types";
+import userService from "@/services/user";
+import { ErrorResponse, EventResponse, UserRole } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -32,8 +33,17 @@ async function getEvents(
     [sortKey]: sortMethod
   };
 
-  const events = await prisma.event.findMany({
+  const { userId } = getAuth(req);
+
+  const userRole = await userService.getRole(userId!);
+
+  const queryRepairers = {
     where: {
+      eventRepairer: {
+        some: {
+          userId: userId!
+        }
+      },
       OR: [
         { name: { contains: searchWord, mode: "insensitive" } },
         { createdBy: { contains: searchWord, mode: "insensitive" } },
@@ -49,7 +59,57 @@ async function getEvents(
       createdBy: { in: createdBy }
     },
     orderBy: sortObj
-  });
+  };
+
+  let events;
+
+  if (userRole === UserRole.REPAIRER) {
+    events = await prisma.event.findMany({
+      where: {
+        eventRepairer: {
+          some: {
+            userId: userId!
+          }
+        },
+        OR: [
+          { name: { contains: searchWord, mode: "insensitive" } },
+          { createdBy: { contains: searchWord, mode: "insensitive" } },
+          { location: { contains: searchWord, mode: "insensitive" } },
+          { eventType: { contains: searchWord, mode: "insensitive" } }
+        ],
+        startDate: {
+          gte: minStartDate ? new Date(minStartDate) : undefined,
+          lte: maxStartDate ? new Date(maxStartDate) : undefined
+        },
+        eventType: { in: eventType },
+        status: { in: eventStatus },
+        createdBy: { in: createdBy }
+      },
+      orderBy: sortObj
+    });
+  } else {
+    events = await prisma.event.findMany({
+      where: {
+        OR: [
+          { name: { contains: searchWord, mode: "insensitive" } },
+          { createdBy: { contains: searchWord, mode: "insensitive" } },
+          { location: { contains: searchWord, mode: "insensitive" } },
+          { eventType: { contains: searchWord, mode: "insensitive" } }
+        ],
+        startDate: {
+          gte: minStartDate ? new Date(minStartDate) : undefined,
+          lte: maxStartDate ? new Date(maxStartDate) : undefined
+        },
+        eventType: { in: eventType },
+        status: { in: eventStatus },
+        createdBy: { in: createdBy }
+      },
+      orderBy: sortObj
+    });
+  }
+
+  console.log(userRole);
+  console.log(events);
 
   const eventResponse: EventResponse[] =
     await eventService.toClientResponse(events);
