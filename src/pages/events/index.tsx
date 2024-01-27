@@ -78,7 +78,7 @@ const Events: NextPageWithLayout = () => {
   return (
     <div className="w-full">
       <div className="flex justify-center">
-        <div className="flex justify-center mt-5 mx-5 gap-2 w-1/2">
+        <div className="flex justify-center mt-5 mx-5 gap-2 md:w-1/2">
           <SelectDate
             label="Date"
             value={date}
