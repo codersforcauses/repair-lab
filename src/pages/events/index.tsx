@@ -133,19 +133,21 @@ const Events: NextPageWithLayout = () => {
                 name,
                 startDate,
                 description,
-                location
-              }: EventResponse) => (
-                <div key={id}>
-                  <Card
-                    props={{
-                      title: name,
-                      date: formatDate(String(startDate)),
-                      location: location,
-                      description: description
-                    }}
-                  />
-                </div>
-              )
+                location,
+                status
+              }: EventResponse) =>
+                status == "UPCOMING" ? (
+                  <div key={id}>
+                    <Card
+                      props={{
+                        title: name,
+                        date: formatDate(String(startDate)),
+                        location: location,
+                        description: description
+                      }}
+                    />
+                  </div>
+                ) : null
             )}
           </div>
         ) : (
