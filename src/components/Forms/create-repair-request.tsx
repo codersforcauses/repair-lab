@@ -27,7 +27,7 @@ const repairRequestFormSchema = createRepairRequestSchema.extend({
 });
 
 export default function RepairRequestForm({ eventId }: { eventId?: string }) {
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
       itemBrand: "",
@@ -55,6 +55,8 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
     const [thumbnailImage, ...images] = keys;
     const updatedData = { ...data, thumbnailImage, images };
     createRepairRequest(updatedData);
+    reset();
+    window.location.href = "/request-success";
   };
 
   return (
