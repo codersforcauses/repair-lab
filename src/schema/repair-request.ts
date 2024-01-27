@@ -19,7 +19,8 @@ export const getRepairRequestSchema = z.object({
   sortMethod: z.enum(["asc", "desc"]).optional(),
   searchWord: z.string().optional(),
   item: stringOrArray.optional(),
-  brand: stringOrArray.optional()
+  brand: stringOrArray.optional(),
+  assignedTo: stringOrArray.optional()
 });
 
 export const createRepairRequestSchema = z.object({

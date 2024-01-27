@@ -28,7 +28,8 @@ async function getRepairRequests(
     sortMethod = "asc",
     searchWord,
     item,
-    brand
+    brand,
+    assignedTo
   } = getRepairRequestSchema.parse(req.query);
 
   const event = await prisma.event.findUnique({
@@ -47,7 +48,8 @@ async function getRepairRequests(
     where: {
       event: { id: eventId as string },
       item: { name: { in: item } },
-      itemBrand: { in: brand }
+      itemBrand: { in: brand },
+      assignedTo: { in: assignedTo }
     },
     include: {
       images: true

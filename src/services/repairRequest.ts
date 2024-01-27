@@ -23,12 +23,16 @@ const toClientResponse = async (
         presignImages(req.images?.map(({ s3Key }) => s3Key) || [])
       ]);
 
+      let assignedTo = undefined;
+      if (req.assignedTo)
+        assignedTo =
+          userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo);
+
       return {
         ...req,
         createdBy:
           userMap[req.createdBy] ?? userService.unknownUser(req.createdBy),
-        assignedTo:
-          userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo),
+        assignedTo,
         requestDate: req.requestDate.toISOString(),
         updatedAt: req.updatedAt.toISOString(),
         hoursWorked: req.hoursWorked.toNumber(),

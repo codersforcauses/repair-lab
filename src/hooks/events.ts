@@ -6,6 +6,7 @@ import {
   CreateEvent,
   EventResponse,
   RepairRequestResponse,
+  SortDirection,
   UpdateEvent
 } from "@/types";
 
@@ -113,17 +114,20 @@ export const useEventOptions = () => {
   });
 };
 
-export const useRepairRequests = (eventId: string | undefined) => {
-  const queryFn = async () => {
-    const url = `event/${eventId}/repair-request`;
-
-    const response = await httpClient.get<RepairRequestResponse[]>(url);
-    return response.data;
-  };
-
-  return useQuery({
-    queryKey: ["repair-requests", eventId],
-    queryFn,
-    enabled: eventId != undefined
+export const useRepairRequests = (params: {
+  eventId?: string;
+  sortKey?: string;
+  sortMethod?: SortDirection;
+  searchWord?: string;
+}) => {
+  return useQuery<RepairRequestResponse[]>({
+    queryKey: ["repair-requests", params],
+    queryFn: () =>
+      httpClient
+        .get(`event/${params.eventId}/repair-request`, {
+          params
+        })
+        .then((response) => response.data),
+    enabled: params.eventId != undefined
   });
 };

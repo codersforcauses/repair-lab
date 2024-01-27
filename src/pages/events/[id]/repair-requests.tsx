@@ -23,8 +23,26 @@ export default function RepairRequests() {
   } = useRouter();
 
   const eventId = id?.toString();
+  const sortBy = [
+    { key: "status", label: "Status" },
+    { key: "itemType", label: "Item Type" },
+    { key: "brand", label: "Brand" }
+  ];
+  const [{ search, sortKey, sortDir }, setSearchParams] = useSearchParamsState({
+    search: "",
+    sortKey: "",
+    sortDir: "asc"
+  });
 
-  const { data: repairRequests } = useRepairRequests(eventId);
+  const validatedSortDir =
+    sortDir == "asc" || sortDir == "desc" ? sortDir : "asc";
+
+  const { data: repairRequests } = useRepairRequests({
+    eventId,
+    sortKey,
+    sortMethod: validatedSortDir,
+    searchWord: search
+  });
   const { data: event } = useEvent(eventId);
 
   function showForm() {
@@ -46,17 +64,6 @@ export default function RepairRequests() {
     });
   }, [event]);
 
-  const sortBy = [
-    { key: "status", label: "Status" },
-    { key: "itemType", label: "Item Type" },
-    { key: "brand", label: "Brand" }
-  ];
-  const [{ search, sortKey, sortDir }, setSearchParams] = useSearchParamsState({
-    search: undefined,
-    sortKey: "",
-    sortDir: "asc"
-  });
-
   return (
     <Sidebar>
       <main className="ml-80 min-h-screen w-full p-4">
@@ -73,9 +80,7 @@ export default function RepairRequests() {
                     <SortBy
                       options={sortBy}
                       sortKey={sortKey}
-                      sortDir={
-                        sortDir == "asc" || sortDir == "desc" ? sortDir : "asc"
-                      }
+                      sortDir={validatedSortDir}
                       onChange={(sortKey, sortDir) => {
                         setSearchParams((state) => ({
                           ...state,
@@ -114,24 +119,30 @@ export default function RepairRequests() {
                 {!repairRequests ? (
                   <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
                 ) : (
-                  repairRequests.map((item: RepairRequestResponse) => (
-                    <div key={item.id}>
-                      <Card
-                        props={{
-                          title: item.id,
-                          image: "/images/broken-clock-sad.jpg",
-                          description: item.description,
-                          status: item.status,
-                          firstName:
-                            item.assignedTo.firstName ??
-                            item.assignedTo.emailAddress,
-                          lastName: "",
-                          avatar: "/images/repair_lab_logo.jpg",
-                          repairRequestProps: item
-                        }}
-                      />
-                    </div>
-                  ))
+                  repairRequests.map((item: RepairRequestResponse) => {
+                    let assignedTo = "Unassigned";
+                    if (item.assignedTo) {
+                      assignedTo =
+                        item.assignedTo.firstName ??
+                        item.assignedTo.emailAddress;
+                    }
+                    return (
+                      <div key={item.id}>
+                        <Card
+                          props={{
+                            title: item.id,
+                            image: "/images/broken-clock-sad.jpg",
+                            description: item.description,
+                            status: item.status,
+                            firstName: assignedTo,
+                            lastName: "",
+                            avatar: "/images/repair_lab_logo.jpg",
+                            repairRequestProps: item
+                          }}
+                        />
+                      </div>
+                    );
+                  })
                 )}
 
                 <Modal showModal={eventModal} setShowPopup={showEventModal}>
