@@ -77,8 +77,9 @@ const Events: NextPageWithLayout = () => {
   }, [sortKey, sortMethod]);
 
   return (
-    <div className="w-full">
-      <div className="flex mt-5 mx-5 justify-between">
+    <div className="w-full mt-5">
+      <hr className="mx-10" />
+      <div className="flex mt-3 mx-5 justify-between">
         <div className="flex gap-2 ">
           <SelectDate
             label="Date"
