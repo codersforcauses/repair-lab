@@ -21,7 +21,6 @@ export default function RepairRequests() {
     query: { id }
   } = useRouter();
 
-  // todo check if this is bad
   const eventId = id?.toString();
 
   const { data: repairRequests } = useRepairRequests(eventId);
