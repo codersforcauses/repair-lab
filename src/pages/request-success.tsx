@@ -10,14 +10,20 @@ import type { NextPageWithLayout } from "./_app";
 // #TODO: Refactor this
 const Success: NextPageWithLayout = () => {
   return (
-    <div className="min-h-screen min-w-screen bg-lightAqua-100 static justify-center">
+    <div className="min-h-screen min-w-screen flex justify-center">
       <div className="relative flex h-screen items-center justify-center gap-x-12">
         <div className="w-1/2">
           <div className="relative flex justify-center">
-            <Image src="/images/duck.png" alt="Duck" width={200} height={200} />
+            {/* <Image src="/images/duck.png" alt="Duck" width={200} height={200} /> */}
+            <Image
+              src="/images/submission-success.svg"
+              alt="Man with giant pencil in front of computer"
+              width={300}
+              height={250}
+            />
           </div>
 
-          <div className="relative text-center mb-8 mt-6 text-3xl font-bold text-grey-900">
+          <div className="relative text-center mb-6 mt-8 text-3xl font-bold text-grey-900">
             Thank you!!
           </div>
 
