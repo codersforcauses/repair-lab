@@ -80,7 +80,7 @@ export default function Images() {
     setPagination((prev) => ({ ...prev, total: images.length }));
   }, [images]);
 
-  // This function will be used when the backend is set
+  // This function may be useful when the backend is set
   function renderImages() {
     const content = [];
     // TODO: extract image from s3*/}
@@ -117,12 +117,13 @@ export default function Images() {
                   <CiCirclePlus className="text-app-base-200" size={100} />
                 </div>
                 {imagesToShow.map((image, index) => (
-                  <div key={index} className="w-40 h-30">
+                  <div key={index} className="w-40 h-30 flex items-center">
                     <Image
                       src={image}
                       alt="Uploaded image"
                       width={721}
                       height={831}
+                      layout="intrinsic"
                     />
                   </div>
                 ))}
