@@ -1,7 +1,9 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { HiOutlineChevronDown } from "react-icons/hi";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+
+import { SortDirection } from "@/types";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -9,25 +11,26 @@ function classNames(...classes: string[]) {
 
 interface SortByProps {
   options: { key: string; label: string }[];
-  onChange?: (sortKey: string, sortDir: "asc" | "desc") => void;
+  sortKey: string;
+  sortDir: SortDirection;
+  onChange?: (sortKey: string, sortDir: SortDirection) => void;
 }
 
-export default function SortBy({ options, onChange }: SortByProps) {
-  const [sortAscending, setSortAscending] = useState(true);
-  const [currentSort, setCurrentSort] = useState("");
+export default function SortBy({
+  options,
+  sortKey,
+  sortDir,
+  onChange
+}: SortByProps) {
+  const sortAscending = sortDir == "asc";
 
   const SortDirectionIcon = sortAscending ? TiArrowSortedUp : TiArrowSortedDown;
 
   // TODO make this less janky
   const innerOptions = [{ key: "", label: "None" }, ...options];
 
-  const sortLabel =
-    options.find((o) => o.key == currentSort)?.label ?? "Sort By";
+  const sortLabel = options.find((o) => o.key == sortKey)?.label ?? "Sort By";
 
-  useEffect(() => {
-    onChange?.(currentSort, sortAscending ? "asc" : "desc");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortAscending, currentSort]);
   return (
     <div>
       <Menu as="div" className="relative w-full p-4 text-left">
@@ -41,7 +44,9 @@ export default function SortBy({ options, onChange }: SortByProps) {
           </Menu.Button>
           <button
             className="h-full aspect-square justify-center rounded-md bg-gray-100 text-sm font-semibold text-gray-900 shadow-sm ring-0 hover:bg-gray-50 focus:shadow-md focus:outline-none"
-            onClick={() => setSortAscending(!sortAscending)}
+            onClick={() =>
+              onChange?.(sortKey, sortDir === "asc" ? "desc" : "asc")
+            }
           >
             <SortDirectionIcon
               className="h-6 w-6 text-gray-400 inline"
@@ -65,7 +70,7 @@ export default function SortBy({ options, onChange }: SortByProps) {
                 <Menu.Item key={option.key}>
                   {({ active }) => (
                     <button
-                      onClick={() => setCurrentSort(option.key)}
+                      onClick={() => onChange?.(option.key, sortDir)}
                       className={classNames(
                         active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                         "block px-4 py-2 text-sm w-full text-left"

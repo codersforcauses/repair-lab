@@ -51,10 +51,10 @@ export default function RepairRequests() {
     { key: "itemType", label: "Item Type" },
     { key: "brand", label: "Brand" }
   ];
-  const [{ search }, setSearchParams] = useSearchParamsState({
+  const [{ search, sortKey, sortDir }, setSearchParams] = useSearchParamsState({
     search: undefined,
-    sortKey: undefined,
-    sortDir: undefined
+    sortKey: "",
+    sortDir: "asc"
   });
 
   return (
@@ -72,6 +72,10 @@ export default function RepairRequests() {
                   <div className="flex justify-end items-center">
                     <SortBy
                       options={sortBy}
+                      sortKey={sortKey}
+                      sortDir={
+                        sortDir == "asc" || sortDir == "desc" ? sortDir : "asc"
+                      }
                       onChange={(sortKey, sortDir) => {
                         setSearchParams((state) => ({
                           ...state,

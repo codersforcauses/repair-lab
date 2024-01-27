@@ -13,6 +13,8 @@ import {
   updateRepairRequestSchema
 } from "@/schema/repair-request";
 
+export type SortDirection = "asc" | "desc";
+
 // TODO: Not sure if we should be exposing prisma model types in the frontend??
 
 // Repair Requests
