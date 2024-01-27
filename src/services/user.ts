@@ -5,7 +5,7 @@ import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
 import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
-import { buildPaginationResponse } from "@/lib/pagination";
+import { PaginationResponse } from "@/lib/pagination";
 import { User, UserRole, UserSearchQuery } from "@/types";
 
 type ClerkOrderBy =
@@ -27,7 +27,9 @@ async function getAuth(req: NextApiRequest) {
   };
 }
 
-async function getMany(options: UserSearchQuery) {
+async function getMany(
+  options: UserSearchQuery
+): Promise<PaginationResponse<User[]>> {
   const { orderBy, perPage, page, query } = options;
 
   const searchRequest = {
@@ -41,11 +43,15 @@ async function getMany(options: UserSearchQuery) {
   const users = await clerkClient.users.getUserList(searchRequest);
   const totalCount = await clerkClient.users.getCount(searchRequest);
 
-  return buildPaginationResponse<User>(
-    users.map((user) => toResponse(user)),
-    options,
-    totalCount
-  );
+  return {
+    items: users.map((user) => toResponse(user)),
+    meta: {
+      totalCount,
+      page,
+      perPage,
+      lastPage: Math.ceil(totalCount / perPage)
+    }
+  };
 }
 
 async function getUserMapFromIds(userIds: string[]) {

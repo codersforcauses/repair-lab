@@ -4,10 +4,10 @@ import Select from "@/components/select";
 
 const DEFAULT_OPTIONS = [10, 20, 50, 100];
 export interface PaginationState {
-  total: number;
   perPage?: number;
   /** Start from 1 */
-  current?: number;
+  page?: number;
+  totalCount: number;
 }
 
 export interface PaginationProps {
@@ -21,24 +21,24 @@ export function Pagination({
   onChange,
   options = DEFAULT_OPTIONS
 }: PaginationProps) {
-  const { total, perPage = 20, current = 1 } = paginationState;
+  const { totalCount, perPage = 20, page = 1 } = paginationState;
 
-  const maxPage = Math.ceil(total / perPage);
-  const firstRecord = perPage * (current - 1) + 1;
-  const lastRecord = Math.min(perPage * current, total);
+  const maxPage = Math.ceil(totalCount / perPage);
+  const firstRecord = perPage * (page - 1) + 1;
+  const lastRecord = Math.min(perPage * page, totalCount);
 
   const toPage = useCallback(
     (page: number) => {
       if (page < 1) return 1;
       if (page > maxPage) return maxPage;
-      onChange({ ...paginationState, current: page });
+      onChange({ ...paginationState, page: page });
     },
     [maxPage, onChange, paginationState]
   );
 
   const handlePerPageChange = useCallback(
     (perPage: number) => {
-      onChange({ ...paginationState, perPage, current: 1 });
+      onChange({ ...paginationState, perPage, page: 1 });
     },
     [onChange, paginationState]
   );
@@ -51,7 +51,7 @@ export function Pagination({
         <span>to</span>
         <span className="font-semibold text-gray-900">{lastRecord}</span>
         of
-        <span className="font-semibold text-gray-900">{total}</span>
+        <span className="font-semibold text-gray-900">{totalCount}</span>
         Entries
       </div>
       <div className="inline-flex">
@@ -63,13 +63,13 @@ export function Pagination({
         />
         <button
           className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
-          onClick={() => toPage(current - 1)}
+          onClick={() => toPage(page - 1)}
         >
           Prev
         </button>
         <button
           className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
-          onClick={() => toPage(current + 1)}
+          onClick={() => toPage(page + 1)}
         >
           Next
         </button>
