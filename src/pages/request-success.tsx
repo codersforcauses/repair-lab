@@ -10,7 +10,7 @@ import type { NextPageWithLayout } from "./_app";
 // #TODO: Refactor this
 const Success: NextPageWithLayout = () => {
   return (
-    <div className="min-h-screen min-w-screen bg-lightAqua-100 flex justify-center">
+    <div className="min-h-screen min-w-screen bg-lightAqua-100 static justify-center">
       <div className="relative flex h-screen items-center justify-center gap-x-12">
         <div className="w-1/2">
           <div className="relative flex justify-center">
