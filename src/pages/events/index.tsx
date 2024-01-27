@@ -6,6 +6,7 @@ import { EventStatus } from "@prisma/client";
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Card from "@/components/Cards/event-card";
 import NavBar from "@/components/NavBar";
+import { Search } from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
 import LoadingSpinner from "@/components/UI/loading-spinner";
@@ -86,7 +87,6 @@ const Events: NextPageWithLayout = () => {
               setFilterState((state) => ({ ...state, minDate, maxDate }))
             }
           />
-
           <Select
             multiple
             label="Type"
@@ -110,6 +110,16 @@ const Events: NextPageWithLayout = () => {
                 className="text-[1rem] transform translate-y-[2px]"
               />
             </HoverOpacityButton>
+          </div>
+
+          <div>
+            <Search
+              className="relative w-5/12 flex-1 "
+              value={search}
+              onChange={(value) =>
+                setFilterState((state) => ({ ...state, search: value }))
+              }
+            />
           </div>
         </div>
       </div>
