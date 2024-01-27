@@ -57,7 +57,7 @@ const VerticalBar = (props: NavItems) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="fixed top-[60px] z-9  inset-0 w-screen h-screen bg-white">
+        <div className="fixed top-[60px] z-9 inset-0 w-screen h-screen bg-white">
           {props.menuItems.map((item) => (
             <Link href={item.path} key={item.item}>
               <p
@@ -65,7 +65,12 @@ const VerticalBar = (props: NavItems) => {
                   router.asPath === item.path ? "text-primary-700" : ""
                 }`}
               >
-                {item.item}
+                <div className="relative flex flex-col">
+                  {item.item}
+                  {router.asPath === item.path && (
+                    <span className="absolute -bottom-1 h-[3px] w-full bg-primary-700 rounded-full" />
+                  )}
+                </div>
               </p>
             </Link>
           ))}
