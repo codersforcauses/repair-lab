@@ -1,6 +1,9 @@
 import { useMemo } from "react";
+import { faFilterCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
 
+import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Card from "@/components/Cards/event-card";
 import NavBar from "@/components/NavBar";
 import Select from "@/components/select";
@@ -58,7 +61,6 @@ const Events: NextPageWithLayout = () => {
     createdBy: userIds
   });
 
-
   const resetQuery = useMemoizedFn(() => {
     setFilterState(initialFilterState);
   });
@@ -76,31 +78,49 @@ const Events: NextPageWithLayout = () => {
 
   return (
     <div className="mt-4 mx-4 flex justify-center">
+
       {isEventsLoading ? (
         <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
       ) : eventData ? (
         <div className="grid gap-4 relative sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 ">
          
-           <SelectDate
-              label="Date"
-              value={date}
-              onChange={([minDate, maxDate]) =>
-                setFilterState((state) => ({ ...state, minDate, maxDate }))
-              }
-            />
+         <div> 
+
+          <SelectDate
+            label="Date"
+            value={date}
+            onChange={([minDate, maxDate]) =>
+              setFilterState((state) => ({ ...state, minDate, maxDate }))
+            }
+          />
 
           <Select
-              multiple
-              label="Type"
-              options={(itemTypes as ItemType[])?.map(({ name }) => ({
-                name,
-                value: name
-              }))}
-              value={eventTypes}
-              onChange={(eventTypes) =>
-                setFilterState((state) => ({ ...state, eventTypes }))
-              }
-            />
+            multiple
+            label="Type"
+            options={(itemTypes as ItemType[])?.map(({ name }) => ({
+              name,
+              value: name
+            }))}
+            value={eventTypes}
+            onChange={(eventTypes) =>
+              setFilterState((state) => ({ ...state, eventTypes }))
+            }
+          />
+
+        </div> 
+
+        <div className="text-center ">
+              <HoverOpacityButton
+                className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
+                title="Clear Filters"
+                onClick={resetQuery}
+              >
+                <FontAwesomeIcon
+                  icon={faFilterCircleXmark}
+                  className="text-[1rem] transform translate-y-[2px]"
+                />
+              </HoverOpacityButton>
+        </div>
           
           {eventData.map(
             ({ id, name, startDate, description, location }: EventResponse) => (
