@@ -5,7 +5,7 @@ import { httpClient } from "@/lib/base-http-client";
 export interface ItemType {
   name: string;
 }
-
+// todo: add type and solve confilct "useQuery<ItemType[]>""
 export const useItemTypes = () => {
   const queryFn = async () => {
     const url = `/item-type`;

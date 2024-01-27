@@ -27,11 +27,45 @@ export const mockClerkUsers = [
     publicMetadata: {
       role: "CLIENT"
     }
+  },
+  {
+    id: "Test",
+    firstName: "Spongebob",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "spongebob@gmail.com" }],
+    publicMetadata: {
+      role: "CLIENT"
+    }
   }
 ];
 
+// query partially matches userId, emailAddress, phoneNumber, username, web3Wallet, firstName, lastName
+type BasicSearchParams = { query?: string };
+const queryUsers = ({ query }: BasicSearchParams) => {
+  if (!query) return mockClerkUsers;
+
+  const partialMatch = (string1: string) =>
+    string1.toLowerCase().includes(query.toLowerCase());
+
+  return mockClerkUsers.filter(
+    (u) =>
+      partialMatch(u.id) ||
+      u.emailAddresses.some((e) => partialMatch(e.emailAddress)) ||
+      partialMatch(u.firstName) ||
+      partialMatch(u.lastName)
+  );
+};
+
 export const clerkClient = {
   users: {
-    getUserList: vi.fn().mockReturnValue(mockClerkUsers)
+    getUserList: vi.fn().mockImplementation(queryUsers),
+    getCount: vi
+      .fn()
+      .mockImplementation(
+        (search: BasicSearchParams) => queryUsers(search).length
+      ),
+    getUser: vi.fn().mockImplementation((id) => {
+      return mockClerkUsers.find((user) => user.id === id);
+    })
   }
 };
