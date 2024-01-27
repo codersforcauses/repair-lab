@@ -17,11 +17,7 @@ const pathMap: { [key: string]: string } = {
   "My Events": "/my-events" // To be redirected to a new page for existing repair requests
 };
 
-const adminRoles = [
-  UserRole.ADMIN,
-  UserRole.ORGANISATION_MANAGER,
-  UserRole.EVENT_MANAGER
-];
+const adminRoles: UserRole[] = ["ADMIN", "EVENT_MANAGER"];
 
 export default function NavBar() {
   const { role, isLoaded, user } = useAuth();
