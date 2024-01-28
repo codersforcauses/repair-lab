@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
 import cn from "@/lib/classnames";
 
@@ -64,18 +65,22 @@ export function Pagination({
           onChange={handlePerPageChange}
           options={options.map((n) => ({ name: String(n), value: n }))}
         />
-        <button
-          className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
+        <HoverOpacityButton
+          className="flex h-8 items-center justify-center rounded-l bg-primary-500 px-3 text-sm font-medium text-white"
+          scaleOnHover={false}
           onClick={() => toPage(current - 1)}
+          disabled={current <= 1}
         >
           Prev
-        </button>
-        <button
-          className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
+        </HoverOpacityButton>
+        <HoverOpacityButton
+          className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-500 px-3 text-sm font-medium text-white"
+          scaleOnHover={false}
           onClick={() => toPage(current + 1)}
+          disabled={current >= maxPage}
         >
           Next
-        </button>
+        </HoverOpacityButton>
       </div>
     </div>
   );
