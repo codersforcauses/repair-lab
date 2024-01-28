@@ -109,7 +109,7 @@ export default function RepairRequests() {
                       Repair Requests ({repairRequests?.meta.totalCount})
                     </span>
                   </div>
-                  <div className="flex justify-end items-center">
+                  <div className="flex justify-end items-center  gap-2">
                     <SingleSelectCheckboxes
                       options={assignedToOptions}
                       checkedKey={assignedTo}
@@ -119,6 +119,19 @@ export default function RepairRequests() {
                           assignedTo: selectedKey
                         }));
                       }}
+                    />
+                    <Select
+                      className="w-36"
+                      multiple
+                      label="Type"
+                      options={itemTypes.map(({ name }) => ({
+                        name,
+                        value: name
+                      }))}
+                      value={itemType}
+                      onChange={(itemType) =>
+                        setSearchParams((state) => ({ ...state, itemType }))
+                      }
                     />
                     <SortBy
                       options={sortBy}
@@ -132,21 +145,8 @@ export default function RepairRequests() {
                         }));
                       }}
                     />
-                    <Select
-                      className=" w-36"
-                      multiple
-                      label="Type"
-                      options={itemTypes.map(({ name }) => ({
-                        name,
-                        value: name
-                      }))}
-                      value={itemType}
-                      onChange={(itemType) =>
-                        setSearchParams((state) => ({ ...state, itemType }))
-                      }
-                    />
                     <Search
-                      className="sm:w-auto m-4"
+                      className="sm:w-auto"
                       value={search}
                       onChange={(value) =>
                         setSearchParams((state) => ({

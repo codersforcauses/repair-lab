@@ -33,8 +33,8 @@ export default function SortBy({
 
   return (
     <div>
-      <Menu as="div" className="relative w-full p-4 text-left">
-        <div className="flex gap-2 h-10">
+      <Menu as="div" className="relative w-full text-left">
+        <div className="flex gap-1 h-10">
           <Menu.Button className="w-fit whitespace-nowrap justify-center rounded-md bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-0 hover:bg-gray-50 focus:shadow-md focus:outline-none">
             {sortLabel}
             <HiOutlineChevronDown
