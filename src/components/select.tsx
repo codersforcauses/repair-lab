@@ -150,7 +150,7 @@ export default function Select<
         ) : renderSelected ? (
           renderSelected(value, selectedOptions, onChange)
         ) : (
-          <span className="truncate text-grey-900">
+          <span className="truncate text-grey-900 select-none">
             {selectedOptions?.map((option) => option[nameKey]).join(", ")}
           </span>
         )}
