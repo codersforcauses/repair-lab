@@ -51,6 +51,7 @@ async function getRepairRequests(
     [sortKey]: sortMethod
   };
 
+  // Query DB with most filters (excluding search)
   let repairRequests = await prisma.repairRequest.findMany({
     where: {
       event: { id: eventId as string },
@@ -70,6 +71,14 @@ async function getRepairRequests(
   if (searchWord)
     repairRequests = await filterBySearch(searchWord, repairRequests);
 
+  const totalCount = repairRequests.length;
+
+  // Extract page
+  const startIndex = (page - 1) * perPage;
+  const endIndex = startIndex + perPage;
+  repairRequests = repairRequests.slice(startIndex, endIndex);
+
+  // Convert to response type
   const repairRequestResponse =
     await repairRequestService.toClientResponse(repairRequests);
 
@@ -79,13 +88,16 @@ async function getRepairRequests(
       page,
       perPage
     },
-    repairRequestResponse.length
+    totalCount
   );
   return res.status(200).json(paginatedResponse);
 }
 
 /**
- * Filters users by name through search term
+ * Filters a list of repair requests by a search on
+ * - User query (via clerk)
+ * - Request ID
+ * - Request Description
  */
 const filterBySearch = async (
   search: string,

@@ -116,11 +116,15 @@ export const useEventOptions = () => {
 };
 
 export const useRepairRequests = (params: {
+  // Filtering
   eventId?: string;
   sortKey?: string;
   sortMethod?: SortDirection;
   searchWord?: string;
   assignedTo?: string;
+  // Pagination
+  page?: number;
+  perPage?: number;
 }) => {
   return useQuery<PaginationResponse<RepairRequestResponse>>({
     queryKey: ["repair-requests", params],
