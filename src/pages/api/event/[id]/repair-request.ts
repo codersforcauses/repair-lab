@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
+import { buildPaginationResponse, PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 import { getRepairRequestSchema } from "@/schema/repair-request";
 import repairRequestService from "@/services/repairRequest";
@@ -20,7 +21,7 @@ type RepairRequestWithImages = Prisma.RepairRequestGetPayload<{
 
 async function getRepairRequests(
   req: NextApiRequest,
-  res: NextApiResponse<RepairRequestResponse[]>
+  res: NextApiResponse<PaginationResponse<RepairRequestResponse>>
 ) {
   const {
     id: eventId,
@@ -29,7 +30,10 @@ async function getRepairRequests(
     searchWord,
     item,
     brand,
-    assignedTo
+    assignedTo,
+    // pagination
+    page,
+    perPage
   } = getRepairRequestSchema.parse(req.query);
 
   const findUnassigned =
@@ -69,7 +73,17 @@ async function getRepairRequests(
   const repairRequestResponse =
     await repairRequestService.toClientResponse(repairRequests);
 
-  return res.status(200).json(repairRequestResponse);
+  const paginatedResponse = await buildPaginationResponse(
+    repairRequestResponse,
+    {
+      query: "todo",
+      orderBy: "TODO",
+      page,
+      perPage
+    },
+    repairRequestResponse.length
+  );
+  return res.status(200).json(paginatedResponse);
 }
 
 /**

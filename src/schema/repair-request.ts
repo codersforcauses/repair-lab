@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { paginationSchema } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 
 const stringOrArray = z.union([
@@ -8,20 +9,23 @@ const stringOrArray = z.union([
   z.array(z.string())
 ]);
 
-export const getRepairRequestSchema = z.object({
-  id: z.string(),
-  sortKey: z
-    .string()
-    .refine((value) => value in prisma.repairRequest.fields, {
-      message: "Incorrect value for sortKey"
-    })
-    .optional(),
-  sortMethod: z.enum(["asc", "desc"]).optional(),
-  searchWord: z.string().optional(),
-  item: stringOrArray.optional(),
-  brand: stringOrArray.optional(),
-  assignedTo: stringOrArray.optional()
-});
+// TODO fix this pagination schema frankenstein
+export const getRepairRequestSchema = paginationSchema
+  .extend({
+    id: z.string(),
+    sortKey: z
+      .string()
+      .refine((value) => value in prisma.repairRequest.fields, {
+        message: "Incorrect value for sortKey"
+      })
+      .optional(),
+    sortMethod: z.enum(["asc", "desc"]).optional(),
+    searchWord: z.string().optional(),
+    item: stringOrArray.optional(),
+    brand: stringOrArray.optional(),
+    assignedTo: stringOrArray.optional()
+  })
+  .omit({ orderBy: true, query: true });
 
 export const createRepairRequestSchema = z.object({
   eventId: z.string().min(1, { message: "Event is required" }),

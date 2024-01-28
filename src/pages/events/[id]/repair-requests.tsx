@@ -81,7 +81,9 @@ export default function RepairRequests() {
               <div className="container mx-auto items-center">
                 <div className="flex justify-between">
                   <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
-                    <span>Repair Requests ({repairRequests?.length})</span>
+                    <span>
+                      Repair Requests ({repairRequests?.items.length})
+                    </span>
                   </div>
                   <div className="flex justify-end items-center">
                     <RadioButtons
@@ -136,7 +138,7 @@ export default function RepairRequests() {
                 {!repairRequests ? (
                   <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
                 ) : (
-                  repairRequests.map((item: RepairRequestResponse) => {
+                  repairRequests.items.map((item: RepairRequestResponse) => {
                     let assignedTo = "Unassigned";
                     if (item.assignedTo) {
                       assignedTo =

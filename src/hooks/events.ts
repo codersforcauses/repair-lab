@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
+import { PaginationResponse } from "@/lib/pagination";
 import {
   CreateEvent,
   EventResponse,
@@ -121,7 +122,7 @@ export const useRepairRequests = (params: {
   searchWord?: string;
   assignedTo?: string;
 }) => {
-  return useQuery<RepairRequestResponse[]>({
+  return useQuery<PaginationResponse<RepairRequestResponse>>({
     queryKey: ["repair-requests", params],
     queryFn: () =>
       httpClient
