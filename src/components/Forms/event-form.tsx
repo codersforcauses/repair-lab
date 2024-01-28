@@ -26,6 +26,7 @@ export default function EventForm({
       endDate: "",
       eventType: "",
       disclaimer: ""
+      // volunteers: [""]
     }
   });
 
@@ -87,6 +88,16 @@ export default function EventForm({
             control={control}
             rules={{ required: false }}
           />
+
+          {/* <FieldMultiSelect
+            control={control}
+            name="volunteers" 
+            label="Volunteers"
+            options={itemTypes.map((type) => ({
+              id: type.name,
+              text: type.name
+            }))}
+          ></FieldMultiSelect>*/}
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">

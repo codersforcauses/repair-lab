@@ -70,9 +70,8 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
     [UserRole.CLIENT]: clientRoutes,
     [UserRole.REPAIRER]: repairerRoutes,
     [UserRole.EVENT_MANAGER]: eventManagerRoutes,
-    [UserRole.ADMIN]: adminRoutes,
-    [UserRole.ORGANISATION_MANAGER]: eventManagerRoutes
-  };
+    [UserRole.ADMIN]: adminRoutes
+  } as Record<UserRole, RegExp[]>;
 };
 
 // middleware route
