@@ -135,7 +135,7 @@ export default function Select<
       <Listbox.Button
         as="div"
         className={cn(
-          "relative flex items-center h-10 w-full justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
+          "relative flex items-center h-10 w-full justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-primary-500 hover:shadow-grey-300",
           className
         )}
       >

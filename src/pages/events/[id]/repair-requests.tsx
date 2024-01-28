@@ -121,7 +121,7 @@ export default function RepairRequests() {
                       }}
                     />
                     <Select
-                      className="w-36 bg-gray-100 ring-0 hover:bg-gray-50 shadow-none"
+                      className="w-36"
                       multiple
                       label="Item Type"
                       options={itemTypes.map(({ name }) => ({
@@ -146,7 +146,7 @@ export default function RepairRequests() {
                       }}
                     />
                     <Search
-                      className="sm:w-auto"
+                      className="sm:w-auto "
                       value={search}
                       onChange={(value) =>
                         setSearchParams((state) => ({
