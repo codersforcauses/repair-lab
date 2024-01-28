@@ -76,8 +76,6 @@ async function getRepairRequests(
   const paginatedResponse = await buildPaginationResponse(
     repairRequestResponse,
     {
-      query: "todo",
-      orderBy: "TODO",
       page,
       perPage
     },
