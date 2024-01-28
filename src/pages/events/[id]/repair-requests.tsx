@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
+import ClearFiltersButton from "@/components/Button/clear-filters-button";
 import Card from "@/components/Cards/card";
 import RepairAttemptForm from "@/components/Forms/create-repair-request";
 import Header, { HeaderProps } from "@/components/Header";
@@ -17,8 +18,19 @@ import { useAuth } from "@/hooks/auth";
 import { useRepairRequests } from "@/hooks/events";
 import { useEvent } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
+import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { RepairRequestResponse } from "@/types";
+
+const initialFilterState = {
+  search: "",
+  sortKey: "",
+  sortDir: "asc",
+  assignedTo: "",
+  itemType: "",
+  page: "1",
+  perPage: "10"
+};
 
 export default function RepairRequests() {
   const [eventModal, showEventModal] = useState(false);
@@ -51,6 +63,9 @@ export default function RepairRequests() {
     itemType: "",
     page: "1",
     perPage: "10"
+  });
+  const resetQuery = useMemoizedFn(() => {
+    setSearchParams(initialFilterState);
   });
 
   const validatedSortDir =
@@ -196,6 +211,10 @@ export default function RepairRequests() {
                           search: value
                         }))
                       }
+                    />
+                    <ClearFiltersButton
+                      className="bg-white shadow-sm ring-1 ring-inset ring-primary-500 hover:shadow-grey-300"
+                      onClick={resetQuery}
                     />
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
