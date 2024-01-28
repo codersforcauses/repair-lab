@@ -63,12 +63,17 @@ const VerticalBar = (props: NavItems) => {
               <Link href={item.path} key={item.item}>
                 <p
                   className={`flex p-4 border-b hover:bg-app-base-100 ${
-                    router.asPath === item.path ? "text-primary-700" : ""
+                    (router.asPath === "/" && item.path === "/") ||
+                    (item.path !== "/" && router.asPath.startsWith(item.path))
+                      ? "text-primary-700"
+                      : ""
                   }`}
                 >
                   <div className="relative flex flex-col">
                     {item.item}
-                    {router.asPath === item.path && (
+                    {((router.asPath === "/" && item.path === "/") ||
+                      (item.path !== "/" &&
+                        router.asPath.startsWith(item.path))) && (
                       <span className="absolute -bottom-1 h-[3px] w-full bg-primary-700 rounded-full" />
                     )}
                   </div>
