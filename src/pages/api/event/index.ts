@@ -4,7 +4,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { ErrorResponse, EventResponse } from "@/types";
+import { ErrorResponse, EventResponse, SortDirection } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -28,7 +28,7 @@ async function getEvents(
     createdBy
   } = getEventSchema.parse(req.query);
 
-  const sortObj: Record<string, "asc" | "desc"> = {
+  const sortObj: Record<string, SortDirection> = {
     [sortKey]: sortMethod
   };
 

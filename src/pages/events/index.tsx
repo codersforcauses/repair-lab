@@ -21,7 +21,7 @@ import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { formatDate } from "@/lib/datetime";
 import { NextPageWithLayout } from "@/pages/_app";
-import { CreateEvent, User } from "@/types";
+import { CreateEvent, SortDirection, User } from "@/types";
 
 const initialFilterState = {
   openModal: undefined,
@@ -29,7 +29,7 @@ const initialFilterState = {
   maxDate: undefined,
   search: undefined,
   sortKey: undefined,
-  sortMethod: undefined as "asc" | "desc" | undefined,
+  sortMethod: undefined as SortDirection | undefined,
   userIds: [] as string[],
   eventTypes: [] as string[],
   status: [] as EventStatus[]
