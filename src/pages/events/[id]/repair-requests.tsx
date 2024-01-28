@@ -121,9 +121,9 @@ export default function RepairRequests() {
                       }}
                     />
                     <Select
-                      className="w-36"
+                      className="w-36 bg-gray-100 ring-0 hover:bg-gray-50 shadow-none"
                       multiple
-                      label="Type"
+                      label="Item Type"
                       options={itemTypes.map(({ name }) => ({
                         name,
                         value: name
