@@ -59,7 +59,11 @@ export default function RepairRequests() {
   const { data: itemTypes = [] } = useItemTypes();
 
   // Placeholder data is used to display pagination data while next page loads
-  const { data: repairRequests, isPlaceholderData } = useRepairRequests({
+  const {
+    data: repairRequests,
+    isPlaceholderData,
+    isError
+  } = useRepairRequests({
     eventId,
     sortKey,
     sortMethod: validatedSortDir,
@@ -94,6 +98,44 @@ export default function RepairRequests() {
       createdBy: event.createdBy
     });
   }, [event]);
+
+  function RepairRequestList() {
+    // Error state
+    if (isError)
+      return (
+        <div className="w-full h-full flex items-center justify-center absolute text-red-500 text-6xl select-none">
+          !
+        </div>
+      );
+    // Loading state
+    if (!repairRequests || isPlaceholderData)
+      return (
+        <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
+      );
+    // Success
+    return repairRequests.items.map((item: RepairRequestResponse) => {
+      let assignedTo = "Unassigned";
+      if (item.assignedTo) {
+        assignedTo = item.assignedTo.firstName ?? item.assignedTo.emailAddress;
+      }
+      return (
+        <div key={item.id}>
+          <Card
+            props={{
+              title: item.id,
+              image: "/images/broken-clock-sad.jpg",
+              description: item.description,
+              status: item.status,
+              firstName: assignedTo,
+              lastName: item.assignedTo?.lastName ?? "",
+              avatar: "/images/repair_lab_logo.jpg",
+              repairRequestProps: item
+            }}
+          />
+        </div>
+      );
+    });
+  }
 
   return (
     <Sidebar>
@@ -182,34 +224,7 @@ export default function RepairRequests() {
                 }}
               />
               <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 relative">
-                {!repairRequests || isPlaceholderData ? (
-                  <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
-                ) : (
-                  repairRequests.items.map((item: RepairRequestResponse) => {
-                    let assignedTo = "Unassigned";
-                    if (item.assignedTo) {
-                      assignedTo =
-                        item.assignedTo.firstName ??
-                        item.assignedTo.emailAddress;
-                    }
-                    return (
-                      <div key={item.id}>
-                        <Card
-                          props={{
-                            title: item.id,
-                            image: "/images/broken-clock-sad.jpg",
-                            description: item.description,
-                            status: item.status,
-                            firstName: assignedTo,
-                            lastName: item.assignedTo?.lastName ?? "",
-                            avatar: "/images/repair_lab_logo.jpg",
-                            repairRequestProps: item
-                          }}
-                        />
-                      </div>
-                    );
-                  })
-                )}
+                <RepairRequestList />
 
                 <Modal showModal={eventModal} setShowPopup={showEventModal}>
                   {" "}

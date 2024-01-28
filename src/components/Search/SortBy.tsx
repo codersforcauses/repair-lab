@@ -3,10 +3,6 @@ import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa6";
 import Select from "@/components/select";
 import { SortDirection } from "@/types";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 interface SortByProps {
   options: { key: string; label: string }[];
   sortKey: string;
@@ -22,7 +18,7 @@ export default function SortBy({
 }: SortByProps) {
   const sortAscending = sortDir == "asc";
 
-  const SortDirectionIcon = sortAscending ? FaSortDown : FaSortUp;
+  const SortDirectionIcon = sortAscending ? FaSortUp : FaSortDown;
 
   // This adds a none option that just deselects
   const innerOptions = [{ key: "", label: "None" }, ...options];
