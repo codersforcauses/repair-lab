@@ -19,7 +19,7 @@ export const getRepairRequestSchema = paginationSchema.extend({
     .optional(),
   sortMethod: z.enum(["asc", "desc"]).optional(),
   searchWord: z.string().optional(),
-  item: stringOrArray.optional(),
+  itemType: stringOrArray.optional(),
   brand: stringOrArray.optional(),
   assignedTo: stringOrArray.optional()
 });

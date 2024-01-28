@@ -9,12 +9,14 @@ import Modal from "@/components/Modal";
 import { Pagination, PaginationState } from "@/components/pagination";
 import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
+import Select from "@/components/select";
 import Sidebar from "@/components/sidebar/index";
 import SingleSelectCheckboxes from "@/components/single-check-box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
 import { useRepairRequests } from "@/hooks/events";
 import { useEvent } from "@/hooks/events";
+import { useItemTypes } from "@/hooks/item-types";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { RepairRequestResponse } from "@/types";
 
@@ -39,13 +41,14 @@ export default function RepairRequests() {
   const { user } = useAuth();
 
   const [
-    { search, sortKey, sortDir, assignedTo, page, perPage },
+    { search, sortKey, sortDir, assignedTo, page, perPage, itemType },
     setSearchParams
   ] = useSearchParamsState({
     search: "",
     sortKey: "",
     sortDir: "asc",
     assignedTo: "",
+    itemType: "",
     page: "1",
     perPage: "10"
   });
@@ -53,12 +56,16 @@ export default function RepairRequests() {
   const validatedSortDir =
     sortDir == "asc" || sortDir == "desc" ? sortDir : "asc";
 
+  const { data: itemTypes = [] } = useItemTypes();
+
+  // Placeholder data is used to display pagination data while next page loads
   const { data: repairRequests, isPlaceholderData } = useRepairRequests({
     eventId,
     sortKey,
     sortMethod: validatedSortDir,
     searchWord: search,
     assignedTo: assignedTo === "me" ? user?.id : assignedTo,
+    itemType,
     page: +page,
     perPage: +perPage
   });
@@ -124,6 +131,19 @@ export default function RepairRequests() {
                           sortDir
                         }));
                       }}
+                    />
+                    <Select
+                      className=" w-36"
+                      multiple
+                      label="Type"
+                      options={itemTypes.map(({ name }) => ({
+                        name,
+                        value: name
+                      }))}
+                      value={itemType}
+                      onChange={(itemType) =>
+                        setSearchParams((state) => ({ ...state, itemType }))
+                      }
                     />
                     <Search
                       className="sm:w-auto m-4"

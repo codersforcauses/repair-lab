@@ -19,6 +19,7 @@ type RepairRequestWithImages = Prisma.RepairRequestGetPayload<{
   include: { images: true };
 }>;
 
+// TODO: refactor this to query users first & use ids in prisma query
 async function getRepairRequests(
   req: NextApiRequest,
   res: NextApiResponse<PaginationResponse<RepairRequestResponse>>
@@ -28,7 +29,7 @@ async function getRepairRequests(
     sortKey = prisma.repairRequest.fields.requestDate.name,
     sortMethod = "asc",
     searchWord,
-    item,
+    itemType,
     brand,
     assignedTo,
     // pagination
@@ -55,7 +56,7 @@ async function getRepairRequests(
   let repairRequests = await prisma.repairRequest.findMany({
     where: {
       event: { id: eventId as string },
-      item: { name: { in: item } },
+      item: { name: { in: itemType } },
       itemBrand: { in: brand },
       ...(findUnassigned
         ? { assignedTo: "" }

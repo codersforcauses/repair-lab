@@ -88,7 +88,7 @@ describe("GET /api/event", () => {
     sortKey?: string;
     sortMethod?: string;
     searchWord?: string;
-    item?: string | string[];
+    itemType?: string | string[];
     brand?: string | string[];
     assignedTo?: string | string[];
     page?: string;
@@ -154,8 +154,8 @@ describe("GET /api/event", () => {
   });
 
   it("should be able to filter repair requests by item type", async () => {
-    await testFilter({ id: "ev-1", item: "Laptop" }, ["rr-1"]);
-    await testFilter({ id: "ev-2", item: "Laptop" }, ["rr-3", "rr-4"]);
+    await testFilter({ id: "ev-1", itemType: "Laptop" }, ["rr-1"]);
+    await testFilter({ id: "ev-2", itemType: "Laptop" }, ["rr-3", "rr-4"]);
   });
 
   it("should be able to filter repair requests by assignee", async () => {
@@ -164,7 +164,7 @@ describe("GET /api/event", () => {
   });
 
   it("should return all repair requests when empty filter provided", async () => {
-    await testFilter({ id: "ev-1", item: "" }, ["rr-1", "rr-2"]);
+    await testFilter({ id: "ev-1", itemType: "" }, ["rr-1", "rr-2"]);
     await testFilter({ id: "ev-1", brand: "" }, ["rr-1", "rr-2"]);
     await testFilter({ id: "ev-2", brand: "" }, ["rr-3", "rr-4"]);
   });

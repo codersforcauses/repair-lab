@@ -127,6 +127,7 @@ export const useRepairRequests = (params: {
   sortMethod?: SortDirection;
   searchWord?: string;
   assignedTo?: string;
+  itemType?: string;
   // Pagination
   page?: number;
   perPage?: number;
