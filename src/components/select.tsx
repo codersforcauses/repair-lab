@@ -139,12 +139,14 @@ export default function Select<
           className
         )}
       >
-        <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black">
+        <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black select-none">
           {label}
           {afterLabel}
         </label>
         {isBlank(value) ? (
-          <span className="text-gray-500 text-nowrap">{placeholder}</span>
+          <span className="text-gray-500 text-nowrap select-none">
+            {placeholder}
+          </span>
         ) : renderSelected ? (
           renderSelected(value, selectedOptions, onChange)
         ) : (
