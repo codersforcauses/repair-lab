@@ -53,7 +53,7 @@ export default function RepairRequests() {
   const validatedSortDir =
     sortDir == "asc" || sortDir == "desc" ? sortDir : "asc";
 
-  const { data: repairRequests } = useRepairRequests({
+  const { data: repairRequests, isPlaceholderData } = useRepairRequests({
     eventId,
     sortKey,
     sortMethod: validatedSortDir,
@@ -162,7 +162,7 @@ export default function RepairRequests() {
                 }}
               />
               <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 relative">
-                {!repairRequests ? (
+                {!repairRequests || isPlaceholderData ? (
                   <LoadingSpinner className="w-full h-full flex items-center justify-center absolute" />
                 ) : (
                   repairRequests.items.map((item: RepairRequestResponse) => {

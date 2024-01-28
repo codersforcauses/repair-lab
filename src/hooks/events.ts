@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
@@ -128,6 +133,7 @@ export const useRepairRequests = (params: {
 }) => {
   return useQuery<PaginationResponse<RepairRequestResponse>>({
     queryKey: ["repair-requests", params],
+    placeholderData: keepPreviousData,
     queryFn: () =>
       httpClient
         .get(`event/${params.eventId}/repair-request`, {
