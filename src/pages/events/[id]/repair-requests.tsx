@@ -10,6 +10,7 @@ import { Pagination, PaginationState } from "@/components/pagination";
 import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
+import SingleSelectCheckboxes from "@/components/single-check-box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
 import { useRepairRequests } from "@/hooks/events";
@@ -102,7 +103,7 @@ export default function RepairRequests() {
                     </span>
                   </div>
                   <div className="flex justify-end items-center">
-                    <RadioButtons
+                    <SingleSelectCheckboxes
                       options={assignedToOptions}
                       checkedKey={assignedTo}
                       onChange={(selectedKey) => {
@@ -208,40 +209,5 @@ export default function RepairRequests() {
         )}
       </main>
     </Sidebar>
-  );
-}
-
-function RadioButtons({
-  checkedKey,
-  options,
-  onChange
-}: {
-  checkedKey?: string;
-  options: { key: string; label: string }[];
-  onChange?: (selectedKey: string) => void;
-}) {
-  return (
-    <fieldset className="flex flex-col">
-      {options.map(({ key, label }) => (
-        <label key={key}>
-          <input
-            type="radio"
-            id={key}
-            value={key}
-            name="assigned"
-            checked={key === checkedKey}
-            // onClick to allow for deselecting radio buttons
-            onClick={(e) =>
-              onChange?.(
-                e.currentTarget.value === checkedKey
-                  ? ""
-                  : e.currentTarget.value
-              )
-            }
-          />
-          {label}
-        </label>
-      ))}
-    </fieldset>
   );
 }
