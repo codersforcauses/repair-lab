@@ -3,35 +3,36 @@ import { render } from "@react-email/render";
 
 import prisma from "@/lib/prisma";
 import { User } from "@/types";
-import { formatDate } from "@/utils/format-date";
 
 import userService from "./user";
 import { RepairRequestEmail } from "../email/emails/repair-request-email";
+import { formatDate } from "../utils";
 
 const sesClient = new SESClient({
-  region: process.env.AWS_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
-  }
+  region: process.env.AWS_REGION
 });
 
-const emailContent = (customerUser: User, requestId: string) => {
-  // use repair request email template
-  return RepairRequestEmailContent(customerUser, requestId);
+const emailHtml = (customerUser: User, requestId: string) => {
+  return repairRequestEmailHtml(customerUser, requestId);
   // add more email templates here
 };
 
-const RepairRequestEmailContent = async (
+const repairRequestEmailHtml = async (
   customerUser: User,
   requestId: string
 ) => {
-  // get repair request information from db
   const repairRequest = await prisma.repairRequest.findUnique({
     where: { id: requestId }
   });
 
-  // get coustmer name
+  let eventDate = "";
+  if (repairRequest?.eventId) {
+    const event = await prisma.event.findUnique({
+      where: { id: repairRequest?.eventId }
+    });
+    eventDate = formatDate(event?.endDate.toDateString() || "");
+  }
+
   const customerName = `${customerUser?.firstName || ""} ${
     customerUser?.lastName || ""
   }`;
@@ -43,8 +44,8 @@ const RepairRequestEmailContent = async (
       date: formatDate(repairRequest?.requestDate.toDateString() || ""),
       itemName: repairRequest?.itemType || "",
       issueDescription: repairRequest?.description || "",
-      estimatedDate: "",
-      emailSignature: ""
+      estimatedDate: eventDate,
+      emailSignature: "" // TODO: Add email signature
     })
   );
 };
@@ -55,53 +56,60 @@ const createSendEmailCommand = (
   content: string
 ) => {
   return new SendEmailCommand({
-    Source: process.env.AWS_SES_FROM_EMAIL!,
+    Source: "repairlabtest@gmail.com",
     Destination: {
       ToAddresses: [customerEmail]
     },
     Message: {
       Subject: {
-        Data: subject,
-        Charset: "UTF-8"
+        Charset: "UTF-8",
+        Data: subject
       },
       Body: {
+        // if html data and text data both exist, the email will be sent in html format
         Html: {
-          Data: content,
-          Charset: "UTF-8"
+          Charset: "UTF-8",
+          Data: content
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: ""
         }
       }
     }
   });
 };
 
-export const sendEmail = async (
+const sendEmail = async (
   subject: string,
   userId: string,
   requestId: string
 ) => {
-  // get customer User from clerk
+  // when the SES switch is not ON, use the ses mock; otherwise, use the real SES
+  const sesSwitch = process.env.AWS_SES_SWITCH;
+  if (sesSwitch !== "ON") {
+    return;
+  }
+
   const customerUser = await userService.getUser(userId);
   if (customerUser === undefined) {
     return;
   }
 
-  // create email content
-  const content = await emailContent(customerUser, requestId);
+  const emailContent = await emailHtml(customerUser, requestId);
 
-  // send email using AWS SES when customer email is available
-  const customerEmail = customerUser?.emailAddress;
-  if (customerEmail) {
-    const sendEmailCommand = createSendEmailCommand(
-      customerUser?.emailAddress,
-      subject,
-      content
-    );
+  const sendEmailCommand = createSendEmailCommand(
+    customerUser?.emailAddress,
+    subject,
+    emailContent
+  );
 
-    try {
-      return await sesClient.send(sendEmailCommand);
-    } catch (e) {
-      // error("Failed to send email.");
-      return e;
-    }
+  try {
+    return await sesClient.send(sendEmailCommand);
+  } catch (e) {
+    // error("Failed to send email.");
+    return e;
   }
 };
+
+export default sendEmail;

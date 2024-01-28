@@ -4,7 +4,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 import { createRepairRequestSchema } from "@/schema/repair-request";
-import { sendEmail } from "@/services/sendEmail";
+import sendEmail from "@/services/sendEmail";
 
 export default apiHandler({
   post: createRepairRequest
@@ -19,6 +19,7 @@ async function createRepairRequest(
   const { userId } = getAuth(req);
 
   const { images, ...rest } = parsedData;
+
   const record = await prisma.repairRequest.create({
     data: {
       ...rest,
@@ -33,10 +34,11 @@ async function createRepairRequest(
     }
   });
 
+  const requestId = record.id;
+
   // send confirmation email to customer
   const emailSubject = "Repaire Request Confimation";
-  const emailResponse = await sendEmail(emailSubject, userId!, record.id);
-  // TODO: handle emailResponse
+  await sendEmail(emailSubject, userId!, requestId); // TODO: Do not handle sending result for now
 
-  return res.status(200).json({ id: record.id });
+  return res.status(200).json({ id: requestId });
 }

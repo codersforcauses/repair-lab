@@ -86,4 +86,26 @@ describe("POST /api/repair-request", () => {
       }
     });
   });
+
+  it("should be able to recieve an email", async () => {
+    await testApiHandler({
+      handler,
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
+            itemType: "Laptop",
+            description: "Test Repair Request Confirmation Email",
+            itemBrand: "Repair Request Confirmation",
+            comment: "Use mock email sevice in test environment."
+          })
+        });
+        expect(res.status).equals(200);
+      }
+    });
+  });
 });
