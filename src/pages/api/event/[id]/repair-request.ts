@@ -9,17 +9,12 @@ import prisma from "@/lib/prisma";
 import { getRepairRequestSchema } from "@/schema/repair-request";
 import repairRequestService from "@/services/repairRequest";
 import userService from "@/services/user";
-import { RepairRequestResponse, User } from "@/types";
+import { RepairRequestResponse, SortDirection } from "@/types";
 
 export default apiHandler({
   get: getRepairRequests
 });
 
-type RepairRequestWithImages = Prisma.RepairRequestGetPayload<{
-  include: { images: true };
-}>;
-
-// TODO: refactor this to query users first & use ids in prisma query
 async function getRepairRequests(
   req: NextApiRequest,
   res: NextApiResponse<PaginationResponse<RepairRequestResponse>>
@@ -48,36 +43,57 @@ async function getRepairRequests(
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  const sortObj: Record<string, "asc" | "desc"> = {
+  const sortObj: Record<string, SortDirection> = {
     [sortKey]: sortMethod
   };
 
-  // Query DB with most filters (excluding search)
-  let repairRequests = await prisma.repairRequest.findMany({
-    where: {
-      event: { id: eventId as string },
-      item: { name: { in: itemType } },
-      itemBrand: { in: brand },
-      ...(findUnassigned
-        ? { assignedTo: "" }
-        : { assignedTo: { in: assignedTo } })
-    },
-    include: {
-      images: true
-    },
-    orderBy: sortObj
-  });
+  // Find user ids that match the search
+  // TODO: if there are more than 500 users that match the search, results will be cut off
+  let userIdList = undefined;
+  if (searchWord) {
+    const users = await userService.getMany({
+      query: searchWord,
+      perPage: 500,
+      orderBy: "created_at",
+      page: 1
+    });
 
-  // Filter by search word after initial query so we have user data
-  if (searchWord)
-    repairRequests = await filterBySearch(searchWord, repairRequests);
+    userIdList = users.items.map((u) => u.id);
+  }
 
-  const totalCount = repairRequests.length;
+  // Query DB
+  const where: Prisma.RepairRequestWhereInput = {
+    event: { id: eventId as string },
+    // Need to pass undefined directly to the OR
+    OR: searchWord
+      ? [
+          { id: { contains: searchWord, mode: "insensitive" } },
+          { description: { contains: searchWord, mode: "insensitive" } },
+          // Users
+          { assignedTo: { in: userIdList } },
+          { createdBy: { in: userIdList } }
+        ]
+      : undefined,
+    item: { name: { in: itemType } },
+    itemBrand: { in: brand },
+    ...(findUnassigned
+      ? { assignedTo: "" }
+      : { assignedTo: { in: assignedTo } })
+  };
 
-  // Extract page
-  const startIndex = (page - 1) * perPage;
-  const endIndex = startIndex + perPage;
-  repairRequests = repairRequests.slice(startIndex, endIndex);
+  const [repairRequests, totalCount] = await prisma.$transaction([
+    prisma.repairRequest.findMany({
+      where,
+      include: {
+        images: true
+      },
+      orderBy: sortObj,
+      // Pagination
+      skip: (page - 1) * perPage,
+      take: perPage
+    }),
+    prisma.repairRequest.count({ where })
+  ]);
 
   // Convert to response type
   const repairRequestResponse =
@@ -93,42 +109,3 @@ async function getRepairRequests(
   );
   return res.status(200).json(paginatedResponse);
 }
-
-/**
- * Filters a list of repair requests by a search on
- * - User query (via clerk)
- * - Request ID
- * - Request Description
- */
-const filterBySearch = async (
-  search: string,
-  repairRequests: RepairRequestWithImages[]
-) => {
-  const lowercaseSearch = search.toLowerCase();
-
-  // Filter users by the search
-  const users = await userService.getMany({
-    query: search,
-    perPage: 500,
-    orderBy: "created_at",
-    page: 1
-  });
-  // Turn users into a record for fast lookup
-  const userMap = users.items.reduce(
-    (map, user) => {
-      map[user.id] = user;
-      return map;
-    },
-    {} as Partial<Record<string, User>>
-  );
-
-  return repairRequests.filter(
-    (r) =>
-      // users
-      userMap[r.createdBy] != undefined ||
-      userMap[r.assignedTo] != undefined ||
-      // other
-      r.id.toLowerCase().includes(lowercaseSearch) ||
-      r.description.toLowerCase().includes(lowercaseSearch)
-  );
-};
