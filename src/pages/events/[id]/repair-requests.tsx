@@ -96,7 +96,7 @@ export default function RepairRequests() {
             <Header {...headerValues} />
             <div className="container">
               <div className="container mx-auto items-center">
-                <div className="flex justify-between">
+                <div className="flex justify-between pr-4">
                   <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
                     <span>
                       Repair Requests ({repairRequests?.meta.totalCount})
@@ -151,7 +151,7 @@ export default function RepairRequests() {
                 </div>
               </div>
               <Pagination
-                className="mt-0"
+                className="mt-0 pl-4 pr-4"
                 value={pagination}
                 onChange={(nextState) => {
                   setSearchParams((state) => ({
