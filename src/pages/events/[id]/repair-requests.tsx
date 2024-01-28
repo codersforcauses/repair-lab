@@ -63,9 +63,9 @@ export default function RepairRequests() {
     perPage: +perPage
   });
 
-  const pagination: PaginationState = useMemo(() => {
+  const pagination = useMemo((): PaginationState => {
     return {
-      page: Number(page),
+      current: Number(page),
       perPage: Number(perPage),
       total: repairRequests?.meta.totalCount ?? 0
     };

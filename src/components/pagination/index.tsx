@@ -32,6 +32,7 @@ export function Pagination({
 
   const toPage = useCallback(
     (page: number) => {
+      console.log(paginationState, page);
       if (page < 1) return 1;
       if (page > maxPage) return maxPage;
       onChange({ ...paginationState, current: page });
