@@ -91,6 +91,8 @@ describe("GET /api/event", () => {
     item?: string | string[];
     brand?: string | string[];
     assignedTo?: string | string[];
+    page?: string;
+    perPage?: string;
   };
   const testFilter = async (
     filters: AllowedParams,
@@ -165,6 +167,17 @@ describe("GET /api/event", () => {
     await testFilter({ id: "ev-1", item: "" }, ["rr-1", "rr-2"]);
     await testFilter({ id: "ev-1", brand: "" }, ["rr-1", "rr-2"]);
     await testFilter({ id: "ev-2", brand: "" }, ["rr-3", "rr-4"]);
+  });
+
+  it("should return paginated response", async () => {
+    await testFilter(
+      { id: "ev-1", searchWord: "Justin", perPage: "1", page: "1" },
+      ["rr-1"]
+    );
+    await testFilter(
+      { id: "ev-1", searchWord: "Justin", perPage: "1", page: "2" },
+      ["rr-2"]
+    );
   });
 
   // CORRECTLY FAILS
