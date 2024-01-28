@@ -169,7 +169,7 @@ export default function Select<
           leaveTo="transform opacity-0 scale-95"
           onClick={(e) => e.stopPropagation()}
         >
-          <Listbox.Options className="absolute w-full">
+          <Listbox.Options className="absolute w-full outline-none">
             <div className="relative py-1 left-0 z-10 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
               {onSearch && (
                 <Search
