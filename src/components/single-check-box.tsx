@@ -12,6 +12,7 @@ export default function SingleSelectCheckboxes({
       {options.map(({ key, label }) => (
         <label key={key}>
           <input
+            className="mr-1"
             type="checkbox"
             id={key}
             value={key}
