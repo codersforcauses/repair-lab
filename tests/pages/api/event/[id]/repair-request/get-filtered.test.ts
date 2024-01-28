@@ -3,9 +3,10 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { cleanup } from "@/../tests/utils";
+import { PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 import endpoint from "@/pages/api/event/[id]/repair-request";
-import { EventResponse } from "@/types";
+import { RepairRequestResponse } from "@/types";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
@@ -105,10 +106,11 @@ describe("GET /api/event", () => {
             "Content-Type": "application/json"
           }
         });
-        const results: EventResponse[] = await res.json();
+        const results: PaginationResponse<RepairRequestResponse> =
+          await res.json();
         expect(res.status).toBe(200);
-        expect(results.length).toBe(expectedEvents.length);
-        results.forEach((result, index) => {
+        expect(results.items.length).toBe(expectedEvents.length);
+        results.items.forEach((result, index) => {
           expect(result).toHaveProperty("id", expectedEvents[index]);
         });
       }
