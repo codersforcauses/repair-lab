@@ -31,7 +31,9 @@ describe("sending confimation email", () => {
         id: "email_testing",
         firstName: "Email",
         lastName: "Testing",
-        emailAddress: "test@gmail.com", // change to the email address where you want to receive the emails
+        // change to the email address where you want to receive the emails
+        // please note that receiving actual SES emails requires using a verified email address in AWS
+        emailAddress: "bluedragon00000@gmail.com",
         role: "CLIENT"
       })
     );

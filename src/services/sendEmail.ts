@@ -14,15 +14,12 @@ const sesClient = new SESClient({
     process.env.AWS_SES_SWITCH === "ON" ? undefined : "http://localhost:8005"
 });
 
-const emailHtml = (customerUser: User, requestId: string) => {
-  return repairRequestEmailHtml(customerUser, requestId);
+const createEmailContent = (customerUser: User, requestId: string) => {
+  return repairRequestEmail(customerUser, requestId);
   // add more email templates here
 };
 
-const repairRequestEmailHtml = async (
-  customerUser: User,
-  requestId: string
-) => {
+const repairRequestEmail = async (customerUser: User, requestId: string) => {
   const repairRequest = await prisma.repairRequest.findUnique({
     where: { id: requestId }
   });
@@ -92,7 +89,7 @@ const sendEmail = async (
     return;
   }
 
-  const emailContent = await emailHtml(customerUser, requestId);
+  const emailContent = await createEmailContent(customerUser, requestId);
 
   const sendEmailCommand = createSendEmailCommand(
     customerUser?.emailAddress,
