@@ -9,7 +9,7 @@ import { cleanup, seedTestData } from "../../../utils";
 
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
 
-describe("sending confimation email", () => {
+describe("sending repaire request confimation emails", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
@@ -33,7 +33,7 @@ describe("sending confimation email", () => {
         lastName: "Testing",
         // change to the email address where you want to receive the emails
         // please note that receiving actual SES emails requires using a verified email address in AWS
-        emailAddress: "bluedragon00000@gmail.com",
+        emailAddress: "test@gmail.com",
         role: "CLIENT"
       })
     );
