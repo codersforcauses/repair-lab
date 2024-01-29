@@ -3,6 +3,7 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { cleanup } from "@/../tests/utils";
+import { PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 import endpoint from "@/pages/api/event";
 import { EventResponse } from "@/types";
@@ -84,10 +85,11 @@ describe("GET /api/event", () => {
             "Content-Type": "application/json"
           }
         });
-        const results: EventResponse[] = await res.json();
+        const results: PaginationResponse<EventResponse[]> = await res.json();
+        const list = results.items;
         expect(res.status).toBe(200);
-        expect(results.length).toEqual(expectedEvents.length);
-        results.forEach((result, index) => {
+        expect(list.length).toEqual(expectedEvents.length);
+        list.forEach((result, index) => {
           expect(result).toHaveProperty("id", expectedEvents[index]);
         });
       }
