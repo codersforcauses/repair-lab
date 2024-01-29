@@ -30,13 +30,14 @@ async function getAuth(req: NextApiRequest) {
 async function getMany(
   options: UserSearchQuery
 ): Promise<PaginationResponse<User[]>> {
-  const { orderBy, perPage, page, query } = options;
+  const { orderBy, perPage, page, query, userId } = options;
 
   const searchRequest = {
     orderBy: orderBy as ClerkOrderBy,
     limit: perPage,
     offset: (page - 1) * perPage,
-    query
+    query,
+    userId
   };
 
   // getCount requires a search request too so it returns the total query count.

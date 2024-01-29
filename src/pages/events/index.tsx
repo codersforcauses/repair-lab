@@ -71,7 +71,8 @@ const Events: NextPageWithLayout = () => {
 
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
   const [users, setUsers] = useState<User[]>([]);
-  useUsersFromIds(userIds, setUsers);
+  // Only fetch users when id exists but no user
+  useUsersFromIds(users.length ? [] : userIds, setUsers);
 
   const { data, isLoading, isPlaceholderData, isFetching } = useEvents({
     sortKey,
