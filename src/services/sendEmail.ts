@@ -9,7 +9,9 @@ import { RepairRequestEmail } from "../email/emails/repair-request-email";
 import { formatDate } from "../utils";
 
 const sesClient = new SESClient({
-  region: process.env.AWS_REGION
+  region: process.env.AWS_REGION,
+  endpoint:
+    process.env.AWS_SES_SWITCH === "ON" ? undefined : "http://localhost:8005"
 });
 
 const emailHtml = (customerUser: User, requestId: string) => {
@@ -85,12 +87,6 @@ const sendEmail = async (
   userId: string,
   requestId: string
 ) => {
-  // when the SES switch is not ON, use the ses mock; otherwise, use the real SES
-  const sesSwitch = process.env.AWS_SES_SWITCH;
-  if (sesSwitch !== "ON") {
-    return;
-  }
-
   const customerUser = await userService.getUser(userId);
   if (customerUser === undefined) {
     return;
@@ -107,7 +103,7 @@ const sendEmail = async (
   try {
     return await sesClient.send(sendEmailCommand);
   } catch (e) {
-    // error("Failed to send email.");
+    // error("Failed to send email. Error: ", e);
     return e;
   }
 };
