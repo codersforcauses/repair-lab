@@ -6,7 +6,7 @@ import { Control, useController, UseFormSetValue } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
-import { FormValues } from "@/pages/repair-request";
+import { FormValues } from "@/components/Forms/create-repair-request";
 
 interface TermsAndConditionsProps {
   control: Control<FormValues>;
@@ -62,7 +62,7 @@ export const TermsAndConditions = ({
       <p className="-mt-4 text-xs text-red-500">{fieldState.error?.message}</p>
 
       <Transition appear show={showPopup} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setShowPopup}>
+        <Dialog as="div" className="relative z-[60]" onClose={setShowPopup}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

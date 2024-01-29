@@ -30,8 +30,6 @@ export async function buildPaginationResponse<T>(
   };
 }
 
-const orderByRegex = /^(\+|-)[A-Za-z0-9_]*/;
-
 export const paginationSchema = z.object({
   perPage: z
     .preprocess(
@@ -44,13 +42,5 @@ export const paginationSchema = z.object({
       (val) => Number(val),
       z.number().positive({ message: "page cannot be less than 1" })
     )
-    .default(1),
-  orderBy: z
-    .string()
-    .regex(orderByRegex, {
-      message:
-        "orderBy has to start with either + or - followed by the tablename"
-    })
-    .default("-created_at"),
-  query: z.string().default("")
+    .default(1)
 });

@@ -1,11 +1,13 @@
 import Image from "next/image";
-import type { ReactElement } from "react";
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
+import type { ReactElement } from "react";
 import { AiFillFacebook, AiFillInstagram, AiFillMail } from "react-icons/ai";
-import type { NextPageWithLayout } from "./_app";
+
 import Button from "@/components/Button/index";
 import NavBar from "@/components/NavBar";
+
+import type { NextPageWithLayout } from "./_app";
 
 // #TODO: Refactor this
 const Home: NextPageWithLayout = () => {
