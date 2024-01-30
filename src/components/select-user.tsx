@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,8 +32,30 @@ export function SelectUser({
   ...rest
 }: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
-  const { data, isLoading } = useUsers(10, 1, "-created_at", search);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const { data, isLoading } = useUsers(10, page, "-created_at", search);
   const users = data?.items as User[];
+  const observer = useRef<IntersectionObserver>();
+  const lastUserElementRef = useCallback(
+    (node: Element | null) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && page < totalPages) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, page, totalPages]
+  );
+
+  useEffect(() => {
+    if (data?.meta?.lastPage) {
+      setTotalPages(data.meta?.lastPage);
+    }
+  }, [data?.meta?.lastPage]);
 
   return (
     <Select
@@ -92,11 +114,12 @@ export function SelectUser({
           {isLoading ? (
             <LoadingSpinner className="w-full h-full flex items-center justify-center " />
           ) : (
-            options.map((user) => (
+            options.map((user, index) => (
               <Listbox.Option
                 key={`${user[VALUE_KEY]}`}
                 value={user}
                 as={Fragment}
+                ref={index === options.length - 1 ? lastUserElementRef : null}
               >
                 {({ selected }) => (
                   <li
