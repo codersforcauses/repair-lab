@@ -1,3 +1,6 @@
+import { randBetween } from "@/lib/random";
+const COLOURS = ["#f50f26", "#e310a7", "#1744e6", "#20e36e", "#e2fa2f"];
+
 export default class ConfettiParticle {
   ctx: CanvasRenderingContext2D | null;
   width: number;
@@ -8,24 +11,15 @@ export default class ConfettiParticle {
   velocity: number;
   color: string;
 
-  constructor(
-    context: CanvasRenderingContext2D | null,
-    width: number,
-    height: number,
-    rotation: number,
-    x: number,
-    y: number,
-    velocity: number,
-    color: string
-  ) {
+  constructor(context: CanvasRenderingContext2D | null) {
     this.ctx = context;
-    this.width = width;
-    this.height = height;
-    this.rotation = rotation;
-    this.x = x;
-    this.y = y;
-    this.velocity = velocity;
-    this.color = color;
+    this.width = randBetween(10, 15);
+    this.height = randBetween(4, 15);
+    this.rotation = randBetween(0, 360);
+    this.x = randBetween(0, window.innerWidth);
+    this.y = randBetween(-300, 0);
+    this.velocity = randBetween(2, 3);
+    this.color = COLOURS[Math.floor(Math.random() * COLOURS.length)];
   }
   draw() {
     if (!this.ctx) return;
