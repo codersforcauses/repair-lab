@@ -10,17 +10,7 @@ interface Props {
   onSignOut: () => void;
 }
 
-const adminRoles = [
-  UserRole.ADMIN,
-  UserRole.ORGANISATION_MANAGER,
-  UserRole.EVENT_MANAGER
-];
-
-export default function Account({
-  role,
-  isLoggedIn,
-  onSignOut
-}: Readonly<Props>) {
+export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   const router = useRouter();
 
   return (

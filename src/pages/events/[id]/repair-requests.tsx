@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Card from "@/components/Cards/card";
-import RepairAttemptForm from "@/components/Forms/repair-request-form";
+import RepairAttemptForm from "@/components/Forms/create-repair-request";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
-import { Search } from "@/components/search";
-import SortBy from "@/components/search/SortBy";
+import { Search } from "@/components/Search";
+import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useRepairRequests } from "@/hooks/events";
@@ -26,8 +26,12 @@ export default function RepairRequests() {
 
   const { data: event } = useEvent(eventId as string);
 
-  function newEvent() {
+  function showForm() {
     showEventModal(true);
+  }
+
+  function hideForm() {
+    showEventModal(false);
   }
 
   useEffect(() => {
@@ -72,8 +76,8 @@ export default function RepairRequests() {
                     <div
                       className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
                       role="presentation"
-                      onClick={newEvent}
-                      onKeyDown={newEvent}
+                      onClick={showForm}
+                      onKeyDown={showForm}
                     >
                       <CiCirclePlus
                         stroke="white"
@@ -111,9 +115,9 @@ export default function RepairRequests() {
                 <Modal showModal={eventModal} setShowPopup={showEventModal}>
                   {" "}
                   <div className="text-center">
-                    <h1 className="text-xl font-bold">New Event Form</h1>
-                    <div>
-                      <RepairAttemptForm></RepairAttemptForm>
+                    <h1 className="text-xl font-bold">Add a repair request</h1>
+                    <div className="max-w-full">
+                      <RepairAttemptForm eventId={eventId as string} />
                     </div>
                   </div>
                 </Modal>
