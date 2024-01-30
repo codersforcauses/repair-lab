@@ -1,8 +1,9 @@
 // Page for submitting a repair request
 import Image from "next/image";
+
 import RepairRequestForm from "@/components/Forms/create-repair-request";
-import { NextPageWithLayout } from "@/pages/_app";
 import NavBar from "@/components/NavBar";
+import { NextPageWithLayout } from "@/pages/_app";
 
 const RepairRequest: NextPageWithLayout = () => {
   return (
