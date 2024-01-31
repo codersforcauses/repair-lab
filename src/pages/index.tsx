@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
 import type { ReactElement } from "react";
-import { AiFillFacebook, AiFillInstagram, AiFillMail } from "react-icons/ai";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 import Button from "@/components/Button/index";
 import NavBar from "@/components/NavBar";
@@ -15,8 +15,20 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <div>
-      <div className="grid_bg_container relative w-full h-[50rem]">
+      <div className="grid_bg_container relative w-full h-[53rem] border-green-500 border-0">
+        {/* <Image
+          src="/images/big_hero_image.jpg"
+          alt="hero image"
+          fill={true}
+          className="object-cover object-center h-full opacity-100 z-0"
+        /> */}
         <Image
+          src="/images/big_hero_bg.jpg"
+          alt="big hero bg"
+          fill={true}
+          className="object-cover object-center h-full z-0"
+        />
+        {/* <Image
           src="/images/big_blue_grid.jpg"
           alt="big blue grid bg"
           fill={true}
@@ -116,87 +128,85 @@ const Home: NextPageWithLayout = () => {
               stroke-linejoin="round"
             />
           </svg>
-        </div>
-        <div className="relative border-1 border-black border-4 h-3/4 w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          {/* <div>
+        </div> */}
+        <div className="relative border-1 border-black border-0 h-3/4 w-5/6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div>
             <Image
-              src="/images/circle_images.png"
+              src="/images/circle_images_big.png"
               alt="circle images"
               fill={true}
-              className="object-contain object-left"
+              className="object-contain object-center"
             />
-          </div> */}
-          <div className="absolute top-[1%] left-[25%] rounded-full w-[280px] h-[280px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/bikerepair_arm.jpg')] shadow-md"></div>
+          </div>
+          {/* <div className="absolute top-[1%] left-[25%] rounded-full w-[280px] h-[280px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/bikerepair_arm.jpg')] shadow-md"></div>
           <div className="absolute bottom-[8%] left-[10%] rounded-full w-[350px] h-[350px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/jeans_sewing.jpg')] shadow-md"></div>
           <div className="absolute bottom-[15%] right-[15%] rounded-full w-[320px] h-[320px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/stitching.jpg')] shadow-md"></div>
           <div className="absolute top-[0.5%] right-[33%] rounded-full w-[330px] h-[330px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/beads_on_green_mat.jpg')] shadow-md"></div>
-          <div className="absolute bottom-[5%] left-[40%] rounded-full w-[290px] h-[290px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/electronic_repair.jpg')] shadow-md"></div>
+          <div className="absolute bottom-[5%] left-[40%] rounded-full w-[290px] h-[290px] border-4 border-lightAqua-300 bg-cover bg-[url('/images/electronic_repair.jpg')] shadow-md"></div> */}
+        </div>
+        <div className="big green curve absolute bottom-0 w-full">
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 2078 102"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g filter="url(#filter0_d_2221_282)">
+              <path
+                d="M11 101.312C810.566 -3.80178 1260.62 -7.72194 2067 101.312H11Z"
+                fill="#098D85"
+              />
+              <path
+                d="M11 101.312C810.566 -3.80178 1260.62 -7.72194 2067 101.312H11Z"
+                stroke="#098D85"
+              />
+            </g>
+            <defs>
+              <filter
+                id="filter0_d_2221_282"
+                x="0.934814"
+                y="0.5"
+                width="2076.13"
+                height="101.312"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  result="hardAlpha"
+                />
+                <feOffset dy="-10" />
+                <feGaussianBlur stdDeviation="5" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0.301961 0 0 0 0 0.576471 0 0 0 0 0.560784 0 0 0 0.3 0"
+                />
+                <feBlend
+                  mode="normal"
+                  in2="BackgroundImageFix"
+                  result="effect1_dropShadow_2221_282"
+                />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="effect1_dropShadow_2221_282"
+                  result="shape"
+                />
+              </filter>
+            </defs>
+          </svg>
         </div>
       </div>
 
-      <div className="big green area relative w-full min-h-[44rem] mb-0 pb-0 z-10 bottom-[6rem] border-blue-500 border-4">
-        {/* <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 2580 1200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g filter="url(#filter0_d_2053_122)">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2580 117.476C1565.95 -14.8601 1005.57 -10.1022 0.0006 117.476H0V117.476V1200H2580V117.476Z"
-              fill="#098D85"
-            />
-          </g>
-          <defs>
-            <filter
-              id="filter0_d_2053_122"
-              x="0"
-              y="0"
-              width="2580"
-              height="1200"
-              filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
-            >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                result="hardAlpha"
-              />
-              <feOffset dy="-10" />
-              <feGaussianBlur stdDeviation="5" />
-              <feComposite in2="hardAlpha" operator="out" />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0.301961 0 0 0 0 0.576471 0 0 0 0 0.560784 0 0 0 0.3 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="BackgroundImageFix"
-                result="effect1_dropShadow_2053_122"
-              />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="effect1_dropShadow_2053_122"
-                result="shape"
-              />
-            </filter>
-          </defs>
-        </svg> */}
-        <Image
-          src="/images/big_green_area.png"
-          alt="big green area"
-          fill={true}
-          className="object-fill object-center w-full h-full z-10"
-        />
-        <div className="drill absolute z-20 right-[7%] top-[18%]">
+      <section className="big green area relative w-full min-h-[50rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]">
+        <div className="drill absolute z-10 right-[7%] top-[18%]">
           <svg
-            width="202"
+            width="166"
             height="225"
             viewBox="0 0 202 225"
             fill="none"
@@ -211,7 +221,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="wrench absolute z-20 bottom-[5rem] left-[5rem]">
+        <div className="wrench absolute z-10 bottom-[5rem] left-[5rem]">
           <svg
             width="186"
             height="253"
@@ -226,7 +236,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="gear absolute z-20 -bottom-[40%] right-[3%]">
+        <div className="gear absolute z-10 -bottom-[40%] right-[3%]">
           <svg
             width="565"
             height="565"
@@ -240,36 +250,40 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="flex justify-center">
-          <div className="text-area flex justify-center text-center z-20  border-red-500 border-4 ">
-            <h1 className="absolute z-15 pb-8 pt-6 w-[31rem] leading-tight text-6xl font-black text-white top-[2.5rem]">
-              Hi, Welcome to Repair Lab!
-            </h1>
-            <h3 className="absolute z-15 w-full text-white font-bold pb-8 text-xl top-[15rem] italic">
-              When in doubt, don’t throw out!
-            </h3>
-            <p className="absolute z-15 inline-block w-3/4 text-white pb-8 pl-28 pr-28 text-lg top-[19rem]">
-              Bring it to the Repair Lab, a grassroots initiative to encourage
-              and help Perth folks come up with new and creative ways to salvage
-              perfectly usable things. Repair Lab gathers volunteers who work
-              with you to assess and fix your broken items, and hopefully give
-              you insight on how to repair other things around the house.
-            </p>
-            <div className="absolute z-15 flex w-full justify-center top-[26rem]">
-              <svg height="50" width="600">
-                <line x1="20" y1="20" x2="10000" y2="20" stroke="white" />
-              </svg>
-            </div>
-            <h3 className="absolute z-15 inline-block w-1/3 text-white pb-20 font-medium text-3xl top-[29rem]">
-              It’s a collaborative and learning experience, a little antidote to
-              modern day throw-away mentality.
-            </h3>
+        <div className="text-area flex flex-col justify-center items-center text-center border-red-500 border-0">
+          <h1 className="pb-8 pt-6 leading-tight text-6xl font-black text-white">
+            Hi, Welcome to Repair Lab!
+          </h1>
+          <h3 className="w-full text-white font-bold pb-8 text-xl italic">
+            When in doubt, don’t throw out!
+          </h3>
+          <p className="relative z-20 w-2/3 text-white pb-8 text-lg">
+            Bring it to Repair Lab, a grassroots initiative to encourage and
+            help Perth folks come up with new and creative ways to salvage
+            perfectly usable things. Repair Lab gathers volunteers who work with
+            you to assess and fix your broken items, and hopefully give you
+            insight on how to repair other things around the house.
+          </p>
+          <div className="relative z-15 flex w-full justify-center">
+            <svg height="50" width="600">
+              <line x1="20" y1="20" x2="10000" y2="20" stroke="white" />
+            </svg>
           </div>
+          <h3 className="w-1/3 text-white pb-20 font-medium text-3xl">
+            It’s a collaborative and learning experience, a little antidote to
+            modern day throw-away mentality.
+          </h3>
         </div>
-      </div>
+      </section>
 
-      <div className="white-text-area mt-[1rem] relative">
-        <div className="hammer absolute z-10 right-[6.5rem] mt-36">
+      <section className="white text area mt-[1rem] relative border-green-500 border-0 min-h-[60rem]">
+        <Image
+          src="/images/white_area_bg_v4.jpg"
+          alt="white area bg"
+          fill={true}
+          className="object-cover object-center h-full z-0"
+        />
+        {/* <div className="hammer absolute z-10 col-start-8 col-end-9 row-start-1 row-end-1 top-0 -left-5">
           <svg
             width="105"
             height="170"
@@ -304,7 +318,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="pliers absolute z-10 top-72 left-40">
+        <div className="pliers absolute z-10 row-start-2 row-end-2 -bottom-5 left-0">
           <svg
             width="131"
             height="187"
@@ -335,55 +349,58 @@ const Home: NextPageWithLayout = () => {
               stroke-linejoin="round"
             />
           </svg>
-        </div>
-        <div className="flex flex-col border-green-500 border-4">
-          <div className="justify-start">
-            <h2 className="pb-8 pt-0 ml-72 text-left text-5xl font-black text-primary-600">
+        </div> */}
+        <div className="flex flex-col">
+          <div className="">
+            <h2 className="relative pl-64 text-5xl font-black text-primary-600 mt-12 z-20">
               Learn new skills
             </h2>
+            <div className="flex">
+              <div className="text-center h-4 ">
+                <p className="relative text-xl font-medium pl-24 pt-10 pr-2">
+                  Want to learn how to repair your stuff? Or how to take care of
+                  it so it will last longer? Come and join us at Repair Lab,
+                  where volunteers will assist you in gaining these new skills!
+                </p>
+              </div>
+              <div className="sewing-image relative z-20 w-full flex justify-end pr-36 bottom-0 p-2">
+                <Image
+                  src="/images/Repair_Lab_sewing.jpg"
+                  alt="sewing image"
+                  width={500}
+                  height={400}
+                  className="rounded-2xl z-20 shadow-md"
+                />
+              </div>
+            </div>
           </div>
-          <div className="justify-start text-center h-4 w-1/2">
-            <p className="relative ml-44 mr-0 mb-0 pt-2 text-xl">
-              Want to learn how to repair your stuff? Or how to take care of it
-              so it will last longer? Come and join us at Repair Lab, where
-              volunteers will assist you in gaining these new skills!
-            </p>
-          </div>
-
-          <div className="sewing-image relative flex w-full justify-end right-48 p-0 bottom-20 ">
-            <Image
-              src="/images/Repair_Lab_sewing.jpg"
-              alt="bike repair"
-              width={500}
-              height={400}
-              className="rounded-2xl z-20 shadow-md"
-            />
-          </div>
-          <div className="flex justify-end">
-            <h2 className=" relative pb-4 pt-0 mr-0 right-[400px] text-right text-5xl font-black text-primary-600 bottom-4">
-              Reduce Waste
-            </h2>
-          </div>
-          <div className="flex justify-end text-center">
-            <p className="relative ml-0 mr-0 mb-0 right-64 pt-4 text-xl bottom-2 w-1/3">
-              If you think that we are all creating too much waste by discarding
-              of everything without even trying to repair, join us at Repair
-              Lab! Meet like minded locals and treasure your stuff.
-            </p>
-          </div>
-          <div className="relative pt-1 flex w-full justify-start pl-48 pb-0 mb-0 bottom-64">
-            <Image
-              src="/images/Repair_Lab_bikerepair.jpg"
-              alt="bike repair"
-              width={500}
-              height={400}
-              className="rounded-2xl z-20 shadow-md"
-            />
+          <div>
+            <div className="">
+              <h2 className=" relative z-20 text-right text-5xl font-black text-primary-600 pr-64 mt-12">
+                Reduce Waste
+              </h2>
+            </div>
+            <div className="flex">
+              <div className="relative z-20 w-full pl-36 mb-8 bottom-32 p-2 pr-4">
+                <Image
+                  src="/images/Repair_Lab_bikerepair.jpg"
+                  alt="bike repair"
+                  width={500}
+                  height={400}
+                  className="rounded-2xl z-20 shadow shadow-primary-300"
+                />
+              </div>
+              <p className="relative text-center text-xl font-medium mt-8 pr-24 pl-2">
+                If you think that we are all creating too much waste by
+                discarding of everything without even trying to repair, join us
+                at Repair Lab! Meet like minded locals and treasure your stuff.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="flex flex-col items-center justify-center bg-darkAqua-600 p-10 bottom-0">
+      <section className="flex flex-col items-center justify-center bg-darkAqua-600 p-10 bottom-0">
         <span className="pb-6 text-4xl font-extrabold text-white ">
           {" "}
           UPCOMING EVENTS{" "}
@@ -407,77 +424,48 @@ const Home: NextPageWithLayout = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="mb-16 h-auto p-3">
+      <section className="min-h-[25rem] w-full bg-white">
         <div className="pb-5 pt-12 text-center text-4xl font-extrabold text-primary-600">
           Submit item for Repair
         </div>
-        <div className="h-30 mb-10 mt-5 pb-3 pl-10 pr-10">
+        <div className="h-30 mb-10 mt-5 pl-10 pr-10">
           <Link href="/repair-request">
-            <Button aria-label="button" className="">
+            <Button aria-label="button" className="w-1/3">
               {" "}
               New Request{" "}
             </Button>
           </Link>
         </div>
-      </div>
+      </section>
 
-      <div className="flex flex-col items-center justify-center bg-lightAqua-100">
-        <span className="pb-6 text-2xl font-bold"> Contact Us </span>
-
-        <div className="relative mt-1 flex w-full justify-center pl-10 pr-10">
-          <Image
-            src="/images/Repair_Lab_bikerepair.jpg"
-            alt="bike repair"
-            width={400}
-            height={300}
-            className="rounded-lg"
-          />
+      <section className="grey area relative bg-[#56727E] min-h-[18rem] w-full border-yellow-500 border-0 grid grid-cols-2">
+        <div className="flex justify-center items-center">
+          <div className="oval relative w-[60%] h-40 rounded-[50%] bg-primary-500 flex items-center justify-center col-span-1">
+            <h5 className="absolute z-10 text-white text-center lg:text-xl lg:text-white font-bold md:text-lg md:text-yellow-300 sm:text-md sm:text-red-300">
+              Click on the icons to go to our socials!
+            </h5>
+          </div>
         </div>
-
-        <ul className="grid list-none justify-center gap-y-2 pb-10 pl-8 pr-8">
-          <li className="mt-6">
-            We are always on the lookout for more volunteers.
-          </li>
-
-          <li>
-            Especially people with electrical knowledge are on high demand.
-          </li>
-
-          <li>
-            But also people who can repair toys, bikes, furniture, clothing,
-            jewellery, curtains, household items, garden tools, etc.
-          </li>
-
-          <li>
-            Sometimes it is not only repair skills as well as care instructions.
-            Maybe you can teach others how to keep your tools in mint condition,
-            or how to crochet.
-          </li>
-
-          <li className="mb-4">
-            If you are handy or have a good repair skills and eager to share
-            them with your community, please contact us.
-          </li>
-
-          <li className="text-ml font-bold">
-            Wilma & Flavia
-            <div className="flex flex-row">
-              <a href="https://www.facebook.com/RepairLabPerth/">
-                <AiFillFacebook className="text-2xl" color="teal" />
-              </a>
-
-              <a href="https://www.instagram.com/repair_lab_perth/">
-                <AiFillInstagram className="text-2xl" color="teal" />
-              </a>
-
-              <a href="mailto:repairlab.perth@gmail.com">
-                <AiFillMail className="text-2xl" color="teal" />
-              </a>
+        <div className="col-span-1 border-red-500 border-0 m-auto w-1/2">
+          <div className=" border-blue-500 border-0 ">
+            <div className="flex justify-center">
+              <p className="text-white text-bold p-4 text-xl underline">
+                <a href="mailto:repairlab.perth@gmail.com">
+                  Email: repairlab.perth@gmail.com
+                </a>
+              </p>
             </div>
-          </li>
-        </ul>
+            <div className="flex justify-between">
+              <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
+              <FaFacebook className="fill-white w-[6rem] h-[6rem]" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
+        Copyright © All Rights Reserved
       </div>
       <div className="m-10">
         <Button width="w-full" onClick={() => signOut()}>
