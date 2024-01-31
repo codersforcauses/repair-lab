@@ -42,8 +42,7 @@ const Events: NextPageWithLayout = () => {
       status,
       search,
       sortKey,
-      sortMethod,
-      openModal
+      sortMethod
     },
     setFilterState
   ] = useSearchParamsState(initialFilterState);
@@ -64,17 +63,6 @@ const Events: NextPageWithLayout = () => {
   const resetQuery = useMemoizedFn(() => {
     setFilterState(initialFilterState);
   });
-
-  const sortingState = useMemo(() => {
-    return sortKey
-      ? [
-          {
-            id: sortKey,
-            desc: sortMethod === "desc"
-          }
-        ]
-      : undefined;
-  }, [sortKey, sortMethod]);
 
   return (
     <div className="w-full mt-5">
