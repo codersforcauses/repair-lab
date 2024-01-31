@@ -11,15 +11,13 @@ import { formatDate } from "../utils";
 const sesClient = new SESClient({
   region: process.env.AWS_REGION,
   endpoint:
-    process.env.AWS_SES_SWITCH === "ON" ? undefined : "http://localhost:8005"
+    process.env.AWS_SES_SWITCH === "ON"
+      ? undefined
+      : process.env.AWS_SES_MOCK_ENDPOINT
 });
 
-const createEmailContent = (customerUser: User, requestId: string) => {
-  return repairRequestEmail(customerUser, requestId);
-  // add more email templates here
-};
-
-const repairRequestEmail = async (customerUser: User, requestId: string) => {
+const createEmailContent = async (customerUser: User, requestId: string) => {
+  // repair request confimation email
   const repairRequest = await prisma.repairRequest.findUnique({
     where: { id: requestId }
   });
@@ -47,6 +45,7 @@ const repairRequestEmail = async (customerUser: User, requestId: string) => {
       emailSignature: "" // TODO: Add email signature
     })
   );
+  // add more email templates here
 };
 
 const createSendEmailCommand = (
@@ -55,7 +54,7 @@ const createSendEmailCommand = (
   content: string
 ) => {
   return new SendEmailCommand({
-    Source: "repairlabtest@gmail.com",
+    Source: process.env.AWS_SES_SOURCE_EMAIL,
     Destination: {
       ToAddresses: [customerEmail]
     },

@@ -9,7 +9,7 @@ import { cleanup, seedTestData } from "../../../utils";
 
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
 
-describe("sending repaire request confimation emails", () => {
+describe("sending repair request confimation emails", () => {
   beforeAll(async () => {
     await cleanup();
     await seedTestData();
@@ -33,7 +33,7 @@ describe("sending repaire request confimation emails", () => {
         lastName: "Testing",
         // change to the email address where you want to receive the emails
         // please note that receiving actual SES emails requires using a verified email address in AWS
-        emailAddress: "test@gmail.com",
+        emailAddress: "test0@gmail.com",
         role: "CLIENT"
       })
     );
@@ -54,6 +54,11 @@ describe("sending repaire request confimation emails", () => {
             comment: "Use mock email sevice in test environment."
           })
         });
+
+        await new Promise((resolve) => {
+          setTimeout(resolve, 8000);
+        });
+
         expect(res.status).equals(200);
       }
     });

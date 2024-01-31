@@ -28,7 +28,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:reset": "prisma migrate reset --force && prisma db push",
     "prisma:studio": "prisma studio",
-    "postinstall": "npm run prisma:generate"
+    "postinstall": "npm run prisma:generate",
+    "sesmock": "docker run -p 8005:8005 pensk/aws-ses-v2-local"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.449.0",

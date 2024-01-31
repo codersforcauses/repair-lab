@@ -37,8 +37,8 @@ async function createRepairRequest(
   const requestId = record.id;
 
   // send confirmation email to customer
-  const emailSubject = "Repaire Request Confimation";
-  await sendEmail(emailSubject, userId!, requestId); // TODO: Do not handle sending result for now
+  const emailSubject = "Repair Request Confimation";
+  sendEmail(emailSubject, userId!, requestId); // TODO: Do not handle sending result for now
 
   return res.status(200).json({ id: requestId });
 }
