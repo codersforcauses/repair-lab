@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
-import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useInfiniteUsers } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
@@ -112,40 +111,36 @@ export function SelectUser({
       )}
       renderList={(options) => (
         <>
-          {isFetchingNextPage ? (
-            <LoadingSpinner className="w-full h-full flex items-center justify-center " />
-          ) : (
-            allUsers.map((user, index) => (
-              <Listbox.Option
-                key={`${user[VALUE_KEY]}`}
-                value={user}
-                as={Fragment}
-                ref={index === allUsers.length - 1 ? lastUserElementRef : null}
-              >
-                {({ selected }) => (
-                  <li
-                    className={cn(
-                      { "bg-lightAqua-200": selected },
-                      "py-2 pl-2 pr-4 text-sm flex text-grey-900 active:bg-lightAqua-100"
-                    )}
-                  >
-                    <div className="h-full aspect-square rounded-full block mr-2 overflow-hidden flex-grow-0 flex-shrink-0">
-                      <Image
-                        src="/images/repair_lab_logo.png"
-                        width={30}
-                        height={30}
-                        alt="repair-labs"
-                        className="h-full object-cover  "
-                      />
-                    </div>
-                    <div className="block overflow-hidden text-ellipsis whitespace-nowrap">
-                      {user.firstName} {user.lastName} {user.emailAddress}
-                    </div>
-                  </li>
-                )}
-              </Listbox.Option>
-            ))
-          )}
+          {allUsers.map((user, index) => (
+            <Listbox.Option
+              key={`${user[VALUE_KEY]}`}
+              value={user}
+              as={Fragment}
+              ref={index === allUsers.length - 1 ? lastUserElementRef : null}
+            >
+              {({ selected }) => (
+                <li
+                  className={cn(
+                    { "bg-lightAqua-200": selected },
+                    "py-2 pl-2 pr-4 text-sm flex text-grey-900 active:bg-lightAqua-100"
+                  )}
+                >
+                  <div className="h-full aspect-square rounded-full block mr-2 overflow-hidden flex-grow-0 flex-shrink-0">
+                    <Image
+                      src="/images/repair_lab_logo.png"
+                      width={30}
+                      height={30}
+                      alt="repair-labs"
+                      className="h-full object-cover  "
+                    />
+                  </div>
+                  <div className="block overflow-hidden text-ellipsis whitespace-nowrap">
+                    {user.firstName} {user.lastName} {user.emailAddress}
+                  </div>
+                </li>
+              )}
+            </Listbox.Option>
+          ))}
         </>
       )}
     />
