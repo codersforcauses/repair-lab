@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
-import { useInfiniteUsers } from "@/hooks/users";
+import { useInfiniteUser } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
@@ -36,7 +36,7 @@ export function SelectUser({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useInfiniteUsers(search);
+  } = useInfiniteUser(search);
 
   // Concatenate all pages of users
   const allUsers = usersData?.pages.flatMap((page) => page.items) ?? [];
