@@ -236,7 +236,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div>
-        <div className="gear absolute z-10 -bottom-[40%] right-[3%]">
+        <div className="gear absolute z-10 -bottom-[35%] right-[3%]">
           <svg
             width="565"
             height="565"
@@ -400,7 +400,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="flex flex-col items-center justify-center bg-darkAqua-600 p-10 bottom-0">
+      <section className="flex flex-col items-center justify-center bg-darkAqua-600 p-10">
         <span className="pb-6 text-4xl font-extrabold text-white ">
           {" "}
           UPCOMING EVENTS{" "}
@@ -466,11 +466,6 @@ const Home: NextPageWithLayout = () => {
       </section>
       <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
         Copyright © All Rights Reserved
-      </div>
-      <div className="m-10">
-        <Button width="w-full" onClick={() => signOut()}>
-          Logout
-        </Button>
       </div>
       <Link className="py-4" href="/events">
         <Button>Admin Dashboard</Button>
