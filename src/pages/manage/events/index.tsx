@@ -216,7 +216,9 @@ const Events: NextPageWithLayout = () => {
                 accessorKey: "name",
                 header: "Event Name",
                 cell: (info) => (
-                  <a href={`/manage/events/${info.row.original.id}/repair-requests`}>
+                  <a
+                    href={`/manage/events/${info.row.original.id}/repair-requests`}
+                  >
                     {info.getValue()}
                   </a>
                 ),
