@@ -32,8 +32,6 @@ export function SelectUser({
   ...rest
 }: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
-  /* const { data, isLoading } = useUsers(10, page, "-created_at", search);
-  const users = data?.items as User[]; */
   const {
     data: usersData,
     fetchNextPage,
@@ -41,7 +39,9 @@ export function SelectUser({
     isFetchingNextPage
   } = useInfiniteUsers(search);
 
-  const allUsers = usersData?.pages.flatMap((page) => page.items) ?? []; // Concatenate all pages of users
+  // Concatenate all pages of users
+  const allUsers = usersData?.pages.flatMap((page) => page.items) ?? [];
+
   const observer = useRef<IntersectionObserver>();
   const lastUserElementRef = useCallback(
     (node) => {

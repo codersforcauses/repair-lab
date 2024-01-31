@@ -64,10 +64,12 @@ export const useUpdateUserRole = (userId: string | undefined) => {
 const fetchUsers = async (
   search = "",
   orderBy = "-created_at",
-  perPage = 10
+  perPage = 10,
+  pageParam = 1
 ) => {
   const params = new URLSearchParams({
     perPage: perPage.toString(),
+    page: pageParam.toString(),
     orderBy,
     query: search
   });
@@ -77,30 +79,15 @@ const fetchUsers = async (
   return response.data;
 };
 
-/* export const useInfiniteUsers = (search: string) => {
-  return useInfiniteQuery<UserResponse, Error>(
-    ["users", search],
-    ({ pageParam = 1 }) => fetchUsers(search, "-created_at", 10, pageParam),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        const nextPage = allPages.length + 1;
-        return nextPage <= lastPage.meta.lastPage ? nextPage : undefined;
-      }
-      // Add other options as needed
-    }
-  );
-};
- */
 export const useInfiniteUsers = (search: string) => {
-  return useInfiniteQuery<UserResponse, Error>({
+  return useInfiniteQuery<UserResponse[], Error>({
     queryKey: ["users", search],
     queryFn: ({ pageParam = 1 }) =>
       fetchUsers(search, "-created_at", 10, pageParam),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages.length + 1;
+    getNextPageParam: (lastPage, pages) => {
+      const nextPage = pages.length + 1;
       return nextPage <= lastPage.meta.lastPage ? nextPage : undefined;
     }
-    // Add other options as needed
-    // ...
+    // Any other options needed here?
   });
 };
