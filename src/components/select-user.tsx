@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useUsers } from "@/hooks/users";
+import { useInfiniteUsers } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
@@ -32,30 +32,31 @@ export function SelectUser({
   ...rest
 }: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const { data, isLoading } = useUsers(10, page, "-created_at", search);
-  const users = data?.items as User[];
+  /* const { data, isLoading } = useUsers(10, page, "-created_at", search);
+  const users = data?.items as User[]; */
+  const {
+    data: usersData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteUsers(search);
+
+  const allUsers = usersData?.pages.flatMap((page) => page.items) ?? []; // Concatenate all pages of users
   const observer = useRef<IntersectionObserver>();
   const lastUserElementRef = useCallback(
-    (node: Element | null) => {
-      if (isLoading) return;
+    (node) => {
       if (observer.current) observer.current.disconnect();
+
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && page < totalPages) {
-          setPage((prevPage) => prevPage + 1);
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       });
+
       if (node) observer.current.observe(node);
     },
-    [isLoading, page, totalPages]
+    [hasNextPage, isFetchingNextPage, fetchNextPage]
   );
-
-  useEffect(() => {
-    if (data?.meta?.lastPage) {
-      setTotalPages(data.meta?.lastPage);
-    }
-  }, [data?.meta?.lastPage]);
 
   return (
     <Select
@@ -63,7 +64,7 @@ export function SelectUser({
       value={value}
       onChange={onChange}
       useOption
-      options={users}
+      options={allUsers}
       searchValue={search}
       onSearch={setSearch}
       nameKey={NAME_KEY}
@@ -111,15 +112,15 @@ export function SelectUser({
       )}
       renderList={(options) => (
         <>
-          {isLoading ? (
+          {isFetchingNextPage ? (
             <LoadingSpinner className="w-full h-full flex items-center justify-center " />
           ) : (
-            options.map((user, index) => (
+            allUsers.map((user, index) => (
               <Listbox.Option
                 key={`${user[VALUE_KEY]}`}
                 value={user}
                 as={Fragment}
-                ref={index === options.length - 1 ? lastUserElementRef : null}
+                ref={index === allUsers.length - 1 ? lastUserElementRef : null}
               >
                 {({ selected }) => (
                   <li

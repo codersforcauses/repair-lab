@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
@@ -53,5 +58,49 @@ export const useUpdateUserRole = (userId: string | undefined) => {
     mutationFn: mutationFn,
     onSuccess,
     onError
+  });
+};
+
+const fetchUsers = async (
+  search = "",
+  orderBy = "-created_at",
+  perPage = 10
+) => {
+  const params = new URLSearchParams({
+    perPage: perPage.toString(),
+    orderBy,
+    query: search
+  });
+
+  const url = `/user?${params.toString()}`;
+  const response = await httpClient.get<UserResponse>(url);
+  return response.data;
+};
+
+/* export const useInfiniteUsers = (search: string) => {
+  return useInfiniteQuery<UserResponse, Error>(
+    ["users", search],
+    ({ pageParam = 1 }) => fetchUsers(search, "-created_at", 10, pageParam),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages.length + 1;
+        return nextPage <= lastPage.meta.lastPage ? nextPage : undefined;
+      }
+      // Add other options as needed
+    }
+  );
+};
+ */
+export const useInfiniteUsers = (search: string) => {
+  return useInfiniteQuery<UserResponse, Error>({
+    queryKey: ["users", search],
+    queryFn: ({ pageParam = 1 }) =>
+      fetchUsers(search, "-created_at", 10, pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages.length + 1;
+      return nextPage <= lastPage.meta.lastPage ? nextPage : undefined;
+    }
+    // Add other options as needed
+    // ...
   });
 };
