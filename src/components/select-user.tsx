@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
+import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useInfiniteUser } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
@@ -141,6 +142,13 @@ export function SelectUser({
               )}
             </Listbox.Option>
           ))}
+          {isFetchingNextPage && (
+            <div className="flex justify-end items-center p-2">
+              <div className="relative" style={{ height: "25%", width: "20%" }}>
+                <LoadingSpinner />
+              </div>
+            </div>
+          )}
         </>
       )}
     />
