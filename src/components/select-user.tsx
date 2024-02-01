@@ -24,7 +24,7 @@ interface SelectUserProps {
 }
 
 // todo: improve UX
-// todo: add dynamic loading when scroll to bottom
+
 export function SelectUser({
   value,
   onChange,
@@ -39,12 +39,11 @@ export function SelectUser({
     isFetchingNextPage
   } = useInfiniteUser(search);
 
-  // Concatenate all pages of users
   const allUsers = usersData?.pages.flatMap((page) => page.items) ?? [];
 
   const observer = useRef<IntersectionObserver>();
   const lastUserElementRef = useCallback(
-    (node) => {
+    (node: Element | null) => {
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
@@ -110,7 +109,7 @@ export function SelectUser({
           )}
         </div>
       )}
-      renderList={(options) => (
+      renderList={() => (
         <>
           {allUsers.map((user, index) => (
             <Listbox.Option
