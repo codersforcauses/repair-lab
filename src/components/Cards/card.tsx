@@ -1,13 +1,10 @@
 import { useState } from "react";
 import Image from "next/image";
-import { SubmitHandler } from "react-hook-form";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
-import PrepopulatedRepairAttemptForm from "@/components/Forms/prepopulated-repair-request-form";
 import Modal from "@/components/Modal/index";
-import { useUpdateRepairRequest } from "@/hooks/repair-request";
-import { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
+import { RepairRequestResponse } from "@/types";
 
 export type CardProps = {
   title?: string;
@@ -26,17 +23,7 @@ export default function Card({ props }: { props: CardProps }) {
     setShowModal(true);
   }
 
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest(props.title);
-
   const [showModal, setShowModal] = useState(false);
-
-  const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
-    updateRepairRequest(data, {
-      onSuccess: () => {
-        setShowModal(false);
-      }
-    });
-  };
 
   return (
     <div
@@ -51,23 +38,67 @@ export default function Card({ props }: { props: CardProps }) {
           <h2 className="text-l font-bold">
             {props.title} <StatusPill status={props.status} />
           </h2>
-          <div>
-            <PrepopulatedRepairAttemptForm
-              props={props.repairRequestProps}
-              onSubmit={onSubmit}
-            ></PrepopulatedRepairAttemptForm>
-          </div>
-          <h3 className="text-xl font-bold text-left">Images:</h3>
-          <div className="flex flex-row gap-2 overflow-x-scroll">
-            {props.repairRequestProps.images?.map((image, index) => (
-              <Image
-                key={index}
-                src={image}
-                alt={"image" + index}
-                width={300}
-                height={300}
-              />
-            ))}
+          <div className="text-left mb-2">
+            <h3 className="text-xl font-bold text-left">Details:</h3>
+            <div className="flex flex-row gap-2 overflow-x-scroll">
+              {props.repairRequestProps.images
+                ? props.repairRequestProps.images.map((image, index) => (
+                    <Image
+                      key={index}
+                      src={image}
+                      alt={"cardImage" + index}
+                      width={300}
+                      height={200}
+                    />
+                  ))
+                : "No image was provided :("}
+            </div>
+            <div className="flex flex-row mt-2">
+              <div className="border-r-2 pr-2 mr-2">
+                {" "}
+                <h4 className="font-bold">Brand</h4>
+                <p className="mb-3">
+                  {props.repairRequestProps.itemBrand
+                    ? props.repairRequestProps.itemBrand
+                    : "-"}
+                </p>
+                <h4 className="font-bold">Material</h4>
+                <p className="mb-3">
+                  {props.repairRequestProps.itemMaterial
+                    ? props.repairRequestProps.itemMaterial
+                    : "-"}
+                </p>
+                <h4 className="font-bold">Hours Worked</h4>
+                {props.repairRequestProps.hoursWorked
+                  ? props.repairRequestProps.hoursWorked
+                  : "-"}
+              </div>
+              <div className="w-8/12">
+                <h4 className="font-bold">Description</h4>
+                <p className="mb-3">
+                  {props.repairRequestProps.description
+                    ? props.repairRequestProps.description
+                    : "-"}
+                </p>
+                <h4 className="font-bold">Repair Comment</h4>
+                <p className="mb-3">
+                  {props.repairRequestProps.repairComment
+                    ? props.repairRequestProps.repairComment
+                    : "-"}
+                </p>
+                <h4 className="font-bold">Parts Needed</h4>
+                <p className="mb-3">
+                  {props.repairRequestProps.spareParts
+                    ? props.repairRequestProps.spareParts
+                    : "-"}
+                </p>
+              </div>
+            </div>
+            <div className="my-2">
+              <h4 className="font-bold">Assigned to</h4>
+              {`${props.repairRequestProps.assignedTo?.firstName} ${props.repairRequestProps.assignedTo?.lastName}` ??
+                "-"}
+            </div>
           </div>
         </div>
       </Modal>
@@ -92,7 +123,7 @@ export default function Card({ props }: { props: CardProps }) {
         </div>
         <p className="mb-3 w-full text-sm font-semibold">{props.title}</p>
         <div>
-          <p className="mb-3 h-32 overflow-y-scroll text-ellipsis text-sm font-light">
+          <p className="mb-3 h-32 overflow-y-hidden text-ellipsis text-sm font-light">
             {props.description}
           </p>
         </div>

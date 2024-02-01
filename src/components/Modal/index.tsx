@@ -18,7 +18,7 @@ const Modal = ({
   setShowPopup,
   title,
   width = "w-full sm:max-w-lg md:max-w-2xl",
-  height = "max-h-svh",
+  height = "h-5/6",
   children
 }: ModalProps) => {
   return (
@@ -54,7 +54,7 @@ const Modal = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${width} ${height} overflow-scroll transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${width} ${height} overflow-auto transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
                 >
                   {title ? (
                     <Dialog.Title
