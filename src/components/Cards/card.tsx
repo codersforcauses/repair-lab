@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import StatusPill from "@/components/Cards/status-pill";
+import ImageCarousel from "@/components/Carousel/image-carousel";
 import Modal from "@/components/Modal/index";
 import { RepairRequestResponse } from "@/types";
 
@@ -40,19 +41,7 @@ export default function Card({ props }: { props: CardProps }) {
           </h2>
           <div className="text-left mb-2">
             <h3 className="text-xl font-bold text-left">Details:</h3>
-            <div className="flex flex-row gap-2 overflow-x-scroll">
-              {props.repairRequestProps.images
-                ? props.repairRequestProps.images.map((image, index) => (
-                    <Image
-                      key={index}
-                      src={image}
-                      alt={"cardImage" + index}
-                      width={300}
-                      height={200}
-                    />
-                  ))
-                : "No image was provided :("}
-            </div>
+            <ImageCarousel images={props.repairRequestProps.images} />
             <div className="flex flex-row mt-2">
               <div className="border-r-2 pr-2 mr-2">
                 {" "}
