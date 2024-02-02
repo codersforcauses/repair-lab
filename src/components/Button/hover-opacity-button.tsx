@@ -7,7 +7,7 @@ const HoverOpacityButton = forwardRef<
   return (
     <button
       ref={ref}
-      className={`hover:enabled:opacity-50 transition-all duration-150 hover:enabled:scale-110 active:enabled:scale-90 disabled:opacity-50 ${className}`}
+      className={`hover:enabled:opacity-50 transition-all duration-150 hover:enabled:scale-105 active:enabled:scale-95 disabled:opacity-50 ${className}`}
       {...props}
     >
       {children}
