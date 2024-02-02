@@ -1,7 +1,6 @@
 import { EventStatus } from "@prisma/client";
 import { z } from "zod";
 
-import { paginationSchema } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 
 const eventStatusSchema = z.union([
@@ -16,23 +15,21 @@ const stringOrArray = z.union([
   z.array(z.string())
 ]);
 
-export const getEventSchema = z
-  .object({
-    sortKey: z
-      .string()
-      .refine((value) => value in prisma.event.fields, {
-        message: "Incorrect value for sortKey"
-      })
-      .optional(),
-    sortMethod: z.enum(["asc", "desc"]).optional(),
-    searchWord: z.string().optional(),
-    minStartDate: z.string().datetime().optional(),
-    maxStartDate: z.string().datetime().optional(),
-    eventType: stringOrArray.optional(),
-    eventStatus: eventStatusSchema.optional(),
-    createdBy: stringOrArray.optional()
-  })
-  .merge(paginationSchema);
+export const getEventSchema = z.object({
+  sortKey: z
+    .string()
+    .refine((value) => value in prisma.event.fields, {
+      message: "Incorrect value for sortKey"
+    })
+    .optional(),
+  sortMethod: z.enum(["asc", "desc"]).optional(),
+  searchWord: z.string().optional(),
+  minDate: z.coerce.date().optional(),
+  maxDate: z.coerce.date().optional(),
+  eventType: stringOrArray.optional(),
+  eventStatus: eventStatusSchema.optional(),
+  createdBy: stringOrArray.optional()
+});
 
 export const createEventSchema = z
   .object({
