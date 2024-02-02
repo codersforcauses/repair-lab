@@ -15,7 +15,7 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <div>
-      <div className="grid_bg_container relative w-full h-[53rem] border-green-500 border-0">
+      <div className="grid_bg_container relative w-full h-[30rem] lg:h-[46rem] border-green-500 border-0">
         {/* <Image
           src="/images/big_hero_image.jpg"
           alt="hero image"
@@ -28,6 +28,9 @@ const Home: NextPageWithLayout = () => {
           fill={true}
           className="object-cover object-center h-full z-0"
         />
+        <a href="https://www.vectorstock.com/royalty-free-vector/realistic-template-notepad-blank-cover-design-vector-23930574">
+          Vector image by VectorStock / Elnur
+        </a>
         {/* <Image
           src="/images/big_blue_grid.jpg"
           alt="big blue grid bg"
@@ -129,7 +132,7 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div> */}
-        <div className="relative border-1 border-black border-0 h-3/4 w-5/6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="relative border-1 border-black border-0 h-3/4 w-5/6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-2/3">
           <div>
             <Image
               src="/images/circle_images_big.png"
@@ -251,10 +254,12 @@ const Home: NextPageWithLayout = () => {
           </svg>
         </div>
         <div className="text-area flex flex-col justify-center items-center text-center border-red-500 border-0">
-          <h1 className="pb-8 pt-6 leading-tight text-6xl font-black text-white">
-            Hi, Welcome to Repair Lab!
-          </h1>
-          <h3 className="w-full text-white font-bold pb-8 text-xl italic">
+          <div className="xl:w-1/3 lg:w-1/2 w-full md:p-0 pl-2 pr-4 flex justify-center">
+            <h1 className="relative z-20 pb-8 pt-6 leading-tight text-6xl font-black text-white">
+              Hi, Welcome to Repair Lab!
+            </h1>
+          </div>
+          <h3 className="relative z-10 w-full text-white font-bold pb-8 text-xl italic">
             When in doubt, don’t throw out!
           </h3>
           <p className="relative z-20 w-2/3 text-white pb-8 text-lg">
@@ -264,19 +269,23 @@ const Home: NextPageWithLayout = () => {
             you to assess and fix your broken items, and hopefully give you
             insight on how to repair other things around the house.
           </p>
-          <div className="relative z-15 flex w-full justify-center">
-            <svg height="50" width="600">
-              <line x1="20" y1="20" x2="10000" y2="20" stroke="white" />
-            </svg>
+          <div className="hidden sm:block">
+            <div className="relative z-15 flex w-full justify-center">
+              <svg height="50" width="600">
+                <line x1="20" y1="20" x2="10000" y2="20" stroke="white" />
+              </svg>
+            </div>
+            <div className="flex justify-center">
+              <h3 className="lg:w-1/3 sm:w-2/3 w-full sm:pr-0 sm:pl-0 pr-5 pl-5 text-white pb-20 font-medium text-3xl ">
+                It’s a collaborative and learning experience, a little antidote
+                to modern day throw-away mentality.
+              </h3>
+            </div>
           </div>
-          <h3 className="w-1/3 text-white pb-20 font-medium text-3xl">
-            It’s a collaborative and learning experience, a little antidote to
-            modern day throw-away mentality.
-          </h3>
         </div>
       </section>
 
-      <section className="white text area mt-[1rem] relative border-green-500 border-0 min-h-[60rem]">
+      <section className="white text area mt-[1rem] relative border-green-500 border-0 sm:min-h-[55rem] min-h-[40rem]">
         <Image
           src="/images/white_area_bg_v4.jpg"
           alt="white area bg"
@@ -350,58 +359,65 @@ const Home: NextPageWithLayout = () => {
             />
           </svg>
         </div> */}
-        <div className="flex flex-col">
-          <div className="">
-            <h2 className="relative pl-64 text-5xl font-black text-primary-600 mt-12 z-20">
+        <div className="relative lg:grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-1 grid-rows-2 border-red-500 border-0 sm:min-h-[55rem] min-h-[20rem] w-full">
+          <div className="flex flex-col row-start-1 row-end-1 col-start-1 col-end-1 border-blue-500 border-0 justify-center items-center">
+            <h2 className="relative text-5xl font-black text-primary-600 z-20 text-center mb-10">
               Learn new skills
             </h2>
-            <div className="flex">
-              <div className="text-center h-4 ">
-                <p className="relative text-xl font-medium pl-24 pt-10 pr-2">
-                  Want to learn how to repair your stuff? Or how to take care of
-                  it so it will last longer? Come and join us at Repair Lab,
-                  where volunteers will assist you in gaining these new skills!
-                </p>
-              </div>
-              <div className="sewing-image relative z-20 w-full flex justify-end pr-36 bottom-0 p-2">
-                <Image
-                  src="/images/Repair_Lab_sewing.jpg"
-                  alt="sewing image"
-                  width={500}
-                  height={400}
-                  className="rounded-2xl z-20 shadow-md"
-                />
-              </div>
+            <p className="relative z-20 text-xl font-medium text-center lg:w-3/4 w-2/3 mb-14">
+              Want to learn how to repair your stuff? Or how to take care of it
+              so it will last longer? Come and join us at Repair Lab, where
+              volunteers will assist you in gaining these new skills!
+            </p>
+          </div>
+          <div className="col-start-1 col-end-1 row-start-2 row-end-2 border-green-500 border-0">
+            <div className="relative w-full p-2 flex justify-center bottom-[10%] xl:right-[10%] ">
+              <Image
+                src="/images/Repair_Lab_bikerepair.jpg"
+                alt="bike repair"
+                width={500}
+                height={400}
+                className="rounded-2xl shadow shadow-primary-300 w-2/3 lg:w-[90%] xl:w-[70%]"
+              />
             </div>
           </div>
-          <div>
-            <div className="">
-              <h2 className=" relative z-20 text-right text-5xl font-black text-primary-600 pr-64 mt-12">
-                Reduce Waste
-              </h2>
+          <div className="border-yellow-500 border-0 lg:flex flex-col lg:visible hidden">
+            <div className="sewing-image relative z-20 w-full flex justify-center items-center ml-2 top-[8%] xl:right-0 right-4">
+              <Image
+                src="/images/Repair_Lab_sewing.jpg"
+                alt="sewing image"
+                width={500}
+                height={400}
+                className="rounded-2xl shadow-md"
+              />
             </div>
-            <div className="flex">
-              <div className="relative z-20 w-full pl-36 mb-8 bottom-32 p-2 pr-4">
-                <Image
-                  src="/images/Repair_Lab_bikerepair.jpg"
-                  alt="bike repair"
-                  width={500}
-                  height={400}
-                  className="rounded-2xl z-20 shadow shadow-primary-300"
-                />
-              </div>
-              <p className="relative text-center text-xl font-medium mt-8 pr-24 pl-2">
-                If you think that we are all creating too much waste by
-                discarding of everything without even trying to repair, join us
-                at Repair Lab! Meet like minded locals and treasure your stuff.
-              </p>
+          </div>
+          <div className="border-pink-500 border-0 flex flex-col justify-center items-center ">
+            <h2 className=" relative z-20 text-center text-5xl font-black text-primary-600 mb-10">
+              Reduce Waste
+            </h2>
+            <p className="relative text-center text-xl font-medium lg:w-3/4 w-2/3 mb-16">
+              If you think that we are all creating too much waste by discarding
+              everything without even trying to repair, join us at Repair Lab!
+              Meet like minded locals and treasure your stuff.
+            </p>
+          </div>
+          <div className="border-yellow-500 border-0 flex flex-col lg:hidden visible">
+            <div className="sewing-image relative z-20 w-full flex justify-center items-center ml-2 bottom-8 xl:right-0 right-4">
+              <Image
+                src="/images/Repair_Lab_sewing.jpg"
+                alt="sewing image"
+                width={500}
+                height={400}
+                className="rounded-2xl shadow-md w-2/3"
+              />
             </div>
           </div>
         </div>
       </section>
 
       <section className="flex flex-col items-center justify-center bg-darkAqua-600 p-10">
-        <span className="pb-6 text-4xl font-extrabold text-white ">
+        <span className="pb-6 text-4xl font-extrabold text-white text-center">
           {" "}
           UPCOMING EVENTS{" "}
         </span>
@@ -448,18 +464,28 @@ const Home: NextPageWithLayout = () => {
             </h5>
           </div>
         </div>
-        <div className="col-span-1 border-red-500 border-0 m-auto w-1/2">
+        <div className="col-span-1 border-red-500 border-0 m-auto w-3/4">
           <div className=" border-blue-500 border-0 ">
-            <div className="flex justify-center">
-              <p className="text-white text-bold p-4 text-xl underline">
+            <div className="flex justify-center w-full">
+              <p className="text-white text-bold sm:p-4 text-xl underline text-center break-all w-full">
                 <a href="mailto:repairlab.perth@gmail.com">
                   Email: repairlab.perth@gmail.com
                 </a>
               </p>
             </div>
-            <div className="flex justify-between">
-              <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
-              <FaFacebook className="fill-white w-[6rem] h-[6rem]" />
+            <div className="flex justify-evenly">
+              <a
+                href="https://www.instagram.com/repair_lab_perth"
+                target="_blank"
+              >
+                <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
+              </a>
+              <a
+                href="https://www.facebook.com/RepairLabPerth/"
+                target="_blank"
+              >
+                <FaFacebook className="fill-white w-[6rem] h-[6rem] " />
+              </a>
             </div>
           </div>
         </div>
