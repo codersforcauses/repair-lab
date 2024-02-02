@@ -43,7 +43,7 @@ export const useInfiniteUser = (query: string, perPage: number = 10) => {
     getNextPageParam: (lastPage) =>
       lastPage.meta.page != lastPage.meta.lastPage
         ? lastPage.meta.page + 1
-        : lastPage.meta.lastPage,
+        : undefined,
     queryKey: ["infinite-users", perPage, query],
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams({

@@ -9,6 +9,7 @@ export default function useDebounceFn<T extends noop>(
   wait: number = 1000
 ): T {
   const timeoutRef = useRef<number>();
+  const memoFn = useMemoizedFn(fn);
   return useMemoizedFn(function (
     this: ThisParameterType<T>,
     ...args: Parameters<T>
@@ -17,7 +18,7 @@ export default function useDebounceFn<T extends noop>(
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
-      fn.apply(this, args);
+      memoFn.apply(this, args);
     }, wait) as unknown as number;
   }) as T;
 }

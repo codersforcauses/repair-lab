@@ -8,11 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
 import LoadingSpinner from "@/components/UI/loading-spinner";
+import useMemoizedFn from "@/hooks/memorized-fn";
 import { useInfiniteUser } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
 import { User } from "@/types";
+
 const NAME_KEY = "emailAddress";
 const VALUE_KEY = "id";
 interface SelectUserProps {
@@ -35,26 +37,32 @@ export function SelectUser({
   const {
     data: usersData,
     fetchNextPage,
-    hasNextPage,
     isFetchingNextPage
   } = useInfiniteUser(search);
 
   const allUsers = usersData?.pages.flatMap((page) => page.items) ?? [];
-
+  const memoFetchNextPage = useMemoizedFn(fetchNextPage);
+  const fetchPromise = useRef<Promise<unknown> | null>(null);
   const observer = useRef<IntersectionObserver>();
+  // ref: https://react.dev/reference/react-dom/components/common#ref-callback
   const lastUserElementRef = useCallback(
     (node: Element | null) => {
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      });
-
-      if (node) observer.current.observe(node);
+      if (!observer.current) {
+        observer.current = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting && !fetchPromise.current) {
+            fetchPromise.current = memoFetchNextPage().then(() => {
+              fetchPromise.current = null;
+            });
+          }
+        });
+      }
+      if (node) {
+        observer.current.observe(node);
+      } else {
+        observer.current.disconnect();
+      }
     },
-    [hasNextPage, isFetchingNextPage, fetchNextPage]
+    [memoFetchNextPage]
   );
 
   return (
@@ -178,6 +186,7 @@ export function useUsersFromIds(
         onChange(res.data);
         setInitialized(true);
       }
+      return null;
     }
   });
 }
