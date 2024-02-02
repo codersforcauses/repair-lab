@@ -493,9 +493,6 @@ const Home: NextPageWithLayout = () => {
       <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
         Copyright © All Rights Reserved
       </div>
-      <Link className="py-4" href="/events">
-        <Button>Admin Dashboard</Button>
-      </Link>
     </div>
   );
 };
