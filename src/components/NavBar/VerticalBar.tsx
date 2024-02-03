@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Transition } from "@headlessui/react";
 import { VscChromeClose, VscMenu } from "react-icons/vsc";
+import Modal from "@/components/Modal";
 
 import { MenuItems } from "@/components/NavBar";
 
@@ -13,6 +14,15 @@ interface NavItems {
 }
 
 const VerticalBar = (props: NavItems) => {
+  const [ShowConfirmLogOut, setShowConfirmLogOut] = useState(false);
+  function confirmLogOut() {
+    setShowConfirmLogOut(true);
+  }
+
+  function hideConfirmLogOut() {
+    setShowConfirmLogOut(false);
+  }
+
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -92,7 +102,7 @@ const VerticalBar = (props: NavItems) => {
             )}
             <div className="flex flex-col w-full">
               {props.isLoggedIn ? (
-                <button onClick={props.onSignOut} className="flex p-4">
+                <button onClick={confirmLogOut} className="flex p-4">
                   Log Out
                 </button>
               ) : (
@@ -104,11 +114,40 @@ const VerticalBar = (props: NavItems) => {
                 </button>
               )}
             </div>
+            <Modal
+              showModal={ShowConfirmLogOut}
+              setShowPopup={setShowConfirmLogOut}
+            >
+              <div className="text-center">
+                <h1 className="text-xl font-bold">
+                  Are you sure you want to logout?
+                </h1>
+                <ActionButton onClick={props.onSignOut} label="Yes" />
+                <ActionButton onClick={hideConfirmLogOut} label="No" />
+              </div>
+            </Modal>
           </div>
         </div>
       </Transition>
     </div>
   );
 };
+
+function ActionButton({
+  onClick,
+  label
+}: Readonly<{
+  onClick: () => void;
+  label: string;
+}>) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:text-primary-700"
+    >
+      {label}
+    </button>
+  );
+}
 
 export default VerticalBar;
