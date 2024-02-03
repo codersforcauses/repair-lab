@@ -150,7 +150,7 @@ export function SelectUser({
             </Listbox.Option>
           ))}
           {isFetchingNextPage && (
-            <div className="flex justify-end items-center p-2">
+            <div className="flex justify-center items-center p-2">
               <div className="relative" style={{ height: "25%", width: "20%" }}>
                 <LoadingSpinner />
               </div>
