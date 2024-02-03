@@ -21,11 +21,11 @@ export function Search({
   beforeInput
 }: SearchProps) {
   const [tempValue, setTempValue] = useState<string>();
-  const onSearch = useDebounceFn(async (value: string) => {
+  const debounceSearch = useDebounceFn(async (value: string) => {
     await onChange?.(value);
     setTempValue(undefined);
   });
-
+  const hasValue = !!tempValue || !!value;
   return (
     <div className={cn("relative group", className, styles.search)}>
       {beforeInput}
@@ -36,16 +36,23 @@ export function Search({
         placeholder="Search"
         value={tempValue ?? value}
         onChange={(event) => {
-          setTempValue(event.target.value);
-          onSearch(event.target.value);
+          const value = event.target.value;
+          if (value) {
+            setTempValue(event.target.value);
+            debounceSearch(event.target.value);
+          } else {
+            debounceSearch.cancel();
+            setTempValue(undefined);
+            onChange?.(value);
+          }
         }}
       />
       <div
         className={cn(
           "absolute right-5 top-1/2 -translate-y-1/2 transform text-gray-500",
           {
-            "group-focus-within:invisible": !!value,
-            "group-hover:invisible": !!value
+            "group-focus-within:invisible": !!hasValue,
+            "group-hover:invisible": !!hasValue
           }
         )}
       >

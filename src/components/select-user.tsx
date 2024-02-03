@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef, useState } from "react";
+import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,13 +37,19 @@ export function SelectUser({
   const {
     data: usersData,
     fetchNextPage,
+    isLoading,
     isFetchingNextPage
   } = useInfiniteUser(search);
 
-  const allUsers = usersData?.pages.flatMap((page) => page.items) ?? [];
+  const userList = useMemo(
+    () => usersData?.pages.flatMap((page) => page.items) ?? [],
+    [usersData]
+  );
+
   const memoFetchNextPage = useMemoizedFn(fetchNextPage);
   const fetchPromise = useRef<Promise<unknown> | null>(null);
   const observer = useRef<IntersectionObserver>();
+
   // ref: https://react.dev/reference/react-dom/components/common#ref-callback
   const lastUserElementRef = useCallback(
     (node: Element | null) => {
@@ -71,7 +77,7 @@ export function SelectUser({
       value={value}
       onChange={onChange}
       useOption
-      options={allUsers}
+      options={userList}
       searchValue={search}
       onSearch={setSearch}
       nameKey={NAME_KEY}
@@ -119,12 +125,12 @@ export function SelectUser({
       )}
       renderList={() => (
         <>
-          {allUsers.map((user, index) => (
+          {userList.map((user, index) => (
             <Listbox.Option
               key={`${user[VALUE_KEY]}`}
               value={user}
               as={Fragment}
-              ref={index === allUsers.length - 1 ? lastUserElementRef : null}
+              ref={index === userList.length - 1 ? lastUserElementRef : null}
             >
               {({ selected }) => (
                 <li
@@ -149,7 +155,7 @@ export function SelectUser({
               )}
             </Listbox.Option>
           ))}
-          {isFetchingNextPage && (
+          {(isLoading || isFetchingNextPage) && (
             <div className="flex justify-center items-center p-2">
               <div className="relative" style={{ height: "25%", width: "20%" }}>
                 <LoadingSpinner />
