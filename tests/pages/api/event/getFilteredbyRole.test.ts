@@ -104,6 +104,8 @@ describe("GET /api/event", async () => {
     }
   });
 
+  console.log(eventGot);
+
   type AllowedParams = {
     sortKey?: string;
     sortMethod?: string;
