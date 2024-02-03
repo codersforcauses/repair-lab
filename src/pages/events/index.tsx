@@ -68,7 +68,7 @@ const Events: NextPageWithLayout = () => {
     <div className="w-full mt-5">
       <hr className="mx-10" />
       <div className="sm:flex-row md:flex mt-3 mx-5  justify-between">
-        <div className="flex gap-2 ">
+        <div className="flex gap-2 mb-3">
           <SelectDate
             label="Date"
             value={date}
