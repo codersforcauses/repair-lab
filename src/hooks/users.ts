@@ -46,7 +46,6 @@ export const useInfiniteUser = (query: string, perPage: number = 10) => {
         : undefined,
     queryKey: ["infinite-users", perPage, query],
     queryFn: async ({ pageParam }) => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       const params = new URLSearchParams({
         perPage: perPage.toString(),
         orderBy: "-created_at",
