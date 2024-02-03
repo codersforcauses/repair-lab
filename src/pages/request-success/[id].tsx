@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import type { ReactElement } from "react";
 
 import Button from "@/components/Button/index";
 import NavBar from "@/components/NavBar";
 
-import type { NextPageWithLayout } from "./_app";
+import type { NextPageWithLayout } from "../_app";
 
 // #TODO: Refactor this
 const Success: NextPageWithLayout = () => {
+  const params = useParams();
+
   return (
     <div className="fixed min-h-screen min-w-screen flex flex-grow justify-center">
       <div className="relative flex h-screen items-center justify-center gap-x-12">
