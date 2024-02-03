@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-
+import { useState } from "react";
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
 import Link from "next/link";
+import Modal from "@/components/Modal";
 
 interface Props {
   role: UserRole;
@@ -17,11 +18,17 @@ const adminRoles = [
 ];
 
 export default function Account({
+  
   role,
   isLoggedIn,
   onSignOut
 }: Readonly<Props>) {
   const router = useRouter();
+
+  const [ShowConfirmLogOut, setShowConfirmLogOut] = useState(false);
+  function confirmLogOut() {
+    setShowConfirmLogOut(true);
+  }
 
   return (
     <div className="flex items-center">
@@ -34,7 +41,18 @@ export default function Account({
             New Repair Request +
           </Link>
 
-          <ActionButton onClick={onSignOut} label="Log Out" />
+          <ActionButton onClick={confirmLogOut} label="Log Out" />
+          <Modal
+              showModal={ShowConfirmLogOut}
+              setShowPopup={setShowConfirmLogOut}
+              
+            >
+              <div className="text-center">
+                <h1 className="text-xl font-bold">Are you sure you want to logout?</h1>
+                <ActionButton onClick={onSignOut} label="Yes" />
+                <ActionButton onClick={onSignOut} label="No" />
+              </div>
+            </Modal>
 
           <ProfilePopover />
         </>
