@@ -10,6 +10,10 @@ import styles from "./index.module.css";
 export interface SearchProps {
   className?: string;
   value?: string;
+  /**
+   * onChange is designed able to accept promise for async process like changing url state
+   * example: src/pages/events/index.tsx
+   */
   onChange?: (value: string) => void | Promise<unknown>;
   beforeInput?: ReactNode;
 }
@@ -26,6 +30,7 @@ export function Search({
     setTempValue(undefined);
   });
   const hasValue = !!tempValue || !!value;
+
   return (
     <div className={cn("relative group", className, styles.search)}>
       {beforeInput}
@@ -34,12 +39,12 @@ export function Search({
         type="search"
         name="search"
         placeholder="Search"
-        value={tempValue ?? value}
+        value={tempValue ?? value ?? ""}
         onChange={(event) => {
           const value = event.target.value;
           if (value) {
-            setTempValue(event.target.value);
-            debounceSearch(event.target.value);
+            setTempValue(value);
+            debounceSearch(value);
           } else {
             debounceSearch.cancel();
             setTempValue(undefined);
