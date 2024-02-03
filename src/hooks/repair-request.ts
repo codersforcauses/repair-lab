@@ -23,10 +23,12 @@ export const useCreateRepairRequest = () => {
 
   const mutationFn = async (data: CreateRepairRequest) => {
     const url = "/repair-request";
-    await httpClient.post(url, data);
+    const response = await httpClient.post(url, data);
+
+    return response.data;
   };
 
-  const onSuccess = () => {
+  const onSuccess = (response: { id: string }) => {
     toast.success("Repair request submitted!");
     queryClient.invalidateQueries({ queryKey: ["repair-requests"] });
   };

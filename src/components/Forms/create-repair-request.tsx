@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
 
 import Button from "@/components/Button";
@@ -44,7 +45,7 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
   const { data: itemTypeList } = useItemTypes();
   const { data: brandList } = useBrands();
   const { data: eventOptions } = useEventOptions();
-  const { mutate: createRepairRequest } = useCreateRepairRequest();
+  const { mutateAsync: createRepairRequest } = useCreateRepairRequest();
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -56,9 +57,16 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
     const keys = await Promise.all([uploadThumbailPromise, ...uploadPromises]);
     const [thumbnailImage, ...images] = keys;
     const updatedData = { ...data, thumbnailImage, images };
-    createRepairRequest(updatedData);
+
+    try {
+      const response = await createRepairRequest(updatedData);
+
+      router.push(`/request-success/${response.id}`);
+    } catch (e) {
+      toast.error("Failed to create repair request, " + e);
+    }
+
     reset();
-    router.push("/request-success");
   };
 
   return (
