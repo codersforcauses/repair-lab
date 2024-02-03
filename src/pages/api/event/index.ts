@@ -22,8 +22,8 @@ async function getEvents(
     sortKey = "startDate",
     sortMethod = "asc",
     searchWord = "",
-    minStartDate,
-    maxStartDate,
+    minDate,
+    maxDate,
     eventType,
     eventStatus,
     createdBy
@@ -51,8 +51,8 @@ async function getEvents(
         { eventType: { contains: searchWord, mode: "insensitive" } }
       ],
       startDate: {
-        gte: minStartDate ? new Date(minStartDate) : undefined,
-        lte: maxStartDate ? new Date(maxStartDate) : undefined
+        gte: minDate,
+        lte: maxDate
       },
       eventType: { in: eventType },
       status: { in: eventStatus },
