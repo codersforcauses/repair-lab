@@ -38,8 +38,8 @@ export function Search({
         onChange={(event) => {
           const value = event.target.value;
           if (value) {
-            setTempValue(event.target.value);
-            debounceSearch(event.target.value);
+            setTempValue(value);
+            debounceSearch(value);
           } else {
             debounceSearch.cancel();
             setTempValue(undefined);
