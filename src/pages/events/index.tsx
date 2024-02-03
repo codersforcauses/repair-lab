@@ -10,7 +10,7 @@ import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
 import { Pagination, PaginationState } from "@/components/pagination";
-import { Search } from "@/components/search";
+import { Search } from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
 import { SelectUser, useUsersFromIds } from "@/components/select-user";

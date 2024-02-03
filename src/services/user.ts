@@ -5,8 +5,8 @@ import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
 import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
-import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
-import { User, UserRole } from "@/types";
+import { buildPaginationResponse } from "@/lib/pagination";
+import { User, UserRole, UserSearchQuery } from "@/types";
 
 type ClerkOrderBy =
   | "created_at"
@@ -27,7 +27,7 @@ async function getAuth(req: NextApiRequest) {
   };
 }
 
-async function getMany(options: PaginationOptions) {
+async function getMany(options: UserSearchQuery) {
   const { orderBy, perPage, page, query } = options;
 
   const searchRequest = {
