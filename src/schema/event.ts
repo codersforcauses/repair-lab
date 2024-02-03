@@ -24,8 +24,8 @@ export const getEventSchema = z.object({
     .optional(),
   sortMethod: z.enum(["asc", "desc"]).optional(),
   searchWord: z.string().optional(),
-  minStartDate: z.string().datetime().optional(),
-  maxStartDate: z.string().datetime().optional(),
+  minDate: z.coerce.date().optional(),
+  maxDate: z.coerce.date().optional(),
   eventType: stringOrArray.optional(),
   eventStatus: eventStatusSchema.optional(),
   createdBy: stringOrArray.optional()
