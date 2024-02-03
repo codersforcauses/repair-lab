@@ -28,7 +28,7 @@ export const useCreateRepairRequest = () => {
     return response.data;
   };
 
-  const onSuccess = (response: { id: string }) => {
+  const onSuccess = () => {
     toast.success("Repair request submitted!");
     queryClient.invalidateQueries({ queryKey: ["repair-requests"] });
   };
