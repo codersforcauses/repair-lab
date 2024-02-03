@@ -1,6 +1,6 @@
 import { type ReactNode, useState } from "react";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaSearch } from "react-icons/fa";
+
 
 import useDebounceFn from "@/hooks/debounce-fn";
 import cn from "@/lib/classnames";
@@ -49,7 +49,8 @@ export function Search({
           }
         )}
       >
-        <FontAwesomeIcon icon={faSearch} width={20} height={20} />
+        <FaSearch/>
+
       </div>
     </div>
   );
