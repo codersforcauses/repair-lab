@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 import Button from "@/components/Button";
 import Search from "@/components/Search";
-import TablePagination from "@/components/table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
 import { User } from "@/types";
@@ -27,7 +26,7 @@ export default function VolunteerManageForm({
 }) {
   volunteersArray = volunteersArray ?? [];
   const [volunteers, setVolunteers] = useState(volunteersArray); // TODO: This is actually an array of volunteer ids, so later we need to get the volunteer info from the clerk
-
+  const [staff, setStaff] = useState([]);
   // Constants for table - this is from the /users endpoint
   const [orderBy, _setOrderBy] = useState("-created_at");
   const [perPage, _setPerPage] = useState(8);
@@ -43,8 +42,19 @@ export default function VolunteerManageForm({
     setQuery(value);
   };
 
-  // TODO implement backend to handle this - check issue 113 or 116
+  // TODO - update this to use a new hook or endpoint instead of useEffect
+  const fetchStaff = (data: SetStateAction<never[]>) => {
+    setStaff(data);
+  };
+
+  useEffect(() => {
+    fetch("/api/staff")
+      .then((res) => res.json())
+      .then((data) => fetchStaff(data));
+  });
+
   // Default submit handler
+  // TODO implement backend to handle this - check issue 113 or 116
   const defaultOnSubmit = async () => {
     console.log(volunteers);
     setShowModal(false);
@@ -79,7 +89,7 @@ export default function VolunteerManageForm({
                 </tr>
               </thead>
               <tbody>
-                {users?.items.map((user: User, index: number) => {
+                {staff?.map((user: User, index: number) => {
                   return (
                     <VolunteerRow
                       key={user.id}
@@ -92,23 +102,6 @@ export default function VolunteerManageForm({
                 })}
               </tbody>
             </table>
-
-            {/* TODO update to new Pagination component */}
-            <TablePagination
-              perPage={perPage}
-              page={page}
-              totalCount={Number(users?.meta.totalCount)}
-              prevPage={() =>
-                setPage(Number(page) - 1 == 0 ? 1 : Number(page) - 1)
-              }
-              nextPage={() =>
-                setPage(
-                  Number(page) + 1 > Number(users?.meta.lastPage)
-                    ? Number(users?.meta.lastPage)
-                    : Number(page) + 1
-                )
-              }
-            />
           </div>
         </>
       )}
