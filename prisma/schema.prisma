@@ -31,7 +31,7 @@ model Event {
 
   repairRequests RepairRequest[] //relation field, not a column (one event to many repairRequests)
   images         EventImage[]
-  eventRepairer  EventRepairer[]
+  eventRepairers EventRepairer[]
 }
 
 enum EventStatus {
@@ -113,7 +113,7 @@ model EventRepairer {
   id      String @id @default(uuid())
   userId  String
   eventId String
-  Event   Event  @relation(fields: [eventId], references: [id])
+  event   Event  @relation(fields: [eventId], references: [id])
 
   @@unique([userId, eventId])
 }

@@ -37,36 +37,12 @@ async function getEvents(
 
   const userRole = await userService.getRole(userId!);
 
-  const queryRepairers = {
-    where: {
-      eventRepairer: {
-        some: {
-          userId: userId!
-        }
-      },
-      OR: [
-        { name: { contains: searchWord, mode: "insensitive" } },
-        { createdBy: { contains: searchWord, mode: "insensitive" } },
-        { location: { contains: searchWord, mode: "insensitive" } },
-        { eventType: { contains: searchWord, mode: "insensitive" } }
-      ],
-      startDate: {
-        gte: minDate,
-        lte: maxDate
-      },
-      eventType: { in: eventType },
-      status: { in: eventStatus },
-      createdBy: { in: createdBy }
-    },
-    orderBy: sortObj
-  };
-
   let events;
 
   if (userRole === UserRole.REPAIRER) {
     events = await prisma.event.findMany({
       where: {
-        eventRepairer: {
+        eventRepairers: {
           some: {
             userId: userId!
           }
@@ -78,8 +54,8 @@ async function getEvents(
           { eventType: { contains: searchWord, mode: "insensitive" } }
         ],
         startDate: {
-          gte: minStartDate ? new Date(minStartDate) : undefined,
-          lte: maxStartDate ? new Date(maxStartDate) : undefined
+          gte: minDate ? new Date(minDate) : undefined,
+          lte: maxDate ? new Date(maxDate) : undefined
         },
         eventType: { in: eventType },
         status: { in: eventStatus },
@@ -97,8 +73,8 @@ async function getEvents(
           { eventType: { contains: searchWord, mode: "insensitive" } }
         ],
         startDate: {
-          gte: minStartDate ? new Date(minStartDate) : undefined,
-          lte: maxStartDate ? new Date(maxStartDate) : undefined
+          gte: minDate ? new Date(minDate) : undefined,
+          lte: maxDate ? new Date(maxDate) : undefined
         },
         eventType: { in: eventType },
         status: { in: eventStatus },
@@ -107,9 +83,6 @@ async function getEvents(
       orderBy: sortObj
     });
   }
-
-  console.log(userRole);
-  console.log(events);
 
   const eventResponse: EventResponse[] =
     await eventService.toClientResponse(events);

@@ -63,7 +63,7 @@ export const mockClerkUsers = [
 
 // query partially matches userId, emailAddress, phoneNumber, username, web3Wallet, firstName, lastName
 type BasicSearchParams = { query?: string };
-const queryUsers = ({ query }: BasicSearchParams) => {
+export const queryUsers = ({ query }: BasicSearchParams) => {
   if (!query) return mockClerkUsers;
 
   const partialMatch = (string1: string) =>
@@ -96,21 +96,7 @@ prisma.event.createMany({
 prisma.eventRepairer.create({
   data: {
     userId: "RepairerTesterNic",
-    eventId: "aaaaaaaa-19a2-11ee-be56-0242ac120002"
-  }
-});
-
-prisma.eventRepairer.create({
-  data: {
-    userId: "RepairerTesterFF",
-    eventId: "aaaaaaaa-19a2-11ee-be56-0242ac120002"
-  }
-});
-
-prisma.eventRepairer.create({
-  data: {
-    userId: "RepairerTesterFF",
-    eventId: "aaaaaaaa-19a2-11ee-be56-0242ac120002"
+    eventId: "ev-3"
   }
 });
 

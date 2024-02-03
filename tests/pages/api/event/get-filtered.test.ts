@@ -19,10 +19,12 @@ describe("GET /api/event", () => {
     await prisma.itemType.createMany({
       data: ["Laptop", "Clock", "Sponge"].map((name) => ({ name }))
     });
+
     const unimportant = {
       disclaimer: "This is a disclaimer",
       location: "Curtin University"
     };
+
     await prisma.event.createMany({
       data: [
         {
@@ -60,6 +62,7 @@ describe("GET /api/event", () => {
       ]
     });
   });
+
   type AllowedParams = {
     sortKey?: string;
     sortMethod?: string;
@@ -70,6 +73,7 @@ describe("GET /api/event", () => {
     eventStatus?: string | string[];
     createdBy?: string | string[];
   };
+
   const testFilter = async (
     filters: AllowedParams,
     expectedEvents: string[]
@@ -93,6 +97,7 @@ describe("GET /api/event", () => {
       }
     });
   };
+
   const testBadFilter = async (filters: AllowedParams) => {
     await testApiHandler({
       handler,
@@ -131,14 +136,17 @@ describe("GET /api/event", () => {
   it("should be able to filter events by event types", async () => {
     await testFilter({ eventType: ["Clock", "Sponge"] }, ["ev-2", "ev-3"]);
   });
+
   it("should be able to filter events by event status", async () => {
     await testFilter({ eventStatus: ["COMPLETED"] }, ["ev-1"]);
   });
+
   it("should be able to filter events by multiple", async () => {
     await testFilter({ createdBy: ["user_1"], eventType: ["Laptop"] }, [
       "ev-1"
     ]);
   });
+
   it("should return empty when none selected", async () => {
     await testFilter({ eventType: [] }, []);
     await testFilter({ eventStatus: [] }, []);
@@ -150,10 +158,12 @@ describe("GET /api/event", () => {
   it("should return 400 if invalid status passed", async () => {
     await testBadFilter({ eventStatus: ["WOOHOO"] });
   });
+
   it("should return 400 if invalid sorting", async () => {
     await testBadFilter({ sortKey: "WOOHOO" });
     await testBadFilter({ sortMethod: "WOOHOO" });
   });
+
   it("should return 400 if invalid date", async () => {
     await testBadFilter({ minDate: "HAHA" });
   });
