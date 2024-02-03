@@ -1,7 +1,6 @@
 import { type ReactNode, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-
 import useDebounceFn from "@/hooks/debounce-fn";
 import cn from "@/lib/classnames";
 
@@ -49,8 +48,7 @@ export function Search({
           }
         )}
       >
-        <FaSearch/>
-
+        <FaSearch />
       </div>
     </div>
   );

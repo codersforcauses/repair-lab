@@ -1,4 +1,4 @@
-import { FaSort,FaSortUp,FaSortDown } from "react-icons/fa";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import {
   flexRender,
   getCoreRowModel,
@@ -60,14 +60,13 @@ export default function Table<RecordType = unknown>(
                     : flexRender(column.columnDef.header, getContext())}
                   {{
                     true: (
-                      <FaSort className="inline-flex text-lightAqua-400 h-4"/>
-
+                      <FaSort className="inline-flex text-lightAqua-400 h-4" />
                     ),
                     asc: (
-                      <FaSortUp className="inline-flex text-lightAqua-400 h-4"/>
+                      <FaSortUp className="inline-flex text-lightAqua-400 h-4" />
                     ),
                     desc: (
-                      <FaSortDown className="inline-flex text-lightAqua-400 h-4"/>
+                      <FaSortDown className="inline-flex text-lightAqua-400 h-4" />
                     )
                   }[(column.getIsSorted() || column.getCanSort()) as string] ??
                     null}
