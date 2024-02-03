@@ -30,7 +30,7 @@ const Success: NextPageWithLayout = () => {
           </h1>
 
           <h2 className="relative text-center mb-3 mt-5 text-xl font-bold text-grey-500">
-            Repair request ID: {params.id}
+            Repair Request ID: {params.id}
           </h2>
 
           <p className="text-slate-500 text-xl text-center mb-8 gap-y-4 leading-relaxed">
@@ -48,7 +48,7 @@ const Success: NextPageWithLayout = () => {
                   radius="rounded-3xl"
                 >
                   {" "}
-                  Submit another request{" "}
+                  Submit Another Request{" "}
                 </Button>
               </Link>
             </div>
