@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { faFilterCircleXmark, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
 import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
 
@@ -162,10 +161,9 @@ const Events: NextPageWithLayout = () => {
                 title="Clear Filters"
                 onClick={resetQuery}
               >
-                <FontAwesomeIcon
-                  icon={faFilterCircleXmark}
-                  className="text-[1rem] transform translate-y-[2px]"
-                />
+                <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
+                  <FaFilterCircleXmark className="text-[1rem] transform translate-y-[2px]" />
+                </div>
               </HoverOpacityButton>
             </div>
           </div>
@@ -182,7 +180,9 @@ const Events: NextPageWithLayout = () => {
                 className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
                 onClick={() => setShowAddModal(true)}
               >
-                <FontAwesomeIcon icon={faPlus} />
+                <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
+                  <FaPlus className="text-[1rem] transform " />
+                </div>
               </button>
               <Modal
                 setShowPopup={setShowAddModal}
