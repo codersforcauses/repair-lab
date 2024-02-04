@@ -11,7 +11,7 @@ export interface SearchProps {
   className?: string;
   value?: string;
   /**
-   * onChange is designed able to accept promise for async process like changing url state
+   * onChange is designed to accept promise for async process like changing url state
    * example: src/pages/events/index.tsx
    */
   onChange?: (value: string) => void | Promise<unknown>;
