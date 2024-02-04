@@ -105,9 +105,6 @@ export default function Images() {
               <div className="w-auto p-4 text-2xl font-bold text-app-base-200">
                 <span>Images ({images.length})</span>
               </div>
-              <div className="container mx-auto">
-                <div className="flex justify-end"></div>
-              </div>
               <div className="grid gap-4 p-4 lg:grid-cols-5 ">
                 <div
                   className="flex w-full items-center justify-center rounded-lg border bg-app-base-100 p-4 shadow-md transition hover:-translate-y-1 hover:cursor-pointer hover:bg-app-secondary"
@@ -139,14 +136,12 @@ export default function Images() {
                 >
                   <FieldImageUpload multiple name="images" control={control} />
                   <div className="flex justify-center p-4">
-                    <div className="w-1/3">
-                      <button
-                        type="submit"
-                        className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-full"
-                      >
-                        Submit
-                      </button>
-                    </div>
+                    <button
+                      type="submit"
+                      className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-1/3"
+                    >
+                      Submit
+                    </button>
                   </div>
                 </form>
               </Modal>
