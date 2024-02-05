@@ -36,23 +36,37 @@ async function toClientResponse(
   options?: PaginationOptions,
   totalCount?: number
 ): Promise<PaginationResponse<RepairRequestResponse> | RepairRequestResponse> {
-  // Single request overload - convert to array
-  if (!Array.isArray(repairRequests)) repairRequests = [repairRequests];
+  // Run conversion on array
+  const responses = await convertRequests(
+    !Array.isArray(repairRequests) ? [repairRequests] : repairRequests
+  );
 
+  // Single request overload
+  if (!Array.isArray(repairRequests)) return responses[0];
+
+  // This should never happen
+  if (options == undefined || totalCount == undefined)
+    throw new Error("Pagination options incorrectly passed.");
+
+  return await buildPaginationResponse(responses, options, totalCount);
+}
+
+async function convertRequests(
+  repairRequests: RepairRequestWithImage[]
+): Promise<RepairRequestResponse[]> {
   const userIds = repairRequests.flatMap((e) => [e.createdBy, e.assignedTo]);
   const userMap = await userService.getUserMapFromIds(userIds);
 
-  const responses: RepairRequestResponse[] = await Promise.all(
+  return Promise.all(
     repairRequests.map(async (req) => {
       const [thumbnailImage, images] = await Promise.all([
         presignImage(req.thumbnailImage),
         presignImages(req.images?.map(({ s3Key }) => s3Key) || [])
       ]);
 
-      let assignedTo = undefined;
-      if (req.assignedTo)
-        assignedTo =
-          userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo);
+      const assignedTo = req.assignedTo
+        ? userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo)
+        : undefined;
 
       return {
         ...req,
@@ -67,21 +81,6 @@ async function toClientResponse(
       };
     })
   );
-
-  // Single request overload
-  if (!Array.isArray(repairRequests)) return responses[0];
-
-  // This should never happen
-  if (options == undefined || totalCount == undefined)
-    throw new Error("Pagination options incorrectly passed.");
-
-  const paginatedResponse = await buildPaginationResponse(
-    responses,
-    options,
-    totalCount
-  );
-
-  return paginatedResponse;
 }
 
 const repairRequestService = {
