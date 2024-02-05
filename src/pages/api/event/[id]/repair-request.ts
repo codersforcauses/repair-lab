@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
-import { buildPaginationResponse, PaginationResponse } from "@/lib/pagination";
+import { PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 import { getRepairRequestSchema } from "@/schema/repair-request";
 import repairRequestService from "@/services/repairRequest";
@@ -96,16 +96,13 @@ async function getRepairRequests(
   ]);
 
   // Convert to response type
-  const repairRequestResponse =
-    await repairRequestService.toClientResponse(repairRequests);
-
-  const paginatedResponse = await buildPaginationResponse(
-    repairRequestResponse,
+  const repairRequestResponse = await repairRequestService.toClientResponse(
+    repairRequests,
     {
       page,
       perPage
     },
     totalCount
   );
-  return res.status(200).json(paginatedResponse);
+  return res.status(200).json(repairRequestResponse);
 }

@@ -1,18 +1,46 @@
 import { RepairRequestImage } from "@prisma/client";
 
+import {
+  buildPaginationResponse,
+  PaginationOptions,
+  PaginationResponse
+} from "@/lib/pagination";
 import { presignImage, presignImages } from "@/services/s3";
 import userService from "@/services/user";
 import { RepairRequest, RepairRequestResponse } from "@/types";
 
+type RepairRequestWithImage = RepairRequest & { images?: RepairRequestImage[] };
+
 /**
- * Converts a list of RepairRequest to RepairRequestResponse
+ * Converts a single RepairRequest to RepairRequestResponse
  * @param repairRequests
  * @param withImage If you need the image presigned urls
  * @returns
  */
-const toClientResponse = async (
-  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>
-): Promise<RepairRequestResponse[]> => {
+async function toClientResponse(
+  repairRequest: RepairRequestWithImage
+): Promise<RepairRequestResponse>;
+
+/**
+ * Converts a list of RepairRequest to a list of RepairRequestResponse with pagination metadata
+ * @param repairRequests
+ * @param withImage If you need the image presigned urls
+ * @returns
+ */
+async function toClientResponse(
+  repairRequests: Array<RepairRequestWithImage>,
+  options: PaginationOptions,
+  totalCount: number
+): Promise<PaginationResponse<RepairRequestResponse>>;
+
+async function toClientResponse(
+  repairRequests: Array<RepairRequestWithImage> | RepairRequestWithImage,
+  options?: PaginationOptions,
+  totalCount?: number
+): Promise<PaginationResponse<RepairRequestResponse> | RepairRequestResponse> {
+  // Single request overload - convert to array
+  if (!Array.isArray(repairRequests)) repairRequests = [repairRequests];
+
   const userIds = repairRequests.flatMap((e) => [e.createdBy, e.assignedTo]);
   const userMap = await userService.getUserMapFromIds(userIds);
 
@@ -41,8 +69,22 @@ const toClientResponse = async (
       };
     })
   );
-  return responses;
-};
+
+  // Single request overload
+  if (!Array.isArray(repairRequests)) return responses[0];
+
+  // This should never happen
+  if (options == undefined || totalCount == undefined)
+    throw new Error("Pagination options incorrectly passed.");
+
+  const paginatedResponse = await buildPaginationResponse(
+    responses,
+    options,
+    totalCount
+  );
+
+  return paginatedResponse;
+}
 
 const repairRequestService = {
   toClientResponse
