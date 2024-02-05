@@ -55,18 +55,20 @@ export default function RepairRequests() {
   const [
     { search, sortKey, sortDir, assignedTo, page, perPage, itemType },
     setSearchParams
-  ] = useSearchParamsState({
-    search: "",
-    sortKey: "",
-    sortDir: "asc",
-    assignedTo: "",
-    itemType: "",
-    page: "1",
-    perPage: "10"
-  });
+  ] = useSearchParamsState(initialFilterState);
+
   const resetQuery = useMemoizedFn(() => {
     setSearchParams(initialFilterState);
   });
+
+  // Reset page on filter change
+  useEffect(() => {
+    setSearchParams((state) => ({
+      ...state,
+      page: "1"
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, sortKey, sortDir, assignedTo, itemType, perPage]);
 
   const validatedSortDir =
     sortDir == "asc" || sortDir == "desc" ? sortDir : "asc";
@@ -234,6 +236,7 @@ export default function RepairRequests() {
               <Pagination
                 className="mt-0 pl-4 pr-4"
                 value={pagination}
+                disabled={isPlaceholderData}
                 onChange={(nextState) => {
                   setSearchParams((state) => ({
                     ...state,

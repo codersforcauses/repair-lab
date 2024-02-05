@@ -17,13 +17,15 @@ export interface PaginationProps {
   onChange: (nextState: PaginationState) => void;
   options?: number[];
   className?: string;
+  disabled?: boolean;
 }
 
 export function Pagination({
   value: paginationState,
   onChange,
   options = DEFAULT_OPTIONS,
-  className
+  className,
+  disabled = false
 }: PaginationProps) {
   const { total, perPage = 20, current = 1 } = paginationState;
 
@@ -69,7 +71,7 @@ export function Pagination({
           className="flex h-8 items-center justify-center rounded-l bg-primary-500 px-3 text-sm font-medium text-white"
           scaleOnHover={false}
           onClick={() => toPage(current - 1)}
-          disabled={current <= 1}
+          disabled={disabled || current <= 1}
         >
           Prev
         </HoverOpacityButton>
@@ -77,7 +79,7 @@ export function Pagination({
           className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-500 px-3 text-sm font-medium text-white"
           scaleOnHover={false}
           onClick={() => toPage(current + 1)}
-          disabled={current >= maxPage}
+          disabled={disabled || current >= maxPage}
         >
           Next
         </HoverOpacityButton>
