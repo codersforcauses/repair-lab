@@ -14,7 +14,6 @@ type RepairRequestWithImage = RepairRequest & { images?: RepairRequestImage[] };
 /**
  * Converts a single RepairRequest to RepairRequestResponse
  * @param repairRequests
- * @param withImage If you need the image presigned urls
  * @returns
  */
 async function toClientResponse(
@@ -22,9 +21,8 @@ async function toClientResponse(
 ): Promise<RepairRequestResponse>;
 
 /**
- * Converts a list of RepairRequest to a list of RepairRequestResponse with pagination metadata
+ * Converts a RepairRequest list to a RepairRequestResponse list with pagination metadata
  * @param repairRequests
- * @param withImage If you need the image presigned urls
  * @returns
  */
 async function toClientResponse(

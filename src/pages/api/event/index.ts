@@ -80,6 +80,6 @@ async function createEvent(
       endDate: new Date(endDate)
     }
   });
-  const eventResponse = (await eventService.toClientResponse([newEvent]))[0];
+  const eventResponse = await eventService.toClientResponse(newEvent);
   res.status(200).json(eventResponse);
 }
