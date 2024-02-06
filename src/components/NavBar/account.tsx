@@ -1,9 +1,10 @@
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+
+import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
-import Modal from "@/components/Modal";
 
 interface Props {
   role: UserRole;

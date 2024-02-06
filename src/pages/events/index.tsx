@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
 import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
+import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";

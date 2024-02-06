@@ -1,9 +1,8 @@
 import { Fragment, useState } from "react";
 import Image from "next/image";
-import { FaXmark } from "react-icons/fa6";
-
 import { Listbox } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
+import { FaXmark } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";

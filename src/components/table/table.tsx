@@ -1,10 +1,10 @@
-import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import {
   flexRender,
   getCoreRowModel,
   TableOptions,
   useReactTable
 } from "@tanstack/react-table";
+import { FaSort, FaSortDown, FaSortUp } from "react-icons/fa";
 
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import cn from "@/lib/classnames";

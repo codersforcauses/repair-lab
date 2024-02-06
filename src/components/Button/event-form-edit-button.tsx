@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FaPencilAlt } from "react-icons/fa";
 import { SubmitHandler } from "react-hook-form";
+import { FaPencilAlt } from "react-icons/fa";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import PrepopulatedEventForm from "@/components/Forms/prepopulated-event-form";
