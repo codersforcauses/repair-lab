@@ -2,7 +2,8 @@ import {
   $Enums,
   Event as PrismaEvent,
   EventRepairer as PrismaEventRepairer,
-  RepairRequest as PrismaRepairRequest
+  RepairRequest as PrismaRepairRequest,
+  UserRole as PrismaUserRole
 } from "@prisma/client";
 import { z, ZodIssue } from "zod";
 
@@ -12,8 +13,12 @@ import {
   createRepairRequestSchema,
   updateRepairRequestSchema
 } from "@/schema/repair-request";
+import { getManyUsersSchema } from "@/schema/user";
 
 // TODO: Not sure if we should be exposing prisma model types in the frontend??
+
+// User
+export type UserSearchQuery = z.infer<typeof getManyUsersSchema>;
 
 // Repair Requests
 export type RepairRequest = PrismaRepairRequest;
@@ -51,13 +56,8 @@ export enum SearchCriteria {
   All = "all"
 }
 
-export enum UserRole {
-  ADMIN = "ADMIN",
-  ORGANISATION_MANAGER = "ORGANISATION_MANAGER",
-  EVENT_MANAGER = "EVENT_MANAGER",
-  REPAIRER = "REPAIRER",
-  CLIENT = "CLIENT"
-}
+export const UserRole = { ...PrismaUserRole, CLIENT: "CLIENT" } as const;
+export type UserRole = keyof typeof UserRole;
 
 export type NavPath = {
   item: string;
@@ -112,4 +112,4 @@ export type ErrorResponse = {
   message: string | ZodIssue[];
 };
 
-export type UserResponse = PaginationResponse<User>;
+export type UserResponse = PaginationResponse<User[]>;
