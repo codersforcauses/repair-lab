@@ -4,9 +4,9 @@ import { render } from "@react-email/render";
 import prisma from "@/lib/prisma";
 import { User } from "@/types";
 
-import userService from "./user";
 import { RepairRequestEmail } from "../email/emails/repair-request-email";
 import { formatDate } from "../utils";
+import userService from "./user";
 
 const sesClient = new SESClient({
   region: process.env.AWS_REGION,
@@ -99,8 +99,8 @@ const sendEmail = async (
   try {
     return await sesClient.send(sendEmailCommand);
   } catch (e) {
-    // error("Failed to send email. Error: ", e);
-    return e;
+    /* eslint-disable no-console */
+    console.log({ e });
   }
 };
 
