@@ -1,6 +1,6 @@
+import { HttpStatusCode } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
-import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
@@ -81,6 +81,11 @@ async function getEventRepairers(id: string) {
   // get additional informations like firstName, lastName, email
   const repairersUsers: Partial<Record<string, User>> =
     await userService.getUserMapFromIds(userIds);
+
+  /* eslint-disable no-console */
+  if (Object.keys(repairersUsers).length !== userIds.length) {
+    console.error("Mismatch in users from clerk and database");
+  }
 
   return userIds
     .map((userId) => {
