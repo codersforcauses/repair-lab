@@ -1,9 +1,8 @@
 import { Fragment, useState } from "react";
 import Image from "next/image";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Listbox } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
+import { FaXmark } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
@@ -75,7 +74,7 @@ export function SelectUser({
                     onChange?.(newValues);
                   }}
                 >
-                  <FontAwesomeIcon icon={faXmark} />
+                  <FaXmark />
                 </HoverOpacityButton>
               </div>
             );
