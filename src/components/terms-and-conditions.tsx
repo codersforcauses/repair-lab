@@ -45,7 +45,7 @@ export const TermsAndConditions = ({
               ? setValue(field.name, !field.value)
               : handleshowPopupChange()
           }
-          className="accent-primary-600"
+          className="accent-primary-600 w-5 h-5 rounded-xl"
         />
 
         <div className="space-x-1.5">
