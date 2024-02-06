@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import Image from "next/image";
 import { Listbox } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import { useUsers } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
+import { PaginationResponse } from "@/lib/pagination";
 import { User } from "@/types";
 const NAME_KEY = "emailAddress";
 const VALUE_KEY = "id";
@@ -32,7 +33,7 @@ export function SelectUser({
 }: SelectUserProps) {
   const [search, setSearch] = useState<string>("");
   const { data, isLoading } = useUsers(10, 1, "-created_at", search);
-  const users = data?.items as User[];
+  const users = useMemo(() => data?.items ?? [], [data]);
 
   return (
     <Select
@@ -145,10 +146,12 @@ export function useUsersFromIds(
     queryFn: async () => {
       if (!isBlank(ids)) {
         // this blank check is because unstable of useRouter of next.js
-        const res = await httpClient.get<User[]>(
-          `/user/list?ids=${ids.join(",")}`
-        );
-        onChange(res.data);
+        const res = await httpClient.get<PaginationResponse<User[]>>("/user", {
+          params: {
+            userId: ids
+          }
+        });
+        onChange(res.data?.items);
         setInitialized(true);
       }
     }
