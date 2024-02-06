@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SubmitHandler } from "react-hook-form";
+import { FaPencilAlt } from "react-icons/fa";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import PrepopulatedEventForm from "@/components/Forms/prepopulated-event-form";
@@ -29,7 +28,7 @@ export default function EventFormEditButton({
   return (
     <>
       <HoverOpacityButton onClick={() => setShowEditModal(true)}>
-        <FontAwesomeIcon icon={faPencil} />
+        <FaPencilAlt />
       </HoverOpacityButton>
       <Modal
         setShowPopup={setShowEditModal}

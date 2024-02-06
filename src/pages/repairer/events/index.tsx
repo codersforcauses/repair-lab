@@ -1,5 +1,5 @@
 // Page for repairers to view their assigned events
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 
 import Box from "@/components/EventBox/box";
@@ -13,12 +13,15 @@ const Home = () => {
   const [searchWord] = useState<string>("");
   const [sortMethod] = useState<string>("asc");
 
-  const { data: eventData, isLoading: isEventsLoading } = useEvents({
+  const { data, isLoading: isEventsLoading } = useEvents({
     sortKey,
     sortMethod,
-    searchWord
+    searchWord,
+    page: 1,
+    perPage: 20
   });
 
+  const eventData = useMemo(() => data?.items, [data]);
   return (
     <div>
       {/* HEADER BAR*/}
