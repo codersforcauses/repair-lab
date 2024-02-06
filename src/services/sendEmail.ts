@@ -100,7 +100,7 @@ const sendEmail = async (
     return await sesClient.send(sendEmailCommand);
   } catch (e) {
     /* eslint-disable no-console */
-    console.log({ e });
+    console.error({ e });
   }
 };
 
