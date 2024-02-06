@@ -1,11 +1,12 @@
+import { RepairRequest } from "@prisma/client";
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
-import { RepairRequest } from "@prisma/client";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import endpoint from "@/pages/api/repair-request";
 
 import prisma from "../../../../src/lib/prisma";
+import userService from "../../../../src/services/user";
 import { cleanup, seedTestData } from "../../../utils";
 
 // Respect the Next.js config object if it's exported
@@ -86,4 +87,51 @@ describe("POST /api/repair-request", () => {
       }
     });
   });
-});
+
+  it("should be able to recieve an email", async () => {
+    vi.mock("@clerk/nextjs/server", async () => {
+      return {
+        getAuth: vi.fn().mockReturnValue({ userId: "email_testing" })
+      };
+    });
+
+    vi.mock("../../../../src/services/user");
+
+    vi.mocked(userService.getUser).mockReturnValue(
+      Promise.resolve({
+        id: "email_testing",
+        firstName: "Email",
+        lastName: "Testing",
+        // change to the email address where you want to receive the emails
+        // please note that receiving actual SES emails requires using a verified email address in AWS
+        emailAddress: "test0@gmail.com",
+        role: "CLIENT"
+      })
+    );
+
+    await testApiHandler({
+      handler,
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
+            itemType: "Laptop",
+            description: "Test Repair Request Confirmation Email",
+            itemBrand: "Repair Request Confirmation",
+            comment: "Use mock email sevice in test environment."
+          })
+        });
+
+        await new Promise((resolve) => {
+          setTimeout(resolve, 8000);
+        });
+
+        expect(res.status).equals(200);
+      }
+    });
+  });
+}, 10000);
