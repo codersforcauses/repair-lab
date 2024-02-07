@@ -155,7 +155,7 @@ export default function RepairAttemptForm({
         <Button
           onClick={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}
           height="h-9"
-          width="w-1/3"
+          width="w-full"
           textSize="text-base"
         >
           Submit

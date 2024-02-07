@@ -1,8 +1,8 @@
 // Terms and Conditions Pop-up
 
-import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Control, useController, UseFormSetValue } from "react-hook-form";
+import { Fragment, useState } from "react";
+import { Control, UseFormSetValue, useController } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
@@ -95,7 +95,7 @@ export const TermsAndConditions = ({
 
                   <Dialog.Title
                     as="h3"
-                    className="border-b p-5 text-center text-2xl font-medium leading-6 text-gray-900"
+                    className="mt-0 border-b border-gray-200 p-4 text-center text-3xl font-semibold leading-6 mb-5"
                   >
                     House Rules
                   </Dialog.Title>

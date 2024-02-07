@@ -45,12 +45,21 @@ export default function Card({ props }: { props: CardProps }) {
       role="presentation"
       className="group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:-translate-y-0.5 hover:cursor-pointer hover:bg-grey-50"
     >
-      <Modal setShowPopup={setShowModal} showModal={showModal}>
+      <Modal
+        title={
+          <>
+            Repair ID
+            <h2 className="mt-3">
+              {props.title}
+              <br />
+              <StatusPill status={props.status} />
+            </h2>
+          </>
+        }
+        setShowPopup={setShowModal}
+        showModal={showModal}
+      >
         <div className="text-center">
-          <h1 className="text-xl font-bold">Repair ID:</h1>
-          <h2 className="text-l font-bold">
-            {props.title} <StatusPill status={props.status} />
-          </h2>
           <div>
             <PrepopulatedRepairAttemptForm
               props={props.repairRequestProps}

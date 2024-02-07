@@ -144,7 +144,7 @@ export default function PrepopulatedRepairAttemptForm({
         <Button
           onClick={handleSubmit(onSubmit)}
           height="h-9"
-          width="w-1/3"
+          width="w-full"
           textSize="text-base"
         >
           Submit

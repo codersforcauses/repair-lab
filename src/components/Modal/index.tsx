@@ -7,7 +7,7 @@ import { BsXCircle } from "react-icons/bs";
 type ModalProps = {
   showModal: boolean;
   setShowPopup: Dispatch<SetStateAction<boolean>>;
-  title?: string;
+  title?: string | ReactNode;
   width?: string;
   height?: string;
   children?: ReactNode;
@@ -59,7 +59,7 @@ const Modal = ({
                   {title ? (
                     <Dialog.Title
                       as="h3"
-                      className="mt-0 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"
+                      className="mt-0 border-b border-gray-200 p-4 text-center text-3xl font-semibold leading-6 mb-5"
                     >
                       {title}
                     </Dialog.Title>

@@ -33,7 +33,7 @@ export default function EventFormEditButton({
       <Modal
         setShowPopup={setShowEditModal}
         showModal={showEditModal}
-
+        title="Edit an Event"
       >
         <PrepopulatedEventForm props={props} onSubmit={onSubmit} />
       </Modal>

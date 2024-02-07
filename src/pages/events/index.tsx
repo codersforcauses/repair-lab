@@ -201,6 +201,7 @@ const Events: NextPageWithLayout = () => {
               <Modal
                 setShowPopup={setShowAddModal}
                 showModal={showAddModal}
+                title="Add a New Event"
 
               >
                 <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
