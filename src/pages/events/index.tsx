@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { faFilterCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
+import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Card from "@/components/Cards/event-card";
@@ -102,10 +101,9 @@ const Events: NextPageWithLayout = () => {
               title="Clear Filters"
               onClick={resetQuery}
             >
-              <FontAwesomeIcon
-                icon={faFilterCircleXmark}
-                className="text-[1rem] transform translate-y-[2px]"
-              />
+              <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
+                <FaFilterCircleXmark className="text-[1rem] transform translate-y-[2px]" />
+              </div>
             </HoverOpacityButton>
           </div>
         </div>
