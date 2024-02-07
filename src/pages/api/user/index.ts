@@ -12,7 +12,7 @@ export default apiHandler({
 
 async function getUsers(
   req: NextApiRequest,
-  res: NextApiResponse<PaginationResponse<User>>
+  res: NextApiResponse<PaginationResponse<User[]>>
 ) {
   const parsedQuery = getManyUsersSchema.parse(req.query);
 
