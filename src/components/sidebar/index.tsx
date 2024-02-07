@@ -34,24 +34,24 @@ const Sidebar = ({ children }: Props) => {
         <div className="items-left flex flex-col px-4 text-zinc-600">
           <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
           <Link
-            href="/events"
+            href="/manage/events"
             className="p-1 text-center text-lg font-bold text-gray-600"
           >
             Back to Events
           </Link>
-          <Link href={`/events/${id}/repair-requests`}>
+          <Link href={`/manage/events/${id}/repair-requests`}>
             <div className={sidebarTabStyle}>
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair requests</p>
             </div>
           </Link>
-          <Link href={`/events/${id}/volunteers`}>
+          <Link href={`/manage/events/${id}/volunteers`}>
             <div className={sidebarTabStyle}>
               <RxPerson size={30} />
               <p className="px-4 text-lg">Volunteers</p>
             </div>
           </Link>
-          <Link href={`/events/${id}/public-images`}>
+          <Link href={`/manage/events/${id}/public-images`}>
             <div className={sidebarTabStyle}>
               <RxImage size={30} />
               <p className="px-4 text-lg">Images</p>
