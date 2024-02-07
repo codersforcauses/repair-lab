@@ -112,4 +112,4 @@ export type ErrorResponse = {
   message: string | ZodIssue[];
 };
 
-export type UserResponse = PaginationResponse<User>;
+export type UserResponse = PaginationResponse<User[]>;

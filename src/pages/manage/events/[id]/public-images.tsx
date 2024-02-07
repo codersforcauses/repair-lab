@@ -8,10 +8,11 @@ import FieldImageUpload from "@/components/FormFields/field-image-upload";
 import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
-import { Pagination } from "@/components/pagination";
+import { Pagination, PaginationState } from "@/components/pagination";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
+import { PaginationOptions } from "@/lib/pagination";
 
 // TODO: clean this up this is a place holder for now
 
@@ -33,16 +34,16 @@ export default function Images() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const { control, handleSubmit, reset } = useForm<ImageFormValues>();
   const [pagination, setPagination] = useState({
-    total: images.length,
+    totalCount: images.length,
     perPage: 20,
-    current: 1
+    page: 1
   });
   const {
     query: { id: eventId }
   } = useRouter();
 
   const imagesToShow = useMemo(() => {
-    const startIndex = (pagination.current - 1) * pagination.perPage;
+    const startIndex = (pagination.page - 1) * pagination.perPage;
     const endIndex = startIndex + pagination.perPage;
     return images.slice(startIndex, endIndex);
   }, [images, pagination]);
