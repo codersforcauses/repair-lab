@@ -35,7 +35,6 @@ export default function PrepopulatedEventForm({
 
   return (
     <div>
-     
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 space-y-3">
           <FieldInput

@@ -68,7 +68,7 @@ export default function Volunteers() {
               showModal={showVolunteerModal}
               setShowPopup={setShowVolunteerModal}
               height="h-full"
-              title='Add / Remove Volunteers'
+              title="Add / Remove Volunteers"
             >
               <div className="text-center">
                 <div>

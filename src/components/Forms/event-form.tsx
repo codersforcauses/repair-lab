@@ -33,8 +33,6 @@ export default function EventForm({
   // TODO: Change the startDate and endDate input fields to use a date picker component.
   return (
     <>
-   
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 space-y-3">
           <FieldInput
