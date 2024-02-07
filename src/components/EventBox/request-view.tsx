@@ -70,6 +70,19 @@ const RequestView = ({
                   <span className="font-semibold">Details:</span>
                   <span>{description}</span>
                 </p>
+
+                {/* Button Container */}
+                <div className="flex justify-center mt-1">
+                  <button
+                    className="bg-primary-700 px-4 py-1 rounded-lg text-white text-md hover:bg-primary-600"
+                    // onClick={() =>
+                    // For future use when linking to issue 198
+                    //router.push("")
+                    //}
+                  >
+                    Repair
+                  </button>
+                </div>
               </Disclosure.Panel>
             </Transition>
           </>
