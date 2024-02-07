@@ -27,7 +27,9 @@ const initialFilterState = {
   sortMethod: undefined as "asc" | "desc" | undefined,
   userIds: [] as string[],
   eventTypes: [] as string[],
-  status: [] as EventStatus[]
+  status: [] as EventStatus[],
+  page: "1",
+  perPage: "20"
 };
 
 const Events: NextPageWithLayout = () => {
@@ -49,7 +51,7 @@ const Events: NextPageWithLayout = () => {
 
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
 
-  const { data: eventData, isLoading: isEventsLoading } = useEvents({
+  const { data, isLoading, isPlaceholderData, isFetching } = useEvents({
     sortKey,
     sortMethod,
     minDate,
@@ -57,8 +59,14 @@ const Events: NextPageWithLayout = () => {
     searchWord: search,
     eventType: eventTypes,
     eventStatus: status,
-    createdBy: userIds
+    createdBy: userIds,
+    page: 1,
+    perPage: 20
   });
+
+  const isEventsLoading = isLoading || (isPlaceholderData && isFetching);
+
+  const eventData = useMemo(() => data?.items, [data]);
 
   const resetQuery = useMemoizedFn(() => {
     setFilterState(initialFilterState);
