@@ -33,7 +33,7 @@ export default function EventFormEditButton({
       <Modal
         setShowPopup={setShowEditModal}
         showModal={showEditModal}
-        height="h-3/4"
+
       >
         <PrepopulatedEventForm props={props} onSubmit={onSubmit} />
       </Modal>
