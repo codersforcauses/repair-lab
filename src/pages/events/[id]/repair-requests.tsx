@@ -10,8 +10,7 @@ import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useRepairRequests } from "@/hooks/events";
-import { useEvent } from "@/hooks/events";
+import { useEvent, useRepairRequests } from "@/hooks/events";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { RepairRequestResponse } from "@/types";
 
@@ -112,10 +111,12 @@ export default function RepairRequests() {
                   ))
                 )}
 
-                <Modal showModal={eventModal} setShowPopup={showEventModal}>
-                  {" "}
+                <Modal
+                  title="Add a Repair Request"
+                  showModal={eventModal}
+                  setShowPopup={showEventModal}
+                >
                   <div className="text-center">
-                    <h1 className="text-xl font-bold">Add a repair request</h1>
                     <div className="max-w-full">
                       <RepairAttemptForm eventId={eventId as string} />
                     </div>
