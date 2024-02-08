@@ -51,7 +51,7 @@ export default function RepairRequests() {
 
   return (
     <Sidebar>
-      <main className="ml-80 min-h-screen w-full pt-6 pl-4 pr-14">
+      <main className="ml-80 min-h-screen w-full pt-5 pl-4 pr-14">
         {headerValues ? (
           <>
             <Header {...headerValues} />
