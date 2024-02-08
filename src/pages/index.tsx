@@ -1,12 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
+import type { ReactElement } from "react";
 import { AiFillFacebook, AiFillInstagram, AiFillMail } from "react-icons/ai";
 
 import Button from "@/components/Button/index";
+import NavBar from "@/components/NavBar";
+
+import type { NextPageWithLayout } from "./_app";
 
 // #TODO: Refactor this
-export default function Home() {
+const Home: NextPageWithLayout = () => {
   const { signOut } = useClerk();
 
   return (
@@ -166,4 +170,15 @@ export default function Home() {
       </Link>
     </div>
   );
-}
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <>
+      <NavBar />
+      {page}
+    </>
+  );
+};
+
+export default Home;

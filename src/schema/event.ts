@@ -1,19 +1,55 @@
+import { EventStatus } from "@prisma/client";
 import { z } from "zod";
+
+import { paginationSchema } from "@/lib/pagination";
+import prisma from "@/lib/prisma";
+
+const eventStatusSchema = z.union([
+  z.literal("").transform(() => [] as EventStatus[]),
+  z.nativeEnum(EventStatus).transform((s) => [s]),
+  z.array(z.nativeEnum(EventStatus))
+]);
+
+const stringOrArray = z.union([
+  z.literal("").transform(() => [] as string[]),
+  z.string().transform((s) => [s]),
+  z.array(z.string())
+]);
+
+export const getEventSchema = z
+  .object({
+    sortKey: z
+      .string()
+      .refine((value) => value in prisma.event.fields, {
+        message: "Incorrect value for sortKey"
+      })
+      .optional(),
+    sortMethod: z.enum(["asc", "desc"]).optional(),
+    searchWord: z.string().optional(),
+    minDate: z.coerce.date().optional(),
+    maxDate: z.coerce.date().optional(),
+    eventType: stringOrArray.optional(),
+    eventStatus: eventStatusSchema.optional(),
+    createdBy: stringOrArray.optional()
+  })
+  .merge(paginationSchema);
 
 export const createEventSchema = z
   .object({
-    name: z.string().min(1, { message: "Event name is required" }),
-    location: z.string().min(1, { message: "Event location is required" }),
-    description: z.string().min(5, {
-      message: "Description of the event must be more than 5 characters long."
-    }),
+    name: z.string({ required_error: "Event name is required" }),
+    location: z.string({ required_error: "Event location is required" }),
+    description: z
+      .string({ required_error: "Description of the event is required" })
+      .min(5, {
+        message: "Description of the event must be more than 5 characters long."
+      }),
     disclaimer: z.string().optional(),
-    eventType: z.string().min(1, { message: "Event type is required" }),
+    eventType: z.string({ required_error: "Event type is required" }),
     startDate: z
-      .string()
+      .string({ required_error: "startDate is required" })
       .datetime({ offset: true, message: "Invalid date format for startDate" }),
     endDate: z
-      .string()
+      .string({ required_error: "endDate is required" })
       .datetime({ offset: true, message: "Invalid date format for endDate" })
   })
   .refine((data) => new Date(data.endDate) >= new Date(data.startDate), {
@@ -22,16 +58,16 @@ export const createEventSchema = z
     path: ["endDate"]
   });
 
+export const addEventRepairerSchema = z.object({
+  userId: z.array(z.string({ required_error: "UserId is required" })),
+  id: z.string({ required_error: "Event ID is required" })
+});
+
 export const updateEventSchema = z
   .object({
     name: z.string().optional(),
     location: z.string().optional(),
-    description: z
-      .string()
-      .min(5, {
-        message: "Description of the event must be more than 5 characters long."
-      })
-      .optional(),
+    description: z.string().optional(),
     disclaimer: z.string().optional(),
     eventType: z.string().optional(),
     startDate: z

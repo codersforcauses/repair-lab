@@ -23,6 +23,7 @@
   background: #858c94;
   border-radius: 5px;
 }
+
 @layer components {
   /* This won't be included in your compiled CSS unless you actually use it */
   .header-component {
@@ -77,4 +78,8 @@
   .bon {
     max-width: 1536px;
   }
+}
+
+html {
+  overflow-y: scroll;
 }

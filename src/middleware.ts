@@ -14,7 +14,7 @@ export default authMiddleware({
     "/auth/register"
   ],
 
-  async afterAuth(auth, req, evt) {
+  async afterAuth(auth, req) {
     // handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
@@ -23,11 +23,13 @@ export default authMiddleware({
     // handle users who are authenticated
     if (auth.userId) {
       const user = await userService.getUser(auth.userId);
+
       const roleProtectedRoutes = buildRoleProtectedRoutes();
 
       // handle access to routes based on user role
       if (
-        !roleProtectedRoutes[user.role].some((regex) =>
+        // the user object is an auth user, will never be undefined
+        !roleProtectedRoutes[user!.role].some((regex) =>
           regex.test(req.nextUrl.pathname)
         )
       ) {
@@ -68,9 +70,8 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
     [UserRole.CLIENT]: clientRoutes,
     [UserRole.REPAIRER]: repairerRoutes,
     [UserRole.EVENT_MANAGER]: eventManagerRoutes,
-    [UserRole.ADMIN]: adminRoutes,
-    [UserRole.ORGANISATION_MANAGER]: eventManagerRoutes
-  };
+    [UserRole.ADMIN]: adminRoutes
+  } as Record<UserRole, RegExp[]>;
 };
 
 // middleware route

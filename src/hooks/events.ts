@@ -1,7 +1,8 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { httpClient } from "@/lib/base-http-client";
+import { PaginationOptions, PaginationResponse } from "@/lib/pagination";
 import {
   CreateEvent,
   EventResponse,
@@ -30,26 +31,26 @@ export const useEvent = (eventId: string | undefined) => {
 };
 
 export const useEvents = (
-  sortKey: string,
-  sortMethod: string,
-  searchWord: string
+  params: {
+    sortKey?: string;
+    sortMethod?: string;
+    searchWord?: string;
+    minDate?: string;
+    maxDate?: string;
+    eventType?: string[];
+    eventStatus?: string[];
+    createdBy?: string[];
+  } & PaginationOptions
 ) => {
-  const queryFn = async () => {
-    const params = new URLSearchParams({
-      sortKey,
-      sortMethod,
-      searchWord
-    });
-
-    const url = `/event?${params.toString()}`;
-
-    const response = await httpClient.get(url);
-    return response.data;
-  };
-
-  return useQuery({
-    queryKey: ["events", sortKey, sortMethod, searchWord],
-    queryFn
+  return useQuery<PaginationResponse<EventResponse[]>>({
+    queryKey: ["events", params],
+    queryFn: () =>
+      httpClient
+        .get("/event", {
+          params
+        })
+        .then((response) => response.data),
+    placeholderData: (pre) => pre
   });
 };
 

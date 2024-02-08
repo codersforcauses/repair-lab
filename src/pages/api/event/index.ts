@@ -1,12 +1,14 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
+import { Prisma } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
-import { createEventSchema } from "@/schema/event";
+import { PaginationResponse } from "@/lib/pagination";
+import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { EventResponse } from "@/types";
 import userService from "@/services/user";
-import { Event, UserRole } from "@/types";
+import { ErrorResponse, EventResponse, UserRole } from "@/types";
+
 import prisma from "../../../lib/prisma";
 
 export default apiHandler({
@@ -16,11 +18,24 @@ export default apiHandler({
 
 async function getEvents(
   req: NextApiRequest,
-  res: NextApiResponse<EventResponse[]>
+  res: NextApiResponse<PaginationResponse<EventResponse[]> | ErrorResponse>
 ) {
-  const { sortKey, sortMethod, searchWord } = req.query;
-  const sortObj: { [key: string]: "asc" | "desc" } = {};
-  sortObj[sortKey as string] = sortMethod as "asc" | "desc";
+  const {
+    sortKey = "startDate",
+    sortMethod = "asc",
+    searchWord = "",
+    minDate,
+    maxDate,
+    eventType,
+    eventStatus,
+    createdBy,
+    page,
+    perPage
+  } = getEventSchema.parse(req.query);
+
+  const sortObj: Record<string, "asc" | "desc"> = {
+    [sortKey]: sortMethod
+  };
   const { userId } = getAuth(req);
   const role = await userService.getRole(userId as string);
   const isRepairer =
@@ -33,54 +48,45 @@ async function getEvents(
           }
         }
       : {};
-  // Use 'search' query parameter to filter events
-  const events = await prisma.event.findMany({
-    where: {
-      ...isRepairer,
-
-      OR: searchWord
-        ? [
-            {
-              name: {
-                contains: searchWord as string,
-                mode: "insensitive"
-              }
-            },
-            {
-              createdBy: {
-                contains: searchWord as string,
-                mode: "insensitive"
-              }
-            },
-            {
-              location: {
-                contains: searchWord as string,
-                mode: "insensitive"
-              }
-            },
-            {
-              eventType: {
-                contains: searchWord as string,
-                mode: "insensitive"
-              }
-            }
-            // Add more fields to search if necessary
-          ]
-        : [
-            {
-              name: {
-                contains: ""
-              }
-            }
-          ] // Empty OR array when searchWord is not present
+  const where: Prisma.EventWhereInput = {
+    ...isRepairer,
+    OR: [
+      { name: { contains: searchWord, mode: "insensitive" } },
+      { createdBy: { contains: searchWord, mode: "insensitive" } },
+      { location: { contains: searchWord, mode: "insensitive" } },
+      { eventType: { contains: searchWord, mode: "insensitive" } }
+    ],
+    startDate: {
+      gte: minDate,
+      lte: maxDate
     },
-    orderBy: sortObj
-  });
+    eventType: { in: eventType },
+    status: { in: eventStatus },
+    createdBy: { in: createdBy }
+  };
+
+  const [events, totalCount] = await prisma.$transaction([
+    prisma.event.findMany({
+      where,
+      orderBy: sortObj,
+      skip: (page - 1) * perPage,
+      take: perPage
+    }),
+    prisma.event.count({ where })
+  ]);
 
   const eventResponse: EventResponse[] =
     await eventService.toClientResponse(events);
 
-  res.status(200).json(eventResponse);
+  res.status(200).json({
+    items: eventResponse,
+    meta: {
+      page,
+      perPage,
+      totalCount,
+      lastPage: Math.ceil(totalCount / perPage)
+    }
+  });
 }
 
 async function createEvent(

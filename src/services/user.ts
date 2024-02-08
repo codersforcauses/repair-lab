@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 
+import { NextApiRequest } from "next";
 import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
+import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
-import { buildPaginationResponse, PaginationOptions } from "@/lib/pagination";
-import { User, UserRole } from "@/types";
+import { PaginationResponse } from "@/lib/pagination";
+import { User, UserRole, UserSearchQuery } from "@/types";
 
 type ClerkOrderBy =
   | "created_at"
@@ -14,25 +16,43 @@ type ClerkOrderBy =
   | "-created_at"
   | "-updated_at";
 
-async function getMany(options: PaginationOptions) {
-  const { orderBy, perPage, page, query } = options;
+async function getAuth(req: NextApiRequest) {
+  const auth = getClerkAuth(req);
+
+  const role = await getRole(auth.userId!);
+
+  return {
+    ...auth,
+    role
+  };
+}
+
+async function getMany(
+  options: UserSearchQuery
+): Promise<PaginationResponse<User[]>> {
+  const { orderBy, perPage, page, query, userId } = options;
 
   const searchRequest = {
     orderBy: orderBy as ClerkOrderBy,
     limit: perPage,
     offset: (page - 1) * perPage,
-    query
+    query,
+    userId
   };
 
   // getCount requires a search request too so it returns the total query count.
   const users = await clerkClient.users.getUserList(searchRequest);
   const totalCount = await clerkClient.users.getCount(searchRequest);
 
-  return buildPaginationResponse<User>(
-    users.map((user) => toResponse(user)),
-    options,
-    totalCount
-  );
+  return {
+    items: users.map((user) => toResponse(user)),
+    meta: {
+      totalCount,
+      page,
+      perPage,
+      lastPage: Math.ceil(totalCount / perPage)
+    }
+  };
 }
 
 async function getUserMapFromIds(userIds: string[]) {
@@ -44,12 +64,17 @@ async function getUserMapFromIds(userIds: string[]) {
     },
     {} as Partial<Record<string, User>>
   );
+
   return userMap;
 }
 
 async function getUser(userId: string) {
   const user = await clerkClient.users.getUser(userId);
-  return toResponse(user);
+  return user ? toResponse(user) : undefined;
+}
+
+async function getUsers(userIds: string[]) {
+  return await Promise.all(userIds.map((userId) => getUser(userId)));
 }
 
 async function updateRole(userId: string, role: UserRole) {
@@ -70,20 +95,19 @@ async function getRole(userId: string): Promise<UserRole> {
 }
 
 function toResponse(user: ClerkUser): User {
-  const { id, firstName, lastName, emailAddresses, publicMetadata } = user;
+  const { emailAddresses, publicMetadata } = user;
   const role = publicMetadata.role
     ? (publicMetadata.role as UserRole)
     : UserRole.CLIENT;
   const emailAddress = emailAddresses[0].emailAddress;
 
   return {
-    id,
-    firstName,
-    lastName,
+    ...user,
     role,
     emailAddress
   };
 }
+
 /** Used when a user cannot be found in clerk */
 function unknownUser(userId: string): User {
   // TODO: stop force type casting userrole
@@ -97,8 +121,10 @@ function unknownUser(userId: string): User {
 }
 
 const userService = {
+  getAuth,
   getMany,
   getUser,
+  getUsers,
   updateRole,
   getRole,
   getUserMapFromIds,
