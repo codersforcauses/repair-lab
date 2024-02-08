@@ -2,8 +2,7 @@ import React, { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { BiSpreadsheet } from "react-icons/bi";
-import { RxImage, RxPerson } from "react-icons/rx";
+import { RxImage, RxListBullet, RxPerson } from "react-icons/rx";
 import { SlFolderAlt } from "react-icons/sl";
 
 interface Props {
@@ -36,7 +35,7 @@ const Sidebar = ({ children }: Props) => {
           <span className="w-full border-b-[1px] border-gray-200 p-3 mb-2"></span>
           <Link href="/events">
             <div className={sidebarTabStyle}>
-              <BiSpreadsheet size={32} />
+              <RxListBullet size={30} />
               <p className="px-4 text-lg font-bold"> Return to Events </p>
             </div>
           </Link>
