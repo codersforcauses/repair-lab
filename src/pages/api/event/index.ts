@@ -1,6 +1,6 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
 import { PaginationResponse } from "@/lib/pagination";
