@@ -87,23 +87,14 @@ async function getEventRepairers(id: string) {
     console.error("Mismatch in users from clerk and database");
   }
 
-  return userIds
-    .map((userId) => {
-      const userData = repairersUsers[userId];
-      if (userData === undefined) {
-        return undefined;
-      }
-      return {
-        userId: userId,
-        firstName: userData?.firstName,
-        lastName: userData?.lastName,
-        email: userData?.emailAddress
-      };
-    })
-    .filter((user) => user !== undefined) as {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-  }[];
+  return userIds.map((userId) => {
+    const userData = repairersUsers[userId];
+
+    return {
+      userId: userId,
+      firstName: userData?.firstName,
+      lastName: userData?.lastName,
+      email: userData?.emailAddress
+    };
+  });
 }
