@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { BiSpreadsheet } from "react-icons/bi";
 import { RxImage, RxPerson } from "react-icons/rx";
 import { SlFolderAlt } from "react-icons/sl";
 
@@ -32,17 +33,17 @@ const Sidebar = ({ children }: Props) => {
           </Link>
         </div>
         <div className="items-left flex flex-col px-4 text-zinc-600">
-          <span className="w-full border-b-[1px] border-gray-200 p-2"></span>
-          <Link
-            href="/events"
-            className="p-1 text-center text-lg font-bold text-gray-600"
-          >
-            Back to Events
+          <span className="w-full border-b-[1px] border-gray-200 p-3 mb-2"></span>
+          <Link href="/events">
+            <div className={sidebarTabStyle}>
+              <BiSpreadsheet size={32} />
+              <p className="px-4 text-lg font-bold"> Return to Events </p>
+            </div>
           </Link>
           <Link href={`/events/${id}/repair-requests`}>
             <div className={sidebarTabStyle}>
               <SlFolderAlt size={30} />
-              <p className="px-4 text-lg">Repair requests</p>
+              <p className="px-4 text-lg">Repair Requests</p>
             </div>
           </Link>
           <Link href={`/events/${id}/volunteers`}>

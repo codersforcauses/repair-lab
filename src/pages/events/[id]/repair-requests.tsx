@@ -78,10 +78,7 @@ export default function RepairRequests() {
                       onClick={showForm}
                       onKeyDown={showForm}
                     >
-                      <GoPlus
-                        color="grey"
-                        size={50}
-                      />
+                      <GoPlus color="grey" size={50} />
                     </div>
                   </div>
                 </div>
