@@ -54,7 +54,6 @@ describe("GET /api/event", () => {
         });
 
         const result = await res.json();
-        console.log(result);
         expect(result.items).toHaveLength(1);
       }
     });
@@ -70,7 +69,6 @@ describe("GET /api/event", () => {
           }
         });
         const result = await res.json();
-        console.log(result);
         expect(result.items).toHaveLength(2);
       }
     });
