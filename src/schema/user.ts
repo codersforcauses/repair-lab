@@ -1,22 +1,25 @@
 import { z } from "zod";
 
 import { paginationSchema } from "@/lib/pagination";
-
-const orderByRegex = /^(\+|-)[A-Za-z0-9_]*/;
+import { StaffRole } from "@/types";
 
 export const getManyUsersSchema = z
   .object({
     orderBy: z
-      .string()
-      .regex(orderByRegex, {
-        message:
-          "orderBy has to start with either + or - followed by the tablename"
-      })
+      .enum([
+        "created_at",
+        "updated_at",
+        "+created_at",
+        "+updated_at",
+        "-created_at",
+        "-updated_at"
+      ])
       .default("-created_at"),
     query: z.string().default(""),
     userId: z
       .array(z.string())
       .or(z.string().transform((str) => [str]))
-      .optional()
+      .optional(),
+    type: z.nativeEnum(StaffRole).optional()
   })
   .merge(paginationSchema);
