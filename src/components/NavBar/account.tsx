@@ -37,13 +37,11 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
 
           <ActionButton onClick={confirmLogOut} label="Log Out" />
           <Modal
+            title="Are you sure you want to logout?"
             showModal={ShowConfirmLogOut}
             setShowPopup={setShowConfirmLogOut}
           >
             <div className="text-center">
-              <h1 className="text-xl font-bold">
-                Are you sure you want to logout?
-              </h1>
               <ActionButton onClick={onSignOut} label="Yes" />
               <ActionButton onClick={hideConfirmLogOut} label="No" />
             </div>
