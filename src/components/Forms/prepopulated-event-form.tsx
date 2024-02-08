@@ -34,81 +34,79 @@ export default function PrepopulatedEventForm({
   });
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3 space-y-3">
-          <FieldInput
-            control={control}
-            name="name"
-            label="Event Name"
-          ></FieldInput>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-4">
+        <FieldInput
+          control={control}
+          name="name"
+          label="Event Name"
+        ></FieldInput>
 
-          <FieldSingleSelect
-            control={control}
-            name="eventType"
-            label="Event Type"
-            options={
-              itemTypes
-                ? itemTypes.map((type: ItemType) => ({
-                    id: type.name,
-                    text: type.name
-                  }))
-                : []
-            }
-          ></FieldSingleSelect>
+        <FieldSingleSelect
+          control={control}
+          name="eventType"
+          label="Event Type"
+          options={
+            itemTypes
+              ? itemTypes.map((type: ItemType) => ({
+                  id: type.name,
+                  text: type.name
+                }))
+              : []
+          }
+        ></FieldSingleSelect>
 
-          <FieldTextArea
-            name="description"
-            label="Description"
-            placeholder="Enter a description for the event"
-            control={control}
-            rules={{ required: false }}
-          />
+        <FieldTextArea
+          name="description"
+          label="Description"
+          placeholder="Enter a description for the event"
+          control={control}
+          rules={{ required: false }}
+        />
 
-          <FieldInput
-            control={control}
-            name="location"
-            label="Location"
-          ></FieldInput>
+        <FieldInput
+          control={control}
+          name="location"
+          label="Location"
+        ></FieldInput>
 
-          <FieldInput
-            control={control}
-            name="startDate"
-            label="Start Date"
-            type="datetime-local"
-          ></FieldInput>
+        <FieldInput
+          control={control}
+          name="startDate"
+          label="Start Date"
+          type="datetime-local"
+        ></FieldInput>
 
-          <FieldInput
-            control={control}
-            name="endDate"
-            label="End Date"
-            type="datetime-local"
-          ></FieldInput>
+        <FieldInput
+          control={control}
+          name="endDate"
+          label="End Date"
+          type="datetime-local"
+        ></FieldInput>
 
-          <FieldTextArea
-            name="disclaimer"
-            label="Disclaimer"
-            placeholder="Enter a disclaimer for the event"
-            control={control}
-            rules={{ required: false }}
-          />
+        <FieldTextArea
+          name="disclaimer"
+          label="Disclaimer"
+          placeholder="Enter a disclaimer for the event"
+          control={control}
+          rules={{ required: false }}
+        />
 
-          <FieldSingleSelect
-            control={control}
-            name="status"
-            label="Status"
-            options={[
-              { id: "UPCOMING", text: "UPCOMING" },
-              { id: "ONGOING", text: "ONGOING" },
-              { id: "COMPLETED", text: "COMPLETED" }
-            ]}
-          ></FieldSingleSelect>
-        </div>
-        {/* Submit */}
-        <div className="mt-8 flex justify-center">
-          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
-        </div>
-      </form>
-    </div>
+        <FieldSingleSelect
+          control={control}
+          name="status"
+          label="Status"
+          options={[
+            { id: "UPCOMING", text: "UPCOMING" },
+            { id: "ONGOING", text: "ONGOING" },
+            { id: "COMPLETED", text: "COMPLETED" }
+          ]}
+        ></FieldSingleSelect>
+      </div>
+      {/* Submit */}
+      <div className="mt-3 flex justify-center">
+        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+      </div>
+    </form>
   );
 }
