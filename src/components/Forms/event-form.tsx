@@ -99,14 +99,7 @@ export default function EventForm({
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            height="h-9"
-            width="w-1/3"
-            textSize="text-base"
-          >
-            Submit
-          </Button>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </div>
       </form>
     </>

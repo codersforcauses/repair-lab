@@ -1,8 +1,8 @@
 // Terms and Conditions Pop-up
 
-import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { Control, UseFormSetValue, useController } from "react-hook-form";
+import { Dialog, Transition } from "@headlessui/react";
+import { Control, useController, UseFormSetValue } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
@@ -59,8 +59,7 @@ export const TermsAndConditions = ({
         </div>
         <span>.</span>
       </label>
-      <p className="-mt-4 text-xs text-red-500">{fieldState.error?.message}</p>
-
+      <p className="-mt-4 text-xs text-red-500">{fieldState.error?.message}</p>s
       <Transition appear show={showPopup} as={Fragment}>
         <Dialog as="div" className="relative z-[60]" onClose={setShowPopup}>
           <Transition.Child

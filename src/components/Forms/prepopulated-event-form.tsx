@@ -105,15 +105,8 @@ export default function PrepopulatedEventForm({
           ></FieldSingleSelect>
         </div>
         {/* Submit */}
-        <div className="my-5 flex flex-row">
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            height="h-9"
-            width="w-full"
-            textSize="text-base"
-          >
-            Submit
-          </Button>
+        <div className="mt-8 flex justify-center">
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </div>
       </form>
     </div>

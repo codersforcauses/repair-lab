@@ -124,14 +124,7 @@ export default function RepairAttempt() {
 
         {/* Submit */}
         <div className="my-5 flex flex-row">
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            height="h-9"
-            width="w-full"
-            textSize="text-base"
-          >
-            Submit
-          </Button>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </div>
       </form>
       <Toast />

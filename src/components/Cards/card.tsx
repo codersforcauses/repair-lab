@@ -48,12 +48,12 @@ export default function Card({ props }: { props: CardProps }) {
       <Modal
         title={
           <>
-            Repair ID
-            <h2 className="mt-3">
+            <h3>
+              Repair ID
               {props.title}
-              <br />
-              <StatusPill status={props.status} />
-            </h2>
+            </h3>
+
+            <StatusPill status={props.status} />
           </>
         }
         setShowPopup={setShowModal}

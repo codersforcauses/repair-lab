@@ -2,8 +2,7 @@
 
 import { Dispatch, Fragment, ReactNode, SetStateAction } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { BsXCircle } from "react-icons/bs";
-
+import { AiFillCloseCircle } from "react-icons/ai";
 type ModalProps = {
   showModal: boolean;
   setShowPopup: Dispatch<SetStateAction<boolean>>;
@@ -54,12 +53,12 @@ const Modal = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${width} ${height} overflow-scroll transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${width} ${height}  transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
                 >
                   {title ? (
                     <Dialog.Title
-                      as="h3"
-                      className="mt-0 border-b border-gray-200 p-4 text-center text-3xl font-semibold leading-6 mb-5"
+                      as={`${typeof title == "string" ? "h3" : "div"}`}
+                      className="mt-0 border-b  border-gray-200 p-4 text-center text-3xl font-semibold leading-6 mb-5"
                     >
                       {title}
                     </Dialog.Title>
@@ -68,12 +67,11 @@ const Modal = ({
                   )}
 
                   <div>{children}</div>
-
                   <button
                     onClick={() => setShowPopup(false)}
                     className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
                   >
-                    <BsXCircle className="text-lightAqua-300 hover:text-gray-600" />
+                    <AiFillCloseCircle className="text-2xl" color="teal" />
                   </button>
                 </Dialog.Panel>
               </Transition.Child>

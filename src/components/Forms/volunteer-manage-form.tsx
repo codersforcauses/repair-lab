@@ -119,7 +119,7 @@ export default function VolunteerManageForm({
           onClick={onSubmit ? onSubmit : defaultOnSubmit}
           height="h-9"
           width="w-full"
-          textSize="text-base"
+          textSize="text-lg"
         >
           Save
         </Button>
