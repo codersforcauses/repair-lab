@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useClerk } from "@clerk/nextjs";
 import type { ReactElement } from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 
