@@ -23,11 +23,7 @@ export const teardown = async () => {
 };
 
 export const seedTestData = async () => {
-  await prisma.brand.create({
-    data: {
-      name: "Apple"
-    }
-  });
+
 
   await prisma.itemType.create({
     data: {

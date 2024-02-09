@@ -89,9 +89,7 @@ model ItemType {
   events         Event[]
 }
 
-model Brand {
-  name String @id
-}
+
 
 model RepairRequestImage {
   id    String @id @default(uuid())
