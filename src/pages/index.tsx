@@ -47,7 +47,7 @@ const Home: NextPageWithLayout = () => {
         id="big-green-area"
         className="relative w-full min-h-[40rem] sm:min-h-[50rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
       >
-        <div id="drill" className="absolute z-10 right-[7%] top-[18%] w-[10%]">
+        <div id="drill" className="absolute z-10 right-[6%] top-[10%] w-[10%]">
           <Drill />
         </div>
         <div
