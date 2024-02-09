@@ -161,9 +161,7 @@ const Home: NextPageWithLayout = () => {
         </ul>
       </div>
       <div className="m-10">
-        <Button width="w-full" onClick={() => signOut()}>
-          Logout
-        </Button>
+        <Button onClick={() => signOut()}>Logout</Button>
       </div>
       <Link className="py-4" href="/manage/events">
         <Button>Admin Dashboard</Button>
