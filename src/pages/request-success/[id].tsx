@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+<<<<<<< HEAD
 import { useRouter } from "next/router";
+=======
+import { useParams } from "next/navigation";
+>>>>>>> 4cdba3c32d30f3e21b43838fe9b0e185b85b206b
 import type { ReactElement } from "react";
 
 import Button from "@/components/Button/index";
@@ -10,7 +14,11 @@ import type { NextPageWithLayout } from "../_app";
 
 // #TODO: Refactor this
 const Success: NextPageWithLayout = () => {
+<<<<<<< HEAD
   const params = useRouter();
+=======
+  const params = useParams();
+>>>>>>> 4cdba3c32d30f3e21b43838fe9b0e185b85b206b
 
   return (
     <div className="fixed min-h-screen min-w-screen flex flex-grow justify-center">
@@ -30,7 +38,11 @@ const Success: NextPageWithLayout = () => {
           </h1>
 
           <h2 className="relative text-center mb-3 mt-5 text-xl font-bold text-grey-500">
+<<<<<<< HEAD
             Repair Request ID: {params.query.id}
+=======
+            Repair Request ID: {params.id}
+>>>>>>> 4cdba3c32d30f3e21b43838fe9b0e185b85b206b
           </h2>
 
           <p className="text-slate-500 text-xl text-center mb-8 gap-y-4 leading-relaxed">
