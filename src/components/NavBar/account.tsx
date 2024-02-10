@@ -35,7 +35,7 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
               className="flex items-center justify-center px-2 h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800 transition-all duration-300 ease-in-out"
             >
               {/* Adaptively visible text */}
-              <span className="hidden md:hidden lg:flex placeholder:w-[160px] text-xs md:text-sm lg:text-sm transition-all duration-300 ease-in-out text-clip">
+              <span className="hidden truncate md:hidden lg:flex placeholder:w-[160px] text-xs md:text-sm lg:text-sm transition-all duration-300 ease-in-out text-clip">
                 New Repair Request +
               </span>
               {/* Icon with conditional visibility and size adjustment */}
