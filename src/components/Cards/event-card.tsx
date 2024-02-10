@@ -42,8 +42,8 @@ export default function Card({ props }: { props: CardProps }) {
           width={100}
           height={100}
         />
-        <div className="opacity-0 group-hover:opacity-100 absolute inset-0 flex justify-center items-center text-xl text-black font-semibold">
-          <div className="text-center "> See more {">"} </div>
+        <div className="opacity-0 group-hover:opacity-70 absolute inset-0 flex justify-center items-center text-2xl text-black text-center font-semibold">
+          See more {">"}
         </div>
       </div>
 
