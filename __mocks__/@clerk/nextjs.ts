@@ -36,6 +36,15 @@ export const mockClerkUsers = [
     publicMetadata: {
       role: "CLIENT"
     }
+  },
+  {
+    id: "REPAIRER",
+    firstName: "Mr Repair",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "repair@gmail.com" }],
+    publicMetadata: {
+      role: "REPAIRER"
+    }
   }
 ];
 
