@@ -92,9 +92,9 @@ export default function RepairRequests() {
 
   const pagination = useMemo((): PaginationState => {
     return {
-      current: Number(page),
+      page: Number(page),
       perPage: Number(perPage),
-      total: repairRequests?.meta.totalCount ?? 0
+      totalCount: repairRequests?.meta.totalCount ?? 0
     };
   }, [repairRequests?.meta.totalCount, page, perPage]);
 
@@ -239,7 +239,7 @@ export default function RepairRequests() {
                 onChange={(nextState) => {
                   setSearchParams((state) => ({
                     ...state,
-                    page: String(nextState.current),
+                    page: String(nextState.page),
                     perPage: String(nextState.perPage)
                   }));
                 }}

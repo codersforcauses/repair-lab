@@ -17,7 +17,7 @@ export default apiHandler({
 
 async function getRepairRequests(
   req: NextApiRequest,
-  res: NextApiResponse<PaginationResponse<RepairRequestResponse>>
+  res: NextApiResponse<PaginationResponse<RepairRequestResponse[]>>
 ) {
   const {
     id: eventId,

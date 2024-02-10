@@ -1,10 +1,6 @@
 import { RepairRequestImage } from "@prisma/client";
 
-import {
-  buildPaginationResponse,
-  PaginationOptions,
-  PaginationResponse
-} from "@/lib/pagination";
+import { PaginationOptions, PaginationResponse } from "@/lib/pagination";
 import { presignImage, presignImages } from "@/services/s3";
 import userService from "@/services/user";
 import { RepairRequest, RepairRequestResponse } from "@/types";
@@ -29,13 +25,15 @@ async function toClientResponse(
   repairRequests: Array<RepairRequestWithImage>,
   options: PaginationOptions,
   totalCount: number
-): Promise<PaginationResponse<RepairRequestResponse>>;
+): Promise<PaginationResponse<RepairRequestResponse[]>>;
 
 async function toClientResponse(
   repairRequests: Array<RepairRequestWithImage> | RepairRequestWithImage,
   options?: PaginationOptions,
   totalCount?: number
-): Promise<PaginationResponse<RepairRequestResponse> | RepairRequestResponse> {
+): Promise<
+  PaginationResponse<RepairRequestResponse[]> | RepairRequestResponse
+> {
   // Run conversion on array
   const responses = await convertRequests(
     !Array.isArray(repairRequests) ? [repairRequests] : repairRequests
@@ -48,7 +46,16 @@ async function toClientResponse(
   if (options == undefined || totalCount == undefined)
     throw new Error("Pagination options incorrectly passed.");
 
-  return await buildPaginationResponse(responses, options, totalCount);
+  // Construct paginated response
+  return {
+    items: responses,
+    meta: {
+      page: options.page,
+      perPage: options.perPage,
+      totalCount,
+      lastPage: Math.ceil(totalCount / options.perPage)
+    }
+  };
 }
 
 async function convertRequests(

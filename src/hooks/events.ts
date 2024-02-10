@@ -135,7 +135,7 @@ export const useRepairRequests = (params: {
   page?: number;
   perPage?: number;
 }) => {
-  return useQuery<PaginationResponse<RepairRequestResponse>>({
+  return useQuery<PaginationResponse<RepairRequestResponse[]>>({
     queryKey: ["repair-requests", params],
     placeholderData: keepPreviousData,
     queryFn: () =>
