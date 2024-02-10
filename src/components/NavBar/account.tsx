@@ -29,17 +29,23 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
     <div className="flex items-center">
       {isLoggedIn ? (
         <>
-          <Link
-            href="/repair-request"
-            className="flex items-center justify-center px-2 mx-4 h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
-          >
-            {/* Text visible on larger screens, hidden on smaller screens */}
-            <span className="hidden lg:flex placeholder:w-[160px]">
+          <div className="group relative flex flex-col items-center justify-center mx-4">
+            <Link
+              href="/repair-request"
+              className="flex items-center justify-center px-2 h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
+            >
+              {/* Text visible on larger screens, hidden on smaller screens */}
+              <span className="hidden lg:flex placeholder:w-[160px]">
+                New Repair Request +
+              </span>
+              {/* Icon visible on all screens, but with a conditional class for visibility on larger screens */}
+              <FaPlus className="w-[40px] lg:hidden" />
+            </Link>
+            {/* Text to be shown on hover below the button */}
+            <span className="opacity-0 w-[220px] group-hover:opacity-100 mt-2 bg-primary-700 text-white py-1 px-2 rounded-md absolute top-full text-center lg:hidden">
               New Repair Request +
             </span>
-            {/* Icon visible on smaller screens, hidden on larger screens */}
-            <FaPlus className="lg:hidden w-[40px]" />
-          </Link>
+          </div>
 
           <ActionButton onClick={confirmLogOut} label="Log Out" />
           <Modal
