@@ -1,13 +1,12 @@
 // page/_app.tsx
-import type { NextPage } from "next";
 import { ReactElement, ReactNode, StrictMode } from "react";
+import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import NavBar from "@/components/NavBar";
 import Toast from "@/components/Toast";
 
 import "@/styles/globals.css";

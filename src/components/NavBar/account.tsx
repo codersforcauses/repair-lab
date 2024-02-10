@@ -1,8 +1,10 @@
+import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
+import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
-import Link from "next/link";
 
 interface Props {
   role: UserRole;
@@ -10,18 +12,17 @@ interface Props {
   onSignOut: () => void;
 }
 
-const adminRoles = [
-  UserRole.ADMIN,
-  UserRole.ORGANISATION_MANAGER,
-  UserRole.EVENT_MANAGER
-];
-
-export default function Account({
-  role,
-  isLoggedIn,
-  onSignOut
-}: Readonly<Props>) {
+export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   const router = useRouter();
+
+  const [ShowConfirmLogOut, setShowConfirmLogOut] = useState(false);
+  function confirmLogOut() {
+    setShowConfirmLogOut(true);
+  }
+
+  function hideConfirmLogOut() {
+    setShowConfirmLogOut(false);
+  }
 
   return (
     <div className="flex items-center">
@@ -29,12 +30,22 @@ export default function Account({
         <>
           <Link
             href="/repair-request"
-            className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
+            className="flex items-center justify-center px-3 py-6 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Repair Request +
           </Link>
 
-          <ActionButton onClick={onSignOut} label="Log Out" />
+          <ActionButton onClick={confirmLogOut} label="Log Out" />
+          <Modal
+            title="Are you sure you want to logout?"
+            showModal={ShowConfirmLogOut}
+            setShowPopup={setShowConfirmLogOut}
+          >
+            <div className="text-center">
+              <ActionButton onClick={onSignOut} label="Yes" />
+              <ActionButton onClick={hideConfirmLogOut} label="No" />
+            </div>
+          </Modal>
 
           <ProfilePopover />
         </>

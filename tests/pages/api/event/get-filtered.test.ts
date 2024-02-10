@@ -3,6 +3,7 @@ import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { cleanup } from "@/../tests/utils";
+import { PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
 import endpoint from "@/pages/api/event";
 import { EventResponse } from "@/types";
@@ -64,8 +65,8 @@ describe("GET /api/event", () => {
     sortKey?: string;
     sortMethod?: string;
     searchWord?: string;
-    minStartDate?: string;
-    maxStartDate?: string;
+    minDate?: string;
+    maxDate?: string;
     eventType?: string | string[];
     eventStatus?: string | string[];
     createdBy?: string | string[];
@@ -84,10 +85,11 @@ describe("GET /api/event", () => {
             "Content-Type": "application/json"
           }
         });
-        const results: EventResponse[] = await res.json();
+        const results: PaginationResponse<EventResponse[]> = await res.json();
+        const list = results.items;
         expect(res.status).toBe(200);
-        expect(results.length).toEqual(expectedEvents.length);
-        results.forEach((result, index) => {
+        expect(list.length).toEqual(expectedEvents.length);
+        list.forEach((result, index) => {
           expect(result).toHaveProperty("id", expectedEvents[index]);
         });
       }
@@ -121,8 +123,8 @@ describe("GET /api/event", () => {
   it("should be able to filter events by date", async () => {
     await testFilter(
       {
-        minStartDate: new Date("2023-11-25").toISOString(),
-        maxStartDate: new Date("2023-12-1").toISOString()
+        minDate: "2023-11-25",
+        maxDate: "2023-12-1"
       },
       ["ev-2"]
     );
@@ -155,6 +157,6 @@ describe("GET /api/event", () => {
     await testBadFilter({ sortMethod: "WOOHOO" });
   });
   it("should return 400 if invalid date", async () => {
-    await testBadFilter({ minStartDate: "HAHA" });
+    await testBadFilter({ minDate: "HAHA" });
   });
 });
