@@ -30,7 +30,7 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
         <>
           <Link
             href="/repair-request"
-            className="flex items-center justify-center px-3 py-6 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
+            className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Repair Request +
           </Link>
