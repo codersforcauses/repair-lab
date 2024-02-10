@@ -48,7 +48,8 @@ async function updateEvent(
     description,
     disclaimer,
     startDate,
-    endDate
+    endDate,
+    images
   } = updateEventSchema.parse(req.body);
 
   const { id } = req.query;
@@ -62,6 +63,19 @@ async function updateEvent(
     throw new ApiError(HttpStatusCode.NotFound, "Event does not exist");
   }
 
+  // if (images && images.length > 0) {
+  //   await Promise.all(
+  //     images.map(async (key) => {
+  //       await prisma.eventImage.create({
+  //         data: {
+  //           s3Key: key,
+  //           repairEventId: id as string
+  //         }
+  //       });
+  //     })
+  //   );
+  // }
+
   // Event exists, update the row
   const updatedEvent = await prisma.event.update({
     where: { id: id as string },
@@ -73,7 +87,20 @@ async function updateEvent(
       endDate: endDate ? new Date(endDate) : existingEvent.endDate,
       description: description ?? existingEvent.description,
       disclaimer: disclaimer ?? existingEvent.disclaimer,
-      status: status ?? existingEvent.status
+      status: status ?? existingEvent.status,
+      images:
+        images && images.length > 0
+          ? {
+              createMany: {
+                data: images?.map((image) => ({
+                  s3Key: image
+                }))
+              }
+            }
+          : undefined
+    },
+    include: {
+      images: true
     }
   });
 

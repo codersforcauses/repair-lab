@@ -75,7 +75,9 @@ export const updateEventSchema = z
       .string()
       .datetime({ offset: true, message: "Invalid date format for endDate" })
       .optional(),
-    status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional()
+    status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional(),
+    thumbnailImage: z.string().optional(), // an optional string that is a URL
+    images: z.array(z.any()).optional()
   })
   .refine(
     (data) => {
