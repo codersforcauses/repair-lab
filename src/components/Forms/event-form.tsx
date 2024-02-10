@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
+import FieldSingleSelectInput from "@/components/FormFields/field-single-select-inputbox";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { createEventSchema } from "@/schema/event";
 import { CreateEvent } from "@/types";
@@ -29,7 +30,8 @@ export default function EventForm({
       // volunteers: [""]
     }
   });
-
+  const inputBox: ItemType = { name: "input-box-add" };
+  itemTypes = [...itemTypes, inputBox];
   // TODO: Change the startDate and endDate input fields to use a date picker component.
   return (
     <>
@@ -41,7 +43,7 @@ export default function EventForm({
             label="Event Name"
           ></FieldInput>
 
-          <FieldSingleSelect
+          <FieldSingleSelectInput
             control={control}
             name="eventType"
             label="Event Type"
@@ -49,7 +51,7 @@ export default function EventForm({
               id: type.name,
               text: type.name
             }))}
-          ></FieldSingleSelect>
+          ></FieldSingleSelectInput>
 
           <FieldTextArea
             name="description"
