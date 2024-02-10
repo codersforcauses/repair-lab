@@ -23,7 +23,7 @@ export default function Card({ props }: { props: CardProps }) {
       onClick={props.handleClick ? props.handleClick : handleClick}
       onKeyDown={props.handleClick ? props.handleClick : handleClick}
       role="presentation"
-      className="h-full w-full group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:shadow-2xl hover:-translate-y-0.5 hover:cursor-pointer hover:bg-app-primary"
+      className="h-full w-full group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:shadow-2xl hover:-translate-y-0.5 hover:cursor-pointer "
     >
       <Modal setShowPopup={setShowModal} showModal={showModal}>
         <div className="text-center">
@@ -34,7 +34,7 @@ export default function Card({ props }: { props: CardProps }) {
           <p>{props.description}</p>
         </div>
       </Modal>
-      <div>
+      <div className="group-hover:opacity-50">
         <Image
           src="/images/event_details.jpg"
           alt="Image Not Found"
@@ -44,7 +44,7 @@ export default function Card({ props }: { props: CardProps }) {
         />
       </div>
 
-      <div className="text-center line-clamp-6">
+      <div className="text-center line-clamp-6 h-full group-hover:bg-app-primary">
         <h1 className="text-xl font-bold">{props.title}</h1>
         <h2 className="text-l italic">
           {props.date} - {props.location}
