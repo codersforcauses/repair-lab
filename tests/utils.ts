@@ -23,8 +23,6 @@ export const teardown = async () => {
 };
 
 export const seedTestData = async () => {
-
-
   await prisma.itemType.create({
     data: {
       name: "Laptop"

@@ -73,7 +73,7 @@ export default function PrepopulatedRepairAttemptForm({
           label="Brand"
           control={control}
           rules={{ required: true }}
-         placeholder=""
+          placeholder=""
         />
         <FieldInput
           name="itemMaterial"

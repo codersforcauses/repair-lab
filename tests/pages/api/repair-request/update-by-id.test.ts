@@ -98,7 +98,7 @@ describe("PATCH /api/repair-request/:id", () => {
         const expectedRepairRequest: RepairRequest | null =
           await prisma.repairRequest.findUnique({
             where: {
-              id:Number(id)
+              id: Number(id)
             }
           });
 
