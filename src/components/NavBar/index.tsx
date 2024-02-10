@@ -44,7 +44,7 @@ export default function NavBar() {
   }
 
   return (
-    <div className="sticky top-0 z-50 h-[100px] text-lg bg-white drop-shadow-md w-full">
+    <div className="sticky top-0 z-50 h-[100px] text-lg bg-white">
       {isLoaded && (
         <div className="flex h-[100px] justify-between items-center mx-auto px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
