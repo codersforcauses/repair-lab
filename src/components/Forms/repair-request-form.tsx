@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Brand, ItemType } from "@prisma/client";
+import { ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
