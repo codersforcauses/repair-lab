@@ -17,6 +17,8 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   const router = useRouter();
 
   const [ShowConfirmLogOut, setShowConfirmLogOut] = useState(false);
+  const [isIconHovered, setIsIconHovered] = useState(false); // Add state for icon hover
+
   function confirmLogOut() {
     setShowConfirmLogOut(true);
   }
@@ -38,13 +40,17 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
               <span className="hidden truncate md:hidden lg:flex placeholder:w-[160px] text-xs md:text-sm lg:text-sm transition-all duration-300 ease-in-out text-clip">
                 New Repair Request +
               </span>
-              {/* Icon with conditional visibility and size adjustment */}
-              <FaPlus className="w-[40px] lg:hidden" />
+              {/* Icon with conditional visibility and size adjustment. Add onMouseEnter and onMouseLeave */}
+              <div onMouseEnter={() => setIsIconHovered(true)} onMouseLeave={() => setIsIconHovered(false)} className="lg:hidden">
+                <FaPlus className="w-[40px]" />
+              </div>
             </Link>
-            {/* Centered hover text below the button */}
-            <span className="opacity-0 w-[220px] group-hover:opacity-100 mt-2 bg-primary-700 text-white py-1 px-2 rounded-md absolute top-full text-center lg:hidden">
-              New Repair Request +
-            </span>
+            {/* Modify condition for displaying hover text to depend on isIconHovered state */}
+            {isIconHovered && (
+              <span className="w-[220px] opacity-100 mt-2 bg-primary-700 text-white py-1 px-2 rounded-md absolute top-full text-center lg:hidden">
+                New Repair Request +
+              </span>
+            )}
           </div>
 
           <ActionButton onClick={confirmLogOut} label="Log Out" />
