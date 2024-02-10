@@ -41,7 +41,11 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
                 New Repair Request +
               </span>
               {/* Icon with conditional visibility and size adjustment. Add onMouseEnter and onMouseLeave */}
-              <div onMouseEnter={() => setIsIconHovered(true)} onMouseLeave={() => setIsIconHovered(false)} className="lg:hidden">
+              <div
+                onMouseEnter={() => setIsIconHovered(true)}
+                onMouseLeave={() => setIsIconHovered(false)}
+                className="lg:hidden"
+              >
                 <FaPlus className="w-[40px]" />
               </div>
             </Link>
