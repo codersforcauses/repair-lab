@@ -89,8 +89,6 @@ model ItemType {
   events         Event[]
 }
 
-
-
 model RepairRequestImage {
   id    String @id @default(uuid())
   s3Key String //Potentially to be changed for privacy reasons
@@ -116,11 +114,8 @@ model EventRepairer {
   @@unique([userId, eventId])
 }
 
-
-
 model Staff {
-  id             String       @id @default(uuid())
-  clerkId        String
-  role           UserRole
-  organisationId String
+  id      String   @id @default(uuid())
+  clerkId String
+  role    UserRole
 }
