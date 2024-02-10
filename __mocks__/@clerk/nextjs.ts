@@ -49,6 +49,7 @@ export const mockClerkUsers = [
 ];
 
 // query partially matches userId, emailAddress, phoneNumber, username, web3Wallet, firstName, lastName
+// TODO: support pagination
 type BasicSearchParams = { query?: string };
 const queryUsers = ({ query }: BasicSearchParams) => {
   if (!query) return mockClerkUsers;
