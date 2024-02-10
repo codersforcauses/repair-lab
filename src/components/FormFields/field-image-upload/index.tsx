@@ -74,7 +74,7 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
       field.onChange([newState]);
     }
     // update internal state
-    const newState = [...files ?? [], ...fileArray];
+    const newState = [...(files ?? []), ...fileArray];
     // update rhf state
     field.onChange(newState);
   };
