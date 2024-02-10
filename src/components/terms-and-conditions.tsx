@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Control, useController,UseFormSetValue } from "react-hook-form";
+import { Control, useController, UseFormSetValue } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
