@@ -20,6 +20,6 @@ export const getManyUsersSchema = z
       .array(z.string())
       .or(z.string().transform((str) => [str]))
       .optional(),
-    type: z.nativeEnum(StaffRole).optional()
+    role: z.nativeEnum(StaffRole).optional()
   })
   .merge(paginationSchema);

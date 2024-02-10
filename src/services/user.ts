@@ -7,11 +7,10 @@ import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
 import { PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
-import { StaffRole, User, UserRole, UserSearchQuery } from "@/types";
+import { User, UserRole, UserSearchQuery } from "@/types";
 
 async function getAuth(req: NextApiRequest) {
   const auth = getClerkAuth(req);
-
   const role = await getRole(auth.userId!);
 
   return {
@@ -23,25 +22,12 @@ async function getAuth(req: NextApiRequest) {
 async function getMany(
   options: UserSearchQuery
 ): Promise<PaginationResponse<User[]>> {
-  const { orderBy, perPage, page, query, userId, type } = options;
+  const { perPage, page, role } = options;
 
-  const offset = (page - 1) * perPage;
+  // Ids of users with roles are stored in the staff table.
+  if (role) return getStaffs(options);
 
-  // TODO:
-  // If type exists, then query the database, pass list of ids to clerk and return results.
-  // else we will just search do the query as per normal.
-
-  const searchRequest = {
-    orderBy: orderBy,
-    limit: perPage,
-    offset: offset,
-    query,
-    userId
-  };
-
-  // getCount requires a search request too so it returns the total query count.
-  const users = await clerkClient.users.getUserList(searchRequest);
-  const totalCount = await clerkClient.users.getCount(searchRequest);
+  const { users, totalCount } = await getUsersFromClerk({ ...options });
 
   const items = await Promise.all(
     users.map(async (user) => await toResponse(user))
@@ -79,8 +65,17 @@ async function getUsers(userIds: string[]) {
   return await Promise.all(userIds.map((userId) => getUser(userId)));
 }
 
-async function updateRole(userId: string, role: StaffRole) {
-  // creating a new staff role if does not already exist.
+async function updateRole(userId: string, role: UserRole) {
+  // Deleting the role from staff if the role to set is CLIENT
+  if (role === UserRole.CLIENT) {
+    return await prisma.staff.delete({
+      where: {
+        clerkId: userId
+      }
+    });
+  }
+
+  // Creating a new staff role if does not already exist.
   return prisma.staff.upsert({
     where: {
       clerkId: userId
@@ -111,29 +106,19 @@ async function getRole(userId: string): Promise<UserRole> {
   return role;
 }
 
-async function toResponse(user: ClerkUser): Promise<User> {
+async function toResponse(user: ClerkUser, role?: UserRole): Promise<User> {
   const { emailAddresses, id, firstName, lastName } = user;
-  const role = await getRole(id);
+  // slight optimisation to prevent hitting the database if the role for the
+  // user is already known.
+  const userRole = role ?? (await getRole(id));
   const emailAddress = emailAddresses[0].emailAddress;
 
   return {
     id,
     firstName,
     lastName,
-    role,
+    role: userRole,
     emailAddress
-  };
-}
-
-/** Used when a user cannot be found in clerk */
-function unknownUser(userId: string): User {
-  // TODO: stop force type casting userrole
-  return {
-    id: userId,
-    firstName: "Unknown",
-    lastName: "",
-    emailAddress: "Unknown",
-    role: "Unknown" as UserRole
   };
 }
 
@@ -149,3 +134,75 @@ const userService = {
 };
 
 export default userService;
+
+/* --------  Helper Functions -------- */
+
+const getStaffs = async ({
+  orderBy,
+  perPage,
+  page,
+  query,
+  userId,
+  role
+}: UserSearchQuery) => {
+  const staffs = await prisma.staff.findMany({
+    select: { clerkId: true },
+    where: { role, clerkId: { in: userId } },
+    skip: (page - 1) * perPage,
+    take: perPage
+  });
+
+  const { users, totalCount } = await getUsersFromClerk({
+    orderBy,
+    perPage,
+    page,
+    query,
+    userId: staffs.map((s) => s.clerkId)
+  });
+  const items = await Promise.all(
+    users.map(async (u) => await toResponse(u, role))
+  );
+
+  return {
+    items,
+    meta: {
+      totalCount,
+      page,
+      perPage,
+      lastPage: Math.ceil(totalCount / perPage)
+    }
+  };
+};
+
+const getUsersFromClerk = async ({
+  orderBy,
+  perPage,
+  page,
+  query,
+  userId
+}: Exclude<UserSearchQuery, "role">) => {
+  const searchRequest = {
+    orderBy: orderBy,
+    limit: perPage,
+    offset: (page - 1) * perPage,
+    query,
+    userId: userId
+  };
+
+  const users = await clerkClient.users.getUserList(searchRequest);
+  const totalCount = await clerkClient.users.getCount(searchRequest);
+
+  return { users, totalCount };
+};
+
+/** Used when a user cannot be found in clerk */
+function unknownUser(userId: string): User {
+  // TODO: stop force type casting userrole
+  return {
+    id: userId,
+    firstName: "Unknown",
+    lastName: "",
+    emailAddress: "Unknown",
+    role: "Unknown" as UserRole
+  };
+}

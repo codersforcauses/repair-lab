@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const paginationSchema = z.object({
+  // TODO: Add a limit for per page.
   perPage: z
     .preprocess(
       (val) => Number(val),
