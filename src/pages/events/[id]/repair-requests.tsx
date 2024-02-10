@@ -15,8 +15,7 @@ import Sidebar from "@/components/sidebar/index";
 import SingleSelectCheckboxes from "@/components/single-check-box";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useAuth } from "@/hooks/auth";
-import { useRepairRequests } from "@/hooks/events";
-import { useEvent } from "@/hooks/events";
+import { useEvent, useRepairRequests } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
@@ -248,10 +247,12 @@ export default function RepairRequests() {
               <div className="grid gap-4 p-4 sm:grid-rows-2 md:grid-rows-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 relative">
                 <RepairRequestList />
 
-                <Modal showModal={eventModal} setShowPopup={showEventModal}>
-                  {" "}
+                <Modal
+                  title="Add a Repair Request"
+                  showModal={eventModal}
+                  setShowPopup={showEventModal}
+                >
                   <div className="text-center">
-                    <h1 className="text-xl font-bold">Add a repair request</h1>
                     <div className="max-w-full">
                       <RepairAttemptForm eventId={eventId as string} />
                     </div>

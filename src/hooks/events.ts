@@ -7,7 +7,7 @@ import {
 import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
-import { PaginationResponse } from "@/lib/pagination";
+import { PaginationOptions, PaginationResponse } from "@/lib/pagination";
 import {
   CreateEvent,
   EventResponse,
@@ -36,24 +36,27 @@ export const useEvent = (eventId: string | undefined) => {
   });
 };
 
-export const useEvents = (params: {
-  sortKey?: string;
-  sortMethod?: string;
-  searchWord?: string;
-  minDate?: string;
-  maxDate?: string;
-  eventType?: string[];
-  eventStatus?: string[];
-  createdBy?: string[];
-}) => {
-  return useQuery<EventResponse[]>({
+export const useEvents = (
+  params: {
+    sortKey?: string;
+    sortMethod?: string;
+    searchWord?: string;
+    minDate?: string;
+    maxDate?: string;
+    eventType?: string[];
+    eventStatus?: string[];
+    createdBy?: string[];
+  } & PaginationOptions
+) => {
+  return useQuery<PaginationResponse<EventResponse[]>>({
     queryKey: ["events", params],
     queryFn: () =>
       httpClient
         .get("/event", {
           params
         })
-        .then((response) => response.data)
+        .then((response) => response.data),
+    placeholderData: (pre) => pre
   });
 };
 
