@@ -20,8 +20,8 @@ export default function Card({ props }: { props: CardProps }) {
 
   return (
     <div
-      onClick={props.handleClick ? props.handleClick : handleClick}
-      onKeyDown={props.handleClick ? props.handleClick : handleClick}
+      onClick={props.handleClick ?? handleClick}
+      onKeyDown={props.handleClick ?? handleClick}
       role="presentation"
       className="h-full w-full group col-span-1 max-w-xs flex-col overflow-hidden rounded-lg bg-grey-100 shadow-md transition hover:shadow-2xl hover:-translate-y-0.5 hover:cursor-pointer "
     >
