@@ -1,8 +1,8 @@
 // Terms and Conditions Pop-up
 
-import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { Control, UseFormSetValue, useController } from "react-hook-form";
+import { Dialog, Transition } from "@headlessui/react";
+import { Control, useController, UseFormSetValue } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 import Button from "@/components/Button";
