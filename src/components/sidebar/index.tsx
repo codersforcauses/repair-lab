@@ -39,19 +39,19 @@ const Sidebar = ({ children }: Props) => {
               <p className="px-4 text-lg font-bold"> Return to Events </p>
             </div>
           </Link>
-          <Link href={`/events/${id}/repair-requests`}>
+          <Link href={`/manage/events/${id}/repair-requests`}>
             <div className={sidebarTabStyle}>
               <SlFolderAlt size={30} />
               <p className="px-4 text-lg">Repair Requests</p>
             </div>
           </Link>
-          <Link href={`/events/${id}/volunteers`}>
+          <Link href={`/manage/events/${id}/volunteers`}>
             <div className={sidebarTabStyle}>
               <RxPerson size={30} />
               <p className="px-4 text-lg">Volunteers</p>
             </div>
           </Link>
-          <Link href={`/events/${id}/public-images`}>
+          <Link href={`/manage/events/${id}/public-images`}>
             <div className={sidebarTabStyle}>
               <RxImage size={30} />
               <p className="px-4 text-lg">Images</p>
