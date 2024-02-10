@@ -54,7 +54,7 @@ export default function NavBar() {
               alt="Repair Labs Logo"
               width={721}
               height={831}
-              style={{ width: "4rem", height: "4rem" }}
+              style={{ width: "5rem", height: "5rem" }}
             />
             <MenuList items={menuItems} />
           </div>
