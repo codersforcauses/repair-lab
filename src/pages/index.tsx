@@ -7,10 +7,10 @@ import Button from "@/components/Button/index";
 import NavBar from "@/components/NavBar";
 
 import type { NextPageWithLayout } from "./_app";
-import BigGreenCurve from "../SVGs/BigGreenCurve";
-import Drill from "../SVGs/drill";
-import Gear from "../SVGs/Gear";
-import Wrench from "../SVGs/Wrench";
+import BigGreenCurve from "../components/SVGs/big-green-curve";
+import Drill from "../components/SVGs/drill";
+import Gear from "../components/SVGs/gear";
+import Wrench from "../components/SVGs/wrench";
 // #TODO: Refactor this
 const Home: NextPageWithLayout = () => {
   return (
