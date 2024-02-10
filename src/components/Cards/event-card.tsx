@@ -34,14 +34,17 @@ export default function Card({ props }: { props: CardProps }) {
           <p>{props.description}</p>
         </div>
       </Modal>
-      <div className="group-hover:opacity-50">
+      <div className=" relative ">
         <Image
           src="/images/event_details.jpg"
           alt="Image Not Found"
-          className="object-fit max-h-32 w-full"
+          className="object-fit max-h-32 w-full group-hover:opacity-50"
           width={100}
           height={100}
         />
+        <div className="opacity-0 group-hover:opacity-100 absolute inset-x-0 bottom-10 flex justify-center items-end text-xl text-black font-semibold">
+          Click for more info
+        </div>
       </div>
 
       <div className="text-center line-clamp-6 h-full group-hover:bg-app-primary">
