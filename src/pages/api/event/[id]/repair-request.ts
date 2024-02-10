@@ -48,17 +48,14 @@ async function getRepairRequests(
   };
 
   // Find user ids that match the search
-  // TODO: if there are more than 500 users that match the search, results will be cut off
   let userIdList = undefined;
   if (searchWord) {
-    const users = await userService.getMany({
+    const users = await userService.getAll({
       query: searchWord,
-      perPage: 500,
-      orderBy: "created_at",
-      page: 1
+      orderBy: "created_at"
     });
 
-    userIdList = users.items.map((u) => u.id);
+    userIdList = users.map((u) => u.id);
   }
 
   // Query DB
