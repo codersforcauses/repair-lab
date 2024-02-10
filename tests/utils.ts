@@ -91,7 +91,7 @@ export async function testPaginationResponse<
           "Content-Type": "application/json"
         }
       });
-      const results: PaginationResponse<unknown> = await res.json();
+      const results: PaginationResponse<unknown[]> = await res.json();
       expect(res.status).toBe(200);
       expect(results.items.length).toBe(expectedIDs.length);
       results.items.forEach((result, index) => {
