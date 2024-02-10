@@ -53,6 +53,14 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
 
+  function updateOptions() {
+    const newItemType: Option = {
+      id: `added-item-${options.length}`,
+      text: displayText
+    };
+    options.push(newItemType);
+    field.onChange(newItemType.text);
+  }
   function renderMenuItem(option: any) {
     return (
       <Menu.Item key={option.id}>
@@ -60,7 +68,6 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
           <a
             href="#"
             onClick={() => {
-              field.onChange(option.id);
               setDisplayText(option.text);
             }}
             className={classNames(
@@ -135,17 +142,12 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                           onKeyDown={(key) => {
                             if (key.code === "Space")
                               (key.target as HTMLInputElement).value += " ";
+                            else if (key.code === "Enter") {
+                              updateOptions();
+                            }
                           }}
                         />
-                        <button
-                          onClick={() => {
-                            const newItemType: Option = {
-                              id: `added-item-${options.length}`,
-                              text: displayText
-                            };
-                            options.push(newItemType);
-                          }}
-                        >
+                        <button onClick={updateOptions}>
                           <CiCirclePlus size={35} />
                         </button>
                       </div>
