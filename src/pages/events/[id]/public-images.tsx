@@ -33,16 +33,16 @@ export default function Images() {
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const { control, handleSubmit, reset } = useForm<ImageFormValues>();
   const [pagination, setPagination] = useState({
-    total: images.length,
+    totalCount: images.length,
     perPage: 20,
-    current: 1
+    page: 1
   });
   const {
     query: { id: eventId }
   } = useRouter();
 
   const imagesToShow = useMemo(() => {
-    const startIndex = (pagination.current - 1) * pagination.perPage;
+    const startIndex = (pagination.page - 1) * pagination.perPage;
     const endIndex = startIndex + pagination.perPage;
     return images.slice(startIndex, endIndex);
   }, [images, pagination]);
@@ -138,7 +138,7 @@ export default function Images() {
                   <div className="flex justify-center p-4">
                     <button
                       type="submit"
-                      className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-1/3"
+                      className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-full"
                     >
                       Submit
                     </button>

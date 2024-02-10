@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Transition } from "@headlessui/react";
 import { VscChromeClose, VscMenu } from "react-icons/vsc";
-import Modal from "@/components/Modal";
 
+import Modal from "@/components/Modal";
 import { MenuItems } from "@/components/NavBar";
 
 interface NavItems {
