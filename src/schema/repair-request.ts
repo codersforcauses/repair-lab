@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { paginationSchema } from "@/lib/pagination";
-import prisma from "@/lib/prisma";
+import { RepairRequestField } from "@/types";
 
 const stringOrArray = z.union([
   z.literal("").transform(() => undefined),
@@ -9,18 +9,26 @@ const stringOrArray = z.union([
   z.array(z.string())
 ]);
 
+// This is typed to throw a type error if the schema changes
+const allowedSortFields: RepairRequestField[] = [
+  "status",
+  "itemType",
+  "itemBrand",
+  "requestDate"
+] as const;
+
 export const getRepairRequestSchema = paginationSchema.extend({
   id: z.string(),
   sortKey: z
     .string()
-    .refine((value) => value in prisma.repairRequest.fields, {
+    .refine((value) => value in allowedSortFields, {
       message: "Incorrect value for sortKey"
     })
     .optional(),
   sortMethod: z.enum(["asc", "desc"]).optional(),
   searchWord: z.string().optional(),
   itemType: stringOrArray.optional(),
-  brand: stringOrArray.optional(),
+  itemBrand: stringOrArray.optional(),
   assignedTo: stringOrArray.optional()
 });
 

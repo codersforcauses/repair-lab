@@ -19,7 +19,7 @@ import { useEvent, useRepairRequests } from "@/hooks/events";
 import { useItemTypes } from "@/hooks/item-types";
 import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
-import { RepairRequestResponse } from "@/types";
+import { RepairRequestField, RepairRequestResponse } from "@/types";
 
 const initialFilterState = {
   search: "",
@@ -39,10 +39,11 @@ export default function RepairRequests() {
   } = useRouter();
 
   const eventId = id?.toString();
-  const sortBy = [
+  const sortBy: { key: RepairRequestField; label: string }[] = [
+    { key: "requestDate", label: "Request Date" },
     { key: "status", label: "Status" },
     { key: "itemType", label: "Item Type" },
-    { key: "brand", label: "Brand" }
+    { key: "itemBrand", label: "Brand" }
   ];
   const assignedToOptions = [
     { key: "me", label: "Assigned to me" },
@@ -94,9 +95,9 @@ export default function RepairRequests() {
     return {
       page: Number(page),
       perPage: Number(perPage),
-      totalCount: repairRequests?.meta.totalCount ?? 0
+      totalCount: repairRequests?.meta?.totalCount ?? 0
     };
-  }, [repairRequests?.meta.totalCount, page, perPage]);
+  }, [repairRequests?.meta?.totalCount, page, perPage]);
 
   const { data: event } = useEvent(eventId);
 
@@ -164,7 +165,7 @@ export default function RepairRequests() {
                 <div className="flex justify-between pr-4">
                   <div className="w-auto p-4 text-2xl font-bold text-zinc-400">
                     <span>
-                      Repair Requests ({repairRequests?.meta.totalCount})
+                      Repair Requests ({repairRequests?.meta?.totalCount})
                     </span>
                   </div>
                   <div className="flex justify-end items-center  gap-2">

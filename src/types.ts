@@ -25,6 +25,7 @@ export type UserSearchQuery = z.infer<typeof getManyUsersSchema>;
 // Repair Requests
 export type RepairRequest = PrismaRepairRequest;
 export type RepairStatus = $Enums.RepairStatus;
+export type RepairRequestField = keyof RepairRequest;
 export type CreateRepairRequest = z.infer<typeof createRepairRequestSchema>;
 export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 

@@ -27,7 +27,7 @@ describe("GET /api/event", () => {
     sortMethod?: string;
     searchWord?: string;
     itemType?: string | string[];
-    brand?: string | string[];
+    itemBrand?: string | string[];
     assignedTo?: string | string[];
     page?: string;
     perPage?: string;
@@ -108,12 +108,12 @@ describe("GET /api/event", () => {
     );
     await testPaginationResponse<AllowedParams>(
       handler,
-      { id: "ev-1", brand: "" },
+      { id: "ev-1", itemBrand: "" },
       ["rr-1", "rr-2"]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
-      { id: "ev-2", brand: "" },
+      { id: "ev-2", itemBrand: "" },
       ["rr-3", "rr-4"]
     );
   });
@@ -148,6 +148,10 @@ describe("GET /api/event", () => {
     });
     await testResponseCode<AllowedParams>(handler, {
       sortMethod: "WOOHOO"
+    });
+    // in the schema, but not a valid key
+    await testResponseCode<AllowedParams>(handler, {
+      sortKey: "createdBy"
     });
   });
 });

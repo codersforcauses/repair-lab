@@ -25,7 +25,7 @@ async function getRepairRequests(
     sortMethod = "asc",
     searchWord,
     itemType,
-    brand,
+    itemBrand,
     assignedTo,
     // pagination
     page,
@@ -75,7 +75,7 @@ async function getRepairRequests(
         ]
       : undefined,
     item: { name: { in: itemType } },
-    itemBrand: { in: brand },
+    itemBrand: { in: itemBrand },
     ...(findUnassigned
       ? { assignedTo: "" }
       : { assignedTo: { in: assignedTo } })
