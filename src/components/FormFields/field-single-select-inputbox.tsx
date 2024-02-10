@@ -132,6 +132,10 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                           type="text"
                           className="block ml-8 m-1 py-1 pl-2 text-sm w-5/6 overflow-hidden"
                           onChange={(e) => setDisplayText(e.target.value)}
+                          onKeyDown={(key) => {
+                            if (key.code === "Space")
+                              (key.target as HTMLInputElement).value += " ";
+                          }}
                         />
                         <button
                           onClick={() => {
