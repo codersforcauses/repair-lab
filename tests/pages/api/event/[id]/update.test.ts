@@ -73,12 +73,16 @@ describe("PATCH /api/event/:id", () => {
             name: "Updated Event",
             description:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            status: "ONGOING"
+            status: "ONGOING",
+            images: ["Fake image URL1", "Fake image URL2"]
           })
         });
 
         const updatedEvent = await prisma.event.findUnique({
-          where: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" }
+          where: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
+          include: {
+            images: true
+          }
         });
 
         const expectedEvent = {
@@ -89,7 +93,17 @@ describe("PATCH /api/event/:id", () => {
           name: "Updated Event",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          status: "ONGOING"
+          status: "ONGOING",
+          images: [
+            {
+              repairEventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
+              s3Key: "Fake image URL1"
+            },
+            {
+              repairEventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
+              s3Key: "Fake image URL2"
+            }
+          ]
         };
 
         expect(res.status).toBe(200);
