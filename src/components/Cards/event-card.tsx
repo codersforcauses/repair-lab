@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
+import Map from "react-map-gl";
 
 import Modal from "@/components/Modal/index";
 
@@ -32,6 +33,18 @@ export default function Card({ props }: { props: CardProps }) {
             {props.date} - {props.location}
           </h2>
           <p>{props.description}</p>
+        </div>
+        <div>
+          <Map
+            mapboxAccessToken="pk.eyJ1IjoiY29kZXJzZm9yY2F1c2VzIiwiYSI6ImNsc2ZraWY0cjBmOXgycnBnc2wwYnBvc3oifQ.qfwyDrLa3z42vsse7MCX8g"
+            initialViewState={{
+              longitude: -122.4,
+              latitude: 37.8,
+              zoom: 14
+            }}
+            style={{ width: 600, height: 400 }}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+          />
         </div>
       </Modal>
       <div className="relative ">
