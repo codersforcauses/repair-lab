@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { faFilterCircleXmark, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
+import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
 
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
-import { Pagination, PaginationState } from "@/components/pagination";
+import { Pagination } from "@/components/pagination";
 import { Search } from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
@@ -32,7 +31,9 @@ const initialFilterState = {
   sortMethod: undefined as "asc" | "desc" | undefined,
   userIds: [] as string[],
   eventTypes: [] as string[],
-  status: [] as EventStatus[]
+  status: [] as EventStatus[],
+  page: "1",
+  perPage: "20"
 };
 
 const Events: NextPageWithLayout = () => {
@@ -50,10 +51,6 @@ const Events: NextPageWithLayout = () => {
     });
   };
 
-  const [pagination, onPaginationChange] = useState<PaginationState>({
-    total: 100
-  });
-
   const [
     {
       minDate,
@@ -64,16 +61,19 @@ const Events: NextPageWithLayout = () => {
       search,
       sortKey,
       sortMethod,
-      openModal
+      openModal,
+      page,
+      perPage
     },
     setFilterState
   ] = useSearchParamsState(initialFilterState);
 
   const date = useMemo(() => [minDate, maxDate], [minDate, maxDate]);
   const [users, setUsers] = useState<User[]>([]);
-  useUsersFromIds(userIds, setUsers);
+  // Only fetch users when id exists but no user
+  useUsersFromIds(users.length ? [] : userIds, setUsers);
 
-  const { data: eventData, isLoading: isEventsLoading } = useEvents({
+  const { data, isLoading, isPlaceholderData, isFetching } = useEvents({
     sortKey,
     sortMethod,
     minDate,
@@ -81,8 +81,21 @@ const Events: NextPageWithLayout = () => {
     searchWord: search,
     eventType: eventTypes,
     eventStatus: status,
-    createdBy: userIds
+    createdBy: userIds,
+    page: Number(page),
+    perPage: Number(perPage)
   });
+
+  const isEventsLoading = isLoading || (isPlaceholderData && isFetching);
+
+  const eventData = useMemo(() => data?.items, [data]);
+  const pagination = useMemo(() => {
+    return {
+      page: Number(page),
+      perPage: Number(perPage),
+      totalCount: data?.meta?.totalCount ?? 0
+    };
+  }, [data?.meta?.totalCount, page, perPage]);
 
   const resetQuery = useMemoizedFn(() => {
     setFilterState(initialFilterState);
@@ -162,10 +175,9 @@ const Events: NextPageWithLayout = () => {
                 title="Clear Filters"
                 onClick={resetQuery}
               >
-                <FontAwesomeIcon
-                  icon={faFilterCircleXmark}
-                  className="text-[1rem] transform translate-y-[2px]"
-                />
+                <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
+                  <FaFilterCircleXmark className="text-[1rem] transform translate-y-[2px]" />
+                </div>
               </HoverOpacityButton>
             </div>
           </div>
@@ -182,12 +194,14 @@ const Events: NextPageWithLayout = () => {
                 className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md"
                 onClick={() => setShowAddModal(true)}
               >
-                <FontAwesomeIcon icon={faPlus} />
+                <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
+                  <FaPlus className="text-[1rem] transform " />
+                </div>
               </button>
               <Modal
                 setShowPopup={setShowAddModal}
                 showModal={showAddModal}
-                height="h-3/4"
+                title="Add a New Event"
               >
                 <EventForm itemTypes={itemTypes} onSubmit={submitCreateEvent} />
               </Modal>
@@ -247,7 +261,16 @@ const Events: NextPageWithLayout = () => {
             ]}
           />
         </div>
-        <Pagination value={pagination} onChange={onPaginationChange} />
+        <Pagination
+          value={pagination}
+          onChange={(nextState) => {
+            setFilterState((state) => ({
+              ...state,
+              page: String(nextState.page),
+              perPage: String(nextState.perPage)
+            }));
+          }}
+        />
       </div>
     </div>
   );
