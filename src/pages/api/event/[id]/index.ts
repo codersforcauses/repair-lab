@@ -63,19 +63,6 @@ async function updateEvent(
     throw new ApiError(HttpStatusCode.NotFound, "Event does not exist");
   }
 
-  // if (images && images.length > 0) {
-  //   await Promise.all(
-  //     images.map(async (key) => {
-  //       await prisma.eventImage.create({
-  //         data: {
-  //           s3Key: key,
-  //           repairEventId: id as string
-  //         }
-  //       });
-  //     })
-  //   );
-  // }
-
   // Event exists, update the row
   const updatedEvent = await prisma.event.update({
     where: { id: id as string },
