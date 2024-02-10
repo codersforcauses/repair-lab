@@ -4,17 +4,18 @@ import Image from "next/image";
 import Circle from "@/components/Cards/circle";
 
 type Props = {
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
+  userId: string;
 };
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function VolunteerCard() {
-  const firstName = "John";
-  const lastName = "Doe";
+export default function VolunteerCard({ userId }: Props) {
+  // TODO: userId=staff.id, get clerkId from staff table, then get info
+  const firstName = userId;
+  const lastName = "";
   const avatar = "/images/generalToy.jpeg";
+
+  // TODO: count repair requests where assignedTo=userId, replace the 3 with the count
 
   return (
     <div
@@ -38,10 +39,10 @@ export default function VolunteerCard() {
           <p className="text-base font-semibold">
             {firstName} {lastName ?? ""}
           </p>
-          <p className="text-center text-app-base-300 bg-app-accent rounded-lg px-1 text-sm">
+          <p className="w-fit text-app-base-300 bg-app-accent rounded-lg px-1 text-sm">
             Woodworking
           </p>
-          <p className="text-app-base-300 w-fit bg-app-secondary-focus rounded-lg px-1 text-sm">
+          <p className="w-fit text-app-base-300 bg-app-secondary-focus rounded-lg px-1 text-sm">
             Bike Repair
           </p>
         </div>

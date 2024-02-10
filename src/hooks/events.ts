@@ -5,6 +5,7 @@ import { httpClient } from "@/lib/base-http-client";
 import { PaginationOptions, PaginationResponse } from "@/lib/pagination";
 import {
   CreateEvent,
+  EventRepairer,
   EventResponse,
   RepairRequestResponse,
   UpdateEvent
@@ -127,6 +128,21 @@ export const useRepairRequests = (eventId: string | undefined) => {
 
   return useQuery({
     queryKey: ["repair-requests", eventId],
+    queryFn,
+    enabled: eventId != undefined
+  });
+};
+
+export const useRepairers = (eventId: string | undefined) => {
+  const queryFn = async () => {
+    const url = `event/${eventId}/repairers`;
+
+    const response = await httpClient.get<EventRepairer[]>(url);
+    return response.data;
+  };
+
+  return useQuery({
+    queryKey: ["repairers", eventId],
     queryFn,
     enabled: eventId != undefined
   });

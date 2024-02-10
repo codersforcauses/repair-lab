@@ -9,7 +9,8 @@ import userService from "@/services/user";
 import prisma from "../../../../lib/prisma";
 
 export default apiHandler({
-  post: createRepairer
+  post: createRepairer,
+  get: getRepairers
 });
 
 interface responseEventRepairer {
@@ -54,4 +55,26 @@ async function createRepairer(
   res
     .status(200)
     .json({ message: "Successfully added volunteers to an event" });
+}
+
+async function getRepairers(req: NextApiRequest, res: NextApiResponse) {
+  const { id } = req.query;
+
+  const event = await prisma.event.findUnique({
+    where: { id: id as string }
+  });
+
+  if (!event) {
+    throw new ApiError(HttpStatusCode.NotFound, "Event not found");
+  }
+
+  const repairers = await prisma.eventRepairer.findMany({
+    where: { eventId: id as string }
+  });
+
+  if (!repairers) {
+    throw new ApiError(HttpStatusCode.NotFound, "Repairers not found");
+  }
+
+  res.status(200).json(repairers);
 }
