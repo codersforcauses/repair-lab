@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { FaPlus } from "react-icons/fa";
 
 import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
@@ -30,9 +31,14 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
         <>
           <Link
             href="/repair-request"
-            className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
+            className="flex items-center justify-center px-2 mx-4 h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
-            New Repair Request +
+            {/* Text visible on larger screens, hidden on smaller screens */}
+            <span className="hidden lg:flex placeholder:w-[160px]">
+              New Repair Request +
+            </span>
+            {/* Icon visible on smaller screens, hidden on larger screens */}
+            <FaPlus className="lg:hidden w-[40px]" />
           </Link>
 
           <ActionButton onClick={confirmLogOut} label="Log Out" />
