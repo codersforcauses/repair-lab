@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import NavBar from "@/components/NavBar";
 import TablePagination from "@/components/table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
+import { useAuth } from "@/hooks/auth";
 import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -10,6 +11,8 @@ import { UserRole } from "@/types";
 import { type User } from "@/types";
 
 const User: NextPageWithLayout = () => {
+  const { user: loggedInUser } = useAuth();
+
   const [orderBy, _setOrderBy] = useState("-created_at");
   const [perPage, _setPerPage] = useState(10);
   const [page, setPage] = useState(1);
@@ -24,7 +27,7 @@ const User: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="p-20">
+    <div className="p-20 flex flex-col gap-5">
       {/* Search Bar */}
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

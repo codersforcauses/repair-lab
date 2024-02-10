@@ -31,6 +31,21 @@ export const useUsers = (
   });
 };
 
+export const useUserRole = (userId: string | undefined) => {
+  const queryFn = async () => {
+    const url = `/user/${userId}/role`;
+
+    const response = await httpClient.get<{ role: UserRole }>(url);
+
+    return response.data.role;
+  };
+
+  return useQuery({
+    queryKey: ["users", "role", userId],
+    queryFn: queryFn
+  });
+};
+
 export const useUpdateUserRole = (userId: string | undefined) => {
   const queryClient = useQueryClient();
 

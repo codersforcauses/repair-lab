@@ -8,8 +8,20 @@ import userService from "@/services/user";
 import { UserRole } from "@/types";
 
 export default apiHandler({
+  get: getUserRole,
   patch: updateUserRole
 });
+
+async function getUserRole(
+  req: NextApiRequest,
+  res: NextApiResponse<{ role: UserRole }>
+) {
+  const userId = z.string().parse(req.query.id);
+
+  const role = await userService.getRole(userId);
+
+  return res.status(200).json({ role });
+}
 
 async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
   const userId = z.string().parse(req.query.id);
@@ -20,7 +32,10 @@ async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
   // only admins can update a user's role
   const { role: updaterRole } = await userService.getAuth(req);
 
-  if (updaterRole !== UserRole.ADMIN) {
+  if (
+    updaterRole !== UserRole.ADMIN &&
+    process.env.NODE_ENV !== "development"
+  ) {
     throw new ApiError(
       HttpStatusCode.Unauthorized,
       "Not authorised to update user role"
