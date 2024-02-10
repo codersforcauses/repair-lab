@@ -138,7 +138,7 @@ export default function Images() {
                   <div className="flex justify-center p-4">
                     <button
                       type="submit"
-                      className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-1/3"
+                      className="bg-app-primary hover:bg-app-primary-focus text-white rounded h-9 w-full"
                     >
                       Submit
                     </button>

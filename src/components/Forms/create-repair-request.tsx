@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,7 +29,7 @@ const repairRequestFormSchema = createRepairRequestSchema.extend({
 });
 
 export default function RepairRequestForm({ eventId }: { eventId?: string }) {
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
     resolver: zodResolver(repairRequestFormSchema),
     defaultValues: {
       itemBrand: "",
@@ -43,7 +44,8 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
 
   const { data: itemTypeList } = useItemTypes();
   const { data: eventOptions } = useEventOptions();
-  const { mutate: createRepairRequest } = useCreateRepairRequest();
+  const { mutateAsync: createRepairRequest } = useCreateRepairRequest();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const uploadPromises =
@@ -54,7 +56,12 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
     const keys = await Promise.all([uploadThumbailPromise, ...uploadPromises]);
     const [thumbnailImage, ...images] = keys;
     const updatedData = { ...data, thumbnailImage, images };
-    createRepairRequest(updatedData);
+
+    const response = await createRepairRequest(updatedData);
+
+    router.push(`/request-success/${response.id}`);
+
+    reset();
   };
 
   return (

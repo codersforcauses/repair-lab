@@ -137,12 +137,7 @@ export default function RepairAttemptForm({
 
       {/* Submit */}
       <div className="my-5 flex flex-row">
-        <Button
-          onClick={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}
-          height="h-9"
-          width="w-1/3"
-          textSize="text-base"
-        >
+        <Button onClick={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
           Submit
         </Button>
       </div>
