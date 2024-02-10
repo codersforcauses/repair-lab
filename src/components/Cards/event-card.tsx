@@ -1,8 +1,11 @@
 import { useState } from "react";
 import Image from "next/image";
-import Map from "react-map-gl";
+import { HiLocationMarker } from "react-icons/hi";
+import Map, { Marker } from "react-map-gl";
 
 import Modal from "@/components/Modal/index";
+
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export type CardProps = {
   title: string;
@@ -44,7 +47,11 @@ export default function Card({ props }: { props: CardProps }) {
             }}
             style={{ width: 600, height: 300 }}
             mapStyle="mapbox://styles/mapbox/streets-v9"
-          />
+          >
+            <Marker longitude={-122.4} latitude={37.8} anchor="bottom">
+              <HiLocationMarker />
+            </Marker>
+          </Map>
         </div>
       </Modal>
       <div className="relative ">
