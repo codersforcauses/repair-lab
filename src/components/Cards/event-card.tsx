@@ -34,7 +34,7 @@ export default function Card({ props }: { props: CardProps }) {
           </h2>
           <p>{props.description}</p>
         </div>
-        <div>
+        <div className="flex justify-center">
           <Map
             mapboxAccessToken="pk.eyJ1IjoiY29kZXJzZm9yY2F1c2VzIiwiYSI6ImNsc2ZraWY0cjBmOXgycnBnc2wwYnBvc3oifQ.qfwyDrLa3z42vsse7MCX8g"
             initialViewState={{
@@ -42,7 +42,7 @@ export default function Card({ props }: { props: CardProps }) {
               latitude: 37.8,
               zoom: 14
             }}
-            style={{ width: 600, height: 400 }}
+            style={{ width: 600, height: 300 }}
             mapStyle="mapbox://styles/mapbox/streets-v9"
           />
         </div>
