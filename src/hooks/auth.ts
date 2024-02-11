@@ -5,12 +5,12 @@ import { UserRole } from "@/types";
 
 export const useAuth = () => {
   const { user, isSignedIn, isLoaded } = useUser();
-  const { data: role } = useUserRole(user?.id);
+  const { data: role, isLoading: isRoleLoading } = useUserRole(user?.id);
 
   return {
     user,
     role: role ?? UserRole.CLIENT,
     isSignedIn,
-    isLoaded
+    isLoaded: isLoaded && !isRoleLoading // isLoaded is only true if role is not loading too.
   };
 };

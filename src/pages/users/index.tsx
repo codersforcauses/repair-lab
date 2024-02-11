@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
 
 import NavBar from "@/components/NavBar";
+import { withProtected } from "@/components/PrivateRoute";
 import TablePagination from "@/components/table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useAuth } from "@/hooks/auth";
 import { useUsers } from "@/hooks/users";
 import { useUpdateUserRole } from "@/hooks/users";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -11,8 +11,6 @@ import { UserRole } from "@/types";
 import { type User } from "@/types";
 
 const User: NextPageWithLayout = () => {
-  const { user: loggedInUser } = useAuth();
-
   const [orderBy, _setOrderBy] = useState("-created_at");
   const [perPage, _setPerPage] = useState(10);
   const [page, setPage] = useState(1);
@@ -110,7 +108,8 @@ const User: NextPageWithLayout = () => {
   );
 };
 
-User.getLayout = function getLayout(page) {
+const ProtectedUser = withProtected(User);
+ProtectedUser.getLayout = function getLayout(page) {
   return (
     <>
       <NavBar />
@@ -119,7 +118,7 @@ User.getLayout = function getLayout(page) {
   );
 };
 
-export default User;
+export default ProtectedUser;
 
 const UserRow = ({ user, index }: { user: User; index: number }) => {
   const { mutate: updateUser } = useUpdateUserRole(user.id);
