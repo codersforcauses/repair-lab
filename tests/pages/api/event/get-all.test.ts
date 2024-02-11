@@ -4,6 +4,7 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 
 //
 import endpoint from "@/pages/api/event";
+import { UserRole } from "@/types";
 
 import prisma from "../../../setup";
 import { cleanup, seedTestData } from "../../../utils";
@@ -28,6 +29,13 @@ describe("GET /api/event", () => {
             userId: "REPAIRER"
           }
         }
+      }
+    });
+
+    await prisma.staff.create({
+      data: {
+        clerkId: "REPAIRER",
+        role: UserRole.REPAIRER
       }
     });
 

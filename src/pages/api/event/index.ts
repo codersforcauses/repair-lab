@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getAuth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
 
 import apiHandler from "@/lib/api-handler";
@@ -36,8 +35,7 @@ async function getEvents(
   const sortObj: Record<string, "asc" | "desc"> = {
     [sortKey]: sortMethod
   };
-  const { userId } = getAuth(req);
-  const role = await userService.getRole(userId as string);
+  const { userId, role } = await userService.getAuth(req);
   const isRepairer =
     role == UserRole.REPAIRER
       ? {
@@ -97,7 +95,7 @@ async function createEvent(
     req.body
   );
 
-  const { userId } = getAuth(req);
+  const { userId } = await userService.getAuth(req);
 
   const newEvent = await prisma.event.create({
     data: {
