@@ -73,7 +73,3 @@ export enum PageRouteRegex {
   REPAIR_ATTEMPT = "/repair-request",
   ALL = "/"
 }
-
-export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"]
-};
