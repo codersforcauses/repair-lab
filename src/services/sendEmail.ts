@@ -10,10 +10,9 @@ import userService from "./user";
 
 const sesClient = new SESClient({
   region: process.env.AWS_REGION,
-  endpoint:
-    process.env.AWS_SES_SWITCH === "ON"
-      ? undefined
-      : process.env.AWS_SES_MOCK_ENDPOINT
+  endpoint: process.env.AWS_SES_SWITCH
+    ? undefined
+    : process.env.AWS_SES_MOCK_ENDPOINT
 });
 
 const createEmailContent = async (customerUser: User, requestId: string) => {

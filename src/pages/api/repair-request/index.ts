@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuth } from "@clerk/nextjs/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
@@ -37,7 +37,7 @@ async function createRepairRequest(
   const requestId = record.id;
 
   // send confirmation email to customer
-  const emailSubject = "Repair Request Confimation";
+  const emailSubject = "Repair Request Confirmation";
   sendEmail(emailSubject, userId!, requestId); // TODO: Do not handle sending result for now
 
   return res.status(200).json({ id: requestId });

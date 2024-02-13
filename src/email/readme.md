@@ -82,7 +82,7 @@ Refer to github repository [domdomegg/aws-ses-v2-local](https://github.com/domdo
 
 ## Getting Started
 
-Run the [aws-ses-v2-local Docker image](https://hub.docker.com/r/pensk/aws-ses-v2-local), which is the mock email service running at [localhost:8005](localhost:8005).
+Run the [aws-ses-v2-local Docker image](https://hub.docker.com/r/pensk/aws-ses-v2-local), which is the mock email service running at [localhost:8005](http://localhost:8005). You can also use the script (sesmock) in /root/package.json.
 
 ```sh
 docker run -p 8005:8005 pensk/aws-ses-v2-local
@@ -90,7 +90,11 @@ docker run -p 8005:8005 pensk/aws-ses-v2-local
 
 ## How It Works
 
-Use the environment variable ${AWS_SES_SWITCH} to decide whether to employ the mock service or the actual AWS SES service. When the switch is set to 'ON,' real emails will be sent from Amazon. Otherwise, mock emails can be viewed at [localhost:8005](localhost:8005).
+Use the environment variable ${AWS_SES_SWITCH} to decide whether to employ the mock service or the actual AWS SES service. When the switch is defined in .env files, real emails will be sent from Amazon. Otherwise, mock emails can be viewed at [localhost:8005](http://localhost:8005).
+
+## Mock Email Results
+
+Mock emails can be accessed at [localhost:8005/store](http://localhost:8005/store) with a GET method.
 
 ## License
 
