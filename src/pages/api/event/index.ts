@@ -6,7 +6,8 @@ import apiHandler from "@/lib/api-handler";
 import { PaginationResponse } from "@/lib/pagination";
 import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import { ErrorResponse, EventResponse } from "@/types";
+import userService from "@/services/user";
+import { ErrorResponse, EventResponse, UserRole } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -35,8 +36,20 @@ async function getEvents(
   const sortObj: Record<string, "asc" | "desc"> = {
     [sortKey]: sortMethod
   };
-
+  const { userId } = getAuth(req);
+  const role = await userService.getRole(userId as string);
+  const isRepairer =
+    role == UserRole.REPAIRER
+      ? {
+          eventRepairer: {
+            some: {
+              userId: userId as string
+            }
+          }
+        }
+      : {};
   const where: Prisma.EventWhereInput = {
+    ...isRepairer,
     OR: [
       { name: { contains: searchWord, mode: "insensitive" } },
       { createdBy: { contains: searchWord, mode: "insensitive" } },
