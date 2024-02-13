@@ -4,9 +4,9 @@ import { render } from "@react-email/render";
 import prisma from "@/lib/prisma";
 import { User } from "@/types";
 
-import { RepairRequestEmail } from "../email/emails/repair-request-email";
-import { formatDate } from "../utils";
 import userService from "./user";
+import { RepairRequestEmail } from "../email/emails/repair-request-email";
+import { formatDate } from "../utils/format-date";
 
 const sesClient = new SESClient({
   region: process.env.AWS_REGION,

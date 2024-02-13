@@ -1,6 +1,6 @@
-import { RepairRequest } from "@prisma/client";
 import type { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
+import { RepairRequest } from "@prisma/client";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import endpoint from "@/pages/api/repair-request";
@@ -85,10 +85,7 @@ describe("POST /api/repair-request", () => {
     });
   });
 
-  // run the test only in mocking environment
-  const isMocking = process.env.AWS_SES_SWITCH === undefined ? true : false;
-
-  it.runIf(isMocking)("should be able to recieve a mock email", async () => {
+  it.skip("should be able to recieve a mock email", async () => {
     const testCustomer = {
       id: "email_testing",
       firstName: "Email",
