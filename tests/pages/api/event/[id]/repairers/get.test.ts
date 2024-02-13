@@ -33,7 +33,8 @@ describe("GET /api/event/:id/repairers", () => {
             firstName: "test",
             lastName: "test",
             email: "test@gmail.com"
-          }
+          },
+          { userId: "test_empty" }
         ];
 
         const result = await res.json();
