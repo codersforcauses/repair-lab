@@ -15,6 +15,8 @@ export type CardProps = {
   handleClick?: () => void;
 };
 
+const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
+
 export default function Card({ props }: { props: CardProps }) {
   function handleClick() {
     setShowModal(true);
@@ -39,7 +41,7 @@ export default function Card({ props }: { props: CardProps }) {
         </div>
         <div className="flex justify-center">
           <Map
-            mapboxAccessToken="pk.eyJ1IjoiY29kZXJzZm9yY2F1c2VzIiwiYSI6ImNsc2ZraWY0cjBmOXgycnBnc2wwYnBvc3oifQ.qfwyDrLa3z42vsse7MCX8g"
+            mapboxAccessToken={mapboxToken}
             initialViewState={{
               longitude: -122.4,
               latitude: 37.8,
