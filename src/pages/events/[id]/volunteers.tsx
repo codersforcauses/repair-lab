@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Staff } from "@prisma/client";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import VolunteerManageForm from "@/components/Forms/volunteer-manage-form";
@@ -8,10 +9,9 @@ import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
-import { User } from "@/types";
 
 export default function Volunteers() {
-  const [volunteers, _setVolunteers] = useState<User[]>([]);
+  const [volunteers, setVolunteers] = useState<Staff[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
   const {
@@ -28,6 +28,12 @@ export default function Volunteers() {
       endDate: new Date(event.endDate),
       createdBy: event.createdBy
     });
+
+    const urlParams = new URLSearchParams({ id: event.id });
+
+    fetch(`/api/event/${event.id}/repairers?${urlParams.toString()}`)
+      .then((res) => res.json())
+      .then((data) => setVolunteers(data));
   }, [event]);
 
   function manageVolunteer() {
@@ -43,7 +49,7 @@ export default function Volunteers() {
               <div className="flex flex-row w-auto p-4 text-2xl font-bold text-zinc-400 content-center justify-between">
                 <span>Volunteers ({volunteers.length})</span>
                 <button
-                  className="flex rounded-lg border bg-primary-500 p-2 w-1/5 shadow-md transition hover:cursor-pointer hover:bg-primary-300 text-sm text-white justify-center"
+                  className="flex rounded-lg border bg-primary-500 p-2 w-1/5 shadow-md transition duration-150 ease-in-out hover:cursor-pointer hover:bg-primary-300 text-sm active:bg-primary-500 text-white justify-center"
                   onClick={manageVolunteer}
                   onKeyDown={manageVolunteer}
                 >
@@ -57,25 +63,33 @@ export default function Volunteers() {
                 {volunteers.map((item) => (
                   <div key={item.id}>
                     <AssigneeBadge
-                      firstName={item.firstName ?? item.emailAddress}
-                      lastName={item.lastName ?? ""}
+                      firstName={item.clerkId ?? item.organisationId}
+                      lastName={item.role ?? ""}
                     />
                   </div>
                 ))}
               </div>
             </div>
-            <Modal
-              showModal={showVolunteerModal}
-              setShowPopup={setShowVolunteerModal}
-              height="h-full"
-            >
-              <div className="text-center">
-                <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>
-                <div>
-                  <VolunteerManageForm setShowModal={setShowVolunteerModal} />
+            {event && (
+              <Modal
+                showModal={showVolunteerModal}
+                setShowPopup={setShowVolunteerModal}
+                height="h-full"
+              >
+                <div className="text-center">
+                  <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>
+                  <div>
+                    <VolunteerManageForm
+                      volunteersArray={volunteers.map(
+                        (volunteer) => volunteer.id
+                      )}
+                      setShowModal={setShowVolunteerModal}
+                      eventProps={event}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Modal>
+              </Modal>
+            )}
           </>
         ) : (
           <LoadingSpinner className="w-full h-full flex items-center justify-center " />

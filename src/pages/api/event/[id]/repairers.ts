@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { Staff } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
@@ -9,11 +10,44 @@ import userService from "@/services/user";
 import prisma from "../../../../lib/prisma";
 
 export default apiHandler({
+  get: getRepairer,
   post: createRepairer
 });
 
 interface responseEventRepairer {
   message: string;
+}
+
+async function getRepairer(req: NextApiRequest, res: NextApiResponse<Staff[]>) {
+  const { id } = req.query;
+
+  if (typeof id !== "string") {
+    throw new ApiError(HttpStatusCode.BadRequest, "Invalid id");
+  }
+
+  const event = await prisma.event.findUnique({
+    where: { id: id }
+  });
+
+  if (!event) {
+    throw new ApiError(HttpStatusCode.NotFound, "Event not found");
+  }
+
+  const repairers = await prisma.eventRepairer.findMany({
+    where: {
+      eventId: id
+    }
+  });
+
+  const staff = await prisma.staff.findMany({
+    where: { id: { in: repairers.map((repairer) => repairer.userId) } }
+  });
+
+  if (!repairers) {
+    throw new ApiError(HttpStatusCode.NotFound, "Repairers not found");
+  }
+
+  res.status(200).json(staff);
 }
 
 async function createRepairer(
@@ -46,7 +80,7 @@ async function createRepairer(
   const responseEndpoint = await prisma.eventRepairer.createMany({
     data: userId.map((userId) => ({
       userId: userId as string,
-      eventId: id as string
+      eventId: id
     })),
     skipDuplicates: true
   });

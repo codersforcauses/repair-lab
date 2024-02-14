@@ -1,27 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Staff } from "@prisma/client";
 
 import apiHandler from "@/lib/api-handler";
-import { User } from "@/types";
+import prisma from "@/lib/prisma";
 
 export default apiHandler({
   get: getStaff
 });
 
-async function getStaff(req: NextApiRequest, res: NextApiResponse<User[]>) {
-  return res.status(200).json([
-    {
-      id: "1",
-      firstName: "John",
-      lastName: "Admin",
-      emailAddress: "jimbo@jimail.com",
-      role: "ADMIN"
-    },
-    {
-      id: "2",
-      firstName: "John",
-      lastName: "Repairer",
-      emailAddress: "jambo@jimail.com",
-      role: "REPAIRER"
-    }
-  ]);
+async function getStaff(req: NextApiRequest, res: NextApiResponse<Staff[]>) {
+  const data = await prisma.staff.findMany();
+
+  return res.status(200).json(data);
 }

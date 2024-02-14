@@ -1,11 +1,13 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Staff } from "@prisma/client";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 import Button from "@/components/Button";
 import Search from "@/components/Search";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
-import { User } from "@/types";
+import { httpClient } from "@/lib/base-http-client";
+import { EventResponse } from "@/types";
 
 /**
  * A component for managing volunteers for a repair event.
@@ -16,10 +18,12 @@ import { User } from "@/types";
  * @returns A div that contains a search bar, table, and submit button for modifying an event's volunteers
  */
 export default function VolunteerManageForm({
+  eventProps,
   volunteersArray,
   onSubmit,
   setShowModal
 }: {
+  eventProps: EventResponse;
   volunteersArray?: string[];
   onSubmit?: () => void;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,21 +46,21 @@ export default function VolunteerManageForm({
     setQuery(value);
   };
 
-  // TODO - update this to use a new hook or endpoint instead of useEffect
-  const fetchStaff = (data: SetStateAction<never[]>) => {
-    setStaff(data);
-  };
-
   useEffect(() => {
-    fetch("/api/staff")
+    fetch(`/api/staff`)
       .then((res) => res.json())
-      .then((data) => fetchStaff(data));
-  });
+      .then((data) => setStaff(data));
+  }, [eventProps.id]);
 
   // Default submit handler
   // TODO implement backend to handle this - check issue 113 or 116
   const defaultOnSubmit = async () => {
-    console.log(volunteers);
+    const url = `/event/${eventProps.id}/repairers`;
+    const response = await httpClient.post<string>(url, {
+      id: eventProps.id,
+      userId: volunteers
+    });
+    console.log(response.data);
     setShowModal(false);
     // updates the database with new users
   };
@@ -78,10 +82,10 @@ export default function VolunteerManageForm({
               <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                 <tr className="px-6">
                   <th scope="col" className="px-6 py-2">
-                    Full Name
+                    Clerk ID
                   </th>
                   <th scope="col" className="px-6 py-2">
-                    Email
+                    Role
                   </th>
                   <th scope="col" className="px-6 py-2 text-center">
                     Add/Remove
@@ -89,7 +93,7 @@ export default function VolunteerManageForm({
                 </tr>
               </thead>
               <tbody>
-                {staff?.map((user: User, index: number) => {
+                {staff?.map((user: Staff, index: number) => {
                   return (
                     <VolunteerRow
                       key={user.id}
@@ -102,6 +106,9 @@ export default function VolunteerManageForm({
                 })}
               </tbody>
             </table>
+            <div className="w-full">
+              <p className="text-red-500">PLACEHOLDER FOR PAGINATION</p>
+            </div>
           </div>
         </>
       )}
@@ -135,16 +142,18 @@ const VolunteerRow = ({
   volunteersArray,
   setVolunteersArray
 }: {
-  user: User;
+  user: Staff;
   index: number;
   volunteersArray: string[];
   setVolunteersArray: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const minusClick = () => {
-    setVolunteersArray(volunteersArray.filter((id) => id != user.id));
+    setVolunteersArray(
+      volunteersArray.filter((clerkId) => clerkId != user.clerkId)
+    );
   };
   const addClick = () => {
-    setVolunteersArray([...volunteersArray, user.id]);
+    setVolunteersArray([...volunteersArray, user.clerkId]);
   };
   return (
     /** have a check to see if volunter id is in final array of volunteers, if it is dont list this volunteer */
@@ -154,14 +163,14 @@ const VolunteerRow = ({
       } h-8 border-b hover:bg-gray-100`}
     >
       <th scope="row" className="px-6 py-2 font-medium text-gray-900">
-        {user.firstName} {user.lastName}
+        {user.clerkId}
       </th>
-      <td className="px-6 py-2">{user.emailAddress}</td>
+      <td className="px-6 py-2 text-gray-900">{user.role}</td>
       <td className="px-6 py-2 flex justify-center text-center">
         {/** check if this volunteer is in the array of volunteers to add, if so display minus, else plus.
          * If button is clicked on, add/delete from volunteersArray
          */}
-        {volunteersArray?.includes(user.id) ? (
+        {volunteersArray?.includes(user.clerkId) ? (
           <Button
             height="h-8 flex justify-center align-middle items-center"
             width="w-8"
