@@ -8,7 +8,8 @@ import prisma from "@/lib/prisma";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 
 export default apiHandler({
-  patch: updateRepairRequest
+  patch: updateRepairRequest,
+  get: getRepairRequest
 });
 
 async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
@@ -47,4 +48,21 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
   });
 
   return res.status(204).end();
+}
+
+async function getRepairRequest(req: NextApiRequest, res: NextApiResponse) {
+  const repairRequestId = z.string().parse(req.query.id);
+
+  const repairRequest = await prisma.repairRequest.findUnique({
+    where: { id: repairRequestId }
+  });
+
+  if (!repairRequest) {
+    throw new ApiError(
+      HttpStatusCode.NotFound,
+      "Repair Request does not exist"
+    );
+  }
+
+  return res.status(200).json(repairRequest);
 }

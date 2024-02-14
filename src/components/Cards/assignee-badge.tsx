@@ -6,19 +6,19 @@ import Circle from "@/components/Cards/circle";
 import VolunteerCard from "@/components/Cards/volunteer-card";
 import Modal from "@/components/Modal";
 import { useRepairers } from "@/hooks/events";
+import { useRepairRequest } from "@/hooks/repair-request";
 
 type Props = {
-  firstName?: string;
-  lastName?: string;
-  avatar?: string;
+  repairRequestId: string | undefined;
 };
 
-export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
+export default function AssigneeBadge({ repairRequestId }: Props) {
   const [showAssigneeModal, setShowAssigneeModal] = useState(false);
   const {
     query: { id: eventId }
   } = useRouter();
   const { data: repairers } = useRepairers(eventId as string);
+  const { data: repairRequest } = useRepairRequest(repairRequestId);
 
   // const repairers = [
   //   { userId: "William Miller" },
@@ -38,6 +38,13 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
     setShowAssigneeModal(true);
   };
 
+  // Sort repairers to ensure the assigned repairer is displayed first
+  const sortedRepairers = repairers?.sort((a, b) => {
+    if (a.userId === repairRequest?.assignedTo) return -1;
+    if (b.userId === repairRequest?.assignedTo) return 1;
+    return 0;
+  });
+
   return (
     <>
       <div
@@ -50,15 +57,15 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
         <div>
           <div className="flex flex-row gap-2">
             <Image
-              src={avatar || "/images/repair_lab_logo.jpg"}
+              src="/images/repair_lab_logo.jpg"
               className="object-fit h-8 w-8 rounded-full"
               alt="avatar"
               width={100}
               height={100}
             />
             <div className="flex flex-col justify-center">
-              <p className="text-xs font-bold">{firstName}</p>
-              {!lastName ? "" : <p className="text-xs">{lastName}</p>}
+              <p className="text-xs font-bold">{repairRequest?.assignedTo}</p>
+              {/* {!lastName ? "" : <p className="text-xs">{lastName}</p>} */}
             </div>
           </div>
         </div>
@@ -74,10 +81,14 @@ export default function AssigneeBadge({ firstName, lastName, avatar }: Props) {
             <Circle />
             <p className="font-medium">Task Assigned</p>
           </div>
-          <div className="overflow-x-hidden mt-2 flex flex-row flex-wrap gap-5 justify-center overflow-scroll">
-            {repairers &&
-              repairers.map((repairer, index) => (
-                <VolunteerCard userId={repairer.userId} key={index} />
+          <div className="overflow-x-hidden overflow-y-auto mt-2 flex flex-row flex-wrap gap-5 justify-center ">
+            {sortedRepairers &&
+              sortedRepairers.map((repairer, index) => (
+                <VolunteerCard
+                  userId={repairer.userId}
+                  key={index}
+                  assigned={repairer.userId == repairRequest?.assignedTo}
+                />
               ))}
             {/* userId = Staff.id? */}
           </div>

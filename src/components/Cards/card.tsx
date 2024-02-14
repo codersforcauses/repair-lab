@@ -100,11 +100,7 @@ export default function Card({ props }: { props: CardProps }) {
           </p>
         </div>
         <div className="m-2 mt-0 flex justify-end">
-          <AssigneeBadge
-            firstName={props.firstName}
-            lastName={props.lastName}
-            avatar={props.avatar}
-          />
+          <AssigneeBadge repairRequestId={props.title} />
         </div>
       </div>
     </div>

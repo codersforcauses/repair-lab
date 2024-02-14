@@ -4,12 +4,13 @@ import Image from "next/image";
 import Circle from "@/components/Cards/circle";
 
 type Props = {
-  userId: string;
+  userId: string | undefined;
+  assigned?: boolean;
 };
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function VolunteerCard({ userId }: Props) {
+export default function VolunteerCard({ userId, assigned }: Props) {
   // TODO: userId=staff.id, get clerkId from staff table, then get info
   const firstName = userId;
   const lastName = "";
@@ -19,7 +20,10 @@ export default function VolunteerCard({ userId }: Props) {
 
   return (
     <div
-      className={`${inter.className} relative w-64 rounded-lg bg-app-secondary p-2 hover:cursor-pointer`}
+      className={`${
+        inter.className
+      } relative w-64 rounded-lg p-2 hover:cursor-pointer
+      ${assigned ? "bg-app-secondary-focus" : "bg-app-secondary"}`}
     >
       <div className="flex flex-row gap-2">
         {/* LEFT: Avatar of volunteer */}
@@ -36,13 +40,13 @@ export default function VolunteerCard({ userId }: Props) {
         {/* MIDDLE */}
         <div className="flex flex-col gap-y-1">
           {/* Name of volunteer*/}
-          <p className="text-base font-semibold">
+          <p className="text-base font-semibold text-left">
             {firstName} {lastName ?? ""}
           </p>
           <p className="w-fit text-app-base-300 bg-app-accent rounded-lg px-1 text-sm">
             Woodworking
           </p>
-          <p className="w-fit text-app-base-300 bg-app-secondary-focus rounded-lg px-1 text-sm">
+          <p className="w-fit text-app-base-300 bg-[#e6cffb] rounded-lg px-1 text-sm">
             Bike Repair
           </p>
         </div>
