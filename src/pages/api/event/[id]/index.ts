@@ -4,13 +4,17 @@ import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
+import apiPermission from "@/lib/api-permission";
 import prisma from "@/lib/prisma";
 import { updateEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
 import { EventResponse } from "@/types";
 
 export default apiHandler({
-  get: getEvent,
+  get: {
+    controller: getEvent,
+    permission: apiPermission["GET /event/[^/]*"]
+  },
   patch: updateEvent
 });
 

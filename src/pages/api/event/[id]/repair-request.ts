@@ -4,12 +4,16 @@ import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
+import apiPermission from "@/lib/api-permission";
 import prisma from "@/lib/prisma";
 import repairRequestService from "@/services/repairRequest";
 import { RepairRequestResponse } from "@/types";
 
 export default apiHandler({
-  get: getRepairRequests
+  get: {
+    controller: getRepairRequests,
+    permission: apiPermission["GET /event/[^/]*/repair-request"]
+  }
 });
 
 async function getRepairRequests(

@@ -3,6 +3,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import { Prisma } from "@prisma/client";
 
 import apiHandler from "@/lib/api-handler";
+import apiPermission from "@/lib/api-permission";
 import { PaginationResponse } from "@/lib/pagination";
 import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
@@ -13,7 +14,10 @@ import prisma from "../../../lib/prisma";
 
 export default apiHandler({
   get: getEvents,
-  post: createEvent
+  post: {
+    controller: createEvent,
+    permission: apiPermission["POST /event"]
+  }
 });
 
 async function getEvents(

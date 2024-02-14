@@ -4,11 +4,15 @@ import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
+import apiPermission from "@/lib/api-permission";
 import userService from "@/services/user";
 import { User } from "@/types";
 
 export default apiHandler({
-  get: getUser
+  get: {
+    controller: getUser,
+    permission: apiPermission["GET /user/[^/]*"]
+  }
 });
 
 async function getUser(req: NextApiRequest, res: NextApiResponse<User>) {

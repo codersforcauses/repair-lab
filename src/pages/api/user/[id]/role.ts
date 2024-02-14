@@ -4,11 +4,15 @@ import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
+import apiPermission from "@/lib/api-permission";
 import userService from "@/services/user";
 import { UserRole } from "@/types";
 
 export default apiHandler({
-  patch: updateUserRole
+  patch: {
+    controller: updateUserRole,
+    permission: apiPermission["PATCH /user/[^/]*/role"]
+  }
 });
 
 async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
