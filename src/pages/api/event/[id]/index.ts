@@ -48,7 +48,8 @@ async function updateEvent(
     description,
     disclaimer,
     startDate,
-    endDate
+    endDate,
+    images
   } = updateEventSchema.parse(req.body);
 
   const { id } = req.query;
@@ -73,7 +74,20 @@ async function updateEvent(
       endDate: endDate ? new Date(endDate) : existingEvent.endDate,
       description: description ?? existingEvent.description,
       disclaimer: disclaimer ?? existingEvent.disclaimer,
-      status: status ?? existingEvent.status
+      status: status ?? existingEvent.status,
+      images:
+        images && images.length > 0
+          ? {
+              createMany: {
+                data: images?.map((image) => ({
+                  s3Key: image
+                }))
+              }
+            }
+          : undefined
+    },
+    include: {
+      images: true
     }
   });
 

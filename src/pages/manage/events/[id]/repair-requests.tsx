@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { CiCirclePlus } from "react-icons/ci";
+import { GoPlus } from "react-icons/go";
 
 import Card from "@/components/Cards/card";
 import RepairAttemptForm from "@/components/Forms/create-repair-request";
@@ -10,8 +10,7 @@ import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useRepairRequests } from "@/hooks/events";
-import { useEvent } from "@/hooks/events";
+import { useEvent, useRepairRequests } from "@/hooks/events";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { RepairRequestResponse } from "@/types";
 
@@ -51,7 +50,7 @@ export default function RepairRequests() {
 
   return (
     <Sidebar>
-      <main className="ml-80 min-h-screen w-full p-4">
+      <main className="ml-80 min-h-screen w-full pt-5 pl-4 pr-10">
         {headerValues ? (
           <>
             <Header {...headerValues} />
@@ -74,16 +73,12 @@ export default function RepairRequests() {
                       }
                     />
                     <div
-                      className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
+                      className="flex items-center rounded-full white transition hover:-translate-y-1 hover:cursor-pointer w-10 h-10"
                       role="presentation"
                       onClick={showForm}
                       onKeyDown={showForm}
                     >
-                      <CiCirclePlus
-                        stroke="white"
-                        color="rgb(82 82 91)"
-                        size={50}
-                      />
+                      <GoPlus color="grey" size={50} />
                     </div>
                   </div>
                 </div>
@@ -112,10 +107,12 @@ export default function RepairRequests() {
                   ))
                 )}
 
-                <Modal showModal={eventModal} setShowPopup={showEventModal}>
-                  {" "}
+                <Modal
+                  title="Add a Repair Request"
+                  showModal={eventModal}
+                  setShowPopup={showEventModal}
+                >
                   <div className="text-center">
-                    <h1 className="text-xl font-bold">Add a repair request</h1>
                     <div className="max-w-full">
                       <RepairAttemptForm eventId={eventId as string} />
                     </div>

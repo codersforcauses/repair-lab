@@ -1,6 +1,8 @@
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
 import { UserRole } from "@/types";
 
@@ -13,18 +15,37 @@ interface Props {
 export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   const router = useRouter();
 
+  const [ShowConfirmLogOut, setShowConfirmLogOut] = useState(false);
+  function confirmLogOut() {
+    setShowConfirmLogOut(true);
+  }
+
+  function hideConfirmLogOut() {
+    setShowConfirmLogOut(false);
+  }
+
   return (
     <div className="flex items-center">
       {isLoggedIn ? (
         <>
           <Link
             href="/repair-request"
-            className="flex items-center justify-center px-2 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
+            className="flex items-center justify-center px-3 py-6 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
           >
             New Repair Request +
           </Link>
 
-          <ActionButton onClick={onSignOut} label="Log Out" />
+          <ActionButton onClick={confirmLogOut} label="Log Out" />
+          <Modal
+            title="Are you sure you want to logout?"
+            showModal={ShowConfirmLogOut}
+            setShowPopup={setShowConfirmLogOut}
+          >
+            <div className="text-center">
+              <ActionButton onClick={onSignOut} label="Yes" />
+              <ActionButton onClick={hideConfirmLogOut} label="No" />
+            </div>
+          </Modal>
 
           <ProfilePopover />
         </>
