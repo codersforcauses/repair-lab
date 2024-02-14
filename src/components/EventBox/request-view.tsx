@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa6";
 
+import RepairAttemptForm from "@/components/Forms/repair-attempt-form";
+// import RepairAttempt from "/repair-request/[id]/index";
+import Modal from "@/components/Modal";
 import { User } from "@/types";
 
 // Contains type of info stored in our event box.
@@ -22,6 +26,10 @@ const RequestView = ({
   itemBrand,
   description
 }: RequestProps) => {
+  const [showRepairRequestModal, setShowRepairRequestModal] = useState(false);
+  function manageModal() {
+    setShowRepairRequestModal(true);
+  }
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
       <Disclosure>
@@ -79,10 +87,27 @@ const RequestView = ({
                     // For future use when linking to issue 198
                     // router.push("")
                     // }
+                    onClick={manageModal}
+                    onKeyDown={manageModal}
                   >
                     Repair
                   </button>
                 </div>
+                <Modal
+                  showModal={showRepairRequestModal}
+                  setShowPopup={setShowRepairRequestModal}
+                  height="h-full"
+                  title="Manage Repair Attempt"
+                >
+                  <div className="text-center">
+                    <div>
+                      <RepairAttemptForm
+                      // setShowModal={setShowRepairRequestModal}
+                      />
+                      {/* <RepairAttempt /> */}
+                    </div>
+                  </div>
+                </Modal>
               </Disclosure.Panel>
             </Transition>
           </>

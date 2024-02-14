@@ -8,10 +8,7 @@ const RepairRequest: NextPageWithLayout = () => {
   return (
     <div className="flex items-center justify-center p-4 bg-slate-100">
       <div className="flex w-screen flex-col justify-center gap-4 md:w-3/6 lg:w-4/12">
-        {/* Logo of Repair Lab, which links to the main website. */}
-
         {/* Heading of the Page */}
-
         <h1 className="flex justify-center text-4xl font-bold pt-5 ">
           {" "}
           Submit a Repair Request

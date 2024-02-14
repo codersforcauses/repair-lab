@@ -40,8 +40,8 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-
-  const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const baseStyle = `relative flex ${width} mb-2 justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 border shadow-sm hover:shadow-grey-300`;
+  // const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
   const inputStyle = `mr-1 w-full h-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;

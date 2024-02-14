@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { CiCirclePlus } from "react-icons/ci";
 
 import Card from "@/components/Cards/card";
-import RepairAttemptForm from "@/components/Forms/create-repair-request";
+import RepairRequestForm from "@/components/Forms/create-repair-request";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
 import { Search } from "@/components/Search";
@@ -73,7 +73,7 @@ export default function RepairRequests() {
                       }
                     />
                     <div
-                      className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10"
+                      className="flex items-center rounded-full bg-primary-500 transition hover:-translate-y-1 hover:cursor-pointer hover:bg-primary-400 w-10 h-10 border-4"
                       role="presentation"
                       onClick={showForm}
                       onKeyDown={showForm}
@@ -118,7 +118,7 @@ export default function RepairRequests() {
                 >
                   <div className="text-center">
                     <div className="max-w-full">
-                      <RepairAttemptForm eventId={eventId as string} />
+                      <RepairRequestForm eventId={eventId as string} />
                     </div>
                   </div>
                 </Modal>

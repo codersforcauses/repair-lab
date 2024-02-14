@@ -10,7 +10,7 @@ import FieldTextArea from "@/components/FormFields/field-text-area";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
 
-export default function RepairAttemptForm({
+export default function FakeRepairAttemptForm({
   itemBrands,
   itemTypes,
   onSubmit
