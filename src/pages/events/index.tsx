@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { EventStatus } from "@prisma/client";
-import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
+import { FaFilterCircleXmark } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Card from "@/components/Cards/event-card";

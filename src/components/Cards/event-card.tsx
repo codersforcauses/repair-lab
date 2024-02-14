@@ -4,6 +4,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import Map, { Marker } from "react-map-gl";
 
 import Modal from "@/components/Modal/index";
+import { GetLocationCoordinates } from "@/hooks/location-coordinates";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -21,6 +22,8 @@ export default function Card({ props }: { props: CardProps }) {
   function handleClick() {
     setShowModal(true);
   }
+
+  const Coords = GetLocationCoordinates(props.location);
 
   const [showModal, setShowModal] = useState(false);
 
