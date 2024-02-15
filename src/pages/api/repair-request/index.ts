@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getAuth } from "@clerk/nextjs/server";
+import type { NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
+import { NextApiRequestWithUser } from "@/middleware";
 import { createRepairRequestSchema } from "@/schema/repair-request";
 
 export default apiHandler({
@@ -10,18 +10,16 @@ export default apiHandler({
 });
 
 async function createRepairRequest(
-  req: NextApiRequest,
+  req: NextApiRequestWithUser,
   res: NextApiResponse<{ id: string }>
 ) {
   const parsedData = createRepairRequestSchema.parse(req.body);
-
-  const { userId } = getAuth(req);
 
   const { images, ...rest } = parsedData;
   const record = await prisma.repairRequest.create({
     data: {
       ...rest,
-      createdBy: userId!,
+      createdBy: req.user?.id as string,
       images: {
         create: images?.map((image) => {
           return {

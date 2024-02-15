@@ -13,8 +13,7 @@ const typeChecker = <
 ) => arg;
 
 /**
- * The permission for each api endpoint
- * default: all user can access
+ * Permission for api endpoint
  */
 const apiPermission = typeChecker({
   "POST /event": [UserRole.EVENT_MANAGER, UserRole.ADMIN],

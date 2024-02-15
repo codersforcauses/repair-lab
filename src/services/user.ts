@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-import { NextApiRequest } from "next";
 import { clerkClient } from "@clerk/nextjs";
 import { User as ClerkUser } from "@clerk/nextjs/server";
-import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
 import { PaginationResponse } from "@/lib/pagination";
 import { User, UserRole, UserSearchQuery } from "@/types";
@@ -15,17 +13,6 @@ type ClerkOrderBy =
   | "+updated_at"
   | "-created_at"
   | "-updated_at";
-
-async function getAuth(req: NextApiRequest) {
-  const auth = getClerkAuth(req);
-
-  const role = await getRole(auth.userId!);
-
-  return {
-    ...auth,
-    role
-  };
-}
 
 async function getMany(
   options: UserSearchQuery
@@ -85,15 +72,6 @@ async function updateRole(userId: string, role: UserRole) {
   });
 }
 
-async function getRole(userId: string): Promise<UserRole> {
-  const user = await clerkClient.users.getUser(userId);
-  const role = user.publicMetadata.role
-    ? (user.publicMetadata.role as UserRole)
-    : UserRole.CLIENT;
-
-  return role;
-}
-
 function toResponse(user: ClerkUser): User {
   const { emailAddresses, publicMetadata } = user;
   const role = publicMetadata.role
@@ -121,12 +99,10 @@ function unknownUser(userId: string): User {
 }
 
 const userService = {
-  getAuth,
   getMany,
   getUser,
   getUsers,
   updateRole,
-  getRole,
   getUserMapFromIds,
   unknownUser
 };

@@ -1,9 +1,15 @@
 /* eslint-disable no-useless-escape */
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 
 import userService from "@/services/user";
-import { UserRole } from "@/types";
+import { User, UserRole } from "@/types";
+
+/**
+ * User is injected into the request object if the user is authenticated.
+ */
+export type NextApiRequestWithUser = NextApiRequest & { user?: User };
 
 export default authMiddleware({
   // url routes that don't require login
@@ -23,6 +29,7 @@ export default authMiddleware({
     // handle users who are authenticated
     if (auth.userId) {
       const user = await userService.getUser(auth.userId);
+      (req as unknown as NextApiRequestWithUser).user = user;
 
       const roleProtectedRoutes = buildRoleProtectedRoutes();
 

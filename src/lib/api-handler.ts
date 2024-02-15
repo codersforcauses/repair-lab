@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
 
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
-import { getAuth } from "@clerk/nextjs/server";
 import { UserRole } from "@prisma/client";
 import { ZodError } from "zod";
 
-import userService from "@/services/user";
+import { NextApiRequestWithUser } from "@/middleware";
 import { ErrorResponse } from "@/types";
 
-type Controller = (req: NextApiRequest, res: NextApiResponse) => unknown;
+type Controller = (
+  req: NextApiRequestWithUser,
+  res: NextApiResponse
+) => unknown;
 type Permission = UserRole[];
 type Handler = {
   controller: Controller;
@@ -23,7 +25,7 @@ type Handler = {
 export default function apiHandler(
   handler: Record<string, Controller | Handler>
 ): NextApiHandler {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+  return async (req: NextApiRequestWithUser, res: NextApiResponse) => {
     const method = req.method?.toLowerCase();
 
     // check handler supports HTTP method
@@ -33,9 +35,7 @@ export default function apiHandler(
 
     const permission = (handler[method] as Handler)?.permission;
     if (permission) {
-      const { userId } = getAuth(req);
-      const role = await userService.getRole(userId as string);
-      if (!permission.includes(role as UserRole)) {
+      if (!permission.includes(req.user?.role as UserRole)) {
         return res.status(403).end("Forbidden");
       }
     }

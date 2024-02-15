@@ -1,13 +1,12 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { getAuth } from "@clerk/nextjs/server";
+import { NextApiResponse } from "next";
 import { Prisma } from "@prisma/client";
 
 import apiHandler from "@/lib/api-handler";
 import apiPermission from "@/lib/api-permission";
 import { PaginationResponse } from "@/lib/pagination";
+import { NextApiRequestWithUser } from "@/middleware";
 import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
-import userService from "@/services/user";
 import { ErrorResponse, EventResponse, UserRole } from "@/types";
 
 import prisma from "../../../lib/prisma";
@@ -21,7 +20,7 @@ export default apiHandler({
 });
 
 async function getEvents(
-  req: NextApiRequest,
+  req: NextApiRequestWithUser,
   res: NextApiResponse<PaginationResponse<EventResponse[]> | ErrorResponse>
 ) {
   const {
@@ -40,18 +39,18 @@ async function getEvents(
   const sortObj: Record<string, "asc" | "desc"> = {
     [sortKey]: sortMethod
   };
-  const { userId } = getAuth(req);
-  const role = await userService.getRole(userId as string);
+
   const isRepairer =
-    role == UserRole.REPAIRER
+    req.user?.role == UserRole.REPAIRER
       ? {
           eventRepairer: {
             some: {
-              userId: userId as string
+              userId: req.user?.id as string
             }
           }
         }
       : {};
+
   const where: Prisma.EventWhereInput = {
     ...isRepairer,
     OR: [
@@ -94,19 +93,17 @@ async function getEvents(
 }
 
 async function createEvent(
-  req: NextApiRequest,
+  req: NextApiRequestWithUser,
   res: NextApiResponse<EventResponse>
 ) {
   const { eventType, startDate, endDate, ...rest } = createEventSchema.parse(
     req.body
   );
 
-  const { userId } = getAuth(req);
-
   const newEvent = await prisma.event.create({
     data: {
       ...rest,
-      createdBy: userId!,
+      createdBy: req.user?.id as string,
       event: {
         connect: {
           name: eventType
