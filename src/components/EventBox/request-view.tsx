@@ -5,17 +5,17 @@ import { FaChevronDown } from "react-icons/fa6";
 import RepairAttemptForm from "@/components/Forms/repair-attempt-form";
 // import RepairAttempt from "/repair-request/[id]/index";
 import Modal from "@/components/Modal";
-import { User } from "@/types";
+import { RepairRequestResponse, User } from "@/types";
 
 // Contains type of info stored in our event box.
-type RequestProps = {
+export type RequestProps = {
   repairRequestId: string;
   createdBy: User;
   requestDate: string;
   itemType: string;
   itemBrand: string;
   description: string;
-  handleClick?: () => void;
+  repairAttemptProps: RepairRequestResponse;
 };
 
 const RequestView = ({
@@ -24,7 +24,8 @@ const RequestView = ({
   requestDate,
   itemType,
   itemBrand,
-  description
+  description,
+  repairAttemptProps
 }: RequestProps) => {
   const [showRepairRequestModal, setShowRepairRequestModal] = useState(false);
   function manageModal() {
@@ -97,12 +98,15 @@ const RequestView = ({
                   showModal={showRepairRequestModal}
                   setShowPopup={setShowRepairRequestModal}
                   height="h-full"
-                  title="Manage Repair Attempt"
+                  title="Repair Attempt"
+                  width="w-3/4 sm:max-w-3/4 md:max-w-3/4"
+                  crossWidthAndHeight="w-10 h-10"
                 >
                   <div className="text-center">
                     <div>
                       <RepairAttemptForm
-                      // setShowModal={setShowRepairRequestModal}
+                        props={repairAttemptProps}
+                        // setShowModal={setShowRepairRequestModal}
                       />
                       {/* <RepairAttempt /> */}
                     </div>

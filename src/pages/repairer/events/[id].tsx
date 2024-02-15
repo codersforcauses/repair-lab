@@ -78,26 +78,30 @@ const Home = () => {
                 ) : repairRequests && repairRequests.length > 0 ? (
                   <div>
                     <ul id="repairRequestList">
-                      {repairRequests.map(
-                        ({
-                          id,
-                          createdBy,
-                          requestDate,
-                          itemType,
-                          itemBrand,
-                          description
-                        }: RepairRequestResponse) => (
+                      {repairRequests.map((item: RepairRequestResponse) => (
+                          //   ({
+                          //   id,
+                          //   createdBy,
+                          //   requestDate,
+                          //   itemType,
+                          //   itemBrand,
+                          //   description
+                          // }: RepairRequestResponse) => (
+                        <div key={item.id}>
+
                           <RequestView
-                            key={id}
-                            repairRequestId={id}
-                            requestDate={formatDate(String(requestDate))}
-                            createdBy={createdBy}
-                            itemType={itemType}
-                            itemBrand={itemBrand}
-                            description={description}
+                            repairRequestId={item.id}
+                            requestDate={formatDate(String(item.requestDate))}
+                            createdBy={item.createdBy}
+                            itemType={item.itemType}
+                            itemBrand={item.itemBrand}
+                            description={item.description}
+                            repairAttemptProps={item}
                           />
+                        </div>
                         )
                       )}
+                      
                     </ul>
                   </div>
                 ) : (
