@@ -1,12 +1,13 @@
 import type { PageConfig } from "next";
-import { testApiHandler } from "next-test-api-route-handler";
+import { UserRole } from "@prisma/client";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 //
 import endpoint from "@/pages/api/event";
+import { NextApiRequestWithUser } from "@@/src/middleware";
+import { cleanup, seedTestData, testApiHandler } from "@@/tests/utils";
 
 import prisma from "../../../setup";
-import { cleanup, seedTestData } from "../../../utils";
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
 describe("GET /api/event", () => {
@@ -31,20 +32,21 @@ describe("GET /api/event", () => {
       }
     });
 
-    vi.mock("@clerk/nextjs/server", () => {
-      return {
-        getAuth: vi
-          .fn()
-          .mockReturnValueOnce({ userId: "REPAIRER" })
-          .mockReturnValueOnce({ userId: "Test" })
-      };
-    });
     vi.mock("@clerk/nextjs");
   }, 90000);
 
   it("should return 1 event for REPAIRER", async () => {
     await testApiHandler({
       handler,
+      requestPatcher(request) {
+        (request as unknown as NextApiRequestWithUser).user = {
+          id: "REPAIRER",
+          firstName: "Mock",
+          lastName: "User",
+          emailAddress: "",
+          role: UserRole.REPAIRER
+        };
+      },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",
@@ -58,6 +60,7 @@ describe("GET /api/event", () => {
       }
     });
   }, 90000);
+
   it("should return 2 events for other users", async () => {
     await testApiHandler({
       handler,
