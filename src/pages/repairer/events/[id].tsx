@@ -79,16 +79,15 @@ const Home = () => {
                   <div>
                     <ul id="repairRequestList">
                       {repairRequests.map((item: RepairRequestResponse) => (
-                          //   ({
-                          //   id,
-                          //   createdBy,
-                          //   requestDate,
-                          //   itemType,
-                          //   itemBrand,
-                          //   description
-                          // }: RepairRequestResponse) => (
+                        //   ({
+                        //   id,
+                        //   createdBy,
+                        //   requestDate,
+                        //   itemType,
+                        //   itemBrand,
+                        //   description
+                        // }: RepairRequestResponse) => (
                         <div key={item.id}>
-
                           <RequestView
                             repairRequestId={item.id}
                             requestDate={formatDate(String(item.requestDate))}
@@ -99,9 +98,7 @@ const Home = () => {
                             repairAttemptProps={item}
                           />
                         </div>
-                        )
-                      )}
-                      
+                      ))}
                     </ul>
                   </div>
                 ) : (
