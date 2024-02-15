@@ -14,6 +14,7 @@ const typeChecker = <
 
 /**
  * Permission for api endpoint
+ * - The key shape is designed for auto matching with the api endpoint in future
  */
 const apiPermission = typeChecker({
   "POST /event": [UserRole.EVENT_MANAGER, UserRole.ADMIN],

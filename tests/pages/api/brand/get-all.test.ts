@@ -1,5 +1,4 @@
 import type { PageConfig } from "next";
-import {} from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import prisma from "@/lib/prisma";

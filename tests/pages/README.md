@@ -8,10 +8,24 @@ To test an api handler, you can use the `testApiHandler` function. It takes a fu
 
 For example, if you want to send a JSON body, you need to stringify it **AND** specify the `Content-Type` header. Here's an example of how to do this:
 
+**import { testApiHandler } from "@@/tests/utils";**
+
+testApiHandler in @@/tests/util is injected with a default user with admin role to bypass the permission check. Otherwise, you can patch the request manually to fit your needs.
+
 ```ts
 await testApiHandler({
   handler,
   url: `/?test=hello`,
+  // To manually set the mock user that send the request.
+  requestPatcher(request) {
+    (request as unknown as NextApiRequestWithUser).user = {
+      id: "REPAIRER",
+      firstName: "Mock",
+      lastName: "User",
+      emailAddress: "",
+      role: UserRole.REPAIRER
+    };
+  },
   test: async ({ fetch }) => {
     const msg = { message: "Hello World" }; // The body we want to send (object)
 
@@ -31,7 +45,7 @@ await testApiHandler({
 
 Next.JS automatically converts a JSON body to an object if it sees the `Content-Type` header is `application/json` (can be disabled). If you don't specify the header, it will be `text/plain` and you'll get a string in the handler! This is because under the hood, it uses `node-fetch` which doesn't intelligently determine the content type. Most other libraries do this for you, including JavaScript's own `fetch` function.
 
-## Mocking
+## Mocking Module
 
 Called Clerk in your api endpoint? No problem! Just mock the package and the commands you called!
 
