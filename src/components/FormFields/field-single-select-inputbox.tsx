@@ -1,18 +1,16 @@
-import { Fragment } from "react";
-import { useState } from "react";
-import { CiCirclePlus } from "react-icons/ci";
+import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   FieldValues,
   useController,
   UseControllerProps
 } from "react-hook-form";
+import { FaPlus } from "react-icons/fa6";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
 import { Option } from "@/types";
-import { s } from "vitest/dist/reporters-5f784f42";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
@@ -61,7 +59,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
     options.push(newItemType);
     field.onChange(newItemType.text);
   }
-  function renderMenuItem(option: any) {
+  function renderMenuItem(option: Option) {
     return (
       <Menu.Item key={option.id}>
         {({ active }) => (
@@ -133,22 +131,26 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
               {options.map((option) => {
                 if (option.id === "input-box-add") {
                   return (
-                    <Menu.Item disabled>
+                    <Menu.Item key="input-box-add" disabled>
                       <div className="flex flex-row">
                         <input
                           type="text"
                           className="block ml-8 m-1 py-1 pl-2 text-sm w-5/6 overflow-hidden"
                           onChange={(e) => setDisplayText(e.target.value)}
                           onKeyDown={(key) => {
-                            if (key.code === "Space")
-                              (key.target as HTMLInputElement).value += " ";
-                            else if (key.code === "Enter") {
+                            if (key.code === "Enter") {
                               updateOptions();
+                              key.preventDefault();
                             }
                           }}
                         />
-                        <button onClick={updateOptions}>
-                          <CiCirclePlus size={35} />
+                        <button
+                          onClick={updateOptions}
+                          className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md ml-5"
+                        >
+                          <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
+                            <FaPlus className="text-[1rem] transform " />
+                          </div>
                         </button>
                       </div>
                     </Menu.Item>
