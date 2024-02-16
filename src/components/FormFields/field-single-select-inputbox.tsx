@@ -5,7 +5,7 @@ import {
   useController,
   UseControllerProps
 } from "react-hook-form";
-import { FaPlus } from "react-icons/fa6";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
@@ -37,7 +37,7 @@ Output:
 */
 
 export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
-  options,
+  options: initialOptions,
   placeholder,
   label,
   width = "w-full",
@@ -45,78 +45,94 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
-  const [displayText, setDisplayText] = useState(field.value?.toString());
+  const [dynamicOptions, setDynamicOptions] = useState<Option[]>(
+    initialOptions.filter((option) => option.id !== "input-box-add")
+  );
+  const [newItemName, setNewItemName] = useState("");
+  const [displayText, setDisplayText] = useState("");
 
   const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
 
-  function updateOptions() {
-    const newItemType: Option = {
-      id: `added-item-${options.length}`,
-      text: displayText
+  // Adds a new option and updates the options state
+  const updateOptions = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const newItem: Option = {
+      id: `added-item-${Date.now()}`,
+      text: newItemName
     };
-    options.push(newItemType);
-    field.onChange(newItemType.text);
-  }
-  function renderMenuItem(option: Option) {
-    return (
-      <Menu.Item key={option.id}>
-        {({ active }) => (
-          <a
-            href="#"
-            onClick={() => {
-              setDisplayText(option.text);
-            }}
+    setDynamicOptions((prevOptions) => [...prevOptions, newItem]);
+    setNewItemName(""); // Clear the input box
+  };
+
+  const handleOptionSelect = (option: Option) => {
+    setDisplayText(option.text); // Update displayed text
+    field.onChange(option.text); // Update form field value
+  };
+
+  const removeOption = (id: string) => {
+    setDynamicOptions((options) =>
+      options.filter((option) => option.id !== id)
+    );
+  };
+
+  const renderMenuItem = (option: Option) => (
+    <Menu.Item key={option.id}>
+      {({ active }) => (
+        <div className="flex justify-between items-center">
+          <button
+            onClick={() => handleOptionSelect(option)}
             className={classNames(
               active ? "bg-lightAqua-100 text-grey-900" : "text-grey-900",
-              "block py-2 pl-2 pr-4 text-sm"
+              "flex-grow text-left py-2 pl-2 pr-4 text-sm"
             )}
           >
-            {option.id === field.value ? (
-              <span className="relative left-0 flex">
-                <HiCheck
-                  className="h-5 w-5 text-darkAqua-600"
-                  aria-hidden="true"
-                />
-                <span className="pl-2 font-medium">{option.text}</span>
-              </span>
-            ) : (
-              <span className="pl-7">{option.text}</span>
+            {option.text === displayText && (
+              <HiCheck
+                className="inline h-5 w-5 text-green-500 mr-2"
+                aria-hidden="true"
+              />
             )}
-          </a>
-        )}
-      </Menu.Item>
-    );
-  }
+            {option.text}
+          </button>
+          {typeof option.id === "string" &&
+            option.id.startsWith("added-item-") && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent menu close
+                  removeOption(option.id as string);
+                }}
+                className="text-red-500 ml-4 flex-shrink-0"
+                aria-label="Remove item"
+              >
+                <FaMinus />
+              </button>
+            )}
+        </div>
+      )}
+    </Menu.Item>
+  );
+
   return (
     <div className={`relative mb-2 inline-block ${width} text-left`}>
-      <Menu>
+      <Menu as="div">
         <div>
           <Menu.Button
             className={classNames(
-              `${baseStyle}`,
-              fieldState.invalid
-                ? `${errorBorderStyle}`
-                : `${normalBorderStyle}`
+              baseStyle,
+              fieldState.invalid ? errorBorderStyle : normalBorderStyle
             )}
           >
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
-            {field.value === "" ? (
-              <span className="text-gray-500">
-                {!placeholder ? `Select ${props.name}` : `${placeholder}`}
-              </span>
-            ) : (
-              <span className="truncate text-grey-900">{displayText}</span>
-            )}
+            <span className="text-gray-500">{displayText || placeholder}</span>
             <HiChevronDown
               className="ml-auto h-6 w-5 text-grey-600"
               aria-hidden="true"
             />
           </Menu.Button>
         </div>
-
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"
@@ -126,39 +142,30 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 w-full origin-top-right overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
-              {options.map((option) => {
-                if (option.id === "input-box-add") {
-                  return (
-                    <Menu.Item key="input-box-add" disabled>
-                      <div className="flex flex-row">
-                        <input
-                          type="text"
-                          className="block ml-8 m-1 py-1 pl-2 text-sm w-5/6 overflow-hidden"
-                          onChange={(e) => setDisplayText(e.target.value)}
-                          onKeyDown={(key) => {
-                            if (key.code === "Enter") {
-                              updateOptions();
-                              key.preventDefault();
-                            }
-                          }}
-                        />
-                        <button
-                          onClick={updateOptions}
-                          className="h-10 w-10 rounded-full bg-gray-200 text-gray-500 focus:shadow-md ml-5"
-                        >
-                          <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
-                            <FaPlus className="text-[1rem] transform " />
-                          </div>
-                        </button>
-                      </div>
-                    </Menu.Item>
-                  );
-                } else {
-                  return renderMenuItem(option);
-                }
-              })}
+              {dynamicOptions.map(renderMenuItem)}
+              <div className="flex px-4 py-2 border-t border-gray-200 items-center">
+                <input
+                  type="text"
+                  value={newItemName}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      updateOptions(e);
+                      e.stopPropagation();
+                    }
+                  }}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                  className="text-sm rounded-md border-gray-300 shadow-sm flex-grow"
+                  placeholder="Add new item..."
+                />
+                <button
+                  onClick={updateOptions}
+                  className="ml-2 rounded-md bg-blue-500 p-2 text-white flex-shrink-0"
+                >
+                  <FaPlus />
+                </button>
+              </div>
             </div>
           </Menu.Items>
         </Transition>
