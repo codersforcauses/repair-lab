@@ -63,7 +63,8 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
     setAddError(""); // Clear any previous add errors
     if (
       dynamicOptions.some(
-        (option) => option.text.toLowerCase() === newItemName.toLowerCase()
+        (option) =>
+          option.text.toLowerCase() === newItemName.trim().toLowerCase()
       )
     ) {
       // Set an error message if the item already exists
@@ -164,7 +165,10 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                   value={newItemName}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
+                      e.preventDefault();
                       updateOptions(e);
+                      e.stopPropagation();
+                    } else if (e.key === " ") {
                       e.stopPropagation();
                     }
                   }}
