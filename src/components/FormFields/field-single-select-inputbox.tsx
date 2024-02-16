@@ -50,6 +50,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   );
   const [newItemName, setNewItemName] = useState("");
   const [displayText, setDisplayText] = useState("");
+  const [addError, setAddError] = useState("");
 
   const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
@@ -58,12 +59,24 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   // Adds a new option and updates the options state
   const updateOptions = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const newItem: Option = {
-      id: `added-item-${Date.now()}`,
-      text: newItemName
-    };
-    setDynamicOptions((prevOptions) => [...prevOptions, newItem]);
-    setNewItemName(""); // Clear the input box
+    // Avoid duplicate item to be added to the list
+    setAddError(""); // Clear any previous add errors
+    if (
+      dynamicOptions.some(
+        (option) => option.text.toLowerCase() === newItemName.toLowerCase()
+      )
+    ) {
+      // Set an error message if the item already exists
+      setAddError("Item already exists");
+    } else {
+      // Add the new item if it doesn't already exist
+      const newItem: Option = {
+        id: `added-item-${Date.now()}`,
+        text: newItemName
+      };
+      setDynamicOptions((prevOptions) => [...prevOptions, newItem]);
+      setNewItemName("");
+    }
   };
 
   const handleOptionSelect = (option: Option) => {
@@ -103,7 +116,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                   e.stopPropagation(); // Prevent menu close
                   removeOption(option.id as string);
                 }}
-                className="text-red-500 ml-4 flex-shrink-0"
+                className="mx-2 rounded-md bg-red-500 p-2 text-white flex-shrink-0"
                 aria-label="Remove item"
               >
                 <FaMinus />
@@ -145,7 +158,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
           <Menu.Items className="absolute left-0 z-10 mt-2 w-full origin-top-right overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
               {dynamicOptions.map(renderMenuItem)}
-              <div className="flex px-4 py-2 border-t border-gray-200 items-center">
+              <div className="flex px-2 py-2 border-t border-gray-200 items-center">
                 <input
                   type="text"
                   value={newItemName}
@@ -156,9 +169,12 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                     }
                   }}
                   onChange={(e) => setNewItemName(e.target.value)}
-                  className="text-sm rounded-md border-gray-300 shadow-sm flex-grow"
+                  className="text-sm border-gray-300 shadow flex-grow p-1"
                   placeholder="Add new item..."
                 />
+                {addError && (
+                  <p className="text-red-500 text-sm ml-2">{addError}</p>
+                )}
                 <button
                   onClick={updateOptions}
                   className="ml-2 rounded-md bg-blue-500 p-2 text-white flex-shrink-0"
