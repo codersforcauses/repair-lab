@@ -4,7 +4,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/field-input";
-import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldSingleSelectInput from "@/components/FormFields/field-single-select-inputbox";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { createEventSchema } from "@/schema/event";
@@ -47,6 +46,7 @@ export default function EventForm({
             control={control}
             name="eventType"
             label="Event Type"
+            placeholder="Select type"
             options={itemTypes.map((type) => ({
               id: type.name,
               text: type.name

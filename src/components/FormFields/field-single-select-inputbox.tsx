@@ -36,7 +36,9 @@ Output:
   A dropdown that is compatible w/ React-hook-forms 
 */
 
-export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
+export default function FieldSingleSelectInput<
+  T extends FieldValues = FieldValues
+>({
   options: initialOptions,
   placeholder,
   label,
@@ -140,7 +142,8 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
           >
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
-            <span className="text-gray-500">{displayText || placeholder}</span>
+            {/* We may need one more light grey color in the latest colour palette, as the text colors of the placeholders in the event form are not consistent */}
+            <span className="text-gray-500">{displayText || placeholder}</span>{" "}
             <HiChevronDown
               className="ml-auto h-6 w-5 text-grey-600"
               aria-hidden="true"
