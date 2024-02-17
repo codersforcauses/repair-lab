@@ -50,14 +50,14 @@ export default function NavBar() {
         <div className="flex justify-between items-center mx-auto px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
           <div className="hidden md:flex items-center">
-            <Link href = "/">
-            <Image
-              src="/images/repair_lab_logo.png"
-              alt="Repair Labs Logo"
-              width={721}
-              height={831}
-              style={{ width: "50px", height: "50px" }}
-            />
+            <Link href="/">
+              <Image
+                src="/images/repair_lab_logo.png"
+                alt="Repair Labs Logo"
+                width={721}
+                height={831}
+                style={{ width: "50px", height: "50px" }}
+              />
             </Link>
             <MenuList items={menuItems} />
           </div>
@@ -74,12 +74,14 @@ export default function NavBar() {
             />
           </div>
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 md:hidden ">
-            <Image
-              src="/images/repair_lab_logo.png"
-              alt="Repair Labs Logo"
-              width={50}
-              height={50}
-            />
+            <Link href="/">
+              <Image
+                src="/images/repair_lab_logo.png"
+                alt="Repair Labs Logo"
+                width={50}
+                height={50}
+              />
+            </Link>
           </div>
           <div className="md:hidden flex items-center mt-1.5">
             <ProfilePopover />
