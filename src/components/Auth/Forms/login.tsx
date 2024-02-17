@@ -30,12 +30,14 @@ const LoginForm = () => {
     <MdOutlineVisibility
       className="hover:cursor-pointer"
       onClick={() => setShowPassword(!showPassword)}
+      color="grey"
     />
   );
   const close = (
     <MdOutlineVisibilityOff
       className="hover:cursor-pointer"
       onClick={() => setShowPassword(!showPassword)}
+      color="grey"
     />
   );
 

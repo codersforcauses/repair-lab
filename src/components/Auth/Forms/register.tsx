@@ -45,12 +45,14 @@ const RegisterForm = () => {
     <MdOutlineVisibility
       className="hover: cursor-pointer"
       onClick={() => setShowPassword(!showPassword)}
+      color="grey"
     />
   );
   const close1 = (
     <MdOutlineVisibilityOff
       className="hover: cursor-pointer"
       onClick={() => setShowPassword(!showPassword)}
+      color="grey"
     />
   );
 
@@ -58,12 +60,14 @@ const RegisterForm = () => {
     <MdOutlineVisibility
       className="hover: cursor-pointer"
       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+      color="grey"
     />
   );
   const close2 = (
     <MdOutlineVisibilityOff
       className="hover: cursor-pointer"
       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+      color="grey"
     />
   );
 
