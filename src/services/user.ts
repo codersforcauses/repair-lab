@@ -8,13 +8,7 @@ import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 import { PaginationResponse } from "@/lib/pagination";
 import { User, UserRole, UserSearchQuery } from "@/types";
 
-type ClerkOrderBy =
-  | "created_at"
-  | "updated_at"
-  | "+created_at"
-  | "+updated_at"
-  | "-created_at"
-  | "-updated_at";
+type ClerkOrderBy = "created_at" | "updated_at";
 
 async function getAuth(req: NextApiRequest) {
   const auth = getClerkAuth(req);
