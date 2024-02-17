@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSignUp } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 
 import VerificationForm from "@/components/Auth/Forms/verification";
 import Separator from "@/components/Auth/separator";
@@ -30,6 +31,8 @@ const RegisterForm = () => {
   const [pendingVerification, setPendingVerification] = useState(false);
   const [registerError, setRegisterError] = useState(false);
   const [registerErrorMsg, setRegisterErrMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { isSignedIn } = useAuth();
 
   const router = useRouter();
@@ -37,6 +40,32 @@ const RegisterForm = () => {
   if (isSignedIn) router.push("/");
 
   const { control, handleSubmit, watch } = useForm<RegisterFormValues>();
+
+  const show1 = (
+    <MdOutlineVisibility
+      className="hover: cursor-pointer"
+      onClick={() => setShowPassword(!showPassword)}
+    />
+  );
+  const close1 = (
+    <MdOutlineVisibilityOff
+      className="hover: cursor-pointer"
+      onClick={() => setShowPassword(!showPassword)}
+    />
+  );
+
+  const show2 = (
+    <MdOutlineVisibility
+      className="hover: cursor-pointer"
+      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    />
+  );
+  const close2 = (
+    <MdOutlineVisibilityOff
+      className="hover: cursor-pointer"
+      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    />
+  );
 
   const registerHandler = async (data: RegisterFormValues) => {
     const { emailAddress, password } = data;
@@ -143,7 +172,8 @@ const RegisterForm = () => {
                 }}
                 placeholder="Enter Password"
                 label="Password"
-                type="password"
+                icon={showPassword ? show1 : close1}
+                type={showPassword ? "text" : "password"}
               />
 
               <FieldInput
@@ -159,7 +189,8 @@ const RegisterForm = () => {
                 }}
                 placeholder="Confirm Password"
                 label="Confirm Password"
-                type="password"
+                icon={showConfirmPassword ? show2 : close2}
+                type={showConfirmPassword ? "text" : "password"}
               />
             </div>
 
