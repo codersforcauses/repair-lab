@@ -23,9 +23,8 @@ export default function Card({ props }: { props: CardProps }) {
     setShowModal(true);
   }
 
-  const coordinates = useGetLocationCoordinates(props.location);
-
-  const long = coordinates[1];
+  const { data: coordinates, isPending: isCoordsPending } =
+    useGetLocationCoordinates(props.location);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -45,20 +44,28 @@ export default function Card({ props }: { props: CardProps }) {
           <p>{props.description}</p>
         </div>
         <div className="flex justify-center">
-          <Map
-            mapboxAccessToken={mapboxToken}
-            initialViewState={{
-              longitude: coordinates[0],
-              latitude: coordinates[1],
-              zoom: 14
-            }}
-            style={{ width: 600, height: 300 }}
-            mapStyle="mapbox://styles/mapbox/streets-v9"
-          >
-            <Marker longitude={-122.4} latitude={37.8} anchor="bottom">
-              <HiLocationMarker />
-            </Marker>
-          </Map>
+          {!isCoordsPending && coordinates ? (
+            <Map
+              mapboxAccessToken={mapboxToken}
+              initialViewState={{
+                longitude: coordinates.long,
+                latitude: coordinates.lat,
+                zoom: 14
+              }}
+              style={{ width: 600, height: 300 }}
+              mapStyle="mapbox://styles/mapbox/streets-v9"
+            >
+              <Marker
+                longitude={coordinates.long}
+                latitude={coordinates.lat}
+                anchor="bottom"
+              >
+                <HiLocationMarker />
+              </Marker>
+            </Map>
+          ) : (
+            <div> Map Loading</div>
+          )}
         </div>
       </Modal>
       <div className="relative ">
