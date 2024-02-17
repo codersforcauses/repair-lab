@@ -28,7 +28,7 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center sm:ml-2 md:ml-4 lg:ml-12">
       {isLoggedIn ? (
         <>
           <div className="group relative flex flex-col items-center justify-center mx-4">
