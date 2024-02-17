@@ -4,7 +4,10 @@ export const GetLocationCoordinates = async (location: string | undefined) => {
   const response = await fetch(endpoint);
   const results = await response.json();
 
-  console.log(results);
+  const long = results.features[0].geometry.coordinates[0];
+  const lat = results.features[0].geometry.coordinates[1];
+  console.log(long);
+  console.log(lat);
 
-  return results;
+  return [long, lat];
 };

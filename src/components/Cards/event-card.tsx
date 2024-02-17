@@ -23,7 +23,7 @@ export default function Card({ props }: { props: CardProps }) {
     setShowModal(true);
   }
 
-  const Coords = GetLocationCoordinates(props.location);
+  const [long, lat] = GetLocationCoordinates(props.location);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -46,8 +46,8 @@ export default function Card({ props }: { props: CardProps }) {
           <Map
             mapboxAccessToken={mapboxToken}
             initialViewState={{
-              longitude: -122.4,
-              latitude: 37.8,
+              longitude: coords[0],
+              latitude: coords[1],
               zoom: 14
             }}
             style={{ width: 600, height: 300 }}
