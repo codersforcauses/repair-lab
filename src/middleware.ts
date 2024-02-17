@@ -52,7 +52,8 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   const clientRoutes = [
     ...publicRoutes,
     new RegExp(PageRouteRegex.ROOT),
-    new RegExp(PageRouteRegex.REPAIR_REQUEST)
+    new RegExp(PageRouteRegex.REPAIR_REQUEST),
+    new RegExp(PageRouteRegex.EVENTS)
   ];
   const repairerRoutes = [
     ...clientRoutes,
@@ -61,7 +62,7 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
   const eventManagerRoutes = [
     ...clientRoutes,
     ...repairerRoutes,
-    new RegExp(PageRouteRegex.EVENTS)
+    new RegExp(PageRouteRegex.MANAGE)
   ];
   const adminRoutes = [new RegExp(PageRouteRegex.ALL)];
   // TODO: organisation manager routes
@@ -79,6 +80,7 @@ export enum PageRouteRegex {
   ROOT = "/$",
   AUTH = "/auth",
   EVENTS = "/events",
+  MANAGE = "/manage",
   REPAIR_REQUEST = "/repair-request$",
   REPAIR_ATTEMPT = "/repair-request",
   ALL = "/"
