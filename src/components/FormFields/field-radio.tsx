@@ -15,6 +15,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   width?: string;
   height?: string;
   axis?: string;
+  labelYPosition?: string;
 }
 
 /*
@@ -32,6 +33,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
   width = "w-full",
   height = "min-h-10",
   axis = "flex-row",
+  labelYPosition = "-top-3",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
@@ -47,7 +49,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
         fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
       }`}
     >
-      <Label label={!label ? props.name : label} {...props} />
+      <Label label={!label ? props.name : label} yPosition={`${labelYPosition}`} {...props} />
       <div className={radioStyle}>
         <label htmlFor={`${props.name}-y`} className="flex gap-1">
           <input

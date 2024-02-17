@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -14,8 +13,6 @@ import { useUpdateRepairRequest } from "@/hooks/repair-request";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
 import { formatDate } from "@/utils";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export type RepairAttemptProps = {
   requestDate: string;
@@ -62,8 +59,7 @@ export default function RepairAttempt({
 
   return (
     <main
-      //  className={`flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-slate-100 shadow-md max-[768px]:m-7 md:mx-auto md:my-7 md:w-[768px]  ${inter.className}`}
-      className={`${inter.className}`}
+    //  className={`flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-slate-100 shadow-md max-[768px]:m-7 md:mx-auto md:my-7 md:w-[768px]  ${inter.className}`}
     >
       {/* <h1 className="w-full rounded-t-lg px-5 py-3 text-3xl font-semibold leading-normal  text-grey-950 max-[415px]:text-center max-[415px]:text-lg">
         General Repair Attempt
@@ -117,33 +113,33 @@ export default function RepairAttempt({
               rules={{ required: true }}
             />
           </div>
-
+          <FieldInput
+            name="hoursWorked"
+            label="Hours taken"
+            width="w-full min-w-20"
+            height="min-h-10"
+            placeholder="Time in hours, e.g. 1.5..."
+            control={control}
+            rules={{ required: true }}
+          />
           {/* Spare parts needed?, Part(s) needed */}
-          <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
+          <div className="flex w-full flex-row justify-center gap-4 max-[415px]:gap-3">
             {/* Time it took, Repaired? */}
-            <FieldInput
-              name="hoursWorked"
-              label="Hours taken"
-              width="w-full min-w-10"
-              height="min-h-10 max-[852px]:min-h-20"
-              placeholder="Time in hours, e.g. 1.5..."
-              control={control}
-              rules={{ required: true }}
-            />
             <FieldRadio
               name="isRepaired"
-              width="w-full"
-              height="min-h-10 max-[852px]:min-h-20"
+              width="w-[49%]"
+              height="min-h-10 max-[960px]:min-h-20"
               axis="flex-col sm:flex-row"
               control={control}
               label="Repaired?"
               rules={{ required: true }}
             />
-
             <FieldRadio
               name="isSparePartsNeeded"
-              width="w-full"
-              height="min-h-10 max-[852px]:min-h-20"
+              width="w-[49%]"
+              height="min-h-10 max-[960px]:min-h-20"
+              axis="flex-col sm:flex-row"
+              labelYPosition="-top-6 sm:-top-3 max-[450px]:-top-10"
               control={control}
               label="Spare parts needed?"
               rules={{ required: true }}
@@ -170,19 +166,18 @@ export default function RepairAttempt({
             control={control}
             rules={{ required: true }}
           />
-        </div>
-
-        {/* Submit */}
-        <div className="my-5 flex flex-row max-[415px]:m-2 m-5 xl:mx-14">
-          <Button
-            height="h-12"
-            width="w-full"
-            textSize="text-lg"
-            textWeight="font-semibold"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Submit
-          </Button>
+          {/* Submit */}
+          <div className="my-0 w-full">
+            <Button
+              height="h-12"
+              width="w-full"
+              textSize="text-lg"
+              textWeight="font-semibold"
+              onClick={handleSubmit(onSubmit)}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </form>
       <Toast />

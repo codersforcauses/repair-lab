@@ -68,16 +68,18 @@ const Modal = ({
                     ""
                   )}
 
-                  <div>{children}</div>
-                  <button
-                    onClick={() => setShowPopup(false)}
-                    className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
-                  >
-                    <AiFillCloseCircle
-                      className={`text-2xl ${crossWidthAndHeight}`}
-                      color="teal"
-                    />
-                  </button>
+                  <div>
+                    {children}
+                    <button
+                      onClick={() => setShowPopup(false)}
+                      className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
+                    >
+                      <AiFillCloseCircle
+                        className={`text-2xl ${crossWidthAndHeight}`}
+                        color="teal"
+                      />
+                    </button>
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
