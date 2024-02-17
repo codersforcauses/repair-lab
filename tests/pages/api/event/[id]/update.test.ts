@@ -59,7 +59,7 @@ describe("PATCH /api/event/:id", () => {
     });
   });
 
-  it("should be able to update an event", async () => {
+  it("should be able to update an event with event images", async () => {
     await testApiHandler({
       handler,
       params: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
@@ -74,7 +74,7 @@ describe("PATCH /api/event/:id", () => {
             description:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             status: "ONGOING",
-            images: ["Fake image URL1", "Fake image URL2"]
+            images: ["FakeimageURL1.jpg", "FakeimageURL2.jpg"]
           })
         });
 
@@ -97,11 +97,11 @@ describe("PATCH /api/event/:id", () => {
           images: [
             {
               repairEventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
-              s3Key: "Fake image URL1"
+              s3Key: "FakeimageURL1.jpg"
             },
             {
               repairEventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
-              s3Key: "Fake image URL2"
+              s3Key: "FakeimageURL2.jpg"
             }
           ]
         };
