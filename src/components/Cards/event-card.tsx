@@ -64,7 +64,9 @@ export default function Card({ props }: { props: CardProps }) {
               </Marker>
             </Map>
           ) : (
-            <div> Map Loading</div>
+            <div className="italic font-bold mt-5 text-l">
+              {isCoordsPending ? "Map loading..." : "Location not found."}
+            </div>
           )}
         </div>
       </Modal>
