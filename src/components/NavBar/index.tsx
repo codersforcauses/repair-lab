@@ -44,7 +44,7 @@ export default function NavBar() {
   }
 
   return (
-    <div className="sticky top-0 z-50 h-[100px] text-lg bg-white drop-shadow-md w-full">
+    <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
         <div className="flex justify-between items-center mx-auto px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
@@ -54,7 +54,7 @@ export default function NavBar() {
               alt="Repair Labs Logo"
               width={721}
               height={831}
-              style={{ width: "4rem", height: "4rem" }}
+              style={{ width: "50px", height: "50px" }}
             />
             <MenuList items={menuItems} />
           </div>
