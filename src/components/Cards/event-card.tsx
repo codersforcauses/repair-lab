@@ -4,7 +4,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import Map, { Marker } from "react-map-gl";
 
 import Modal from "@/components/Modal/index";
-import { GetLocationCoordinates } from "@/hooks/location-coordinates";
+import { useGetLocationCoordinates } from "@/hooks/location-coordinates";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -23,7 +23,9 @@ export default function Card({ props }: { props: CardProps }) {
     setShowModal(true);
   }
 
-  const [long, lat] = GetLocationCoordinates(props.location);
+  const coordinates = useGetLocationCoordinates(props.location);
+
+  const long = coordinates[1];
 
   const [showModal, setShowModal] = useState(false);
 
@@ -46,8 +48,8 @@ export default function Card({ props }: { props: CardProps }) {
           <Map
             mapboxAccessToken={mapboxToken}
             initialViewState={{
-              longitude: coords[0],
-              latitude: coords[1],
+              longitude: coordinates[0],
+              latitude: coordinates[1],
               zoom: 14
             }}
             style={{ width: 600, height: 300 }}
