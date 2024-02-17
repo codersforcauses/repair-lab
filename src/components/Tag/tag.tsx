@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
 
 interface SelectedOptionProps {
   option: string;
   onRemove: (option: string) => void;
 }
 
-const SelectedOption: React.FC<SelectedOptionProps> = ({ option, onRemove }) => {
+const SelectedOption: React.FC<SelectedOptionProps> = ({
+  option,
+  onRemove
+}) => {
   return (
     <div className="flex items-center bg-lightAqua-100 text-slate-600 text-xs font-medium rounded px-2 py-1 m-1">
       <span>{option}</span>
@@ -20,4 +23,3 @@ const SelectedOption: React.FC<SelectedOptionProps> = ({ option, onRemove }) => 
 };
 
 export default SelectedOption;
-

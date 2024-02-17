@@ -1,30 +1,39 @@
-import React, { useState, Fragment, useRef } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import SelectedOption from '@/components/Tag/tag';
+import React, { useState, Fragment, useRef } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import SelectedOption from "@/components/Tag/tag";
 
-const options = ['toys', 'bikes', 'furniture', 'clothing', 'jewellery', 'curtains', 'household items', 'garden tools'];
+const options = [
+  "toys",
+  "bikes",
+  "furniture",
+  "clothing",
+  "jewellery",
+  "curtains",
+  "household items",
+  "garden tools"
+];
 
 const Dropdown: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const filteredOptions = options.filter(option =>
+  const filteredOptions = options.filter((option) =>
     option.toLowerCase().includes(filter.toLowerCase())
   );
 
   const toggleItem = (item: string) => {
     if (selectedItems.includes(item)) {
-      setSelectedItems(selectedItems.filter(i => i !== item));
+      setSelectedItems(selectedItems.filter((i) => i !== item));
     } else {
       setSelectedItems([...selectedItems, item]);
     }
-    setFilter('');
+    setFilter("");
   };
 
   const removeItem = (item: string) => {
-    setSelectedItems(selectedItems.filter(i => i !== item));
+    setSelectedItems(selectedItems.filter((i) => i !== item));
   };
 
   return (
@@ -49,9 +58,9 @@ const Dropdown: React.FC = () => {
         </div>
         <Menu.Button
           className="px-4 py-2 bg-primary-600 text-white rounded-r-md"
-          onClick={() => setIsOpen(prevIsOpen => !prevIsOpen)}
+          onClick={() => setIsOpen((prevIsOpen) => !prevIsOpen)}
         >
-          {isOpen ? '-' : '+'}
+          {isOpen ? "-" : "+"}
         </Menu.Button>
       </div>
       {isOpen && (
@@ -75,7 +84,9 @@ const Dropdown: React.FC = () => {
                   {({ active }) => (
                     <button
                       onClick={() => toggleItem(option)}
-                      className={`${active ? 'bg-lightAqua-500 text-white' : 'text-gray-900'} group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      className={`${
+                        active ? "bg-lightAqua-500 text-white" : "text-gray-900"
+                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
                       {option}
                     </button>
@@ -83,7 +94,9 @@ const Dropdown: React.FC = () => {
                 </Menu.Item>
               ))}
               {filteredOptions.length === 0 && (
-                <div className="px-4 py-2 text-sm text-gray-500">No skills found</div>
+                <div className="px-4 py-2 text-sm text-gray-500">
+                  No skills found
+                </div>
               )}
             </div>
           </Menu.Items>
@@ -94,9 +107,3 @@ const Dropdown: React.FC = () => {
 };
 
 export default Dropdown;
-
-
-
-
-
-

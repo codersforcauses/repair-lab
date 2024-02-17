@@ -5,7 +5,6 @@ import { Popover, Transition } from "@headlessui/react";
 import { GoCheck, GoPencil, GoX } from "react-icons/go";
 import SkillDropdown from "@/components/DropDown/skill-dropdown";
 
-
 import { useAuth } from "@/hooks/auth";
 
 async function updateUserMetadata(user: UserResource, description: string) {
@@ -86,7 +85,7 @@ export default function ProfilePopover() {
         leaveTo="opacity-0"
       >
         <Popover.Panel className="absolute top-[62px] right-5 w-80 rounded-lg bg-white z-10 shadow-custom">
-        <div className="flex flex-col items-center p-4">
+          <div className="flex flex-col items-center p-4">
             <div className="relative w-28 h-28 rounded-full my-6">
               {user?.imageUrl && (
                 <Image
