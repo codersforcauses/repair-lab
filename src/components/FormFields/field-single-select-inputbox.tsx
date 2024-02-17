@@ -58,27 +58,32 @@ export default function FieldSingleSelectInput<
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
 
-  // Adds a new option and updates the options state
-  const updateOptions = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    // Avoid duplicate item to be added to the list
-    setAddError(""); // Clear any previous add errors
-    if (
-      dynamicOptions.some(
-        (option) =>
-          option.text.toLowerCase() === newItemName.trim().toLowerCase()
-      )
-    ) {
-      // Set an error message if the item already exists
+  // Add a new option and updates the options state
+  const updateOptions = () => {
+    const trimmedItemName = newItemName.trim();
+    // Prevent adding if the name is empty or only contains spaces
+    if (!trimmedItemName) {
+      setAddError("Item name cannot be empty");
+      return; // Stop the function if the item name is invalid
+    }
+
+    // Check for duplicates
+    const isDuplicate = dynamicOptions.some(
+      (option) =>
+        option.text.trim().toLowerCase() === trimmedItemName.toLowerCase()
+    );
+
+    // Set an error message if the item already exists or add it if it doesn't
+    if (isDuplicate) {
       setAddError("Item already exists");
     } else {
-      // Add the new item if it doesn't already exist
       const newItem: Option = {
         id: `added-item-${Date.now()}`,
-        text: newItemName
+        text: trimmedItemName
       };
       setDynamicOptions((prevOptions) => [...prevOptions, newItem]);
       setNewItemName("");
+      setAddError(""); // Clear any previous error messages
     }
   };
 
@@ -88,9 +93,20 @@ export default function FieldSingleSelectInput<
   };
 
   const removeOption = (id: string) => {
+    // Check if the removed option is the currently selected one
+    const isCurrentlySelected =
+      dynamicOptions.find((option) => option.id === id)?.text === displayText;
+
+    // Update the options list by filtering out the removed item
     setDynamicOptions((options) =>
       options.filter((option) => option.id !== id)
     );
+
+    // If the removed item was selected, reset the display text and form field value
+    if (isCurrentlySelected) {
+      setDisplayText(""); // Clear the display text
+      field.onChange(""); // Reset the field value
+    }
   };
 
   const renderMenuItem = (option: Option) => (
@@ -169,7 +185,7 @@ export default function FieldSingleSelectInput<
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
-                      updateOptions(e);
+                      updateOptions();
                       e.stopPropagation();
                     } else if (e.key === " ") {
                       e.stopPropagation();
