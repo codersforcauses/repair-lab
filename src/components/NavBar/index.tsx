@@ -8,6 +8,7 @@ import VerticalBar from "@/components/NavBar/VerticalBar";
 import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
+import Link from "next/link";
 
 const adminItems = ["Home", "Events", "Repair Requests"];
 const clientItems = ["Home", "Events", "My Events"];
@@ -49,6 +50,7 @@ export default function NavBar() {
         <div className="flex justify-between items-center mx-auto px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
           <div className="hidden md:flex items-center">
+            <Link href = "/">
             <Image
               src="/images/repair_lab_logo.png"
               alt="Repair Labs Logo"
@@ -56,6 +58,7 @@ export default function NavBar() {
               height={831}
               style={{ width: "50px", height: "50px" }}
             />
+            </Link>
             <MenuList items={menuItems} />
           </div>
           <div className="hidden md:flex items-center">
