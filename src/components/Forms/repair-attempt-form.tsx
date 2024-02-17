@@ -167,7 +167,7 @@ export default function RepairAttempt({
             rules={{ required: true }}
           />
           {/* Submit */}
-          <div className="my-0 w-full">
+          <div className="mt-2 w-full">
             <Button
               height="h-12"
               width="w-full"
