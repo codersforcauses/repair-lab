@@ -34,7 +34,7 @@ export default function RepairAttempt({
 
   let isSparePartsNeeded;
   props.spareParts == ""
-    ? (isSparePartsNeeded = "false")
+    ? (isSparePartsNeeded = "")
     : (isSparePartsNeeded = "true");
 
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
