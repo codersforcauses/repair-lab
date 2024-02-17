@@ -1,9 +1,10 @@
 import type { PageConfig } from "next";
-import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import { cleanup, seedTestData } from "@/../tests/utils";
 import endpoint from "@/pages/api/event/[id]";
+import { NextApiRequestWithUser } from "@@/src/middleware";
+import { UserRole } from "@@/src/types";
+import { cleanup, seedTestData, testApiHandler } from "@@/tests/utils";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;
@@ -68,6 +69,32 @@ describe("GET /api/event/:id", () => {
 
         expect(res.status).toBe(200);
         expect(result).toMatchObject(expectedEvent);
+      }
+    });
+  });
+
+  it("should not get the response if user is client", async () => {
+    await testApiHandler({
+      handler,
+      params: { id: "acf5ed50-19a2-11ee-be56-0242ac120002" },
+      requestPatcher(request) {
+        (request as unknown as NextApiRequestWithUser).user = {
+          id: "mock user",
+          firstName: "test",
+          lastName: "test",
+          role: UserRole.CLIENT,
+          emailAddress: ""
+        };
+      },
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        expect(res.status).toBe(403);
       }
     });
   });

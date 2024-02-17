@@ -1,26 +1,32 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
 import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
+import apiPermission from "@/lib/api-permission";
+import { NextApiRequestWithUser } from "@/middleware";
 import userService from "@/services/user";
 import { UserRole } from "@/types";
 
 export default apiHandler({
-  patch: updateUserRole
+  patch: {
+    controller: updateUserRole,
+    permission: apiPermission["PATCH /user/[^/]*/role"]
+  }
 });
 
-async function updateUserRole(req: NextApiRequest, res: NextApiResponse) {
+async function updateUserRole(
+  req: NextApiRequestWithUser,
+  res: NextApiResponse
+) {
   const userId = z.string().parse(req.query.id);
   const { role } = req.body;
 
   const parsedRole = validateRole(role);
 
   // only admins can update a user's role
-  const { role: updaterRole } = await userService.getAuth(req);
-
-  if (updaterRole !== UserRole.ADMIN) {
+  if (req.user?.role !== UserRole.ADMIN) {
     throw new ApiError(
       HttpStatusCode.Unauthorized,
       "Not authorised to update user role"

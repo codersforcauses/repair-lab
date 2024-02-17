@@ -1,4 +1,8 @@
+import { testApiHandler as originTestApiHandler } from "next-test-api-route-handler";
 import { exec } from "node:child_process";
+
+import { NextApiRequestWithUser } from "@/middleware";
+import { UserRole } from "@/types";
 
 import prisma from "./setup";
 
@@ -60,5 +64,25 @@ export const seedTestData = async () => {
       comment: "Some comment",
       thumbnailImage: ""
     }
+  });
+};
+
+/**
+ * TestApiHandler with default options
+ *
+ * - injects a mock user with admin role into the request
+ */
+export const testApiHandler: typeof originTestApiHandler = async (options) => {
+  return originTestApiHandler({
+    requestPatcher(request) {
+      (request as unknown as NextApiRequestWithUser).user = {
+        id: "mock user",
+        firstName: "Mock",
+        lastName: "User",
+        emailAddress: "",
+        role: UserRole.ADMIN
+      };
+    },
+    ...options
   });
 };

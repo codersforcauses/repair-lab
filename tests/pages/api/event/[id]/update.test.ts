@@ -1,10 +1,9 @@
 import type { PageConfig } from "next";
-import { testApiHandler } from "next-test-api-route-handler";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
-import { cleanup, seedTestData } from "@/../tests/utils";
 import prisma from "@/lib/prisma";
 import endpoint from "@/pages/api/event/[id]";
+import { cleanup, seedTestData, testApiHandler } from "@@/tests/utils";
 
 // Respect the Next.js config object if it's exported
 const handler: typeof endpoint & { config?: PageConfig } = endpoint;

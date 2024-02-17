@@ -1,23 +1,31 @@
 /* eslint-disable no-console */
 
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { UserRole } from "@prisma/client";
 import { ZodError } from "zod";
 
+import { NextApiRequestWithUser } from "@/middleware";
 import { ErrorResponse } from "@/types";
 
+type Controller = (
+  req: NextApiRequestWithUser,
+  res: NextApiResponse
+) => unknown;
+type Permission = UserRole[];
+type Handler = {
+  controller: Controller;
+  permission?: Permission;
+};
 /**
  * Wrapper for the base Next.js API handler to provide default error handling.
  * @param handler Object containing HTTP methods and its handler.
  * @returns
  */
 export default function apiHandler(
-  handler: Record<
-    string,
-    (req: NextApiRequest, res: NextApiResponse) => unknown
-  >
+  handler: Record<string, Controller | Handler>
 ): NextApiHandler {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+  return async (req: NextApiRequestWithUser, res: NextApiResponse) => {
     const method = req.method?.toLowerCase();
 
     // check handler supports HTTP method
@@ -25,9 +33,20 @@ export default function apiHandler(
       return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 
+    const permission = (handler[method] as Handler)?.permission;
+    if (permission) {
+      if (!permission.includes(req.user?.role as UserRole)) {
+        return res.status(403).end("Forbidden");
+      }
+    }
+
     try {
+      const controller =
+        typeof handler[method] === "function"
+          ? (handler[method] as Controller)
+          : (handler[method] as Handler).controller;
       // run the handler
-      await handler[method](req, res);
+      await controller(req, res);
     } catch (err) {
       errorHandler(err, res);
     }
