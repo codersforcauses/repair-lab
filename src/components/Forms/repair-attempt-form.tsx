@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -24,11 +23,9 @@ export default function RepairAttempt({
 }: {
   props: RepairRequestResponse;
 }) {
-  const {
-    query: { id }
-  } = useRouter();
-
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest(id as string);
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(
+    props.id as string
+  );
 
   const { data: itemTypes } = useItemTypes();
 
