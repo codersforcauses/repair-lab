@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSignIn } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
-import { MdOutlineVisibility } from "react-icons/md";
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 
 import Separator from "@/components/Auth/separator";
 import Button from "@/components/Button";
@@ -25,6 +25,19 @@ const LoginForm = () => {
   const [loginError, setLoginError] = useState(false);
   const [loginErrMsg, setLoginErrMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const show = (
+    <MdOutlineVisibility
+      className="hover:cursor-pointer"
+      onClick={() => setShowPassword(!showPassword)}
+    />
+  );
+  const close = (
+    <MdOutlineVisibilityOff
+      className="hover:cursor-pointer"
+      onClick={() => setShowPassword(!showPassword)}
+    />
+  );
 
   const router = useRouter();
 
@@ -115,12 +128,7 @@ const LoginForm = () => {
               required: "This field is required"
             }}
             label="Password"
-            icon={
-              <MdOutlineVisibility
-                className="hover:cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            }
+            icon={showPassword ? show : close}
             type={showPassword ? "text" : "password"}
           />
         </div>
