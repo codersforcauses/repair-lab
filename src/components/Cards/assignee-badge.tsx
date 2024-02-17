@@ -38,6 +38,13 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
     setShowAssigneeModal(true);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleClick(event as SyntheticEvent);
+    }
+  };
+
   // Sort repairers to ensure the assigned repairer is displayed first
   const sortedRepairers = repairers?.sort((a, b) => {
     if (a.userId === repairRequest?.assignedTo) return -1;
@@ -49,7 +56,7 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
     <>
       <div
         onClick={handleClick}
-        onKeyDown={handleClick}
+        onKeyDown={handleKeyDown}
         role="button"
         tabIndex={0}
         className="rounded-lg bg-grey-200 p-2 hover:cursor-pointer"
@@ -82,9 +89,11 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
             <p className="font-medium">Task Assigned</p>
           </div>
           <div className="overflow-x-hidden overflow-y-auto mt-2 flex flex-row flex-wrap gap-5 justify-center ">
-            {sortedRepairers &&
+            {repairRequestId &&
+              sortedRepairers &&
               sortedRepairers.map((repairer, index) => (
                 <VolunteerCard
+                  repairRequestId={repairRequestId}
                   userId={repairer.userId}
                   key={index}
                   assigned={repairer.userId == repairRequest?.assignedTo}

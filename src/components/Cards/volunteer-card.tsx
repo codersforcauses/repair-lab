@@ -1,20 +1,49 @@
+import { useState } from "react";
 import { Inter } from "next/font/google";
 import Image from "next/image";
 
+import Button from "@/components/Button";
 import Circle from "@/components/Cards/circle";
+import Modal from "@/components/Modal";
+import { useUpdateRepairRequest } from "@/hooks/repair-request";
 
 type Props = {
+  repairRequestId: string | undefined;
   userId: string | undefined;
   assigned?: boolean;
 };
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function VolunteerCard({ userId, assigned }: Props) {
+export default function VolunteerCard({
+  repairRequestId,
+  userId,
+  assigned
+}: Props) {
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(
+    repairRequestId as string
+  );
+  const [showConfirmation, setShowConfirmation] = useState(false);
   // TODO: userId=staff.id, get clerkId from staff table, then get info
   const firstName = userId;
   const lastName = "";
   const avatar = "/images/generalToy.jpeg";
+
+  const handleClick = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleClick();
+    }
+  };
+
+  const handleAssignVolunteer = () => {
+    updateRepairRequest({ assignedTo: userId });
+    setShowConfirmation(false);
+  };
 
   // TODO: count repair requests where assignedTo=userId, replace the 3 with the count
 
@@ -24,6 +53,10 @@ export default function VolunteerCard({ userId, assigned }: Props) {
         inter.className
       } relative w-64 rounded-lg p-2 hover:cursor-pointer
       ${assigned ? "bg-app-secondary-focus" : "bg-app-secondary"}`}
+      role="button"
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
     >
       <div className="flex flex-row gap-2">
         {/* LEFT: Avatar of volunteer */}
@@ -56,6 +89,60 @@ export default function VolunteerCard({ userId, assigned }: Props) {
           <Circle numberOfTasks={3} />
         </div>
       </div>
+
+      <Modal
+        showModal={showConfirmation}
+        setShowPopup={setShowConfirmation}
+        height="h-1/5"
+        width="w-96"
+      >
+        <div className="h-full flex flex-col gap-4 text-center ">
+          <h1 className="text-xl font-bold">Assign Volunteer</h1>
+
+          <div className="overflow-hidden mt-1 flex flex-col gap-6">
+            <p className="text-s font-semibold">
+              Are you sure you want to assign this task to {userId}?
+            </p>
+
+            <div className="space-x-8">
+              {/* <button
+                onClick={() => setShowConfirmation(false)}
+                className="bg-gray-200 hover:bg-gray-300 rounded-lg p-1"
+              >
+                Cancel
+              </button> */}
+
+              <Button
+                height="h-9"
+                width="w-20 font-semibold"
+                color="bg-gray-200"
+                hover="hover:bg-gray-300"
+                textColor="black"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                type="submit"
+                height="h-9"
+                width="w-20 font-semibold"
+                color="bg-app-secondary-focus"
+                textColor="black"
+                onClick={handleAssignVolunteer}
+              >
+                Confirm
+              </Button>
+              {/* <button
+                // TODO: onClick={assignVolunteer}
+                onClick={() => setShowConfirmation(false)}
+                className="bg-app-primary hover:bg-app-primary-focus rounded-lg p-1"
+              >
+                Confirm
+              </button> */}
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
