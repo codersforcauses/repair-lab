@@ -1,5 +1,5 @@
-import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
 
 import Account from "@/components/NavBar/account";
@@ -8,7 +8,6 @@ import VerticalBar from "@/components/NavBar/VerticalBar";
 import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
-import Link from "next/link";
 
 const adminItems = ["Home", "Events", "Repair Requests"];
 const clientItems = ["Home", "Events", "My Events"];
