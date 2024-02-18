@@ -18,6 +18,14 @@ async function getUserRole(
 ) {
   const userId = z.string().parse(req.query.id);
 
+  const loggedInUser = await userService.getAuth(req);
+  if (loggedInUser.userId !== userId) {
+    throw new ApiError(
+      HttpStatusCode.Unauthorized,
+      "Not authorised to get user role."
+    );
+  }
+
   const role = await userService.getRole(userId);
 
   return res.status(200).json({ role });
