@@ -8,26 +8,29 @@ import Modal from "@/components/Modal";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
 
 type Props = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar: string;
   repairRequestId: string | undefined;
-  userId: string | undefined;
   assigned?: boolean;
 };
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function VolunteerCard({
-  repairRequestId,
   userId,
+  firstName,
+  lastName,
+  avatar,
+  repairRequestId,
   assigned
 }: Props) {
   const { mutate: updateRepairRequest } = useUpdateRepairRequest(
     repairRequestId as string
   );
   const [showConfirmation, setShowConfirmation] = useState(false);
-  // TODO: userId=staff.id, get clerkId from staff table, then get info
-  const firstName = userId;
-  const lastName = "";
-  const avatar = "/images/generalToy.jpeg";
 
   const handleClick = () => {
     setShowConfirmation(true);
@@ -101,17 +104,12 @@ export default function VolunteerCard({
 
           <div className="overflow-hidden mt-1 flex flex-col gap-6">
             <p className="text-s font-semibold">
-              Are you sure you want to assign this task to {userId}?
+              Are you sure you want to assign this task to {firstName}
+              {lastName ? " " : ""}
+              {lastName ?? ""}?
             </p>
 
             <div className="space-x-8">
-              {/* <button
-                onClick={() => setShowConfirmation(false)}
-                className="bg-gray-200 hover:bg-gray-300 rounded-lg p-1"
-              >
-                Cancel
-              </button> */}
-
               <Button
                 height="h-9"
                 width="w-20 font-semibold"
@@ -132,13 +130,6 @@ export default function VolunteerCard({
               >
                 Confirm
               </Button>
-              {/* <button
-                // TODO: onClick={assignVolunteer}
-                onClick={() => setShowConfirmation(false)}
-                className="bg-app-primary hover:bg-app-primary-focus rounded-lg p-1"
-              >
-                Confirm
-              </button> */}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
-import { HttpStatusCode } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
@@ -66,6 +66,14 @@ async function getRepairers(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(result);
 }
 
+export type EventRepairer = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar: string;
+};
+
 async function getEventRepairers(id: string) {
   // get repairers from table EventRepairer
   const eventRepairer = await prisma.eventRepairer.findMany({
@@ -94,7 +102,8 @@ async function getEventRepairers(id: string) {
       userId: userId,
       firstName: userData?.firstName,
       lastName: userData?.lastName,
-      email: userData?.emailAddress
-    };
+      email: userData?.emailAddress,
+      avatar: userData?.imageUrl
+    } as EventRepairer;
   });
 }

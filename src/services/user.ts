@@ -89,7 +89,7 @@ async function getRole(userId: string): Promise<UserRole> {
 }
 
 function toResponse(user: ClerkUser): User {
-  const { emailAddresses, publicMetadata } = user;
+  const { emailAddresses, publicMetadata, imageUrl } = user;
   const role = publicMetadata.role
     ? (publicMetadata.role as UserRole)
     : UserRole.CLIENT;
@@ -98,7 +98,8 @@ function toResponse(user: ClerkUser): User {
   return {
     ...user,
     role,
-    emailAddress
+    emailAddress,
+    imageUrl
   };
 }
 

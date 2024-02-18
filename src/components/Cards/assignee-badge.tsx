@@ -6,19 +6,27 @@ import Circle from "@/components/Cards/circle";
 import VolunteerCard from "@/components/Cards/volunteer-card";
 import Modal from "@/components/Modal";
 import { useRepairers } from "@/hooks/events";
-import { useRepairRequest } from "@/hooks/repair-request";
 
 type Props = {
-  repairRequestId: string | undefined;
+  firstName: string | undefined;
+  lastName: string | undefined | null;
+  avatar: string | undefined;
+  assignedTo?: string;
+  repairRequestId?: string;
 };
 
-export default function AssigneeBadge({ repairRequestId }: Props) {
+export default function AssigneeBadge({
+  firstName,
+  lastName,
+  avatar,
+  assignedTo,
+  repairRequestId
+}: Props) {
   const [showAssigneeModal, setShowAssigneeModal] = useState(false);
   const {
     query: { id: eventId }
   } = useRouter();
   const { data: repairers } = useRepairers(eventId as string);
-  const { data: repairRequest } = useRepairRequest(repairRequestId);
 
   // const repairers = [
   //   { userId: "William Miller" },
@@ -36,6 +44,7 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation();
     setShowAssigneeModal(true);
+    console.log(assignedTo, "assignedTo");
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -47,8 +56,8 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
 
   // Sort repairers to ensure the assigned repairer is displayed first
   const sortedRepairers = repairers?.sort((a, b) => {
-    if (a.userId === repairRequest?.assignedTo) return -1;
-    if (b.userId === repairRequest?.assignedTo) return 1;
+    if (a.userId === assignedTo) return -1;
+    if (b.userId === assignedTo) return 1;
     return 0;
   });
 
@@ -64,15 +73,16 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
         <div>
           <div className="flex flex-row gap-2">
             <Image
-              src="/images/repair_lab_logo.jpg"
+              src={avatar ?? "/images/repair_lab_logo.jpg"}
               className="object-fit h-8 w-8 rounded-full"
               alt="avatar"
               width={100}
               height={100}
             />
             <div className="flex flex-col justify-center">
-              <p className="text-xs font-bold">{repairRequest?.assignedTo}</p>
-              {/* {!lastName ? "" : <p className="text-xs">{lastName}</p>} */}
+              <p className="text-xs font-bold">
+                {firstName} {lastName ?? ""}
+              </p>
             </div>
           </div>
         </div>
@@ -95,11 +105,14 @@ export default function AssigneeBadge({ repairRequestId }: Props) {
                 <VolunteerCard
                   repairRequestId={repairRequestId}
                   userId={repairer.userId}
+                  firstName={repairer.firstName}
+                  lastName={repairer.lastName}
+                  avatar={repairer.avatar}
+                  email={repairer.email}
                   key={index}
-                  assigned={repairer.userId == repairRequest?.assignedTo}
+                  assigned={repairer.userId == assignedTo}
                 />
               ))}
-            {/* userId = Staff.id? */}
           </div>
         </div>
       </Modal>

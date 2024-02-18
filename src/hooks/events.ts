@@ -3,9 +3,9 @@ import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
 import { PaginationOptions, PaginationResponse } from "@/lib/pagination";
+import { EventRepairer } from "@/pages/api/event/[id]/repairers";
 import {
   CreateEvent,
-  EventRepairer,
   EventResponse,
   RepairRequestResponse,
   UpdateEvent

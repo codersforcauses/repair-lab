@@ -15,8 +15,9 @@ export type CardProps = {
   image?: string;
   status?: string;
   firstName?: string;
-  lastName?: string;
+  lastName?: string | null;
   avatar?: string;
+  assignedTo?: string;
   handleClick?: () => void;
   repairRequestProps: RepairRequestResponse;
 };
@@ -100,7 +101,13 @@ export default function Card({ props }: { props: CardProps }) {
           </p>
         </div>
         <div className="m-2 mt-0 flex justify-end">
-          <AssigneeBadge repairRequestId={props.title} />
+          <AssigneeBadge
+            firstName={props.firstName}
+            lastName={props.lastName}
+            avatar={props.avatar}
+            assignedTo={props.assignedTo}
+            repairRequestId={props.title}
+          />
         </div>
       </div>
     </div>

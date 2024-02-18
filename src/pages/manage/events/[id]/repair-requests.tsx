@@ -98,9 +98,10 @@ export default function RepairRequests() {
                           firstName:
                             item.assignedTo.firstName ??
                             item.assignedTo.emailAddress,
-                          lastName: "",
-                          avatar: "/images/repair_lab_logo.jpg",
-                          repairRequestProps: item
+                          lastName: item.assignedTo.lastName,
+                          avatar: item.assignedTo.imageUrl,
+                          repairRequestProps: item,
+                          assignedTo: item.assignedTo.id
                         }}
                       />
                     </div>
