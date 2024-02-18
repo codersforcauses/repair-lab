@@ -20,6 +20,9 @@ export default function ProfilePopover() {
   );
   const [initialDescription, setInitialDescription] = useState(description);
 
+  const [showSkillsDropdown, setShowSkillsDropdown] = useState(false);
+  const [editSkills, setEditSkills] = useState(false);
+
   useEffect(() => {
     setDescription((user?.unsafeMetadata.description as string) || "");
   }, [user?.unsafeMetadata.description]);
@@ -58,6 +61,11 @@ export default function ProfilePopover() {
       // eslint-disable-next-line no-console
       console.error("User data is not available");
     }
+  };
+
+  const toggleSkillsEdit = () => {
+    setEditSkills(!editSkills);
+    setShowSkillsDropdown(!showSkillsDropdown);
   };
 
   return (
@@ -107,9 +115,23 @@ export default function ProfilePopover() {
                   String(role).slice(1).toLowerCase()}
               </div>
             </div>
-            <div className="w-full flex justify-center relative z-50">
-              <SkillDropdown />
+            <div className="self-start w-full pl-2 mb-2 mt-4 text-sm">
+              I can repair...
             </div>
+            <div className="w-full flex flex-col items-end pr-4">
+              <SkillDropdown
+                isVisible={showSkillsDropdown}
+                showInput={editSkills}
+              />
+              <button
+                onClick={toggleSkillsEdit}
+                className="mt-2 text-primary-600 flex items-center"
+              >
+                <GoPencil className="inline mr-2" />
+                {editSkills ? "Save Skills" : "Add Skills"}
+              </button>
+            </div>
+
             <div
               className={`relative mx-auto mt-5 w-72 h-24 border-2 rounded-xl ${
                 isEdit
