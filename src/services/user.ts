@@ -164,7 +164,7 @@ const getStaffs = async ({
       }
     };
   }
-  
+
   const { users, totalCount } = await getUsersFromClerk({
     orderBy,
     perPage,
