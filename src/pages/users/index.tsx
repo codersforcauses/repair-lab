@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
 import NavBar from "@/components/NavBar";
+import { withProtected } from "@/components/PrivateRoute";
 import TablePagination from "@/components/table/table-pagination";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useUsers } from "@/hooks/users";
@@ -24,7 +25,7 @@ const User: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="p-20">
+    <div className="p-20 flex flex-col gap-5">
       {/* Search Bar */}
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -116,7 +117,7 @@ User.getLayout = function getLayout(page) {
   );
 };
 
-export default User;
+export default withProtected(User);
 
 const UserRow = ({ user, index }: { user: User; index: number }) => {
   const { mutate: updateUser } = useUpdateUserRole(user.id);

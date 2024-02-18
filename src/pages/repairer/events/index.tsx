@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 
 import Box from "@/components/EventBox/box";
+import { withProtected } from "@/components/PrivateRoute";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvents } from "@/hooks/events";
 import { EventResponse } from "@/types";
@@ -77,4 +78,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withProtected(Home);

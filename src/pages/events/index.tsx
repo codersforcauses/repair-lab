@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { EventStatus } from "@prisma/client";
-import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
+import { FaFilterCircleXmark } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Card from "@/components/Cards/event-card";
 import NavBar from "@/components/NavBar";
+import { withProtected } from "@/components/PrivateRoute";
 import { Search } from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
@@ -164,4 +165,4 @@ Events.getLayout = function getLayout(page) {
   );
 };
 
-export default Events;
+export default withProtected(Events);

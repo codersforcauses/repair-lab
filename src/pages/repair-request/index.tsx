@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import RepairRequestForm from "@/components/Forms/create-repair-request";
 import NavBar from "@/components/NavBar";
+import { withProtected } from "@/components/PrivateRoute";
 import { NextPageWithLayout } from "@/pages/_app";
 
 const RepairRequest: NextPageWithLayout = () => {
@@ -43,4 +44,4 @@ RepairRequest.getLayout = function getLayout(page) {
   );
 };
 
-export default RepairRequest;
+export default withProtected(RepairRequest);

@@ -6,13 +6,11 @@ import { User as ClerkUser } from "@clerk/nextjs/server";
 import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 
 import { PaginationResponse } from "@/lib/pagination";
+import prisma from "@/lib/prisma";
 import { User, UserRole, UserSearchQuery } from "@/types";
-
-type ClerkOrderBy = "created_at" | "updated_at";
 
 async function getAuth(req: NextApiRequest) {
   const auth = getClerkAuth(req);
-
   const role = await getRole(auth.userId!);
 
   return {
@@ -24,22 +22,19 @@ async function getAuth(req: NextApiRequest) {
 async function getMany(
   options: UserSearchQuery
 ): Promise<PaginationResponse<User[]>> {
-  const { orderBy, perPage, page, query, userId } = options;
+  const { perPage, page, role } = options;
 
-  const searchRequest = {
-    orderBy: orderBy as ClerkOrderBy,
-    limit: perPage,
-    offset: (page - 1) * perPage,
-    query,
-    userId
-  };
+  // Ids of users with roles are stored in the staff table.
+  if (role) return getStaffs(options);
 
-  // getCount requires a search request too so it returns the total query count.
-  const users = await clerkClient.users.getUserList(searchRequest);
-  const totalCount = await clerkClient.users.getCount(searchRequest);
+  const { users, totalCount } = await getUsersFromClerk({ ...options });
+
+  const items = await Promise.all(
+    users.map(async (user) => await toResponse(user))
+  );
 
   return {
-    items: users.map((user) => toResponse(user)),
+    items,
     meta: {
       totalCount,
       page,
@@ -51,19 +46,18 @@ async function getMany(
 
 async function getUserMapFromIds(userIds: string[]) {
   const users = await clerkClient.users.getUserList({ userId: userIds });
-  const userMap = users.reduce(
-    (map, clerkUser) => {
-      map[clerkUser.id] = toResponse(clerkUser);
-      return map;
-    },
-    {} as Partial<Record<string, User>>
-  );
+
+  const userMap: Partial<Record<string, User>> = {};
+  for (const user of users) {
+    userMap[user.id] = await toResponse(user);
+  }
 
   return userMap;
 }
 
 async function getUser(userId: string) {
   const user = await clerkClient.users.getUser(userId);
+
   return user ? toResponse(user) : undefined;
 }
 
@@ -72,45 +66,59 @@ async function getUsers(userIds: string[]) {
 }
 
 async function updateRole(userId: string, role: UserRole) {
-  return await clerkClient.users.updateUser(userId, {
-    publicMetadata: {
+  // Deleting the role from staff if the role to set is CLIENT
+  if (role === UserRole.CLIENT) {
+    return await prisma.staff.delete({
+      where: {
+        clerkId: userId
+      }
+    });
+  }
+
+  // Creating a new staff role if does not already exist.
+  return prisma.staff.upsert({
+    where: {
+      clerkId: userId
+    },
+    create: {
+      role: role,
+      clerkId: userId
+    },
+    update: {
       role: role
     }
   });
 }
 
 async function getRole(userId: string): Promise<UserRole> {
-  const user = await clerkClient.users.getUser(userId);
-  const role = user.publicMetadata.role
-    ? (user.publicMetadata.role as UserRole)
-    : UserRole.CLIENT;
+  const staff = await prisma.staff.findFirst({
+    select: {
+      role: true
+    },
+    where: {
+      clerkId: userId
+    }
+  });
+
+  // we want to default to CLIENT if user is not in the db.
+  const role = staff?.role ?? UserRole.CLIENT;
 
   return role;
 }
 
-function toResponse(user: ClerkUser): User {
-  const { emailAddresses, publicMetadata } = user;
-  const role = publicMetadata.role
-    ? (publicMetadata.role as UserRole)
-    : UserRole.CLIENT;
+async function toResponse(user: ClerkUser, role?: UserRole): Promise<User> {
+  const { emailAddresses, id, firstName, lastName } = user;
+  // slight optimisation to prevent hitting the database if the role for the
+  // user is already known.
+  const userRole = role ?? (await getRole(id));
   const emailAddress = emailAddresses[0].emailAddress;
 
   return {
-    ...user,
-    role,
+    id,
+    firstName,
+    lastName,
+    role: userRole,
     emailAddress
-  };
-}
-
-/** Used when a user cannot be found in clerk */
-function unknownUser(userId: string): User {
-  // TODO: stop force type casting userrole
-  return {
-    id: userId,
-    firstName: "Unknown",
-    lastName: "",
-    emailAddress: "Unknown",
-    role: "Unknown" as UserRole
   };
 }
 
@@ -126,3 +134,88 @@ const userService = {
 };
 
 export default userService;
+
+/* --------  Helper Functions -------- */
+
+const getStaffs = async ({
+  orderBy,
+  perPage,
+  page,
+  query,
+  userId,
+  role
+}: UserSearchQuery) => {
+  const staffs = await prisma.staff.findMany({
+    select: { clerkId: true },
+    where: { role, clerkId: { in: userId } },
+    skip: (page - 1) * perPage,
+    take: perPage
+  });
+
+  // No staffs matching, don't have have to query clerk.
+  if (!staffs || staffs.length === 0) {
+    return {
+      items: [],
+      meta: {
+        totalCount: 0,
+        page,
+        perPage,
+        lastPage: Math.ceil(0 / perPage)
+      }
+    };
+  }
+
+  const { users, totalCount } = await getUsersFromClerk({
+    orderBy,
+    perPage,
+    page,
+    query,
+    userId: staffs.map((s) => s.clerkId)
+  });
+  const items = await Promise.all(
+    users.map(async (u) => await toResponse(u, role))
+  );
+
+  return {
+    items,
+    meta: {
+      totalCount,
+      page,
+      perPage,
+      lastPage: Math.ceil(totalCount / perPage)
+    }
+  };
+};
+
+const getUsersFromClerk = async ({
+  orderBy,
+  perPage,
+  page,
+  query,
+  userId
+}: Exclude<UserSearchQuery, "role">) => {
+  const searchRequest = {
+    orderBy: orderBy,
+    limit: perPage,
+    offset: (page - 1) * perPage,
+    query,
+    userId: userId
+  };
+
+  const users = await clerkClient.users.getUserList(searchRequest);
+  const totalCount = await clerkClient.users.getCount(searchRequest);
+
+  return { users, totalCount };
+};
+
+/** Used when a user cannot be found in clerk */
+function unknownUser(userId: string): User {
+  // TODO: stop force type casting userrole
+  return {
+    id: userId,
+    firstName: "Unknown",
+    lastName: "",
+    emailAddress: "Unknown",
+    role: "Unknown" as UserRole
+  };
+}

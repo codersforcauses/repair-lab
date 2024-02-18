@@ -118,16 +118,8 @@ model EventRepairer {
   @@unique([userId, eventId])
 }
 
-model Organisation {
-  id    String  @id @default(uuid())
-  name  String  @unique
-  Roles Staff[]
-}
-
 model Staff {
-  id             String       @id @default(uuid())
-  clerkId        String
-  role           UserRole
-  org            Organisation @relation(fields: [organisationId], references: [id])
-  organisationId String
+  id      String   @id @default(uuid())
+  clerkId String   @unique
+  role    UserRole
 }

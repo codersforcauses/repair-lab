@@ -56,7 +56,10 @@ export enum SearchCriteria {
   All = "all"
 }
 
-export const UserRole = { ...PrismaUserRole, CLIENT: "CLIENT" } as const;
+export const StaffRole = { ...PrismaUserRole } as const;
+export type StaffRole = keyof typeof StaffRole;
+
+export const UserRole = { ...StaffRole, CLIENT: "CLIENT" } as const;
 export type UserRole = keyof typeof UserRole;
 
 export type NavPath = {

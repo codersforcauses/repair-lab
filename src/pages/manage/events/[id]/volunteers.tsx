@@ -5,12 +5,13 @@ import AssigneeBadge from "@/components/Cards/assignee-badge";
 import VolunteerManageForm from "@/components/Forms/volunteer-manage-form";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
+import { withProtected } from "@/components/PrivateRoute";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
 import { User } from "@/types";
 
-export default function Volunteers() {
+function Volunteers() {
   const [volunteers, _setVolunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
@@ -84,3 +85,5 @@ export default function Volunteers() {
     </Sidebar>
   );
 }
+
+export default withProtected(Volunteers);

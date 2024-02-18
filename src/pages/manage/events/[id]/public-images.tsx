@@ -9,6 +9,7 @@ import { HeaderProps } from "@/components/Header";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import { Pagination } from "@/components/pagination";
+import { withProtected } from "@/components/PrivateRoute";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
@@ -26,7 +27,7 @@ interface ImageFormValues {
   images: FileList;
 }
 
-export default function Images() {
+function Images() {
   const [images, setImages] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -162,3 +163,5 @@ export default function Images() {
     </Sidebar>
   );
 }
+
+export default withProtected(Images);

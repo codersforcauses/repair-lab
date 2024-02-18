@@ -5,6 +5,7 @@ import type { ReactElement } from "react";
 
 import Button from "@/components/Button/index";
 import NavBar from "@/components/NavBar";
+import { withProtected } from "@/components/PrivateRoute";
 
 import type { NextPageWithLayout } from "../_app";
 
@@ -78,4 +79,4 @@ Success.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default Success;
+export default withProtected(Success);

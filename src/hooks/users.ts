@@ -31,6 +31,24 @@ export const useUsers = (
   });
 };
 
+export const useUserRole = (userId: string | undefined) => {
+  const queryFn = async () => {
+    const url = `/user/${userId}/role`;
+
+    const response = await httpClient.get<{ role: UserRole }>(url);
+
+    return response.data.role;
+  };
+
+  return useQuery({
+    queryKey: ["users", "role", userId],
+    queryFn: queryFn,
+    staleTime: 60 * (60 * 1000), // 1 hr
+    gcTime: 65 * (60 * 1000), // 1 hr and 5 mins
+    enabled: !!userId
+  });
+};
+
 export const useUpdateUserRole = (userId: string | undefined) => {
   const queryClient = useQueryClient();
 

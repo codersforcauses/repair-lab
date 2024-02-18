@@ -11,10 +11,11 @@ import Toast from "@/components/Toast";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt } from "@/types";
+import { withProtected } from "@/components/PrivateRoute";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RepairAttempt() {
+function RepairAttempt() {
   const {
     query: { id }
   } = useRouter();
@@ -131,3 +132,5 @@ export default function RepairAttempt() {
     </main>
   );
 }
+
+export default withProtected(RepairAttempt);

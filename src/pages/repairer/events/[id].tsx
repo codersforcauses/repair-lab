@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { Tab } from "@headlessui/react";
 
 import RequestView from "@/components/EventBox/request-view";
+import { withProtected } from "@/components/PrivateRoute";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent, useRepairRequests } from "@/hooks/events";
 import { RepairRequestResponse } from "@/types";
@@ -121,4 +122,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withProtected(Home);

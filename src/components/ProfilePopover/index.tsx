@@ -4,7 +4,10 @@ import { UserResource } from "@clerk/types";
 import { Popover, Transition } from "@headlessui/react";
 import { GoCheck, GoPencil, GoX } from "react-icons/go";
 
+import Button from "@/components/Button";
 import { useAuth } from "@/hooks/auth";
+import { useUpdateUserRole } from "@/hooks/users";
+import { UserRole } from "@/types";
 
 async function updateUserMetadata(user: UserResource, description: string) {
   await user.update({ unsafeMetadata: { description } });
@@ -12,6 +15,7 @@ async function updateUserMetadata(user: UserResource, description: string) {
 
 export default function ProfilePopover() {
   const { user, role } = useAuth();
+  const { mutate: updateLoggedInUserRole } = useUpdateUserRole(user?.id);
 
   const [isEdit, setIsEdit] = useState(false);
   const [description, setDescription] = useState(
@@ -160,6 +164,19 @@ export default function ProfilePopover() {
                 )}
               </span>
             </div>
+
+            {/* Button to set current user as admin, should only be for DEV.*/}
+            {process.env.NODE_ENV === "development" && (
+              <Button
+                className="m-10"
+                width="min-w-40"
+                onClick={() => {
+                  updateLoggedInUserRole(UserRole.ADMIN);
+                }}
+              >
+                Make admin
+              </Button>
+            )}
           </div>
         </Popover.Panel>
       </Transition>
