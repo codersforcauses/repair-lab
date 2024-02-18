@@ -152,6 +152,19 @@ const getStaffs = async ({
     take: perPage
   });
 
+  // No staffs matching, don't have have to query clerk.
+  if (!staffs || staffs.length === 0) {
+    return {
+      items: [],
+      meta: {
+        totalCount: 0,
+        page,
+        perPage,
+        lastPage: Math.ceil(0 / perPage)
+      }
+    };
+  }
+  
   const { users, totalCount } = await getUsersFromClerk({
     orderBy,
     perPage,
