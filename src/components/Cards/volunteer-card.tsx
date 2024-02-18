@@ -79,6 +79,7 @@ export default function VolunteerCard({
           <p className="text-base font-semibold text-left">
             {firstName} {lastName ?? ""}
           </p>
+          {/* Skills */}
           <p className="w-fit text-app-base-300 bg-app-accent rounded-lg px-1 text-sm">
             Woodworking
           </p>

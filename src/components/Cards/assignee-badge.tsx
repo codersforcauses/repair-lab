@@ -44,7 +44,6 @@ export default function AssigneeBadge({
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation();
     setShowAssigneeModal(true);
-    console.log(assignedTo, "assignedTo");
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
