@@ -15,6 +15,7 @@ export const withProtected = (Component: NextPageWithLayout) => {
     useEffect(() => {
       // handling protection based on the user's role.
       const roleProtectedRoutes = buildRoleProtectedRoutes();
+
       if (
         isLoaded &&
         !roleProtectedRoutes[role].some((regex) => regex.test(currentRoute))
@@ -67,7 +68,7 @@ const buildRoleProtectedRoutes = (): ProtectedRouteMap => {
 export enum PageRouteRegex {
   ROOT = "/$",
   AUTH = "/auth",
-  EVENTS = "/events",
+  EVENTS = "^/events",
   MANAGE = "/manage",
   REPAIR_REQUEST = "/repair-request$",
   REPAIR_ATTEMPT = "/repair-request",

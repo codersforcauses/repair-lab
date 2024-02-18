@@ -6,6 +6,7 @@ import Card from "@/components/Cards/card";
 import RepairAttemptForm from "@/components/Forms/create-repair-request";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
+import { withProtected } from "@/components/PrivateRoute";
 import { Search } from "@/components/Search";
 import SortBy from "@/components/Search/SortBy";
 import Sidebar from "@/components/sidebar/index";
@@ -14,7 +15,7 @@ import { useEvent, useRepairRequests } from "@/hooks/events";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { RepairRequestResponse } from "@/types";
 
-export default function RepairRequests() {
+function RepairRequests() {
   const [eventModal, showEventModal] = useState(false);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const {
@@ -129,3 +130,5 @@ export default function RepairRequests() {
     </Sidebar>
   );
 }
+
+export default withProtected(RepairRequests);

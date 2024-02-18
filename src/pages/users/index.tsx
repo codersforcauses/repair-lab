@@ -108,8 +108,7 @@ const User: NextPageWithLayout = () => {
   );
 };
 
-const ProtectedUser = withProtected(User);
-ProtectedUser.getLayout = function getLayout(page) {
+User.getLayout = function getLayout(page) {
   return (
     <>
       <NavBar />
@@ -118,7 +117,7 @@ ProtectedUser.getLayout = function getLayout(page) {
   );
 };
 
-export default ProtectedUser;
+export default withProtected(User);
 
 const UserRow = ({ user, index }: { user: User; index: number }) => {
   const { mutate: updateUser } = useUpdateUserRole(user.id);

@@ -9,6 +9,7 @@ import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
 import { Pagination } from "@/components/pagination";
+import { withProtected } from "@/components/PrivateRoute";
 import { Search } from "@/components/Search";
 import Select from "@/components/select";
 import SelectDate from "@/components/select-date";
@@ -286,4 +287,4 @@ Events.getLayout = function getLayout(page) {
     </>
   );
 };
-export default Events;
+export default withProtected(Events);

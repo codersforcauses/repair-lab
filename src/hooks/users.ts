@@ -42,7 +42,10 @@ export const useUserRole = (userId: string | undefined) => {
 
   return useQuery({
     queryKey: ["users", "role", userId],
-    queryFn: queryFn
+    queryFn: queryFn,
+    staleTime: 60 * (60 * 1000), // 1 hr
+    gcTime: 65 * (60 * 1000), // 1 hr and 5 mins
+    enabled: !!userId
   });
 };
 
