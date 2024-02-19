@@ -1,35 +1,5 @@
 import { z } from "zod";
 
-export type PaginationOptions = z.infer<typeof paginationSchema>;
-
-export interface PaginationResponse<T> {
-  items: T[];
-  meta: PaginationOptions & {
-    totalCount: number;
-    lastPage: number;
-  };
-}
-
-export async function buildPaginationResponse<T>(
-  items: T[],
-  options: PaginationOptions,
-  totalCount: number
-): Promise<PaginationResponse<T>> {
-  const lastPage =
-    totalCount % options.perPage === 0
-      ? totalCount / options.perPage
-      : Math.floor(totalCount / options.perPage) + 1;
-
-  return {
-    items: items,
-    meta: {
-      ...options,
-      totalCount,
-      lastPage
-    }
-  };
-}
-
 export const paginationSchema = z.object({
   perPage: z
     .preprocess(
@@ -44,3 +14,13 @@ export const paginationSchema = z.object({
     )
     .default(1)
 });
+
+export type PaginationOptions = z.infer<typeof paginationSchema>;
+
+export interface PaginationResponse<T> {
+  items: T;
+  meta: PaginationOptions & {
+    totalCount: number;
+    lastPage: number;
+  };
+}
