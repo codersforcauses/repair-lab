@@ -3,7 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import SelectedOption from "@/components/Tag/tag";
 import { GoChevronUp, GoChevronDown } from "react-icons/go";
 
-//Define skills
+// Define skills
 const options = [
   "toys",
   "bikes",
@@ -38,18 +38,19 @@ const Dropdown: React.FC = () => {
   };
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
-    }
-
+    };
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
