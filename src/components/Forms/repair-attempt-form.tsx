@@ -13,11 +13,6 @@ import { updateRepairRequestSchema } from "@/schema/repair-request";
 import type { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
 import { formatDate } from "@/utils";
 
-export type RepairAttemptProps = {
-  requestDate: string;
-  props: RepairRequestResponse;
-};
-
 export default function RepairAttempt({
   props
 }: {
@@ -55,17 +50,7 @@ export default function RepairAttempt({
   };
 
   return (
-    <main
-    //  className={`flex flex-col items-center gap-4 rounded-lg border-2 border-teal-300 bg-slate-100 shadow-md max-[768px]:m-7 md:mx-auto md:my-7 md:w-[768px]  ${inter.className}`}
-    >
-      {/* <h1 className="w-full rounded-t-lg px-5 py-3 text-3xl font-semibold leading-normal  text-grey-950 max-[415px]:text-center max-[415px]:text-lg">
-        General Repair Attempt
-        <p>ID: {id}</p>
-      </h1> */}
-      {/* <h1 className="flex justify-center sm:text-4xl text-2xl font-bold pt-5 ">
-        {" "}
-        General Repair Attempt
-      </h1> */}
+    <main className="sm:mx-10 md:mx-16 mx-5">
       <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500 pb-2">
         Repair Request ID: {props.id}
       </h4>
@@ -73,9 +58,6 @@ export default function RepairAttempt({
         Requested By: {props.createdBy.id} on{" "}
         {formatDate(String(props.requestDate))}
       </h4>
-      {/* <h4 className="flex justify-center sm:text-xl font-bold pb-2 pt-5">
-      Item Type: {props.itemType}
-      </h4> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* ID, Item */}
         <div className="m-5 flex flex-wrap gap-6 max-[415px]:m-2 max-[860px]:mt-5 mt-10 xl:mx-14">

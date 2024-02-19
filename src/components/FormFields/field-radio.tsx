@@ -49,7 +49,11 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
         fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
       }`}
     >
-      <Label label={!label ? props.name : label} yPosition={`${labelYPosition}`} {...props} />
+      <Label
+        label={!label ? props.name : label}
+        yPosition={`${labelYPosition}`}
+        {...props}
+      />
       <div className={radioStyle}>
         <label htmlFor={`${props.name}-y`} className="flex gap-1">
           <input
