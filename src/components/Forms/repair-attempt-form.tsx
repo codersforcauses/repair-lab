@@ -45,12 +45,17 @@ export default function RepairAttempt({
 
   const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
 
+  let textAreaHeight;
+  watchIsSparePartsNeeded == "true"
+    ? (textAreaHeight = "h-36 min-h-36")
+    : (textAreaHeight = "h-[13.5rem]");
+
   const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
     updateRepairRequest(data);
   };
 
   return (
-    <main className="sm:mx-10 md:mx-16 mx-5">
+    <main className="sm:mx-10 md:mx-16 mx-5 border-0 border-blue-500 h-fit">
       <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500 pb-2">
         Repair Request ID: {props.id}
       </h4>
@@ -58,10 +63,13 @@ export default function RepairAttempt({
         Requested By: {props.createdBy.id} on{" "}
         {formatDate(String(props.requestDate))}
       </h4>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="border-0 border-green-500"
+      >
         {/* ID, Item */}
-        <div className="m-5 flex flex-wrap gap-6 max-[415px]:m-2 max-[860px]:mt-5 mt-10 xl:mx-14">
-          <div className="m-auto flex flex-wrap w-3/4 gap-2 max-[415px]:m-2 mt-2">
+        <div className="m-0 flex flex-col gap-6 sm:m-5 md:mt-5 lg:mt-10 xl:mx-14">
+          <div className="flex flex-col m-auto w-3/4 gap-2 max-[415px]:m-2 mt-2">
             <FieldSingleSelect
               name="item"
               placeholder="eg. Computer, Bike..."
@@ -92,33 +100,34 @@ export default function RepairAttempt({
               rules={{ required: true }}
             />
           </div>
-          <FieldInput
-            name="hoursWorked"
-            label="Hours taken"
-            width="w-full min-w-20"
-            height="min-h-10"
-            placeholder="Time in hours, e.g. 1.5..."
-            control={control}
-            rules={{ required: true }}
-          />
+
           {/* Spare parts needed?, Part(s) needed */}
           <div className="flex w-full flex-row justify-center gap-4 max-[415px]:gap-3">
             {/* Time it took, Repaired? */}
             <FieldRadio
               name="isRepaired"
-              width="w-[49%]"
+              width="w-[33%]"
               height="min-h-10 max-[960px]:min-h-20"
               axis="flex-col sm:flex-row"
               control={control}
               label="Repaired?"
               rules={{ required: true }}
             />
+            <FieldInput
+              name="hoursWorked"
+              label="Hours taken"
+              width="w-[33%]"
+              height="min-h-10"
+              placeholder="Time in hours, e.g. 1.5..."
+              control={control}
+              rules={{ required: true }}
+            />
             <FieldRadio
               name="isSparePartsNeeded"
-              width="w-[49%]"
+              width="w-[33%]"
               height="min-h-10 max-[960px]:min-h-20"
               axis="flex-col sm:flex-row"
-              labelYPosition="-top-6 sm:-top-3 max-[450px]:-top-10"
+              labelYPosition="-top-10 sm:-top-3 max-[450px]:-top-10"
               control={control}
               label="Spare parts needed?"
               rules={{ required: true }}
@@ -142,21 +151,22 @@ export default function RepairAttempt({
             name="repairComment"
             label="Repair Comment"
             placeholder="Describe the repair job in detail..."
+            height={textAreaHeight}
             control={control}
             rules={{ required: true }}
           />
-          {/* Submit */}
-          <div className="mt-2 w-full">
-            <Button
-              height="h-12"
-              width="w-full"
-              textSize="text-lg"
-              textWeight="font-semibold"
-              onClick={handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
-          </div>
+        </div>
+        {/* Submit */}
+        <div className="relative bottom-0 border-0 border-red-500 mt-10 w-full">
+          <Button
+            height="h-12"
+            width="w-full"
+            textSize="text-lg"
+            textWeight="font-semibold"
+            onClick={handleSubmit(onSubmit)}
+          >
+            Submit
+          </Button>
         </div>
       </form>
       <Toast />
