@@ -18,8 +18,7 @@ describe("DELETE /api/item-type/:id", () => {
         name
       }
     });
-    vi.mock("@clerk/nextjs/server");
-    vi.mock("@clerk/nextjs");
+
   });
 
   it("should delete an ItemType", async () => {
@@ -51,7 +50,7 @@ describe("DELETE /api/item-type/:id", () => {
             "Content-Type": "application/json"
           }
         });
-        expect(res.status).toBe(500);
+        expect(res.status).toBe(404);
       }
     });
   });
