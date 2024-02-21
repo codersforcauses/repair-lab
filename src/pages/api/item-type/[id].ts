@@ -2,22 +2,19 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
-import { itemTypeSchema } from "@/schema/item-type";
 
 export default apiHandler({
   delete: deleteItemType
 });
 
 async function deleteItemType(req: NextApiRequest, res: NextApiResponse) {
- 
-  const { name } = itemTypeSchema.parse(req.body);
+  const { id } = req.query;
 
-  const deleteItemType = await prisma.itemType.delete({
+  const deletedItemType = await prisma.itemType.delete({
     where: {
-      name
+      name: id as string
     }
   });
 
-  return res.status(200).json(deleteItemType);
+  return res.status(200).json({ name: deletedItemType.name });
 }
-
