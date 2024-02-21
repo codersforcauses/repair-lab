@@ -88,8 +88,14 @@ export default function FieldSingleSelectInput<
   };
 
   const handleOptionSelect = (option: Option) => {
-    setDisplayText(option.text); // Update displayed text
-    field.onChange(option.text); // Update form field value
+    // Toggle selection if the same item is selected again
+    if (option.text === displayText) {
+      setDisplayText("");
+      field.onChange("");
+    } else {
+      setDisplayText(option.text); // Update displayed text with the new selection
+      field.onChange(option.text); // Update form field value with the new selection
+    }
   };
 
   const removeOption = (id: string) => {
@@ -122,7 +128,7 @@ export default function FieldSingleSelectInput<
           >
             {option.text === displayText && (
               <HiCheck
-                className="inline h-5 w-5 text-green-500 mr-2"
+                className="inline h-5 w-5 text-app-primary mr-2"
                 aria-hidden="true"
               />
             )}
@@ -135,7 +141,7 @@ export default function FieldSingleSelectInput<
                   e.stopPropagation(); // Prevent menu close
                   removeOption(option.id as string);
                 }}
-                className="mx-2 rounded-md bg-red-500 p-2 text-white flex-shrink-0"
+                className="mx-2 rounded-md bg-app-accent hover:bg-app-accent-focus p-2 text-white flex-shrink-0"
                 aria-label="Remove item"
               >
                 <FaMinus />
@@ -158,8 +164,13 @@ export default function FieldSingleSelectInput<
           >
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
-            {/* We may need one more light grey color in the latest colour palette, as the text colors of the placeholders in the event form are not consistent */}
-            <span className="text-gray-500">{displayText || placeholder}</span>{" "}
+            {/* We may need one more light grey color in the latest colour palette, as the grey colors in the palette (base series) are not consistent with the placeholders in the event form */}
+            <span
+              className="text-gray-500"
+              style={{ fontFamily: "Arial, sans-serif" }}
+            >
+              {displayText || placeholder}
+            </span>{" "}
             <HiChevronDown
               className="ml-auto h-6 w-5 text-grey-600"
               aria-hidden="true"
@@ -200,7 +211,7 @@ export default function FieldSingleSelectInput<
                 )}
                 <button
                   onClick={updateOptions}
-                  className="ml-2 rounded-md bg-blue-500 p-2 text-white flex-shrink-0"
+                  className="ml-2 rounded-md bg-app-primary hover:bg-app-primary-focus p-2 text-white flex-shrink-0"
                 >
                   <FaPlus />
                 </button>
