@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { EventStatus } from "@prisma/client";
-import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
+import { FaFilterCircleXmark } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Card from "@/components/Cards/event-card";
@@ -14,7 +14,7 @@ import { ItemType, useItemTypes } from "@/hooks/item-types";
 import useMemoizedFn from "@/hooks/memorized-fn";
 import useSearchParamsState from "@/hooks/search-params-state";
 import { NextPageWithLayout } from "@/pages/_app";
-import { EventResponse } from "@/types";
+import { EventResponse, SortDirection } from "@/types";
 import { formatDate } from "@/utils";
 
 const initialFilterState = {
@@ -23,7 +23,7 @@ const initialFilterState = {
   maxDate: undefined,
   search: undefined,
   sortKey: undefined,
-  sortMethod: undefined as "asc" | "desc" | undefined,
+  sortMethod: undefined as SortDirection | undefined,
   userIds: [] as string[],
   eventTypes: [] as string[],
   status: [] as EventStatus[],

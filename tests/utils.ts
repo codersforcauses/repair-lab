@@ -1,6 +1,12 @@
-import { exec } from "node:child_process";
+// eslint-disable-next-line simple-import-sort/imports
 
-import prisma from "./setup";
+import type { NextApiHandler } from "next";
+import { testApiHandler } from "next-test-api-route-handler";
+import { exec } from "node:child_process";
+import { expect } from "vitest";
+
+import { PaginationResponse } from "@/lib/pagination";
+import prisma from "@/lib/prisma";
 
 export const cleanup = async () => {
   await resetDatabase();
@@ -62,3 +68,59 @@ export const seedTestData = async () => {
     }
   });
 };
+
+// Test helpers
+
+/**
+ * Tests a GET API route that returns a PaginationResponse of objects with an **id** field.
+ * Only tests the IDs, not other properties.
+ * @param handler A NextApiHandler
+ * @param params The URL search params
+ * @param expectedIDs The list of IDs to be returned in order
+ */
+export async function testPaginationResponse<
+  T extends Record<string, string | string[]>
+>(handler: NextApiHandler, params: T, expectedIDs: string[]) {
+  await testApiHandler({
+    handler,
+    params,
+    test: async ({ fetch }) => {
+      const res = await fetch({
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const results: PaginationResponse<unknown[]> = await res.json();
+      expect(res.status).toBe(200);
+      expect(results.items.length).toBe(expectedIDs.length);
+      results.items.forEach((result, index) => {
+        expect(result).toHaveProperty("id", expectedIDs[index]);
+      });
+    }
+  });
+}
+
+/**
+ * Tests a GET API route against a response code
+ * @param handler  A NextApiHandler
+ * @param params The URL search params
+ * @param code The expected HTTP code to be returned. Default 400
+ */
+export async function testResponseCode<
+  T extends Record<string, string | string[]>
+>(handler: NextApiHandler, params: T, code: number = 400) {
+  await testApiHandler({
+    handler,
+    params,
+    test: async ({ fetch }) => {
+      const res = await fetch({
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      expect(res.status).toBe(code);
+    }
+  });
+}
