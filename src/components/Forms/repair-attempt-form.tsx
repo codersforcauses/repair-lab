@@ -157,7 +157,7 @@ export default function RepairAttempt({
           />
         </div>
         {/* Submit */}
-        <div className="relative bottom-0 border-0 border-red-500 mt-10 w-full">
+        <div className="relative bottom-0 border-0 border-red-500 lg:mt-8 mt-6 w-full">
           <Button
             height="h-12"
             width="w-full"
