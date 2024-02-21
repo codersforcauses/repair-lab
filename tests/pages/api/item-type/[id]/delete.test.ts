@@ -18,7 +18,6 @@ describe("DELETE /api/item-type/:id", () => {
         name
       }
     });
-
   });
 
   it("should delete an ItemType", async () => {

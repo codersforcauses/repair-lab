@@ -1,6 +1,6 @@
-import { HttpStatusCode } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
