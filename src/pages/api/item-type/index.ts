@@ -5,7 +5,8 @@ import apiHandler from "@/lib/api-handler";
 import prisma from "@/lib/prisma";
 
 export default apiHandler({
-  get: getItemTypes
+  get: getItemTypes,
+  post: createItemType
 });
 
 async function getItemTypes(
@@ -16,3 +17,5 @@ async function getItemTypes(
 
   return res.status(200).json(itemTypes);
 }
+
+async function createItemType(req: NextApiRequest, res: NextApiResponse) {}
