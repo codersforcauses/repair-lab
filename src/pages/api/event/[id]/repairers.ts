@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { RepairStatus } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
@@ -72,6 +73,7 @@ export type EventRepairer = {
   lastName: string;
   email: string;
   avatar: string;
+  acceptedTasksCount: number;
 };
 
 async function getEventRepairers(id: string) {
@@ -86,16 +88,28 @@ async function getEventRepairers(id: string) {
 
   const userIds = eventRepairer.map((repairer) => repairer.userId);
 
-  // get additional informations like firstName, lastName, email
+  // get additional informations like firstName, lastName, email, avatar
   const repairersUsers: Partial<Record<string, User>> =
     await userService.getUserMapFromIds(userIds);
+
+  // Prepare to fetch accepted task counts in parallel
+  const countsPromises = userIds.map((userId) =>
+    prisma.repairRequest.count({
+      where: {
+        assignedTo: userId,
+        status: RepairStatus.ACCEPTED
+      }
+    })
+  );
+
+  const counts = await Promise.all(countsPromises);
 
   /* eslint-disable no-console */
   if (Object.keys(repairersUsers).length !== userIds.length) {
     console.error("Mismatch in users from clerk and database");
   }
 
-  return userIds.map((userId) => {
+  return userIds.map((userId, index) => {
     const userData = repairersUsers[userId];
 
     return {
@@ -103,7 +117,8 @@ async function getEventRepairers(id: string) {
       firstName: userData?.firstName,
       lastName: userData?.lastName,
       email: userData?.emailAddress,
-      avatar: userData?.imageUrl
+      avatar: userData?.imageUrl,
+      acceptedTasksCount: counts[index]
     } as EventRepairer;
   });
 }

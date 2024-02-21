@@ -28,19 +28,6 @@ export default function AssigneeBadge({
   } = useRouter();
   const { data: repairers } = useRepairers(eventId as string);
 
-  // const repairers = [
-  //   { userId: "William Miller" },
-  //   { userId: "Linda Taylor" },
-  //   { userId: "Michael Jones" },
-  //   { userId: "Michael Taylor" },
-  //   { userId: "Elizabeth Wilson" },
-  //   { userId: "William Wilson" },
-  //   { userId: "Robert Smith" },
-  //   { userId: "Mary Taylor" },
-  //   { userId: "Patricia Jones" },
-  //   { userId: "William Wilson" }
-  // ];
-
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation();
     setShowAssigneeModal(true);
@@ -107,6 +94,7 @@ export default function AssigneeBadge({
                   firstName={repairer.firstName}
                   lastName={repairer.lastName}
                   avatar={repairer.avatar}
+                  acceptedTasksCount={repairer.acceptedTasksCount}
                   email={repairer.email}
                   key={index}
                   assigned={repairer.userId == assignedTo}
