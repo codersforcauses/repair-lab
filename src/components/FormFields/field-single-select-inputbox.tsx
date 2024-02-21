@@ -58,16 +58,15 @@ export default function FieldSingleSelectInput<
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
 
-  // Add a new option and updates the options state
   const updateOptions = () => {
     const trimmedItemName = newItemName.trim();
     // Prevent adding if the name is empty or only contains spaces
     if (!trimmedItemName) {
       setAddError("Item name cannot be empty");
-      return; // Stop the function if the item name is invalid
+      return;
     }
 
-    // Check for duplicates
+    // Check for duplicates (trimmed and case-insensitive)
     const isDuplicate = dynamicOptions.some(
       (option) =>
         option.text.trim().toLowerCase() === trimmedItemName.toLowerCase()
@@ -83,7 +82,7 @@ export default function FieldSingleSelectInput<
       };
       setDynamicOptions((prevOptions) => [...prevOptions, newItem]);
       setNewItemName("");
-      setAddError(""); // Clear any previous error messages
+      setAddError("");
     }
   };
 
@@ -93,8 +92,8 @@ export default function FieldSingleSelectInput<
       setDisplayText("");
       field.onChange("");
     } else {
-      setDisplayText(option.text); // Update displayed text with the new selection
-      field.onChange(option.text); // Update form field value with the new selection
+      setDisplayText(option.text);
+      field.onChange(option.text);
     }
   };
 
@@ -110,8 +109,8 @@ export default function FieldSingleSelectInput<
 
     // If the removed item was selected, reset the display text and form field value
     if (isCurrentlySelected) {
-      setDisplayText(""); // Clear the display text
-      field.onChange(""); // Reset the field value
+      setDisplayText("");
+      field.onChange("");
     }
   };
 
@@ -164,7 +163,7 @@ export default function FieldSingleSelectInput<
           >
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
-            {/* We may need one more light grey color in the latest colour palette, as the grey colors in the palette (base series) are not consistent with the placeholders in the event form */}
+            {/* We may need one more light grey color in the latest colour palette, as the grey colors in the palette (base series) are not consistent with those of the placeholders in the event form */}
             <span
               className="text-gray-500"
               style={{ fontFamily: "Arial, sans-serif" }}
