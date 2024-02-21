@@ -40,12 +40,12 @@ export default function useSearchParamsState<
 
   const setState = useMemoizedFn(
     (valueOrFn: StateType | ((state: StateType) => StateType)) => {
+      if (!router.isReady) return;
       const state = router.query;
       const newState =
         typeof valueOrFn === "function"
           ? valueOrFn(state as StateType)
           : valueOrFn;
-
       return router.replace(
         {
           pathname: router.pathname,
