@@ -10,7 +10,7 @@ import { useRepairers } from "@/hooks/events";
 type Props = {
   firstName: string | undefined;
   lastName: string | undefined | null;
-  avatar: string | undefined;
+  avatar?: string | undefined;
   assignedTo?: string;
   repairRequestId?: string;
 };
