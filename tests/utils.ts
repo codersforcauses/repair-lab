@@ -41,7 +41,7 @@ export const seedTestData = async () => {
     }
   });
 
-  await prisma.event.create({
+  await prisma.event.createMany({
     data: {
       id: "acf5ed50-19a2-11ee-be56-0242ac120002",
       createdBy: "mock user",
