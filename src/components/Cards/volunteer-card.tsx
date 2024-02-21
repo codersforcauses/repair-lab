@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Inter } from "next/font/google";
 import Image from "next/image";
+import { RepairStatus } from "@prisma/client";
 
 import Button from "@/components/Button";
 import Circle from "@/components/Cards/circle";
@@ -13,6 +14,7 @@ type Props = {
   lastName: string;
   email: string;
   avatar: string;
+  acceptedTasksCount: number;
   repairRequestId: string | undefined;
   assigned?: boolean;
 };
@@ -24,6 +26,7 @@ export default function VolunteerCard({
   firstName,
   lastName,
   avatar,
+  acceptedTasksCount,
   repairRequestId,
   assigned
 }: Props) {
@@ -44,11 +47,12 @@ export default function VolunteerCard({
   };
 
   const handleAssignVolunteer = () => {
-    updateRepairRequest({ assignedTo: userId });
+    updateRepairRequest({
+      assignedTo: userId,
+      repairStatus: RepairStatus.ACCEPTED
+    });
     setShowConfirmation(false);
   };
-
-  // TODO: count repair requests where assignedTo=userId, replace the 3 with the count
 
   return (
     <div
@@ -90,7 +94,7 @@ export default function VolunteerCard({
 
         {/* RIGHT: #. of assigned tasks */}
         <div className="absolute right-2">
-          <Circle numberOfTasks={3} />
+          <Circle numberOfTasks={acceptedTasksCount} />
         </div>
       </div>
 

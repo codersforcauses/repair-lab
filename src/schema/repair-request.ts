@@ -1,3 +1,4 @@
+import { RepairStatus } from "@prisma/client";
 import { z } from "zod";
 
 import { paginationSchema } from "@/lib/pagination";
@@ -77,5 +78,15 @@ export const updateRepairRequestSchema = z.object({
     .string()
     .min(5, { message: "Job description must be at least 5 characters long." })
     .optional(),
-  assignedTo: z.string().optional()
+  assignedTo: z.string().optional(),
+  repairStatus: z
+    .enum([
+      RepairStatus.ACCEPTED,
+      RepairStatus.CANCELLED,
+      RepairStatus.FAILED,
+      RepairStatus.PENDING,
+      RepairStatus.REJECTED,
+      RepairStatus.REPAIRED
+    ])
+    .optional()
 });
