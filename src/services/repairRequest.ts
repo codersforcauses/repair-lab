@@ -1,34 +1,85 @@
 import { RepairRequestImage } from "@prisma/client";
 
+import { PaginationOptions, PaginationResponse } from "@/lib/pagination";
 import { presignImage, presignImages } from "@/services/s3";
 import userService from "@/services/user";
 import { RepairRequest, RepairRequestResponse } from "@/types";
 
+type RepairRequestWithImage = RepairRequest & { images?: RepairRequestImage[] };
+
 /**
- * Converts a list of RepairRequest to RepairRequestResponse
+ * Converts a single RepairRequest to RepairRequestResponse
  * @param repairRequests
- * @param withImage If you need the image presigned urls
  * @returns
  */
-const toClientResponse = async (
-  repairRequests: Array<RepairRequest & { images?: RepairRequestImage[] }>
-): Promise<RepairRequestResponse[]> => {
+async function toClientResponse(
+  repairRequest: RepairRequestWithImage
+): Promise<RepairRequestResponse>;
+
+/**
+ * Converts a RepairRequest list to a RepairRequestResponse list with pagination metadata
+ * @param repairRequests
+ * @returns
+ */
+async function toClientResponse(
+  repairRequests: Array<RepairRequestWithImage>,
+  options: PaginationOptions,
+  totalCount: number
+): Promise<PaginationResponse<RepairRequestResponse[]>>;
+
+async function toClientResponse(
+  repairRequests: Array<RepairRequestWithImage> | RepairRequestWithImage,
+  options?: PaginationOptions,
+  totalCount?: number
+): Promise<
+  PaginationResponse<RepairRequestResponse[]> | RepairRequestResponse
+> {
+  // Run conversion on array
+  const responses = await convertRequests(
+    !Array.isArray(repairRequests) ? [repairRequests] : repairRequests
+  );
+
+  // Single request overload
+  if (!Array.isArray(repairRequests)) return responses[0];
+
+  // This should never happen
+  if (options == undefined || totalCount == undefined)
+    throw new Error("Pagination options incorrectly passed.");
+
+  // Construct paginated response
+  return {
+    items: responses,
+    meta: {
+      page: options.page,
+      perPage: options.perPage,
+      totalCount,
+      lastPage: Math.ceil(totalCount / options.perPage)
+    }
+  };
+}
+
+async function convertRequests(
+  repairRequests: RepairRequestWithImage[]
+): Promise<RepairRequestResponse[]> {
   const userIds = repairRequests.flatMap((e) => [e.createdBy, e.assignedTo]);
   const userMap = await userService.getUserMapFromIds(userIds);
 
-  const responses: RepairRequestResponse[] = await Promise.all(
+  return Promise.all(
     repairRequests.map(async (req) => {
       const [thumbnailImage, images] = await Promise.all([
         presignImage(req.thumbnailImage),
         presignImages(req.images?.map(({ s3Key }) => s3Key) || [])
       ]);
 
+      const assignedTo = req.assignedTo
+        ? userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo)
+        : undefined;
+
       return {
         ...req,
         createdBy:
           userMap[req.createdBy] ?? userService.unknownUser(req.createdBy),
-        assignedTo:
-          userMap[req.assignedTo] ?? userService.unknownUser(req.assignedTo),
+        assignedTo,
         requestDate: req.requestDate.toISOString(),
         updatedAt: req.updatedAt.toISOString(),
         hoursWorked: req.hoursWorked.toNumber(),
@@ -37,8 +88,7 @@ const toClientResponse = async (
       };
     })
   );
-  return responses;
-};
+}
 
 const repairRequestService = {
   toClientResponse

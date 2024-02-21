@@ -31,8 +31,7 @@ async function getEvent(
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  // TODO: make a singular version
-  const eventResponse = (await eventService.toClientResponse([event]))[0];
+  const eventResponse = await eventService.toClientResponse(event);
   return res.status(200).json(eventResponse);
 }
 
@@ -91,9 +90,6 @@ async function updateEvent(
     }
   });
 
-  const eventResponse = (
-    await eventService.toClientResponse([updatedEvent])
-  )[0];
-
+  const eventResponse = await eventService.toClientResponse(updatedEvent);
   res.status(200).json(eventResponse);
 }

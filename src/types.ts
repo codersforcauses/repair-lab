@@ -15,6 +15,8 @@ import {
 } from "@/schema/repair-request";
 import { getManyUsersSchema } from "@/schema/user";
 
+export type SortDirection = "asc" | "desc";
+
 // TODO: Not sure if we should be exposing prisma model types in the frontend??
 
 // User
@@ -23,6 +25,7 @@ export type UserSearchQuery = z.infer<typeof getManyUsersSchema>;
 // Repair Requests
 export type RepairRequest = PrismaRepairRequest;
 export type RepairStatus = $Enums.RepairStatus;
+export type RepairRequestField = keyof RepairRequest;
 export type CreateRepairRequest = z.infer<typeof createRepairRequestSchema>;
 export type GeneralRepairAttempt = z.infer<typeof updateRepairRequestSchema>;
 
@@ -89,7 +92,7 @@ export type EventResponse = {
 export type RepairRequestResponse = {
   id: string;
   createdBy: User;
-  assignedTo: User;
+  assignedTo?: User;
   eventId: string;
   status: RepairStatus;
   description: string;

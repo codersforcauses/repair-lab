@@ -1,6 +1,8 @@
 import { useCallback } from "react";
 
+import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
+import cn from "@/lib/classnames";
 
 const DEFAULT_OPTIONS = [10, 20, 50, 100];
 export interface PaginationState {
@@ -14,12 +16,16 @@ export interface PaginationProps {
   value: PaginationState;
   onChange: (nextState: PaginationState) => void;
   options?: number[];
+  className?: string;
+  disabled?: boolean;
 }
 
 export function Pagination({
   value: paginationState,
   onChange,
-  options = DEFAULT_OPTIONS
+  options = DEFAULT_OPTIONS,
+  className,
+  disabled = false
 }: PaginationProps) {
   const { totalCount, perPage = 20, page = 1 } = paginationState;
 
@@ -44,7 +50,7 @@ export function Pagination({
   );
 
   return (
-    <div className="mt-2 flex flex-row justify-between">
+    <div className={cn("mt-2 flex flex-row justify-between", className)}>
       <div className="flex flex-row items-center gap-1 text-sm text-gray-700">
         Showing
         <span className="font-semibold text-gray-900">{firstRecord}</span>
@@ -61,18 +67,22 @@ export function Pagination({
           onChange={handlePerPageChange}
           options={options.map((n) => ({ name: String(n), value: n }))}
         />
-        <button
-          className="flex h-8 items-center justify-center rounded-l bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
+        <HoverOpacityButton
+          className="flex h-8 items-center justify-center rounded-l bg-primary-500 px-3 text-sm font-medium text-white"
+          scaleOnHover={false}
           onClick={() => toPage(page - 1)}
+          disabled={disabled || page <= 1}
         >
           Prev
-        </button>
-        <button
-          className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-400 px-3 text-sm font-medium text-white hover:bg-gray-900"
+        </HoverOpacityButton>
+        <HoverOpacityButton
+          className="flex h-8 items-center justify-center rounded-r border-0 border-l border-white bg-primary-500 px-3 text-sm font-medium text-white"
+          scaleOnHover={false}
           onClick={() => toPage(page + 1)}
+          disabled={disabled || page >= maxPage}
         >
           Next
-        </button>
+        </HoverOpacityButton>
       </div>
     </div>
   );
