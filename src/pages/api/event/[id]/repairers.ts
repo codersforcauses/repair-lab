@@ -1,24 +1,24 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
-import { Staff } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 
 import apiHandler from "@/lib/api-handler";
-import { addEventRepairerSchema } from "@/schema/event";
+import { modifyEventRepairerSchema } from "@/schema/event";
 import userService from "@/services/user";
+import { User } from "@/types";
 
 import prisma from "../../../../lib/prisma";
 
 export default apiHandler({
   get: getRepairer,
-  post: createRepairer
+  post: createRepairer,
+  delete: deleteRepairer
 });
 
 interface responseEventRepairer {
   message: string;
 }
-
-async function getRepairer(req: NextApiRequest, res: NextApiResponse<Staff[]>) {
+async function getRepairer(req: NextApiRequest, res: NextApiResponse<User[]>) {
   const { id } = req.query;
 
   if (typeof id !== "string") {
@@ -38,23 +38,25 @@ async function getRepairer(req: NextApiRequest, res: NextApiResponse<Staff[]>) {
       eventId: id
     }
   });
-
-  const staff = await prisma.staff.findMany({
-    where: { id: { in: repairers.map((repairer) => repairer.userId) } }
-  });
-
   if (!repairers) {
     throw new ApiError(HttpStatusCode.NotFound, "Repairers not found");
   }
 
-  res.status(200).json(staff);
+  const staff = await userService.getUsers(
+    repairers.map((repairer) => repairer.userId)
+  );
+
+  const filteredStaff = staff.filter(
+    (user): user is User => user !== undefined
+  );
+  res.status(200).json(filteredStaff);
 }
 
 async function createRepairer(
   req: NextApiRequest,
   res: NextApiResponse<responseEventRepairer>
 ) {
-  const { userId, id } = addEventRepairerSchema.parse({
+  const { userId, id } = modifyEventRepairerSchema.parse({
     ...req.body,
     ...req.query
   });
@@ -88,4 +90,41 @@ async function createRepairer(
   res
     .status(200)
     .json({ message: "Successfully added volunteers to an event" });
+}
+
+async function deleteRepairer(
+  req: NextApiRequest,
+  res: NextApiResponse<responseEventRepairer>
+) {
+  const { userId, id } = modifyEventRepairerSchema.parse({
+    ...req.body,
+    ...req.query
+  });
+
+  const event = await prisma.event.findUnique({ where: { id: id } });
+  if (!event) {
+    throw new ApiError(HttpStatusCode.NotFound, "Event not found");
+  }
+
+  const userMap = await userService.getUsers(userId);
+
+  const filterEmpty = userMap.filter((user) =>
+    user && Object.keys(user).length !== 0 ? user : null
+  );
+  if (filterEmpty.length === 0) {
+    throw new ApiError(HttpStatusCode.NotFound, "Users not found / empty");
+  }
+
+  const responseEndpoint = await prisma.eventRepairer.deleteMany({
+    where: {
+      userId: {
+        in: userId
+      },
+      eventId: id
+    }
+  });
+
+  res
+    .status(200)
+    .json({ message: "Successfully removed volunteers from an event" });
 }
