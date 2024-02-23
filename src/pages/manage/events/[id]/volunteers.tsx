@@ -8,6 +8,7 @@ import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
+import { useRepairers } from "@/hooks/repairers";
 import { User } from "@/types";
 
 export default function Volunteers() {
@@ -19,8 +20,10 @@ export default function Volunteers() {
   } = useRouter();
 
   const { data: event } = useEvent(eventId as string);
+  const { data: repairers } = useRepairers(eventId as string);
+
   useEffect(() => {
-    if (!event) return;
+    if (!event || !repairers) return;
     setHeaderValues({
       name: event.name,
       location: event.location,
@@ -28,13 +31,8 @@ export default function Volunteers() {
       endDate: new Date(event.endDate),
       createdBy: event.createdBy
     });
-
-    const urlParams = new URLSearchParams({ id: event.id });
-
-    fetch(`/api/event/${event.id}/repairers?${urlParams.toString()}`)
-      .then((res) => res.json())
-      .then((data) => setVolunteers(data));
-  }, [event]);
+    setVolunteers(repairers);
+  }, [event, repairers]);
 
   function manageVolunteer() {
     setShowVolunteerModal(true);

@@ -4,8 +4,11 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import Button from "@/components/Button";
 import Search from "@/components/Search";
 import TablePagination from "@/components/table/table-pagination";
+import {
+  useAddRepairerToEvent,
+  useRemoveRepairerFromEvent
+} from "@/hooks/repairers";
 import { useUsers } from "@/hooks/users";
-import { httpClient } from "@/lib/base-http-client";
 import { EventResponse, User } from "@/types";
 
 /**
@@ -37,6 +40,11 @@ export default function VolunteerManageForm({
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
 
+  const { mutate: addRepairerToEvent } = useAddRepairerToEvent(eventProps.id);
+  const { mutate: removeRepairerFromEvent } = useRemoveRepairerFromEvent(
+    eventProps.id
+  );
+
   const originalVolunteers = [...volunteersArray];
   const { data: users, isLoading } = useUsers(perPage, page, orderBy, query);
   const search = (value: string) => {
@@ -47,24 +55,12 @@ export default function VolunteerManageForm({
 
   // Default submit handler
   const defaultOnSubmit = async () => {
-    // TODO -  update to use custom hook instead
-    const url = `/event/${eventProps.id}/repairers`;
-
     if (staffToAdd.length > 0) {
-      const addResponse = await httpClient.post<string>(url, {
-        id: eventProps.id,
-        userId: staffToAdd
-      });
-      console.log(addResponse.data);
+      addRepairerToEvent(staffToAdd);
     }
-
     if (staffToRemove.length > 0) {
-      const delResponse = await httpClient.delete<string>(url, {
-        params: { id: eventProps.id, userId: staffToRemove }
-      });
-      console.log(delResponse.data);
+      removeRepairerFromEvent(staffToRemove);
     }
-
     setShowModal(false);
   };
 
