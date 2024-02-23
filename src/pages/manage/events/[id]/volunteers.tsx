@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Staff } from "@prisma/client";
 
 import AssigneeBadge from "@/components/Cards/assignee-badge";
 import VolunteerManageForm from "@/components/Forms/volunteer-manage-form";
@@ -9,9 +8,10 @@ import Modal from "@/components/Modal";
 import Sidebar from "@/components/sidebar/index";
 import LoadingSpinner from "@/components/UI/loading-spinner";
 import { useEvent } from "@/hooks/events";
+import { User } from "@/types";
 
 export default function Volunteers() {
-  const [volunteers, setVolunteers] = useState<Staff[]>([]);
+  const [volunteers, setVolunteers] = useState<User[]>([]);
   const [headerValues, setHeaderValues] = useState<HeaderProps>();
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
   const {
@@ -63,8 +63,8 @@ export default function Volunteers() {
                 {volunteers.map((item) => (
                   <div key={item.id}>
                     <AssigneeBadge
-                      firstName={item.clerkId ?? item.organisationId}
-                      lastName={item.role ?? ""}
+                      firstName={item.firstName ?? item.emailAddress}
+                      lastName={item.lastName ?? ""}
                     />
                   </div>
                 ))}
@@ -74,11 +74,11 @@ export default function Volunteers() {
               <Modal
                 showModal={showVolunteerModal}
                 setShowPopup={setShowVolunteerModal}
-                height="h-full"
+                height="overflow-auto"
               >
-                <div className="text-center">
+                <div className="text-center flex flex-col">
                   <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>
-                  <div>
+                  <div className="h-4/5">
                     <VolunteerManageForm
                       volunteersArray={volunteers.map(
                         (volunteer) => volunteer.id
