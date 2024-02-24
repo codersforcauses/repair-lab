@@ -89,7 +89,7 @@ export default function VolunteerManageForm({
             </tr>
           </thead>
           {isLoading ? (
-            <tbody className="w-full h-96 transition-all ease-in-out">
+            <tbody className="w-full h-80 transition-all ease-in-out">
               <TableLoadingAnimation />
               <TableLoadingAnimation />
               <TableLoadingAnimation />

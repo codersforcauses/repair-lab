@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
@@ -19,6 +19,8 @@ export const useRepairers = (eventId: string) => {
 };
 
 export const useAddRepairerToEvent = (eventId: string) => {
+  const queryClient = useQueryClient();
+
   const mutationFn = async (userIds: string[]) => {
     const url = `/event/${eventId}/repairers`;
     await httpClient.post(url, {
@@ -28,11 +30,12 @@ export const useAddRepairerToEvent = (eventId: string) => {
   };
 
   const onSuccess = () => {
-    toast.success("Repairer added to event!");
+    toast.success("Repairer(s) added to event!");
+    queryClient.invalidateQueries({ queryKey: ["repairers", eventId] });
   };
 
   const onError = () => {
-    toast.error("Error occurred while adding repairer to event");
+    toast.error("Error occurred while adding repairer(s) to event");
   };
 
   return useMutation({
@@ -43,17 +46,20 @@ export const useAddRepairerToEvent = (eventId: string) => {
 };
 
 export const useRemoveRepairerFromEvent = (eventId: string) => {
+  const queryClient = useQueryClient();
+
   const mutationFn = async (userIds: string[]) => {
     const url = `/event/${eventId}/repairers`;
     await httpClient.delete(url, { data: { id: eventId, userId: userIds } });
   };
 
   const onSuccess = () => {
-    toast.success("Repairer removed from event!");
+    toast.success("Repairer(s) removed from event!");
+    queryClient.invalidateQueries({ queryKey: ["repairers", eventId] });
   };
 
   const onError = () => {
-    toast.error("Error occurred while removing repairer from event");
+    toast.error("Error occurred while removing repairer(s) from the event");
   };
 
   return useMutation({
