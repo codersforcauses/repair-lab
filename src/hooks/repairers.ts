@@ -45,7 +45,7 @@ export const useAddRepairerToEvent = (eventId: string) => {
 export const useRemoveRepairerFromEvent = (eventId: string) => {
   const mutationFn = async (userIds: string[]) => {
     const url = `/event/${eventId}/repairers`;
-    await httpClient.delete(url, { params: { id: eventId, userId: userIds } });
+    await httpClient.delete(url, { data: { id: eventId, userId: userIds } });
   };
 
   const onSuccess = () => {
