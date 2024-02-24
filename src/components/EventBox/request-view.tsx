@@ -3,7 +3,6 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa6";
 
 import RepairAttemptForm from "@/components/Forms/repair-attempt-form";
-// import RepairAttempt from "/repair-request/[id]/index";
 import Modal from "@/components/Modal";
 import { RepairRequestResponse, User } from "@/types";
 
