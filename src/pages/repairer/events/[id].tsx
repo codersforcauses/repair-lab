@@ -80,28 +80,21 @@ const Home = () => {
                 ) : repairRequests && repairRequests.items.length > 0 ? (
                   <div>
                     <ul id="repairRequestList">
-<<<<<<< HEAD
-                      {repairRequests.map((item: RepairRequestResponse) => (
-                        //   ({
-                        //   id,
-                        //   createdBy,
-                        //   requestDate,
-                        //   itemType,
-                        //   itemBrand,
-                        //   description
-                        // }: RepairRequestResponse) => (
-                        <div key={item.id}>
-=======                   <RequestView
-                            repairRequestId={item.id}
-                            requestDate={formatDate(String(item.requestDate))}
-                            createdBy={item.createdBy}
-                            itemType={item.itemType}
-                            itemBrand={item.itemBrand}
-                            description={item.description}
-                            repairAttemptProps={item}
-                          />
-                        </div>
-                      ))}
+                      {repairRequests.items.map(
+                        (item: RepairRequestResponse) => (
+                          <div key={item.id}>
+                            <RequestView
+                              repairRequestId={item.id}
+                              requestDate={formatDate(String(item.requestDate))}
+                              createdBy={item.createdBy}
+                              itemType={item.itemType}
+                              itemBrand={item.itemBrand}
+                              description={item.description}
+                              repairAttemptProps={item}
+                            />
+                          </div>
+                        )
+                      )}
                     </ul>
                   </div>
                 ) : (
