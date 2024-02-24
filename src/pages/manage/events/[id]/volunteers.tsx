@@ -72,7 +72,7 @@ export default function Volunteers() {
               <Modal
                 showModal={showVolunteerModal}
                 setShowPopup={setShowVolunteerModal}
-                height="overflow-auto"
+                height="h-5/6 overflow-y-auto"
               >
                 <div className="text-center flex flex-col">
                   <h1 className="text-xl font-bold">Add / Remove Volunteers</h1>

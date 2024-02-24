@@ -36,7 +36,7 @@ export default function VolunteerManageForm({
   const [staffToRemove, setStaffToRemove] = useState<string[]>([]);
   // Constants for table - this is from the /users endpoint
   const [orderBy, _setOrderBy] = useState("-created_at");
-  const [perPage, _setPerPage] = useState(8);
+  const [perPage, _setPerPage] = useState(7);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
 
