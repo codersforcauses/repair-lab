@@ -135,20 +135,22 @@ export default function Select<
       <Listbox.Button
         as="div"
         className={cn(
-          "relative flex items-center h-10 w-full justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
+          "relative flex items-center h-10 w-full justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-primary-500 hover:shadow-grey-300",
           className
         )}
       >
-        <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black">
+        <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-xs font-semibold text-black select-none">
           {label}
           {afterLabel}
         </label>
         {isBlank(value) ? (
-          <span className="text-gray-500 text-nowrap">{placeholder}</span>
+          <span className="text-gray-500 text-nowrap select-none">
+            {placeholder}
+          </span>
         ) : renderSelected ? (
           renderSelected(value, selectedOptions, onChange)
         ) : (
-          <span className="truncate text-grey-900">
+          <span className="truncate text-grey-900 select-none">
             {selectedOptions?.map((option) => option[nameKey]).join(", ")}
           </span>
         )}
@@ -167,7 +169,7 @@ export default function Select<
           leaveTo="transform opacity-0 scale-95"
           onClick={(e) => e.stopPropagation()}
         >
-          <Listbox.Options className="absolute w-full">
+          <Listbox.Options className="absolute w-full outline-none">
             <div className="relative py-1 left-0 z-10 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
               {onSearch && (
                 <Search
