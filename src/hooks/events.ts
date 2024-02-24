@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
@@ -7,6 +12,7 @@ import {
   CreateEvent,
   EventResponse,
   RepairRequestResponse,
+  SortDirection,
   UpdateEvent
 } from "@/types";
 
@@ -117,17 +123,27 @@ export const useEventOptions = () => {
   });
 };
 
-export const useRepairRequests = (eventId: string | undefined) => {
-  const queryFn = async () => {
-    const url = `event/${eventId}/repair-request`;
-
-    const response = await httpClient.get<RepairRequestResponse[]>(url);
-    return response.data;
-  };
-
-  return useQuery({
-    queryKey: ["repair-requests", eventId],
-    queryFn,
-    enabled: eventId != undefined
+export const useRepairRequests = (params: {
+  // Filtering
+  eventId?: string;
+  sortKey?: string;
+  sortMethod?: SortDirection;
+  searchWord?: string;
+  assignedTo?: string;
+  itemType?: string;
+  // Pagination
+  page?: number;
+  perPage?: number;
+}) => {
+  return useQuery<PaginationResponse<RepairRequestResponse[]>>({
+    queryKey: ["repair-requests", params],
+    placeholderData: keepPreviousData,
+    queryFn: () =>
+      httpClient
+        .get(`event/${params.eventId}/repair-request`, {
+          params
+        })
+        .then((response) => response.data),
+    enabled: params.eventId != undefined
   });
 };

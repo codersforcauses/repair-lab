@@ -14,13 +14,15 @@ import { formatDate } from "@/utils";
 
 const Home = () => {
   const {
-    query: { id: eventId }
+    query: { id }
   } = useRouter();
 
-  const { data: event } = useEvent(eventId as string);
+  const eventId = id?.toString();
+
+  const { data: event } = useEvent(eventId);
 
   const { data: repairRequests, isLoading: isRepairRequestsLoading } =
-    useRepairRequests(eventId as string);
+    useRepairRequests({ eventId });
 
   return (
     <div>
@@ -75,9 +77,10 @@ const Home = () => {
                   <div className="flex justify-center">
                     <LoadingSpinner />
                   </div>
-                ) : repairRequests && repairRequests.length > 0 ? (
+                ) : repairRequests && repairRequests.items.length > 0 ? (
                   <div>
                     <ul id="repairRequestList">
+<<<<<<< HEAD
                       {repairRequests.map((item: RepairRequestResponse) => (
                         //   ({
                         //   id,
@@ -88,7 +91,7 @@ const Home = () => {
                         //   description
                         // }: RepairRequestResponse) => (
                         <div key={item.id}>
-                          <RequestView
+=======                   <RequestView
                             repairRequestId={item.id}
                             requestDate={formatDate(String(item.requestDate))}
                             createdBy={item.createdBy}
