@@ -1,9 +1,8 @@
 import { Fragment, useCallback, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Listbox } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
+import { FaXmark } from "react-icons/fa6";
 
 import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import Select from "@/components/select";
@@ -13,6 +12,7 @@ import { useInfiniteUser } from "@/hooks/users";
 import { httpClient } from "@/lib/base-http-client";
 import cn from "@/lib/classnames";
 import isBlank from "@/lib/is-blank";
+import { PaginationResponse } from "@/lib/pagination";
 import { User } from "@/types";
 
 const NAME_KEY = "emailAddress";
@@ -111,7 +111,7 @@ export function SelectUser({
                     onChange?.(newValues);
                   }}
                 >
-                  <FontAwesomeIcon icon={faXmark} />
+                  <FaXmark />
                 </HoverOpacityButton>
               </div>
             );
@@ -186,10 +186,12 @@ export function useUsersFromIds(
     queryFn: async () => {
       if (!isBlank(ids)) {
         // this blank check is because unstable of useRouter of next.js
-        const res = await httpClient.get<User[]>(
-          `/user/list?ids=${ids.join(",")}`
-        );
-        onChange(res.data);
+        const res = await httpClient.get<PaginationResponse<User[]>>("/user", {
+          params: {
+            userId: ids
+          }
+        });
+        onChange(res.data?.items);
         setInitialized(true);
       }
       return null;

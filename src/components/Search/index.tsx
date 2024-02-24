@@ -1,6 +1,5 @@
 import { type ReactNode, useState } from "react";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaSearch } from "react-icons/fa";
 
 import useDebounceFn from "@/hooks/debounce-fn";
 import cn from "@/lib/classnames";
@@ -35,7 +34,7 @@ export function Search({
     <div className={cn("relative group", className, styles.search)}>
       {beforeInput}
       <input
-        className="h-10 w-full rounded-3xl border-none bg-gray-100 px-4 py-2 text-sm focus:shadow-md focus:outline-none"
+        className="h-10 w-full rounded-3xl relative flex px-4 py-2 text-sm items-center focus:outline-none justify-between bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-primary-500 hover:shadow-grey-300"
         type="search"
         name="search"
         placeholder="Search"
@@ -61,7 +60,7 @@ export function Search({
           }
         )}
       >
-        <FontAwesomeIcon icon={faSearch} width={20} height={20} />
+        <FaSearch />
       </div>
     </div>
   );

@@ -31,8 +31,7 @@ async function getEvent(
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  // TODO: make a singular version
-  const eventResponse = (await eventService.toClientResponse([event]))[0];
+  const eventResponse = await eventService.toClientResponse(event);
   return res.status(200).json(eventResponse);
 }
 
@@ -48,7 +47,8 @@ async function updateEvent(
     description,
     disclaimer,
     startDate,
-    endDate
+    endDate,
+    images
   } = updateEventSchema.parse(req.body);
 
   const { id } = req.query;
@@ -73,13 +73,23 @@ async function updateEvent(
       endDate: endDate ? new Date(endDate) : existingEvent.endDate,
       description: description ?? existingEvent.description,
       disclaimer: disclaimer ?? existingEvent.disclaimer,
-      status: status ?? existingEvent.status
+      status: status ?? existingEvent.status,
+      images:
+        images && images.length > 0
+          ? {
+              createMany: {
+                data: images?.map((image) => ({
+                  s3Key: image
+                }))
+              }
+            }
+          : undefined
+    },
+    include: {
+      images: true
     }
   });
 
-  const eventResponse = (
-    await eventService.toClientResponse([updatedEvent])
-  )[0];
-
+  const eventResponse = await eventService.toClientResponse(updatedEvent);
   res.status(200).json(eventResponse);
 }

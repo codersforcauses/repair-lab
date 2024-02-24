@@ -36,10 +36,20 @@ export const mockClerkUsers = [
     publicMetadata: {
       role: "CLIENT"
     }
+  },
+  {
+    id: "REPAIRER",
+    firstName: "Mr Repair",
+    lastName: "",
+    emailAddresses: [{ emailAddress: "repair@gmail.com" }],
+    publicMetadata: {
+      role: "REPAIRER"
+    }
   }
 ];
 
 // query partially matches userId, emailAddress, phoneNumber, username, web3Wallet, firstName, lastName
+// TODO: support pagination
 type BasicSearchParams = { query?: string };
 const queryUsers = ({ query }: BasicSearchParams) => {
   if (!query) return mockClerkUsers;
