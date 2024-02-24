@@ -69,7 +69,9 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
                 {!placeholder ? `Select ${props.name}` : `${placeholder}`}
               </span>
             ) : (
-              <span className="truncate text-black font-normal">{displayText}</span>
+              <span className="truncate text-black font-normal">
+                {displayText}
+              </span>
             )}
             <HiChevronDown
               className="ml-auto h-6 w-5 text-grey-600"

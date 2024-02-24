@@ -40,7 +40,6 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
   const normalBorderStyle = `border-grey-300`;
   const textAreaStyle = `overflow-wrap:break-word pt-3 h-full w-full resize-none overflow-y-auto text-sm placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:ring-0`;
 
-
   return (
     <div
       className={`${baseStyle} ${
