@@ -1,11 +1,14 @@
 import { SyntheticEvent, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { RepairStatus } from "@prisma/client";
 
+import Button from "@/components/Button";
 import Circle from "@/components/Cards/circle";
 import VolunteerCard from "@/components/Cards/volunteer-card";
 import Modal from "@/components/Modal";
 import { useRepairers } from "@/hooks/events";
+import { useUpdateRepairRequest } from "@/hooks/repair-request";
 
 type Props = {
   firstName: string | undefined;
@@ -27,6 +30,9 @@ export default function AssigneeBadge({
     query: { id: eventId }
   } = useRouter();
   const { data: repairers } = useRepairers(eventId as string);
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(
+    repairRequestId as string
+  );
 
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation();
@@ -38,6 +44,14 @@ export default function AssigneeBadge({
       event.preventDefault();
       handleClick(event as SyntheticEvent);
     }
+  };
+
+  const handleUnassignVolunteer = () => {
+    updateRepairRequest({
+      assignedTo: "null",
+      repairStatus: RepairStatus.PENDING
+    });
+    setShowAssigneeModal(false);
   };
 
   // Sort repairers to ensure the assigned repairer is displayed first
@@ -84,23 +98,32 @@ export default function AssigneeBadge({
             <Circle />
             <p className="font-medium">Task Assigned</p>
           </div>
-          <div className="overflow-x-hidden overflow-y-auto mt-2 flex flex-row flex-wrap gap-5 justify-center ">
-            {repairRequestId &&
-              sortedRepairers &&
-              sortedRepairers.map((repairer, index) => (
-                <VolunteerCard
-                  repairRequestId={repairRequestId}
-                  userId={repairer.userId}
-                  firstName={repairer.firstName}
-                  lastName={repairer.lastName}
-                  avatar={repairer.avatar}
-                  acceptedTasksCount={repairer.acceptedTasksCount}
-                  email={repairer.email}
-                  key={index}
-                  assigned={repairer.userId == assignedTo}
-                />
-              ))}
+          <div className="h-3/4">
+            <div className="overflow-x-hidden overflow-y-auto mt-2 flex flex-row flex-wrap gap-5 justify-center ">
+              {repairRequestId &&
+                sortedRepairers &&
+                sortedRepairers.map((repairer, index) => (
+                  <VolunteerCard
+                    repairRequestId={repairRequestId}
+                    userId={repairer.userId}
+                    firstName={repairer.firstName}
+                    lastName={repairer.lastName}
+                    avatar={repairer.avatar}
+                    acceptedTasksCount={repairer.acceptedTasksCount}
+                    email={repairer.email}
+                    key={index}
+                    assigned={repairer.userId == assignedTo}
+                  />
+                ))}
+            </div>
           </div>
+
+          <Button
+            textSize="text-lg font-semibold"
+            onClick={handleUnassignVolunteer}
+          >
+            Unassign this task
+          </Button>
         </div>
       </Modal>
     </>
