@@ -43,7 +43,7 @@ const RequestView = ({
             >
               <div className=" flex flex-col text-left py-2">
                 <span className="font-bold">
-                  {repairRequestId}- {createdBy.id}
+                  {repairRequestId}- {createdBy.firstName} {createdBy.lastName}
                 </span>
               </div>
               <FaChevronDown
@@ -84,10 +84,6 @@ const RequestView = ({
                 <div className="flex justify-center mt-1">
                   <button
                     className="bg-primary-700 px-4 py-1 rounded-lg text-white text-md hover:bg-primary-600"
-                    // onClick={() =>
-                    // For future use when linking to issue 198
-                    // router.push("")
-                    // }
                     onClick={manageModal}
                     onKeyDown={manageModal}
                   >
@@ -104,11 +100,7 @@ const RequestView = ({
                 >
                   <div className="text-center">
                     <div>
-                      <RepairAttemptForm
-                        props={repairAttemptProps}
-                        // setShowModal={setShowRepairRequestModal}
-                      />
-                      {/* <RepairAttempt /> */}
+                      <RepairAttemptForm props={repairAttemptProps} />
                     </div>
                   </div>
                 </Modal>

@@ -60,7 +60,7 @@ export default function RepairAttempt({
         Repair Request ID: {props.id}
       </h4>
       <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500 max-[860px]:pb-0 pb-2">
-        Requested By: {props.createdBy.id} on{" "}
+        Requested By: {props.createdBy.firstName} {props.createdBy.lastName} on{" "}
         {formatDate(String(props.requestDate))}
       </h4>
       <form
