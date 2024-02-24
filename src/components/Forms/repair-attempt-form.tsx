@@ -48,7 +48,7 @@ export default function RepairAttempt({
   let textAreaHeight;
   watchIsSparePartsNeeded == "true"
     ? (textAreaHeight = "h-36 min-h-36")
-    : (textAreaHeight = "h-[13.5rem]");
+    : (textAreaHeight = "h-full");
 
   const onSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
     updateRepairRequest(data);
@@ -133,28 +133,29 @@ export default function RepairAttempt({
               rules={{ required: true }}
             />
           </div>
+          <div className="flex flex-col gap-4 h-56">
+            {watchIsSparePartsNeeded === "true" && (
+              <FieldInput
+                name="spareParts"
+                label="Parts needed"
+                placeholder="e.g. 2x screws..."
+                control={control}
+                rules={{
+                  required: watchIsSparePartsNeeded === "true" ? true : false
+                }}
+              />
+            )}
 
-          {watchIsSparePartsNeeded === "true" && (
-            <FieldInput
-              name="spareParts"
-              label="Parts needed"
-              placeholder="e.g. 2x screws..."
+            {/* Repair Comment */}
+            <FieldTextArea
+              name="repairComment"
+              label="Repair Comment"
+              placeholder="Describe the repair job in detail..."
+              height={textAreaHeight}
               control={control}
-              rules={{
-                required: watchIsSparePartsNeeded === "true" ? true : false
-              }}
+              rules={{ required: true }}
             />
-          )}
-
-          {/* Repair Comment */}
-          <FieldTextArea
-            name="repairComment"
-            label="Repair Comment"
-            placeholder="Describe the repair job in detail..."
-            height={textAreaHeight}
-            control={control}
-            rules={{ required: true }}
-          />
+          </div>
         </div>
         {/* Submit */}
         <div className="relative bottom-0 border-0 border-red-500 lg:mt-8 mt-6 w-full">
