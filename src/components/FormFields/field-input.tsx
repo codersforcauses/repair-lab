@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import Image from "next/image";
 import {
   FieldValues,
@@ -14,7 +15,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
   id?: string;
   label?: string;
   placeholder?: string;
-  icon?: string;
+  icon?: string | ReactElement;
   type?: string;
   width?: string;
 }
@@ -46,10 +47,28 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   const normalBorderStyle = `border-grey-300`;
   const inputStyle = `mr-1 w-full h-full text-base placeholder:text-gray-500 focus:outline-none focus:ring-0`;
   // format it like YYYY-MM-DDThh:mm
+
+  const displayIcon = (icon: string | ReactElement) => {
+    if (typeof icon == "string") {
+      return (
+        <Image
+          src={icon}
+          alt="icon"
+          width={16}
+          height={16}
+          className="relative min-h-0 w-4 min-w-0 shrink-0"
+        />
+      );
+    } else {
+      return icon;
+    }
+  };
+
   const convertedValue =
     field.value && type === "datetime-local"
       ? isoToDatePickerValue(new Date(field.value))
       : field.value;
+
   return (
     <div
       className={`${baseStyle} ${
@@ -72,17 +91,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
           field.onChange(value);
         }}
       />
-      {!icon ? (
-        ""
-      ) : (
-        <Image
-          src={icon}
-          alt="icon"
-          width={16}
-          height={16}
-          className="relative min-h-0 w-4 min-w-0 shrink-0"
-        />
-      )}
+      {icon && displayIcon(icon)}
       {fieldState.invalid && <Error {...props} />}
     </div>
   );
