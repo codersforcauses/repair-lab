@@ -115,7 +115,7 @@ export default function ProfilePopover() {
             </div>
 
             <div
-              className={`relative mx-auto mt-5 w-72 h-24 border-2 rounded-xl ${
+              className={`relative mx-auto mt-5 w-72 h-24 border-2 rounded-md ${
                 isEdit
                   ? "border-lightAqua-200 bg-white"
                   : "border-slate-300 bg-slate-50 text-slate-500"

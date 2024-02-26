@@ -59,7 +59,7 @@ const Dropdown: React.FC = () => {
   return (
     <div ref={wrapperRef}>
       <Menu as="div" className="relative inline-block text-left w-full">
-        <div className="flex border-2 border-gray-300 rounded-md">
+        <div className="flex border-2 border-slate-300 rounded-md">
           <div className="flex flex-wrap items-center flex-grow">
             {selectedItems.map((item) => (
               <SelectedOption key={item} option={item} onRemove={removeItem} />
@@ -67,7 +67,7 @@ const Dropdown: React.FC = () => {
             {(!selectedItems.length || isOpen) && (
               <input
                 type="text"
-                className="flex-1 pl-1 m-1 text-sm"
+                className="flex-1 pl-1 m-1 text-sm w-full focus:outline-none"
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
                 onFocus={() => setIsOpen(true)}
