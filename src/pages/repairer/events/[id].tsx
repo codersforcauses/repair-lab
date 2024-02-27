@@ -8,14 +8,21 @@ import { Tab } from "@headlessui/react";
 
 import RequestView from "@/components/EventBox/request-view";
 import LoadingSpinner from "@/components/UI/loading-spinner";
-import { useEvent } from "@/hooks/events";
+import { useEvent, useRepairRequests } from "@/hooks/events";
+import { RepairRequestResponse } from "@/types";
+import { formatDate } from "@/utils";
 
 const Home = () => {
   const {
-    query: { id: eventId }
+    query: { id }
   } = useRouter();
 
-  const { data: event } = useEvent(eventId as string);
+  const eventId = id?.toString();
+
+  const { data: event } = useEvent(eventId);
+
+  const { data: repairRequests, isLoading: isRepairRequestsLoading } =
+    useRepairRequests({ eventId });
 
   return (
     <div>
@@ -63,20 +70,47 @@ const Home = () => {
               </Tab>
             </Tab.List>
 
-            <Tab.Panels className="flex-col text-center break-words justify-center pb-3">
+            <Tab.Panels className="relative flex-row items-center justify-center mb-10">
               <Tab.Panel>
-                <div className="">
-                  {/* Replace with a proper backend call */}
-                  <RequestView />
-                  <RequestView />
-                </div>
+                {/* CONTENT */}
+                {isRepairRequestsLoading ? (
+                  <div className="flex justify-center">
+                    <LoadingSpinner />
+                  </div>
+                ) : repairRequests && repairRequests.items.length > 0 ? (
+                  <div>
+                    <ul id="repairRequestList">
+                      {repairRequests.items.map(
+                        ({
+                          id,
+                          createdBy,
+                          requestDate,
+                          itemType,
+                          itemBrand,
+                          description
+                        }: RepairRequestResponse) => (
+                          <RequestView
+                            key={id}
+                            repairRequestId={id}
+                            requestDate={formatDate(String(requestDate))}
+                            createdBy={createdBy}
+                            itemType={itemType}
+                            itemBrand={itemBrand}
+                            description={description}
+                          />
+                        )
+                      )}
+                    </ul>
+                  </div>
+                ) : (
+                  <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+                    No repair requests found for this event.
+                  </div>
+                )}
               </Tab.Panel>
               <Tab.Panel>
-                <div className="">
-                  <RequestView />
-                  <RequestView />
-                  <RequestView />
-                  <RequestView />
+                <div className="relative flex w-full justify-center text-2xl mt-12 text-center text-slate-600 italic font-semibold  text-opacity-90">
+                  No available repair requests found for this event.
                 </div>
               </Tab.Panel>
             </Tab.Panels>

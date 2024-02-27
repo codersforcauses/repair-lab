@@ -2,12 +2,11 @@
 
 import { Dispatch, Fragment, ReactNode, SetStateAction } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { BsXCircle } from "react-icons/bs";
-
+import { AiFillCloseCircle } from "react-icons/ai";
 type ModalProps = {
   showModal: boolean;
   setShowPopup: Dispatch<SetStateAction<boolean>>;
-  title?: string;
+  title?: string | ReactNode;
   width?: string;
   height?: string;
   children?: ReactNode;
@@ -58,8 +57,8 @@ const Modal = ({
                 >
                   {title ? (
                     <Dialog.Title
-                      as="h3"
-                      className="mt-0 border-b border-lightAqua-300 p-5 text-center text-2xl font-medium leading-6"
+                      as={`${typeof title == "string" ? "h3" : "div"}`}
+                      className="mt-0 border-b  border-gray-200 p-4 text-center text-3xl font-semibold leading-6 mb-5"
                     >
                       {title}
                     </Dialog.Title>
@@ -68,12 +67,11 @@ const Modal = ({
                   )}
 
                   <div>{children}</div>
-
                   <button
                     onClick={() => setShowPopup(false)}
                     className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
                   >
-                    <BsXCircle className="text-lightAqua-300 hover:text-gray-600" />
+                    <AiFillCloseCircle className="text-2xl" color="teal" />
                   </button>
                 </Dialog.Panel>
               </Transition.Child>

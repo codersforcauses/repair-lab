@@ -14,6 +14,7 @@ export type ImageCarouselProps = { images: string[] };
  */
 export default function ImageCarousel({ ...props }: ImageCarouselProps) {
   const [imageIndex, setCurrentImageIndex] = useState(0);
+  const hasimages = props.images.length > 0;
 
   // Styles
   const baseSliderStyle =
@@ -26,7 +27,16 @@ export default function ImageCarousel({ ...props }: ImageCarouselProps) {
   const buttonSize = 30;
   const buttonStyle =
     "text-primary-500 hover:text-primary-400 transition onclick:transform onclick:scale-110";
-
+  if (!hasimages)
+    return (
+      <>
+        <div className=" m-36">
+          <h1 className="text-xl text-center">
+            No Images for this Repair Request
+          </h1>
+        </div>
+      </>
+    );
   return (
     <>
       <div className="flex flex-row relative gap-2 w-full h-80">
