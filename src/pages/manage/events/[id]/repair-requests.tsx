@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { GoPlus } from "react-icons/go";
 
 import ClearFiltersButton from "@/components/Button/clear-filters-button";
-import Card, { CardProps } from "@/components/Cards/card";
+import RepairRequestCard from "@/components/Cards/repair-request-card";
 import RepairAttemptForm from "@/components/Forms/create-repair-request";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
@@ -133,13 +133,7 @@ export default function RepairRequests() {
     return repairRequests.items.map((item: RepairRequestResponse) => {
       return (
         <div key={item.id}>
-          <Card
-            props={
-              {
-                repairRequestProps: item
-              } as CardProps
-            }
-          />
+          <RepairRequestCard repairRequestProps={item} />
         </div>
       );
     });

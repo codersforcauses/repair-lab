@@ -27,6 +27,8 @@ export default function ImageCarousel({ ...props }: ImageCarouselProps) {
   const buttonSize = 30;
   const buttonStyle =
     "text-primary-500 hover:text-primary-400 transition onclick:transform onclick:scale-110";
+
+  // If no images, display a message
   if (!hasimages)
     return (
       <>
