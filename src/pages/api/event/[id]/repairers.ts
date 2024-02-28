@@ -1,59 +1,23 @@
-import { HttpStatusCode } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
 import { modifyEventRepairerSchema } from "@/schema/event";
 import userService from "@/services/user";
 import { User } from "@/types";
-import { User } from "@/types";
 
 import prisma from "../../../../lib/prisma";
 
 export default apiHandler({
-  get: getRepairer,
-  post: createRepairer,
-  delete: deleteRepairer
   get: getRepairers,
-  post: createRepairer
+  post: createRepairer,
+  delete: deleteRepairers
 });
 
 interface responseEventRepairer {
   message: string;
-}
-async function getRepairer(req: NextApiRequest, res: NextApiResponse<User[]>) {
-  const { id } = req.query;
-
-  if (typeof id !== "string") {
-    throw new ApiError(HttpStatusCode.BadRequest, "Invalid id");
-  }
-
-  const event = await prisma.event.findUnique({
-    where: { id: id }
-  });
-
-  if (!event) {
-    throw new ApiError(HttpStatusCode.NotFound, "Event not found");
-  }
-
-  const repairers = await prisma.eventRepairer.findMany({
-    where: {
-      eventId: id
-    }
-  });
-  if (!repairers) {
-    throw new ApiError(HttpStatusCode.NotFound, "Repairers not found");
-  }
-
-  const staff = await userService.getUsers(
-    repairers.map((repairer) => repairer.userId)
-  );
-
-  const filteredStaff = staff.filter(
-    (user): user is User => user !== undefined
-  );
-  res.status(200).json(filteredStaff);
 }
 
 async function createRepairer(
@@ -96,7 +60,7 @@ async function createRepairer(
     .json({ message: "Successfully added volunteers to an event" });
 }
 
-async function getRepairers(req: NextApiRequest, res: NextApiResponse) {
+async function getRepairers(req: NextApiRequest, res: NextApiResponse<User[]>) {
   const eventId = z.string().parse(req.query.id);
   const result = await getEventRepairers(eventId as string);
 
@@ -123,20 +87,21 @@ async function getEventRepairers(id: string) {
   if (Object.keys(repairersUsers).length !== userIds.length) {
     console.error("Mismatch in users from clerk and database");
   }
-
-  return userIds.map((userId) => {
+  const repairers = userIds.map((userId) => {
     const userData = repairersUsers[userId];
 
     return {
-      userId: userId,
+      id: userId,
       firstName: userData?.firstName,
       lastName: userData?.lastName,
-      email: userData?.emailAddress
+      emailAddress: userData?.emailAddress
     };
   });
+
+  return repairers as User[];
 }
 
-async function deleteRepairer(
+async function deleteRepairers(
   req: NextApiRequest,
   res: NextApiResponse<responseEventRepairer>
 ) {
@@ -170,5 +135,5 @@ async function deleteRepairer(
 
   res
     .status(200)
-    .json({ message: "Successfully removed volunteers from an event" });
+    .json({ message: "Successfully deleted volunteers from an event" });
 }

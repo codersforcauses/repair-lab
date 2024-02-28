@@ -78,10 +78,10 @@ describe("GET /api/event/:id/repairers", () => {
 
         const expectedRepairers = [
           {
-            userId: "Mock Repairer",
+            id: "Mock Repairer",
             firstName: "Mock",
             lastName: "Repairer",
-            email: "test@gmail.com"
+            emailAddress: "test@gmail.com"
           }
         ];
 
