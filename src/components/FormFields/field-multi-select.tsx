@@ -65,7 +65,7 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
-              "flex h-10 justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-left text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
+              "flex h-10 justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-left text-base font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
               fieldState.invalid ? `ring-red-500` : `ring-grey-300`,
               width
             )}

@@ -1,13 +1,24 @@
 import { forwardRef } from "react";
 
+import cn from "@/lib/classnames";
+
+interface HoverOpacityButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  scaleOnHover?: boolean;
+}
+
 const HoverOpacityButton = forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ children, className, ...props }, ref) => {
+  HoverOpacityButtonProps
+>(({ children, className, scaleOnHover = true, ...props }, ref) => {
   return (
     <button
       ref={ref}
-      className={`hover:enabled:opacity-50 transition-all duration-150 hover:enabled:scale-105 active:enabled:scale-95 disabled:opacity-50 ${className}`}
+      className={cn(
+        `hover:enabled:opacity-50 transition-all duration-150 disabled:opacity-50`,
+        scaleOnHover ? "hover:enabled:scale-110 active:enabled:scale-90" : "",
+        className
+      )}
       {...props}
     >
       {children}
