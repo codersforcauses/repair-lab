@@ -31,6 +31,16 @@ export default function RepairRequestCard({
   }
 
   const [showModal, setShowModal] = useState(false);
+  let assignee;
+  if (repairRequestProps.assignedTo) {
+    assignee =
+      repairRequestProps.assignedTo.firstName &&
+      repairRequestProps.assignedTo.lastName
+        ? `${repairRequestProps.assignedTo.firstName} ${repairRequestProps.assignedTo?.lastName}`
+        : repairRequestProps.assignedTo.emailAddress;
+  } else {
+    assignee = "Unassigned";
+  }
 
   return (
     <div
@@ -77,9 +87,7 @@ export default function RepairRequestCard({
             </div>
             <div className="my-2">
               <h4 className="font-bold">Assigned to</h4>
-              {repairRequestProps.assignedTo?.lastName
-                ? `${repairRequestProps.assignedTo?.firstName} ${repairRequestProps.assignedTo?.lastName}`
-                : "-"}
+              {assignee}
             </div>
           </div>
         </div>
