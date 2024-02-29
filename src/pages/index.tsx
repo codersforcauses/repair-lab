@@ -4,6 +4,7 @@ import type { ReactElement } from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 import Button from "@/components/Button/index";
+import EventsCarousel from "@/components/Carousel/events-carousel";
 import NavBar from "@/components/NavBar";
 
 import type { NextPageWithLayout } from "./_app";
@@ -164,25 +165,7 @@ const Home: NextPageWithLayout = () => {
           {" "}
           UPCOMING EVENTS{" "}
         </span>
-        <div className="flex flex-col shadow-lg shadow-darkAqua-700">
-          <Image
-            src="/images/jeans_repair.jpg"
-            alt="A person repairing jeans"
-            width={500}
-            height={500}
-            className="rounded-t-lg"
-          />
-          <div className="rounded-b-lg bg-grey-100 pt-2 text-center text-xl">
-            <span className="pb-10 font-bold"> Event Name </span>
-            <div className="pt-2 text-sm">
-              <h1 className="font-bold"> Clothing Repair Workshop </h1>
-              <h2>Date: March 14th</h2>
-              <p className="pb-3 pl-10 pr-10 pt-2">
-                Have any torned clothes? Bring them to our clothing repair!
-              </p>
-            </div>
-          </div>
-        </div>
+        <EventsCarousel />
       </section>
 
       <section className="min-h-[25rem] w-full bg-white flex flex-col justify-center">
