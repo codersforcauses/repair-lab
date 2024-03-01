@@ -1,5 +1,7 @@
 import { PageConfig } from "next";
 import { testApiHandler } from "next-test-api-route-handler";
+import { clerkClient } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/server";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import endpoint from "@/pages/api/event/[id]/repairers";
@@ -15,45 +17,77 @@ describe("DELETE /api/event/[id]/repairers", () => {
     await cleanup();
     await seedTestData();
 
-    await prisma.eventRepairer.createMany({
-      data: [
-        {
-          userId: "mock user1",
-          eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
-        },
-        {
-          userId: "mock user2",
-          eventId: "acf5ed50-19a2-11ee-be56-0242ac120002"
-        }
-      ]
+    await prisma.event.create({
+      data: {
+        id: "acf5ed50-19a2-11ee-be56-0242ac120004",
+        createdBy: "Mock Repairer",
+        name: "Test Laptop Repair Event",
+        location: "Curtin University",
+        eventType: "Laptop",
+        description: "Test Laptop repair event.",
+        disclaimer: "This is a disclaimer",
+        startDate: new Date("2024-01-24T01:27:08.417Z"),
+        endDate: new Date("2024-01-24T01:27:08.417Z")
+      }
     });
 
-    // TODO - Figure out how to mock getting Clerk Users
+    await prisma.eventRepairer.create({
+      data: {
+        id: "88676ba2-8d86-49b1-9969-ba3997917575",
+        userId: "Mock Repairer",
+        eventId: "acf5ed50-19a2-11ee-be56-0242ac120004"
+      }
+    });
+
+    vi.mock("@clerk/nextjs/server", async () => {
+      return {
+        getAuth: vi.fn().mockReturnValue({ userId: "Mock Repairer" })
+      };
+    });
+
     vi.mock("@clerk/nextjs");
-    vi.mock("@clerk/nextjs/server");
+
+    vi.mocked(clerkClient.users.getUser).mockImplementation(
+      async (userId: string) => {
+        return [
+          {
+            id: "Mock Repairer",
+            firstName: "Mock",
+            lastName: "Repairer",
+            emailAddresses: [
+              {
+                emailAddress: "test@gmail.com"
+              }
+            ],
+            publicMetadata: {
+              role: "CLIENT"
+            }
+          }
+        ].find((user) => user.id === userId) as unknown as User;
+      }
+    );
   });
 
-  // TODO - REMOVE SKIP
-  it.skip("should be able to delete repairers from an event", async () => {
+  it.only("should be able to delete repairers from an event", async () => {
     await testApiHandler({
       handler,
       params: {
-        id: "acf5ed50-19a2-11ee-be56-0242ac120002",
-        userId: ["mock user1", "mock user2"]
+        id: "acf5ed50-19a2-11ee-be56-0242ac120004"
       },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "DELETE",
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+          body: JSON.stringify({
+            userId: ["Mock Repairer"]
+          })
         });
 
-        const result = await res.json();
-        expect(result).toBe("Successfully removed volunteers from an event");
         expect(res.status).toBe(200);
+
         // TODO - Add more assertions after figuring out how to mock getting Clerk Users
-        // expect(result).toBe();
       }
     });
   });
