@@ -42,10 +42,10 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
+  const baseStyle = `relative mb-2 flex h-12 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
-  const inputStyle = `mr-1 w-full h-full text-sm placeholder:text-gray-500 focus:outline-none focus:ring-0`;
+  const inputStyle = `mr-1 w-full h-full text-base placeholder:text-gray-500 focus:outline-none focus:ring-0`;
   // format it like YYYY-MM-DDThh:mm
 
   const displayIcon = (icon: string | ReactElement) => {
