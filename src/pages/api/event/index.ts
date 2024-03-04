@@ -6,7 +6,7 @@ import { PaginationResponse } from "@/lib/pagination";
 import { createEventSchema, getEventSchema } from "@/schema/event";
 import eventService from "@/services/event";
 import userService from "@/services/user";
-import { ErrorResponse, EventResponse, UserRole } from "@/types";
+import { ErrorResponse, EventResponse, SortDirection, UserRole } from "@/types";
 
 import prisma from "../../../lib/prisma";
 
@@ -32,7 +32,7 @@ async function getEvents(
     perPage
   } = getEventSchema.parse(req.query);
 
-  const sortObj: Record<string, "asc" | "desc"> = {
+  const sortObj: Record<string, SortDirection> = {
     [sortKey]: sortMethod
   };
   const { userId, role } = await userService.getAuth(req);
@@ -110,6 +110,6 @@ async function createEvent(
       endDate: new Date(endDate)
     }
   });
-  const eventResponse = (await eventService.toClientResponse([newEvent]))[0];
+  const eventResponse = await eventService.toClientResponse(newEvent);
   res.status(200).json(eventResponse);
 }

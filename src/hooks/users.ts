@@ -1,8 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { httpClient } from "@/lib/base-http-client";
-import { UserResponse, UserRole } from "@/types";
+import { PaginationResponse } from "@/lib/pagination";
+import { User, UserResponse, UserRole } from "@/types";
 
 export const useUsers = (
   perPage: number,
@@ -46,6 +52,31 @@ export const useUserRole = (userId: string | undefined) => {
     staleTime: 60 * (60 * 1000), // 1 hr
     gcTime: 65 * (60 * 1000), // 1 hr and 5 mins
     enabled: !!userId
+  });
+};
+
+export const useInfiniteUser = (query: string, perPage: number = 10) => {
+  return useInfiniteQuery<PaginationResponse<User>>({
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.meta.page != lastPage.meta.lastPage
+        ? lastPage.meta.page + 1
+        : undefined,
+    queryKey: ["infinite-users", perPage, query],
+    queryFn: async ({ pageParam }) => {
+      const params = new URLSearchParams({
+        perPage: perPage.toString(),
+        orderBy: "-created_at",
+        page: (pageParam as number).toString(),
+        query
+      });
+
+      const url = `/user?${params.toString()}`;
+
+      const response = await httpClient.get<PaginationResponse<User>>(url);
+
+      return response.data;
+    }
   });
 };
 

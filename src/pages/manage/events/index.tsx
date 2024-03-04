@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { EventStatus } from "@prisma/client";
 import { SubmitHandler } from "react-hook-form";
-import { FaFilterCircleXmark, FaPlus } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
 
+import ClearFiltersButton from "@/components/Button/clear-filters-button";
 import EventFormEditButton from "@/components/Button/event-form-edit-button";
-import HoverOpacityButton from "@/components/Button/hover-opacity-button";
 import EventForm from "@/components/Forms/event-form";
 import Modal from "@/components/Modal";
 import NavBar from "@/components/NavBar";
@@ -170,17 +170,7 @@ const Events: NextPageWithLayout = () => {
                 setFilterState((state) => ({ ...state, status }))
               }
             />
-            <div className="text-center ">
-              <HoverOpacityButton
-                className="h-10 w-10 rounded-full bg-gray-100 text-gray-500"
-                title="Clear Filters"
-                onClick={resetQuery}
-              >
-                <div className="flex justify-center items-center bg-[color] rounded-full h-[size] w-[size]">
-                  <FaFilterCircleXmark className="text-[1rem] transform translate-y-[2px]" />
-                </div>
-              </HoverOpacityButton>
-            </div>
+            <ClearFiltersButton onClick={resetQuery} />
           </div>
           <div className="flex gap-2 items-center">
             <Search
