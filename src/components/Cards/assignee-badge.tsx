@@ -30,9 +30,8 @@ export default function AssigneeBadge({
     query: { id: eventId }
   } = useRouter();
   const { data: repairers } = useRepairers(eventId as string);
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest(
-    repairRequestId as string
-  );
+  const { mutate: updateRepairRequest } =
+    useUpdateRepairRequest(repairRequestId);
 
   const handleClick = (event: SyntheticEvent) => {
     event.stopPropagation();
@@ -112,7 +111,7 @@ export default function AssigneeBadge({
                     acceptedTasksCount={repairer.acceptedTasksCount}
                     email={repairer.email}
                     key={index}
-                    assigned={repairer.userId == assignedTo}
+                    assigned={repairer.userId === assignedTo}
                   />
                 ))}
             </div>

@@ -71,7 +71,6 @@ export const updateRepairRequestSchema = z.object({
         .positive({ message: "Time in hours must be a positive number" })
     )
     .optional(),
-  isRepaired: z.string().optional(),
   isSparePartsNeeded: z.string().optional(),
   spareParts: z.string().optional(),
   repairComment: z

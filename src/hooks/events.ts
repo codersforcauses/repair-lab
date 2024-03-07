@@ -160,6 +160,6 @@ export const useRepairers = (eventId: string | undefined) => {
   return useQuery({
     queryKey: ["repairers", eventId],
     queryFn,
-    enabled: eventId != undefined
+    enabled: !!eventId
   });
 };

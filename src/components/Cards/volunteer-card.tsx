@@ -16,7 +16,7 @@ type Props = {
   avatar: string;
   acceptedTasksCount: number;
   repairRequestId: string | undefined;
-  assigned?: boolean;
+  assigned: boolean;
 };
 
 const inter = Inter({ subsets: ["latin"] });

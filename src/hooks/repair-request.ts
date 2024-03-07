@@ -32,7 +32,7 @@ export const useRepairRequest = (id: string | undefined) => {
   return useQuery({
     queryKey: [id],
     queryFn,
-    enabled: id != undefined
+    enabled: !!id
   });
 };
 
