@@ -65,11 +65,15 @@ export const addEventRepairerSchema = z.object({
 
 export const updateEventSchema = z
   .object({
-    name: z.string().optional(),
-    location: z.string().optional(),
-    description: z.string().optional(),
+    name: z.string().min(1, { message: "Event name is required." }),
+    location: z.string({ required_error: "Event location is required" }),
+    description: z
+      .string({ required_error: "Description of the event is required" })
+      .min(5, {
+        message: "Description of the event must be more than 5 characters long."
+      }),
     disclaimer: z.string().optional(),
-    eventType: z.string().optional(),
+    eventType: z.string().min(1, { message: "Event type is required" }),
     startDate: z
       .string()
       .datetime({ offset: true, message: "Invalid date format for startDate" })

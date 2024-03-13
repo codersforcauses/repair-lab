@@ -4,9 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import Button from "@/components/Button";
+import SingleSelect from "@/components/FormFields/CommonFields/field-single-select";
+import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
-import SingleSelect from "@/components/FormFields/field-single-select";
-import FieldTextArea from "@/components/FormFields/field-text-area";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
 import { Brand, useBrands } from "@/hooks/brands";
 import { EventOption, useEventOptions } from "@/hooks/events";

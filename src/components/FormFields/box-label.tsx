@@ -12,12 +12,15 @@ Output:
 */
 export default function Label<T extends FieldValues = FieldValues>({
   label,
-  ...props
+  ...controllerProps
 }: FormProps<T>) {
   return (
-    <label className="absolute -top-2 left-2 flex flex-row items-center gap-0.5 rounded-full bg-white px-1 text-sm font-semibold text-black">
+    <label
+      htmlFor={controllerProps.name}
+      className="absolute -top-3 left-3 gap-0.5 rounded-full max-w-max bg-white px-2 text-sm font-semibold text-black"
+    >
       {label}
-      {props.rules?.required ? (
+      {controllerProps.rules?.required ? (
         <span className="text-sm font-semibold text-red-500"> *</span>
       ) : (
         ""

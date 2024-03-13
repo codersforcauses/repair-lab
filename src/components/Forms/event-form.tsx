@@ -3,9 +3,9 @@ import type { ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldInput from "@/components/FormFields/field-input";
-import FieldSingleSelect from "@/components/FormFields/field-single-select";
-import FieldTextArea from "@/components/FormFields/field-text-area";
+import FieldInput from "@/components/FormFields/CommonFields/field-input";
+import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
+import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import { createEventSchema } from "@/schema/event";
 import { CreateEvent } from "@/types";
 
@@ -63,6 +63,7 @@ export default function EventForm({
             control={control}
             name="location"
             label="Location"
+            icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
           ></FieldInput>
 
           <FieldInput

@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldInput from "@/components/FormFields/field-input";
-import FieldSingleSelect from "@/components/FormFields/field-single-select";
-import FieldTextArea from "@/components/FormFields/field-text-area";
+import FieldInput from "@/components/FormFields/CommonFields/field-input";
+import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
+import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateEventSchema } from "@/schema/event";
 import { EventResponse } from "@/types";
@@ -61,7 +61,6 @@ export default function PrepopulatedEventForm({
           label="Description"
           placeholder="Enter a description for the event"
           control={control}
-          rules={{ required: false }}
         />
 
         <FieldInput

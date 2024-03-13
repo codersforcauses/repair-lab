@@ -6,6 +6,7 @@ import {
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import FieldWrapper from "@/components/FormFields/field-wrapper";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T>,
     Omit<React.HTMLAttributes<HTMLTextAreaElement>, "defaultValue"> {
@@ -17,13 +18,11 @@ export interface FormProps<T extends FieldValues = FieldValues>
   height?: string;
 }
 
-/*
-This is a component for the HTML `<textarea>' tag
-Input:
-  label: The label displayed on the text box
-  placeholder: The placeholder message displayed on the text box
-Output:
-  A large text box that is compatible w/ React-hook-forms
+/**
+This is an all-in one component for the HTML `<textarea>' tag.
+  @param label: The label displayed on the text box
+  @param laceholder: The placeholder message displayed on the text box
+  @returns A large text box that is compatible w/ React-hook-forms
 */
 export default function FieldTextArea<T extends FieldValues = FieldValues>({
   id,
@@ -35,17 +34,10 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `relative mb-2 flex ${height} ${width} flex-row items-center justify-between rounded-lg border border-grey-300 px-3 shadow hover:shadow-grey-300`;
-  const errorBorderStyle = `border-red-500`;
-  const normalBorderStyle = `border-grey-300`;
-  const textAreaStyle = `overflow-wrap:break-word pt-3 h-full w-full resize-none overflow-y-auto text-base placeholder:text-gray-500 placeholder:font-normal focus:outline-none focus:ring-0`;
+  const textAreaStyle = `overflow-wrap:break-word p-3 h-full w-full resize-none overflow-y-auto text-base placeholder:text-gray-500 placeholder:font-normal rounded-lg active:border-grey-500 focus:outline-none focus:ring-0`;
 
   return (
-    <div
-      className={`${baseStyle} ${
-        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
-      }`}
-    >
+    <FieldWrapper fieldState={fieldState} size="h-36">
       <Label label={!label ? props.name : label} {...props} />
       <textarea
         className={textAreaStyle}
@@ -54,6 +46,6 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
         {...field}
       />
       {fieldState.invalid && <Error {...props} />}
-    </div>
+    </FieldWrapper>
   );
 }

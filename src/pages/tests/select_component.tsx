@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import FieldMultiSelect from "@/components/FormFields/field-multi-select";
-import FieldSingleSelect from "@/components/FormFields/field-single-select";
+import FieldMultiSelect from "@/components/FormFields/CommonFields/field-multi-select";
+import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
 import Select from "@/components/select";
 import SelectUser from "@/components/select-user";
 import { User } from "@/types";

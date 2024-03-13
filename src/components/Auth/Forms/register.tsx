@@ -9,7 +9,7 @@ import VerificationForm from "@/components/Auth/Forms/verification";
 import Separator from "@/components/Auth/separator";
 import Button from "@/components/Button";
 import SignInOAuthButton from "@/components/Button/sign-in-oauth";
-import FieldInput from "@/components/FormFields/field-input";
+import FieldInput from "@/components/FormFields/CommonFields/field-input";
 import Logo from "@/components/UI/logoSvg";
 import { useAuth } from "@/hooks/auth";
 

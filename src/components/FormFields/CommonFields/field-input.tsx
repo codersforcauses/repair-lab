@@ -8,7 +8,9 @@ import {
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import FieldWrapper from "@/components/FormFields/field-wrapper";
 import { isoToDatePickerValue } from "@/lib/datetime";
+
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T>,
     Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
@@ -20,16 +22,14 @@ export interface FormProps<T extends FieldValues = FieldValues>
   width?: string;
 }
 
-/*
-This is a component for the HTML `<input>' tag
-Input:
-  id: The ID for the the input
-  label: The label displayed on the text box
-  placeholder: The placeholder message displayed on the text box
-  icon: An optional Image path to display an .svg file
-Output:
-  A input text box that is compatible w/ React-hook-forms
-*/
+/**
+ This is a all-in-one component for the HTML `<input>' tag
+  @param id: The ID for the the input
+  @param label: The label displayed on the text box
+  @param placeholder: The placeholder message displayed on the text box
+  @param icon: An optional Image path to display an .svg file
+  @returns A input text box that is compatible w/ React-hook-forms
+ */
 
 export default function FieldInput<T extends FieldValues = FieldValues>({
   id,
@@ -38,14 +38,11 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   icon,
   type,
   width = "w-full",
-  ...props
+  ...controllerProps
 }: FormProps<T>) {
-  const { field, fieldState } = useController(props);
+  const { field, fieldState } = useController(controllerProps);
 
-  const baseStyle = `relative mb-2 flex h-12 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
-  const errorBorderStyle = `border-red-500`;
-  const normalBorderStyle = `border-grey-300`;
-  const inputStyle = `mr-1 w-full h-full text-base placeholder:text-gray-500 focus:outline-none focus:ring-0`;
+  const inputStyle = `w-full h-full text-base placeholder:text-gray-500 focus:outline-none focus:ring-0 rounded-lg px-3`;
   // format it like YYYY-MM-DDThh:mm
 
   const displayIcon = (icon: string | ReactElement) => {
@@ -56,7 +53,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
           alt="icon"
           width={16}
           height={16}
-          className="relative min-h-0 w-4 min-w-0 shrink-0"
+          className="relative min-h-0 w-4 min-w-0 shrink-0 mr-3"
         />
       );
     } else {
@@ -70,17 +67,13 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
       : field.value;
 
   return (
-    <div
-      className={`${baseStyle} ${
-        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
-      }`}
-    >
-      <Label label={!label ? props.name : label} {...props} />
+    <FieldWrapper fieldState={fieldState}>
+      <Label label={label ?? controllerProps.name} {...controllerProps} />
       <input
-        type={!type ? "text" : `${type}`}
+        type={type ?? "text"}
         className={inputStyle}
-        placeholder={!placeholder ? `Enter ${props.name}` : `${placeholder}`}
-        id={!id ? `${props.name}` : `${id}`}
+        placeholder={placeholder ?? `Enter ${controllerProps.name}`}
+        id={id ?? `${controllerProps.name}`}
         {...field}
         value={convertedValue}
         onChange={(e) => {
@@ -92,7 +85,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
         }}
       />
       {icon && displayIcon(icon)}
-      {fieldState.invalid && <Error {...props} />}
-    </div>
+      {fieldState.invalid && <Error {...controllerProps} />}
+    </FieldWrapper>
   );
 }

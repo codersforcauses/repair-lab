@@ -10,6 +10,7 @@ import { HiCheck } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import FieldWrapper from "@/components/FormFields/field-wrapper";
 import { Option } from "@/types";
 
 export interface FormProps<T extends FieldValues = FieldValues>
@@ -25,19 +26,15 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-/*
+/**
 This is a component for a multiselect dropdown menu
-Will display a multiselect dropdown displaying options inputted
-Input:
-  options: { id: number; text: string }[]; // array of objects with option text and id number
-  placeholder?: string; // placeholder string before any option is selected
-  label?: string; // text on border of button
-  width?: string; // custom width of component
-  height?: string; // custom height of component
-Output:
-  A multiselect dropdown that is compatible w/ React-hook-forms 
+  @param {{ id: number; text: string }[]} options array of objects with option text and id number
+  @param {string} placeholder  placeholder string before any option is selected
+  @param {string} label  text on border of button
+  @param {string} width  custom width of component
+  @param {string} height  custom height of component
+ @returns {JSX.Element} A multiselect dropdown that is compatible w/ React-hook-forms 
 */
-
 export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
   options,
   placeholder,
@@ -45,15 +42,12 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
   width = "w-full",
   height = "h-10",
   ...props
-}: FormProps<T>) {
+}: FormProps<T>): JSX.Element {
   const { field, fieldState } = useController(props);
   const [selectedGroup, setSelectedGroup] = useState<Option[]>([]);
 
   return (
-    <div
-      className={`relative mb-2 text-left ${width} ${height}`}
-      onChange={field.onChange}
-    >
+    <FieldWrapper fieldState={fieldState} onChange={field.onChange}>
       <Listbox
         value={selectedGroup}
         onChange={(e) => {
@@ -129,6 +123,6 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
           </Transition>
         </div>
       </Listbox>
-    </div>
+    </FieldWrapper>
   );
 }

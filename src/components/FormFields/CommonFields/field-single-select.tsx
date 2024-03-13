@@ -10,6 +10,7 @@ import { HiCheck, HiChevronDown } from "react-icons/hi";
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import FieldWrapper from "@/components/FormFields/field-wrapper";
 import { Option } from "@/types";
 
 export interface FormProps<T extends FieldValues = FieldValues>
@@ -25,15 +26,12 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-/*
-This is a component for a dropdown menu
-Will display a dropdown displaying options inputted
-Input:
-  options: { id: number; text: string }[]; // array of objects with option text and id number
-  placeholder: string; // placeholder string before any option is selected
-  label?: string; // text on border of button
-Output:
-  A dropdown that is compatible w/ React-hook-forms 
+/** 
+This is a component for a dropdown menu that will display a dropdown displaying options inputted
+  @param {{id: number text: string}} options  Array of objects with option text and id number
+  @param {string} placeholder  placeholder string before any option is selected
+  @param {string} label text on border of button
+  @returns A dropdown that is compatible w/ React-hook-forms 
 */
 
 export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
@@ -47,38 +45,27 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   const { field, fieldState } = useController(props);
   const [displayText, setDisplayText] = useState(field.value?.toString());
 
-  const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-base font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
-  const normalBorderStyle = `ring-grey-300`;
-  const errorBorderStyle = `ring-red-500`;
+  const baseStyle = `flex w-full h-full justify-between overflow-hidden rounded-lg bg-white px-3 py-2 text-base font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   return (
-    <div className={`relative mb-2 inline-block ${width} text-left`}>
+    <FieldWrapper fieldState={fieldState} size={height}>
       <Menu>
-        <div>
-          <Menu.Button
-            className={classNames(
-              `${baseStyle}`,
-              fieldState.invalid
-                ? `${errorBorderStyle}`
-                : `${normalBorderStyle}`
-            )}
-          >
-            <Label label={!label ? props.name : label} {...props} />
-            {fieldState.invalid && <Error {...props} />}
-            {field.value === "" ? (
-              <span className="text-gray-500 font-normal">
-                {!placeholder ? `Select ${props.name}` : `${placeholder}`}
-              </span>
-            ) : (
-              <span className="truncate text-black font-normal">
-                {displayText}
-              </span>
-            )}
-            <HiChevronDown
-              className="ml-auto h-6 w-5 text-grey-600"
-              aria-hidden="true"
-            />
-          </Menu.Button>
-        </div>
+        <Menu.Button className={classNames(`${baseStyle}`)}>
+          <Label label={!label ? props.name : label} {...props} />
+          {fieldState.invalid && <Error {...props} />}
+          {field.value === "" ? (
+            <span className="text-gray-500 font-normal">
+              {!placeholder ? `Select ${props.name}` : `${placeholder}`}
+            </span>
+          ) : (
+            <span className="truncate text-black font-normal">
+              {displayText}
+            </span>
+          )}
+          <HiChevronDown
+            className="ml-auto h-6 w-5 text-grey-600"
+            aria-hidden="true"
+          />
+        </Menu.Button>
 
         <Transition
           as={Fragment}
@@ -89,7 +76,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none">
+          <Menu.Items className="absolute left-0 top-8 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-1 border-grey-300 hover active:shadow-grey-500 ring-grey-500">
             <div className="py-1">
               {options.map((option) => (
                 <Menu.Item key={option.id}>
@@ -128,6 +115,6 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
           </Menu.Items>
         </Transition>
       </Menu>
-    </div>
+    </FieldWrapper>
   );
 }

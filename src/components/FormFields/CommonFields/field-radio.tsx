@@ -6,6 +6,7 @@ import {
 
 import Label from "@/components/FormFields/box-label";
 import Error from "@/components/FormFields/error-msg";
+import FieldWrapper from "@/components/FormFields/field-wrapper";
 
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T>,
@@ -15,14 +16,11 @@ export interface FormProps<T extends FieldValues = FieldValues>
   width?: string;
 }
 
-/*
-This is a component for the HTML `<radio>' tag
-Will display 2 radio buttons asking displaying 'Yes' or 'No'
-Input:
-  ID : The ID for the radio box
-  label: The label displayed on the text box
-Output:
-  A input radio option box for a 'yes' or 'no' question that is compatible w/ React-hook-forms 
+/** 
+An all-in-one component for the HTML '<radio>' tag
+@param id The ID for the radio box
+@param label The label displayed on the text box
+@returns An input radio option box for a 'yes' or 'no' question that is compatible w/ React-hook-forms 
 */
 export default function FieldRadio<T extends FieldValues = FieldValues>({
   id,
@@ -32,17 +30,10 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const baseStyle = `relative mb-2 flex h-10 ${width} flex-row items-center justify-between rounded-lg border px-3 shadow hover:shadow-grey-300`;
-  const errorBorderStyle = `border-red-500`;
-  const normalBorderStyle = `border-grey-300`;
   const radioStyle = `my-auto flex flex-row items-start gap-4 text-xs`;
 
   return (
-    <div
-      className={`${baseStyle} ${
-        fieldState.invalid ? `${errorBorderStyle}` : `${normalBorderStyle}`
-      }`}
-    >
+    <FieldWrapper fieldState={fieldState} size={width}>
       <Label label={!label ? props.name : label} {...props} />
       <div className={radioStyle}>
         <label htmlFor={`${props.name}-y`} className="flex gap-1">
@@ -68,6 +59,6 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
         </label>
       </div>
       {fieldState.invalid && <Error {...props} />}
-    </div>
+    </FieldWrapper>
   );
 }
