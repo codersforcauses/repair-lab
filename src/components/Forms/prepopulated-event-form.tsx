@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { SlLocationPin } from "react-icons/sl";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/CommonFields/field-input";
+import FieldMultiSelect from "@/components/FormFields/CommonFields/field-multi-select";
 import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
@@ -58,10 +60,10 @@ export default function PrepopulatedEventForm({
           control={control}
           name="location"
           label="Location"
-          icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
+          icon={<SlLocationPin className="mr-3 h-full" />}
         ></FieldInput>
 
-        <FieldSingleSelect
+        <FieldMultiSelect
           control={control}
           name="eventType"
           label="Event Type"
@@ -73,7 +75,7 @@ export default function PrepopulatedEventForm({
                 }))
               : []
           }
-        ></FieldSingleSelect>
+        ></FieldMultiSelect>
 
         <FieldTextArea
           name="description"
