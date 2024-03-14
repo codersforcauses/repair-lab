@@ -38,11 +38,11 @@ export default function FieldTextArea<T extends FieldValues = FieldValues>({
 
   return (
     <FieldWrapper fieldState={fieldState} size="h-36">
-      <Label label={!label ? props.name : label} {...props} />
+      <Label label={label ?? props.name} {...props} />
       <textarea
         className={textAreaStyle}
-        placeholder={!placeholder ? `Enter ${props.name}` : placeholder}
-        id={!id ? props.name : id}
+        placeholder={placeholder ?? `Enter ${props.name}`}
+        id={id ?? props.name}
         {...field}
       />
       {fieldState.invalid && <Error {...props} />}

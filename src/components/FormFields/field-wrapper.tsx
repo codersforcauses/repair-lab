@@ -21,7 +21,7 @@ export default function FieldWrapper({
   size = "h-10",
   ...divProps
 }: FieldWrapperProps) {
-  const baseStyle = `relative flex ${size} w-full flex-row items-center justify-between rounded-lg border shadow hover:shadow-grey-500 active:shadow-grey-500 focus-within:shadow-grey-500 transition-all duration-300 ease-in-out min-w-80 text-ellipsis `;
+  const baseStyle = `relative flex ${size} w-full flex-row items-center justify-end rounded-lg border shadow hover:shadow-grey-500 active:shadow-grey-500 focus-within:shadow-grey-500 transition-all duration-300 ease-in-out min-w-80 text-ellipsis `;
   const errorBorderStyle = `border-red-600 border-2`;
   const normalBorderStyle = `border-grey-300`;
 

@@ -43,7 +43,11 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   const { field, fieldState } = useController(controllerProps);
 
   const inputStyle = `w-full h-full text-base placeholder:text-gray-500 focus:outline-none focus:ring-0 rounded-lg px-3`;
-  // format it like YYYY-MM-DDThh:mm
+
+  const focusOnField = () => {
+    const input = document.getElementById(id ?? `${controllerProps.name}`);
+    input?.focus();
+  };
 
   const displayIcon = (icon: string | ReactElement) => {
     if (typeof icon == "string") {
@@ -53,7 +57,8 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
           alt="icon"
           width={16}
           height={16}
-          className="relative min-h-0 w-4 min-w-0 shrink-0 mr-3"
+          className="min-h-0 w-4 min-w-0 shrink-0 mr-4 cursor-text"
+          onClick={focusOnField}
         />
       );
     } else {
@@ -84,8 +89,9 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
           field.onChange(value);
         }}
       />
-      {icon && displayIcon(icon)}
+
       {fieldState.invalid && <Error {...controllerProps} />}
+      {icon && displayIcon(icon)}
     </FieldWrapper>
   );
 }
