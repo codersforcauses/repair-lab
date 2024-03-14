@@ -43,7 +43,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   const { field, fieldState } = useController(props);
   const [selectedOption, setSelectedOption] = useState(field.value || "");
 
-  const baseStyle = `flex w-full h-full justify-between overflow-hidden rounded-lg bg-white px-3 py-2 text-base font-medium text-grey-900 shadow-sm ring-0 hover:shadow-grey-300 focus:ring-0 focus:outline-none focus:shadow-grey-300 transition-all duration-150 ease-in-out`;
+  const baseStyle = `flex w-full h-full justify-between text-left overflow-hidden rounded-lg bg-white px-3 py-2 text-base font-medium text-grey-900 shadow-sm ring-0 hover:shadow-grey-300 focus:ring-0 focus:outline-none focus:shadow-grey-300 transition-all duration-150 ease-in-out`;
   return (
     <FieldWrapper fieldState={fieldState} size={size}>
       <Label label={!label ? props.name : label} {...props} />

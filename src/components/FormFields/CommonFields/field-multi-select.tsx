@@ -26,12 +26,11 @@ function classNames(...classes: string[]) {
 }
 
 /**
-This is a component for a multiselect dropdown menu
+A component for a multiselect dropdown menu
   @param {{ id: number; text: string }[]} options array of objects with option text and id number
   @param {string} placeholder  placeholder string before any option is selected
-  @param {string} label  text on border of button
-  @param {string} width  custom width of component
-  @param {string} height  custom height of component
+  @param {string} label label for the field
+  @param {string} size size of the field, specify width and height
  @returns {JSX.Element} A multiselect dropdown that is compatible w/ React-hook-forms 
 */
 export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
@@ -44,82 +43,57 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
   const { field, fieldState } = useController(props);
   const [selectedGroup, setSelectedGroup] = useState<Option[]>([]);
 
+  const baseStyle = `flex w-full h-full justify-end overflow-hidden text-left rounded-lg bg-white px-3 py-2 text-base font-medium text-grey-900 shadow-sm ring-0 hover:shadow-grey-300 focus:ring-0 focus:outline-none focus:shadow-grey-300 transition-all duration-150 ease-in-out`;
   return (
     <FieldWrapper fieldState={fieldState} onChange={field.onChange}>
-      <Listbox
-        value={selectedGroup}
-        onChange={(e) => {
-          field.onChange(e);
-          setSelectedGroup(e);
-        }}
-        multiple
-      >
-        <div className="relative mt-1">
-          <Listbox.Button
-            className={classNames(
-              "flex h-10 justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-left text-base font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300",
-              fieldState.invalid ? `ring-red-500` : `ring-grey-300`,
-              size
-            )}
-          >
-            <Label {...props} label={!label ? props.name : label} />
-            {fieldState.invalid && <Error {...props} />}
-            <span className="truncate">
-              {selectedGroup.length === 0 ? (
-                <span className="text-gray-500">
-                  {!placeholder ? `Select Items` : `${placeholder}`}
-                </span>
-              ) : (
-                selectedGroup.map((option) => option.text).join(", ")
-              )}
-            </span>
-            <span className="pointer-events-none inset-y-0 right-0 flex items-center pr-0">
-              <BsChevronExpand
-                className=" h-5 w-5 text-grey-700"
-                aria-hidden="true"
-              />
-            </span>
-          </Listbox.Button>
-          <Transition
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-grey-800 ring-opacity-10 focus:outline-none sm:text-sm">
-              {options.map((option, optionIdx) => (
-                <Listbox.Option
-                  key={optionIdx}
-                  className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active
-                        ? "bg-lightAqua-100 text-grey-900"
-                        : "text-grey-900"
-                    }`
-                  }
-                  value={option}
-                >
-                  {({ selected }) => (
-                    <>
-                      <span
-                        className={`block truncate ${
-                          selected ? "font-medium" : "font-normal"
-                        }`}
-                      >
-                        {option.text}
-                      </span>
-                      {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-lightAqua-600">
-                          <HiCheck className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                      ) : null}
-                    </>
-                  )}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
-          </Transition>
-        </div>
+      <Label {...props} label={label ?? props.name} />
+      <Listbox value={selectedGroup} onChange={setSelectedGroup} multiple>
+        <Listbox.Button className={baseStyle}>
+          <span className="w-full truncate">
+            {selectedGroup.length === 0
+              ? placeholder || "Select an option"
+              : selectedGroup.map((option) => option.text).join(", ")}
+          </span>
+          <BsChevronExpand
+            className=" h-5 w-5 text-grey-700"
+            aria-hidden="true"
+          />
+        </Listbox.Button>
+        {fieldState.invalid && <Error {...props} />}
+        <Transition
+          as={Fragment}
+          leave="transition ease-in duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Listbox.Options className="absolute left-0 top-8 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-0 ring-grey-500 focus:ring-0 focus:outline-none border border-grey-300">
+            {options.map((option, optionIdx) => (
+              <Listbox.Option
+                key={optionIdx}
+                className="hover:bg-lightAqua-100 cursor-pointer relative"
+                value={option}
+              >
+                {({ active, selected }) => (
+                  <>
+                    <span
+                      className={classNames(
+                        selected
+                          ? "font-semibold"
+                          : active
+                            ? "bg-lightAqua-100"
+                            : "text-grey-900",
+                        "truncate flex flex-row justify-between w-full py-2 px-3 text-grey-900"
+                      )}
+                    >
+                      {option.text}
+                      {selected && <HiCheck />}
+                    </span>
+                  </>
+                )}
+              </Listbox.Option>
+            ))}
+          </Listbox.Options>
+        </Transition>
       </Listbox>
     </FieldWrapper>
   );
