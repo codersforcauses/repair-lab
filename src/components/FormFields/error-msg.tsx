@@ -9,11 +9,12 @@ export interface FormProps<T extends FieldValues = FieldValues>
   className?: string;
 }
 
-/*
-This is a component to display the error messages for an input field
-Output:
-  A <div> that contains the error message for a specific input field
-*/
+/**
+ * This is a component for displaying error messages for form fields
+ * @param {string} className  custom CSS if needed
+ * @param {useControllerProps} props props from useController
+ * @returns {JSX.Element} A error message that is compatible w/ React-hook-forms
+ */
 export default function Error<T extends FieldValues = FieldValues>({
   className,
   ...props

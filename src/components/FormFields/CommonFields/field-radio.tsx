@@ -13,7 +13,7 @@ export interface FormProps<T extends FieldValues = FieldValues>
     Omit<React.HTMLAttributes<HTMLInputElement>, "defaultValue"> {
   id?: string;
   label?: string;
-  width?: string;
+  size?: string;
 }
 
 /** 
@@ -25,7 +25,7 @@ An all-in-one component for the HTML '<radio>' tag
 export default function FieldRadio<T extends FieldValues = FieldValues>({
   id,
   label,
-  width = "w-full",
+  size = "w-full h-10",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
@@ -33,7 +33,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
   const radioStyle = `my-auto flex flex-row items-start gap-4 text-xs`;
 
   return (
-    <FieldWrapper fieldState={fieldState} size={width}>
+    <FieldWrapper fieldState={fieldState} size={size}>
       <Label label={!label ? props.name : label} {...props} />
       <div className={radioStyle}>
         <label htmlFor={`${props.name}-y`} className="flex gap-1">

@@ -19,15 +19,16 @@ export interface FormProps<T extends FieldValues = FieldValues>
   placeholder?: string;
   icon?: string | ReactElement;
   type?: string;
-  width?: string;
+  size?: string;
 }
 
 /**
  This is a all-in-one component for the HTML `<input>' tag
-  @param id: The ID for the the input
-  @param label: The label displayed on the text box
-  @param placeholder: The placeholder message displayed on the text box
-  @param icon: An optional Image path to display an .svg file
+  @param {string} id: The ID for the the input
+  @param {string} label: The label displayed on the text box
+  @param {string} placeholder: The placeholder message displayed on the text box
+  @param {string | ReactElement} icon: An optional Image path to display an .svg file
+  @param {string} size: The size of the input box, specify the height and width
   @returns A input text box that is compatible w/ React-hook-forms
  */
 
@@ -37,12 +38,12 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
   placeholder,
   icon,
   type,
-  width = "w-full",
+  size = "h-10 w-full",
   ...controllerProps
 }: FormProps<T>) {
   const { field, fieldState } = useController(controllerProps);
 
-  const inputStyle = `w-full h-full text-base placeholder:text-gray-500 focus:outline-none focus:ring-0 rounded-lg px-3`;
+  const inputStyle = `w-full h-full text-base placeholder:text-gray-500 text-grey-900 focus:outline-none focus:ring-0 rounded-lg px-3`;
 
   const focusOnField = () => {
     const input = document.getElementById(id ?? `${controllerProps.name}`);
@@ -57,7 +58,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
           alt="icon"
           width={16}
           height={16}
-          className="min-h-0 w-4 min-w-0 shrink-0 mr-4 cursor-text"
+          className="w-4 shrink-0 h-full mr-4 cursor-text"
           onClick={focusOnField}
         />
       );
@@ -72,7 +73,7 @@ export default function FieldInput<T extends FieldValues = FieldValues>({
       : field.value;
 
   return (
-    <FieldWrapper fieldState={fieldState}>
+    <FieldWrapper fieldState={fieldState} size={size}>
       <Label label={label ?? controllerProps.name} {...controllerProps} />
       <input
         type={type ?? "text"}

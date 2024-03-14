@@ -5,11 +5,11 @@ export interface FormProps<T extends FieldValues = FieldValues>
   label?: string;
 }
 
-/*
-This is a component for the labels for each text box
-Output:
-  A <div> that contains the label for an input field
-*/
+/**
+ * A label component for displaying form fields
+ * @param {string} label  The label to be displayed
+ * @returns {JSX.Element} A label that is compatible w/ React-hook-forms
+ */
 export default function Label<T extends FieldValues = FieldValues>({
   label,
   ...controllerProps

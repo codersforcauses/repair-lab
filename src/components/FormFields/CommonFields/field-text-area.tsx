@@ -13,31 +13,30 @@ export interface FormProps<T extends FieldValues = FieldValues>
   id?: string;
   label?: string;
   placeholder?: string;
-  icon?: string;
-  width?: string;
-  height?: string;
+  size?: string;
 }
 
 /**
-This is an all-in one component for the HTML `<textarea>' tag.
-  @param label: The label displayed on the text box
-  @param laceholder: The placeholder message displayed on the text box
-  @returns A large text box that is compatible w/ React-hook-forms
-*/
+ * An all-in one component for text area fields
+ * @param {string} id  The id of the text area
+ * @param {string} label  The label of the text area
+ * @param {string} placeholder  The placeholder of the text area
+ * @param {string} size  The size of the text area, specify width and height
+ * @returns {JSX.Element} A text area that is compatible w/ React-hook-forms
+ */
 export default function FieldTextArea<T extends FieldValues = FieldValues>({
   id,
   label,
   placeholder,
-  width = "w-full",
-  height = "h-36",
+  size = "h-36 w-full",
   ...props
 }: FormProps<T>) {
   const { field, fieldState } = useController(props);
 
-  const textAreaStyle = `overflow-wrap:break-word p-3 h-full w-full resize-none overflow-y-auto text-base placeholder:text-gray-500 placeholder:font-normal rounded-lg active:border-grey-500 focus:outline-none focus:ring-0`;
+  const textAreaStyle = `overflow-wrap:break-word p-3 h-full w-full resize-none overflow-y-auto text-grey-900 text-base placeholder:text-gray-500 placeholder:font-normal rounded-lg active:border-grey-500 focus:outline-none focus:ring-0`;
 
   return (
-    <FieldWrapper fieldState={fieldState} size="h-36">
+    <FieldWrapper fieldState={fieldState} size={size}>
       <Label label={label ?? props.name} {...props} />
       <textarea
         className={textAreaStyle}

@@ -35,11 +35,30 @@ export default function PrepopulatedEventForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-2 ">
         <FieldInput
           control={control}
           name="name"
           label="Event Name"
+          rules={{ required: true }}
+        ></FieldInput>
+
+        <FieldSingleSelect
+          control={control}
+          name="status"
+          label="Status"
+          options={[
+            { id: "UPCOMING", text: "UPCOMING" },
+            { id: "ONGOING", text: "ONGOING" },
+            { id: "COMPLETED", text: "COMPLETED" }
+          ]}
+        ></FieldSingleSelect>
+
+        <FieldInput
+          control={control}
+          name="location"
+          label="Location"
+          icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
         ></FieldInput>
 
         <FieldSingleSelect
@@ -61,13 +80,8 @@ export default function PrepopulatedEventForm({
           label="Description"
           placeholder="Enter a description for the event"
           control={control}
+          size="w-full h-36 md:col-span-2"
         />
-
-        <FieldInput
-          control={control}
-          name="location"
-          label="Location"
-        ></FieldInput>
 
         <FieldInput
           control={control}
@@ -89,18 +103,8 @@ export default function PrepopulatedEventForm({
           placeholder="Enter a disclaimer for the event"
           control={control}
           rules={{ required: false }}
+          size="w-full h-30 md:col-span-2"
         />
-
-        <FieldSingleSelect
-          control={control}
-          name="status"
-          label="Status"
-          options={[
-            { id: "UPCOMING", text: "UPCOMING" },
-            { id: "ONGOING", text: "ONGOING" },
-            { id: "COMPLETED", text: "COMPLETED" }
-          ]}
-        ></FieldSingleSelect>
       </div>
       {/* Submit */}
       <div className="mt-3 flex justify-center">
