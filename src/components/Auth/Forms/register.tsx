@@ -43,14 +43,14 @@ const RegisterForm = () => {
 
   const show1 = (
     <MdOutlineVisibility
-      className="hover: cursor-pointer"
+      className="hover:cursor-pointer h-full mr-4"
       onClick={() => setShowPassword(!showPassword)}
       color="grey"
     />
   );
   const close1 = (
     <MdOutlineVisibilityOff
-      className="hover: cursor-pointer"
+      className="hover:cursor-pointer h-full mr-4"
       onClick={() => setShowPassword(!showPassword)}
       color="grey"
     />
@@ -58,14 +58,14 @@ const RegisterForm = () => {
 
   const show2 = (
     <MdOutlineVisibility
-      className="hover: cursor-pointer"
+      className="hover:cursor-pointer h-full mr-4"
       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
       color="grey"
     />
   );
   const close2 = (
     <MdOutlineVisibilityOff
-      className="hover: cursor-pointer"
+      className="hover:cursor-pointer h-full mr-4"
       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
       color="grey"
     />
@@ -132,7 +132,7 @@ const RegisterForm = () => {
             <div className="flex flex-col gap-4 pt-4">
               <div className="flex gap-x-6">
                 <FieldInput
-                  width="w-1/2"
+                  size="w-1/2 h-10"
                   name="firstName"
                   control={control}
                   rules={{
@@ -142,7 +142,7 @@ const RegisterForm = () => {
                   label="First Name"
                 />
                 <FieldInput
-                  width="w-1/2"
+                  size="w-1/2 h-10"
                   name="lastName"
                   control={control}
                   rules={{
