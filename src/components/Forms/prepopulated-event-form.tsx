@@ -4,7 +4,6 @@ import { SlLocationPin } from "react-icons/sl";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/CommonFields/field-input";
-import FieldMultiSelect from "@/components/FormFields/CommonFields/field-multi-select";
 import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
@@ -63,7 +62,7 @@ export default function PrepopulatedEventForm({
           icon={<SlLocationPin className="mr-3 h-full" />}
         ></FieldInput>
 
-        <FieldMultiSelect
+        <FieldSingleSelect
           control={control}
           name="eventType"
           label="Event Type"
@@ -75,7 +74,7 @@ export default function PrepopulatedEventForm({
                 }))
               : []
           }
-        ></FieldMultiSelect>
+        ></FieldSingleSelect>
 
         <FieldTextArea
           name="description"

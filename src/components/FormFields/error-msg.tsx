@@ -1,11 +1,8 @@
-import {
-  FieldValues,
-  useController,
-  UseControllerProps
-} from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 
-export interface FormProps<T extends FieldValues = FieldValues>
-  extends UseControllerProps<T> {
+import { useFieldContext } from "@/hooks/form-field-context";
+
+export interface FormErrorLabelProps {
   className?: string;
 }
 
@@ -16,10 +13,9 @@ export interface FormProps<T extends FieldValues = FieldValues>
  * @returns {JSX.Element} A error message that is compatible w/ React-hook-forms
  */
 export default function Error<T extends FieldValues = FieldValues>({
-  className,
-  ...props
-}: FormProps<T>) {
-  const { field, fieldState } = useController(props);
+  className
+}: FormErrorLabelProps) {
+  const { fieldName, fieldState } = useFieldContext();
   return (
     <div>
       {/* Display error message */}
@@ -31,7 +27,7 @@ export default function Error<T extends FieldValues = FieldValues>({
         }
       >
         {!fieldState.error?.message
-          ? `${field.name} is invalid`
+          ? `${fieldName} is invalid`
           : fieldState.error.message}
       </p>
     </div>

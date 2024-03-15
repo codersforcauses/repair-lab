@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { SlLocationPin } from "react-icons/sl";
 
 import Button from "@/components/Button";
 import FieldInput from "@/components/FormFields/CommonFields/field-input";
@@ -26,7 +27,7 @@ export default function EventForm({
       endDate: "",
       eventType: "",
       disclaimer: ""
-      // volunteers: [""]
+      // volunteers: []
     }
   });
 
@@ -34,7 +35,7 @@ export default function EventForm({
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3 space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-2 ">
           <FieldInput
             control={control}
             name="name"
@@ -51,20 +52,21 @@ export default function EventForm({
             }))}
           ></FieldSingleSelect>
 
+          <FieldInput
+            control={control}
+            name="location"
+            label="Location"
+            icon={<SlLocationPin className="w-4 shrink-0 h-full mr-4" />}
+          ></FieldInput>
+
           <FieldTextArea
             name="description"
             label="Description"
             placeholder="Enter a description for the event"
             control={control}
             rules={{ required: false }}
+            size="w-full h-36 md:col-span-2"
           />
-
-          <FieldInput
-            control={control}
-            name="location"
-            label="Location"
-            icon="https://file.rendit.io/n/WO0yqXIkWlVzApILek8q.svg"
-          ></FieldInput>
 
           <FieldInput
             control={control}
@@ -86,17 +88,18 @@ export default function EventForm({
             placeholder="Enter a disclaimer for the event"
             control={control}
             rules={{ required: false }}
+            size="w-full h-30 md:col-span-2"
           />
 
           {/* <FieldMultiSelect
             control={control}
-            name="volunteers" 
+            name="volunteers"
             label="Volunteers"
             options={itemTypes.map((type) => ({
               id: type.name,
               text: type.name
             }))}
-          ></FieldMultiSelect>*/}
+          ></FieldMultiSelect> */}
         </div>
         {/* Submit */}
         <div className="my-5 flex flex-row">

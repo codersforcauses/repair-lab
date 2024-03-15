@@ -51,6 +51,7 @@ export const createEventSchema = z
     endDate: z
       .string({ required_error: "endDate is required" })
       .datetime({ offset: true, message: "Invalid date format for endDate" })
+    // volunteers: z.array(z.string()).optional()
   })
   .refine((data) => new Date(data.endDate) >= new Date(data.startDate), {
     // validation to ensure the end date comes after the start date
