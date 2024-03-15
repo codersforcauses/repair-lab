@@ -43,14 +43,14 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
   ...controllerProps
 }: FormProps<T>): JSX.Element {
   const { field, fieldState } = useController(controllerProps);
-  const [selectedGroup, setSelectedGroup] = useState<Option[]>([]);
+  const [selectedGroup, setSelectedGroup] = useState<string[]>(field.value);
 
-  const onChangeHandler = (e: SetStateAction<Option[]>) => {
+  const onChangeHandler = (e: SetStateAction<string[]>) => {
     field.onChange(e);
     setSelectedGroup(e);
   };
 
-  const baseStyle = `flex w-full h-full justify-end overflow-hidden text-left rounded-lg bg-white px-3 py-2 text-base font-medium text-grey-900 shadow-sm ring-0 hover:shadow-grey-300 focus:ring-0 focus:outline-none focus:shadow-grey-300 transition-all duration-150 ease-in-out`;
+  const baseStyle = `flex w-full h-full justify-between text-left overflow-hidden rounded-lg bg-white px-3 py-2 text-base font-medium text-grey-900 shadow-sm ring-0 hover:shadow-grey-300 focus:ring-0 focus:outline-none focus:shadow-grey-300 transition-all duration-150 ease-in-out`;
   return (
     <FormFieldContext.Provider
       value={{
@@ -64,11 +64,13 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
         <Label />
         <Listbox value={selectedGroup} onChange={onChangeHandler} multiple>
           <Listbox.Button className={baseStyle}>
-            {selectedGroup.length === 0
-              ? placeholder || "Select an option"
-              : selectedGroup.map((option) => option).join(", ")}
+            <span className="place-self-end overflow-hidden w-full h-full truncate">
+              {selectedGroup.length === 0
+                ? placeholder || "Select an option"
+                : selectedGroup.map((option) => option).join(", ")}
+            </span>
             <BsChevronExpand
-              className=" h-5 w-5 text-grey-700"
+              className=" h-5 w-5 text-grey-700 shrink-0"
               aria-hidden="true"
             />
           </Listbox.Button>
@@ -82,7 +84,7 @@ export default function FieldMultiSelect<T extends FieldValues = FieldValues>({
             <Listbox.Options className="absolute left-0 top-8 z-10 mt-2 max-h-60 w-full min-w-min origin-top overflow-auto rounded-md bg-white shadow-lg ring-0 ring-grey-500 focus:ring-0 focus:outline-none border border-grey-300">
               {options.map((option) => (
                 <Listbox.Option
-                  key={option.text}
+                  key={option.id}
                   className="hover:bg-lightAqua-100 cursor-pointer relative"
                   value={option.text}
                 >
