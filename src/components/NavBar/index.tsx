@@ -9,7 +9,7 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
 
-const adminItems = ["Home", "Events", "Repair Requests"];
+const adminItems = ["Home", "Events", "Repair Requests", "Manage"];
 const clientItems = ["Home", "Events", "My Events"];
 const guestItems = ["Home", "Events"]; // Shown when user is not logged in
 
@@ -17,7 +17,8 @@ const pathMap: { [key: string]: string } = {
   Home: "/",
   Events: "/events",
   "Repair Requests": "/repair-request",
-  "My Events": "/my-events" // To be redirected to a new page for existing repair requests
+  "My Events": "/my-events", // To be redirected to a new page for existing repair requests
+  Manage: "/manage/events"
 };
 
 export interface MenuItems {
