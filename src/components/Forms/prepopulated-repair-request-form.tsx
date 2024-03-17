@@ -2,10 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldInput from "@/components/FormFields/field-input";
-import FieldRadio from "@/components/FormFields/field-radio";
-import FieldSingleSelect from "@/components/FormFields/field-single-select";
-import FieldTextArea from "@/components/FormFields/field-text-area";
+import FieldInput from "@/components/FormFields/CommonFields/field-input";
+import FieldRadio from "@/components/FormFields/CommonFields/field-radio";
+import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
+import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import { Brand, useBrands } from "@/hooks/brands";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";

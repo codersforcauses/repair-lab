@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
-import FieldInput from "@/components/FormFields/field-input";
-import FieldRadio from "@/components/FormFields/field-radio";
-import FieldTextArea from "@/components/FormFields/field-text-area";
+import FieldInput from "@/components/FormFields/CommonFields/field-input";
+import FieldRadio from "@/components/FormFields/CommonFields/field-radio";
+import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import Toast from "@/components/Toast";
 import { useUpdateRepairRequest } from "@/hooks/repair-request";
 import { updateRepairRequestSchema } from "@/schema/repair-request";

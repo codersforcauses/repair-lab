@@ -8,7 +8,7 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import Separator from "@/components/Auth/separator";
 import Button from "@/components/Button";
 import SignInOAuthButton from "@/components/Button/sign-in-oauth";
-import FieldInput from "@/components/FormFields/field-input";
+import FieldInput from "@/components/FormFields/CommonFields/field-input";
 import Logo from "@/components/UI/logoSvg";
 
 interface LoginFormValues {
@@ -28,14 +28,14 @@ const LoginForm = () => {
 
   const show = (
     <MdOutlineVisibility
-      className="hover:cursor-pointer"
+      className="hover:cursor-pointer h-full mr-4"
       onClick={() => setShowPassword(!showPassword)}
       color="grey"
     />
   );
   const close = (
     <MdOutlineVisibilityOff
-      className="hover:cursor-pointer"
+      className="hover:cursor-pointer h-full mr-4"
       onClick={() => setShowPassword(!showPassword)}
       color="grey"
     />

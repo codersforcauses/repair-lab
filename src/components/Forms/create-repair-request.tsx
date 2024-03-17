@@ -4,9 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import Button from "@/components/Button";
+import FieldSingleSelect from "@/components/FormFields/CommonFields/field-single-select";
+import FieldTextArea from "@/components/FormFields/CommonFields/field-text-area";
 import FieldImageUpload from "@/components/FormFields/field-image-upload";
-import SingleSelect from "@/components/FormFields/field-single-select";
-import FieldTextArea from "@/components/FormFields/field-text-area";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
 import { Brand, useBrands } from "@/hooks/brands";
 import { EventOption, useEventOptions } from "@/hooks/events";
@@ -67,7 +67,7 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {/* Input field for Brand of Item */}
-      <SingleSelect
+      <FieldSingleSelect
         name="itemBrand"
         control={control}
         placeholder="Select a brand"
@@ -81,7 +81,7 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
             : []
         }
       />
-      <SingleSelect
+      <FieldSingleSelect
         name="itemType"
         control={control}
         placeholder="Select an item type"
@@ -106,7 +106,7 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
       <FieldImageUpload multiple name="images" control={control} />
       {/* Input field for Event */}
       {!eventId && (
-        <SingleSelect
+        <FieldSingleSelect
           name="eventId"
           control={control}
           placeholder="Select an event"
@@ -122,7 +122,7 @@ export default function RepairRequestForm({ eventId }: { eventId?: string }) {
       )}
       <FieldTextArea
         name="comment"
-        label="Additional Comment"
+        label="Additional Comments"
         placeholder="Enter additional comments"
         control={control}
         rules={{ required: false }}
