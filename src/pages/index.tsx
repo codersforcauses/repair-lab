@@ -45,7 +45,7 @@ const Home: NextPageWithLayout = () => {
 
       <section
         id="big-green-area"
-        className="relative w-full min-h-[40rem] sm:min-h-[50rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
+        className="relative w-full min-h-[40rem] sm:min-h-[45rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
       >
         <div id="drill" className="absolute z-10 right-[6%] top-[10%] w-[10%]">
           <Drill />
@@ -95,7 +95,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="white text area pt-[1rem] relative z-10 border-green-500 border-0 sm:min-h-[55rem] min-h-[40rem]">
+      <section className="white text area pt-[1rem] relative z-10 border-green-500 border-0 sm:min-h-[50rem] min-h-[40rem]">
         <Image
           src="/images/white_area_bg_v5.jpg"
           alt="white area bg"
