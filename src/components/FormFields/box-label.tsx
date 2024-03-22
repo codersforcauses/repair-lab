@@ -22,7 +22,7 @@ export default function Label<T extends FieldValues = FieldValues>({
     >
       {label}
       {props.rules?.required ? (
-        <span className="text-xs font-semibold text-red-500"> *</span>
+        <span className="text-sm font-semibold text-red-500"> *</span>
       ) : (
         ""
       )}
