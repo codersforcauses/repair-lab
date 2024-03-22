@@ -185,7 +185,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="min-h-[25rem] w-full bg-white flex flex-col justify-center">
+      <section className="min-h-[22rem] w-full bg-white flex flex-col justify-center">
         <div className="pb-6 text-center text-5xl font-extrabold text-primary-600">
           Submit item for Repair
         </div>
@@ -201,13 +201,11 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="grey area relative bg-[#56727E] min-h-[14rem] w-full border-yellow-500 border-0 grid grid-cols-2">
+      <section className="grey area relative bg-[#56727E] min-h-[11rem] w-full border-yellow-500 border-0 grid grid-cols-2">
         <div className="flex justify-center items-center">
-          <div className="oval relative w-[70%] h-44 rounded-[50%] bg-primary-500 flex items-center justify-center col-span-1">
-            <h5 className="absolute z-10 text-white text-center md:text-2xl sm:text-xl text-lg max-[640px]:text-base lg:text-white font-extrabold mx-4">
-              Click on the icons to go to our socials!
-            </h5>
-          </div>
+          <h5 className="absolute z-10 text-white text-center md:text-2xl sm:text-xl text-lg max-[640px]:text-base lg:text-white font-extrabold mx-4">
+            Click on the icons to go to our socials!
+          </h5>
         </div>
         <div className="col-span-1 border-red-500 border-0 m-auto sm:w-3/4 w-full sm:p-0 pr-4">
           <div className=" border-blue-500 border-0 ">
