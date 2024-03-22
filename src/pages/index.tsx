@@ -104,7 +104,7 @@ const Home: NextPageWithLayout = () => {
         />
         <div className="relative lg:grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-1 grid-rows-2 border-red-500 border-0 sm:min-h-[55rem] min-h-[20rem] w-full">
           <div className="flex flex-col row-start-1 row-end-1 col-start-1 col-end-1 border-blue-500 border-0 justify-center items-center">
-            <h2 className="relative text-5xl font-black text-primary-600 z-20 text-center mb-10">
+            <h2 className="relative text-5xl font-black text-primary-600 z-20 text-center mb-10 mt-4 md:mt-0">
               Learn new skills
             </h2>
             <p className="relative z-20 text-xl font-medium text-center lg:w-3/4 w-2/3 mb-14">
@@ -136,10 +136,10 @@ const Home: NextPageWithLayout = () => {
             </div>
           </div>
           <div className="border-pink-500 border-0 flex flex-col justify-center items-center ">
-            <h2 className=" relative z-20 text-center text-5xl font-black text-primary-600 mb-10">
+            <h2 className=" relative z-20 lg:-top-8 text-center text-5xl font-black text-primary-600 mb-10">
               Reduce Waste
             </h2>
-            <p className="relative text-center text-xl font-medium lg:w-3/4 w-2/3 mb-16">
+            <p className="relative lg:-top-8 text-center text-xl font-medium lg:w-3/4 w-2/3 mb-16">
               If you think that we are all creating too much waste by discarding
               everything without even trying to repair, join us at Repair Lab!
               Meet like minded locals and treasure your stuff.
