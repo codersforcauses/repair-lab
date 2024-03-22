@@ -201,18 +201,18 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="grey area relative bg-[#56727E] min-h-[18rem] w-full border-yellow-500 border-0 grid grid-cols-2">
+      <section className="grey area relative bg-[#56727E] min-h-[14rem] w-full border-yellow-500 border-0 grid grid-cols-2">
         <div className="flex justify-center items-center">
           <div className="oval relative w-[70%] h-44 rounded-[50%] bg-primary-500 flex items-center justify-center col-span-1">
-            <h5 className="absolute z-10 text-white text-center text-2xl lg:text-white font-extrabold md:text-yellow-300 sm:text-red-300 mx-4">
+            <h5 className="absolute z-10 text-white text-center md:text-2xl sm:text-xl text-lg max-[640px]:text-base lg:text-white font-extrabold mx-4">
               Click on the icons to go to our socials!
             </h5>
           </div>
         </div>
-        <div className="col-span-1 border-red-500 border-0 m-auto w-3/4">
+        <div className="col-span-1 border-red-500 border-0 m-auto sm:w-3/4 w-full sm:p-0 pr-4">
           <div className=" border-blue-500 border-0 ">
             <div className="flex justify-center w-full">
-              <p className="text-white text-bold sm:p-4 text-xl underline text-center break-all w-full">
+              <p className="text-white text-bold sm:p-4 md:text-xl text-lg underline text-center break-all w-full">
                 <a href="mailto:repairlab.perth@gmail.com">
                   Email: repairlab.perth@gmail.com
                 </a>
@@ -223,19 +223,19 @@ const Home: NextPageWithLayout = () => {
                 href="https://www.instagram.com/repair_lab_perth"
                 target="_blank"
               >
-                <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
+                <FaInstagram className="fill-white md:w-[5rem] md:h-[5rem] sm:w-[4.5rem] sm:h-[4.5rem] w-[3rem] h-[3rem]" />
               </a>
               <a
                 href="https://www.facebook.com/RepairLabPerth/"
                 target="_blank"
               >
-                <FaFacebook className="fill-white w-[6rem] h-[6rem] " />
+                <FaFacebook className="fill-white md:w-[5rem] md:h-[5rem] sm:w-[4.5rem] sm:h-[4.5rem] w-[3rem] h-[3rem]" />
               </a>
             </div>
           </div>
         </div>
       </section>
-      <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
+      <div className="copyright bg-[#4a626c] w-full h-10 p-2 text-white text-center">
         Copyright © All Rights Reserved
       </div>
     </div>
