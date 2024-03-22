@@ -40,7 +40,7 @@ const Modal = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-grey-950 opacity-20" />
+            <div className="fixed inset-0 bg-grey-950 opacity-65" />
           </Transition.Child>
 
           <div className="fixed inset-0 h-full overflow-y-auto">
@@ -55,7 +55,7 @@ const Modal = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${width} ${height}  transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${width} ${height}  transform rounded-2xl bg-white sm:p-6 p-0 text-left align-middle shadow-xl transition-all`}
                 >
                   {title ? (
                     <Dialog.Title
@@ -72,7 +72,7 @@ const Modal = ({
                     {children}
                     <button
                       onClick={() => setShowPopup(false)}
-                      className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
+                      className="absolute right-2 top-2 rounded-lg sm:p-1 p-0 hover:bg-gray-50"
                     >
                       <AiFillCloseCircle
                         className={`text-2xl ${crossWidthAndHeight}`}

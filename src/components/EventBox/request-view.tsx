@@ -94,7 +94,7 @@ const RequestView = ({
                   setShowPopup={setShowRepairRequestModal}
                   height="h-full overflow-auto"
                   title="Repair Attempt"
-                  width="w-[85svw] sm:w-[80svw] sm:max-w-3/4 md:w-3/4 lg:w-2/3"
+                  width="w-full sm:w-full md:w-2/3 lg:w-1/2"
                   crossWidthAndHeight="w-10 h-10"
                 >
                   <div className="text-center">
