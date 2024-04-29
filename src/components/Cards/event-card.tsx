@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Image from "next/image";
+import { HiLocationMarker } from "react-icons/hi";
+import Map, { Marker } from "react-map-gl";
 
 import Modal from "@/components/Modal/index";
+import { useGetLocationCoordinates } from "@/hooks/location-coordinates";
+
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export type CardProps = {
   title: string;
@@ -11,10 +16,15 @@ export type CardProps = {
   handleClick?: () => void;
 };
 
+const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
+
 export default function Card({ props }: { props: CardProps }) {
   function handleClick() {
     setShowModal(true);
   }
+
+  const { data: coordinates, isPending: isCoordsPending } =
+    useGetLocationCoordinates(props.location);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -32,6 +42,32 @@ export default function Card({ props }: { props: CardProps }) {
             {props.date} - {props.location}
           </h2>
           <p>{props.description}</p>
+        </div>
+        <div className="flex justify-center">
+          {!isCoordsPending && coordinates ? (
+            <Map
+              mapboxAccessToken={mapboxToken}
+              initialViewState={{
+                longitude: coordinates.long,
+                latitude: coordinates.lat,
+                zoom: 14
+              }}
+              style={{ width: 600, height: 300 }}
+              mapStyle="mapbox://styles/mapbox/streets-v9"
+            >
+              <Marker
+                longitude={coordinates.long}
+                latitude={coordinates.lat}
+                anchor="bottom"
+              >
+                <HiLocationMarker />
+              </Marker>
+            </Map>
+          ) : (
+            <div className="italic font-bold mt-5 text-l">
+              {isCoordsPending ? "Map loading..." : "Location not found."}
+            </div>
+          )}
         </div>
       </Modal>
       <div className="relative ">

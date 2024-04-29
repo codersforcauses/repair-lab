@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { GoPlus } from "react-icons/go";
 
 import ClearFiltersButton from "@/components/Button/clear-filters-button";
-import Card from "@/components/Cards/card";
+import RepairRequestCard from "@/components/Cards/repair-request-card";
 import RepairAttemptForm from "@/components/Forms/create-repair-request";
 import Header, { HeaderProps } from "@/components/Header";
 import Modal from "@/components/Modal";
@@ -131,24 +131,9 @@ export default function RepairRequests() {
       );
     // Success
     return repairRequests.items.map((item: RepairRequestResponse) => {
-      let assignedTo = "Unassigned";
-      if (item.assignedTo) {
-        assignedTo = item.assignedTo.firstName ?? item.assignedTo.emailAddress;
-      }
       return (
         <div key={item.id}>
-          <Card
-            props={{
-              title: item.id,
-              image: "/images/broken-clock-sad.jpg",
-              description: item.description,
-              status: item.status,
-              firstName: assignedTo,
-              lastName: item.assignedTo?.lastName ?? "",
-              avatar: "/images/repair_lab_logo.jpg",
-              repairRequestProps: item
-            }}
-          />
+          <RepairRequestCard repairRequestProps={item} />
         </div>
       );
     });
