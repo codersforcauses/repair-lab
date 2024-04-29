@@ -14,7 +14,7 @@ import {
 
 interface RepairRequestEmailProps {
   customerName?: string;
-  requestId?: string;
+  requestId?: number;
   date?: string;
   itemName?: string;
   issueDescription?: string;

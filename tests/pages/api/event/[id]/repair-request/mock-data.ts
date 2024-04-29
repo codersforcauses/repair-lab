@@ -29,7 +29,7 @@ export async function seedTestData() {
     data: [
       {
         ...baseRepairRequestDetails,
-        id: "rr-1",
+        id: 1,
         eventId: "ev-1",
         createdBy: "user_1",
         description: "My laptop is broken",
@@ -39,7 +39,7 @@ export async function seedTestData() {
       },
       {
         ...baseRepairRequestDetails,
-        id: "rr-2",
+        id: 2,
         eventId: "ev-1",
         createdBy: "user_1",
         description: "Very specific word: eggplant",
@@ -48,7 +48,7 @@ export async function seedTestData() {
       },
       {
         ...baseRepairRequestDetails,
-        id: "rr-3",
+        id: 3,
         eventId: "ev-2",
         createdBy: "user_2",
         description: "My laptop is broken",
@@ -57,7 +57,7 @@ export async function seedTestData() {
       },
       {
         ...baseRepairRequestDetails,
-        id: "rr-4",
+        id: 4,
         eventId: "ev-2",
         createdBy: "user_1",
         description: "Yep",
