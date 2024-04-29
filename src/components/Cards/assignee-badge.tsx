@@ -48,7 +48,7 @@ export default function AssigneeBadge({
   const handleUnassignVolunteer = () => {
     updateRepairRequest({
       assignedTo: "null",
-      repairStatus: RepairStatus.PENDING
+      status: RepairStatus.PENDING
     });
     setShowAssigneeModal(false);
   };

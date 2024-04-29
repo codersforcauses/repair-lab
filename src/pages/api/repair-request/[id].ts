@@ -23,7 +23,7 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
     spareParts,
     repairComment,
     assignedTo,
-    repairStatus
+    status
   } = parsedData;
 
   const existingRepairRequest = await prisma.repairRequest.findUnique({
@@ -42,7 +42,7 @@ async function updateRepairRequest(req: NextApiRequest, res: NextApiResponse) {
     data: {
       itemMaterial: itemMaterial,
       hoursWorked: hoursWorked,
-      status: repairStatus,
+      status,
       spareParts:
         isSparePartsNeeded === "true"
           ? spareParts

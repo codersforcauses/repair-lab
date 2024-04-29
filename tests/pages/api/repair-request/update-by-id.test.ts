@@ -31,7 +31,7 @@ describe("PATCH /api/repair-request/:id", () => {
           },
           body: JSON.stringify({
             hoursWorked: "asdfasdf",
-            repairStatus: "REPAIRED",
+            status: "REPAIRED",
             isSparePartsNeeded: "true",
             spareParts: "battery",
             repairComment: "sfs"
@@ -58,7 +58,7 @@ describe("PATCH /api/repair-request/:id", () => {
             itemBrand: "Wonderland",
             itemMaterial: "Plastic",
             hoursWorked: 1.5,
-            repairStatus: "REPAIRED",
+            status: "REPAIRED",
             isSparePartsNeeded: "true",
             spareParts: "battery",
             repairComment: "Fixed"
@@ -86,7 +86,7 @@ describe("PATCH /api/repair-request/:id", () => {
             itemBrand: "Apple",
             itemMaterial: "Metal",
             hoursWorked: 9.9,
-            repairStatus: "REPAIRED",
+            status: "REPAIRED",
             isSparePartsNeeded: "true",
             spareParts: "new brain x1",
             repairComment: "nice brain. fixed!"

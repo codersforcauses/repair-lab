@@ -78,7 +78,7 @@ export const updateRepairRequestSchema = z.object({
     .min(5, { message: "Job description must be at least 5 characters long." })
     .optional(),
   assignedTo: z.string().optional(),
-  repairStatus: z
+  status: z
     .enum([
       RepairStatus.ACCEPTED,
       RepairStatus.CANCELLED,

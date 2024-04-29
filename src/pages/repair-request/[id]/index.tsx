@@ -29,7 +29,7 @@ export default function RepairAttempt() {
       itemBrand: "",
       itemMaterial: "",
       hoursWorked: 1,
-      repairStatus: undefined,
+      status: undefined,
       isSparePartsNeeded: undefined,
       spareParts: "",
       repairComment: ""
@@ -87,7 +87,7 @@ export default function RepairAttempt() {
           {/* Spare parts needed?, Part(s) needed */}
           <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
             <FieldRadio
-              name="repairStatus"
+              name="status"
               control={control}
               label="Repaired?"
               trueValue={RepairStatus.REPAIRED}

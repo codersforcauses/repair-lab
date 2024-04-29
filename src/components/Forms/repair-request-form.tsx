@@ -30,7 +30,7 @@ export default function RepairAttemptForm({
       itemBrand: "",
       itemMaterial: "",
       hoursWorked: undefined,
-      repairStatus: RepairStatus.PENDING,
+      status: RepairStatus.PENDING,
       isSparePartsNeeded: undefined,
       spareParts: "",
       repairComment: ""
@@ -105,7 +105,7 @@ export default function RepairAttemptForm({
         {/* Spare parts needed?, Part(s) needed */}
         <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
           <FieldSingleSelect
-            name="repairStatus"
+            name="status"
             control={control}
             options={REPAIR_STATUS_OPTIONS}
             label="Status"

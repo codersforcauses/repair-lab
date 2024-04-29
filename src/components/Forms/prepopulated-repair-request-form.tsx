@@ -42,7 +42,7 @@ export default function PrepopulatedRepairAttemptForm({
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
       hoursWorked: Number(props.hoursWorked),
-      repairStatus: props.status,
+      status: props.status,
       isSparePartsNeeded: isSparePartsNeeded,
       spareParts: props.spareParts,
       repairComment: props.repairComment
@@ -96,7 +96,7 @@ export default function PrepopulatedRepairAttemptForm({
         {/* Spare parts needed?, Part(s) needed */}
         <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
           <FieldSingleSelect
-            name="repairStatus"
+            name="status"
             control={control}
             options={REPAIR_STATUS_OPTIONS}
             label="Status"

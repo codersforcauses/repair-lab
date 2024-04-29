@@ -48,7 +48,7 @@ export default function VolunteerCard({
   const handleAssignVolunteer = () => {
     updateRepairRequest({
       assignedTo: userId,
-      repairStatus: RepairStatus.ACCEPTED
+      status: RepairStatus.ACCEPTED
     });
     setShowConfirmation(false);
   };
