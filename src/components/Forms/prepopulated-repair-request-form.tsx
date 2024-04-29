@@ -1,15 +1,25 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RepairStatus } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
+import FieldCheckbox from "@/components/check-box";
 import FieldInput from "@/components/FormFields/field-input";
-import FieldRadio from "@/components/FormFields/field-radio";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
-import { Brand, useBrands } from "@/hooks/brands";
 import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
-import type { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
+import type {
+  GeneralRepairAttempt,
+  Option,
+  RepairRequestResponse
+} from "@/types";
+
+const REPAIR_STATUS_OPTIONS: Option[] = [
+  { id: RepairStatus.PENDING, text: "Pending" },
+  { id: RepairStatus.REPAIRED, text: "Repaired" },
+  { id: RepairStatus.FAILED, text: "Failed" }
+];
 
 export default function PrepopulatedRepairAttemptForm({
   props,
@@ -19,17 +29,6 @@ export default function PrepopulatedRepairAttemptForm({
   onSubmit: SubmitHandler<GeneralRepairAttempt>;
 }) {
   const { data: itemTypes } = useItemTypes();
-  const { data: itemBrands } = useBrands();
-
-  let status;
-  switch (props.status) {
-    case "REPAIRED":
-      status = "true";
-      break;
-    case "FAILED":
-    case "PENDING":
-      status = "false";
-  }
 
   let isSparePartsNeeded;
   props.spareParts == ""
@@ -43,7 +42,7 @@ export default function PrepopulatedRepairAttemptForm({
       itemBrand: props.itemBrand,
       itemMaterial: props.itemMaterial,
       hoursWorked: Number(props.hoursWorked),
-      isRepaired: status,
+      repairStatus: props.status,
       isSparePartsNeeded: isSparePartsNeeded,
       spareParts: props.spareParts,
       repairComment: props.repairComment
@@ -70,18 +69,12 @@ export default function PrepopulatedRepairAttemptForm({
         />
 
         {/* Brand, Material */}
-        <FieldSingleSelect
+        <FieldInput
           name="itemBrand"
           label="Brand"
           control={control}
           rules={{ required: true }}
-          options={
-            itemBrands
-              ? itemBrands.map((brand: Brand) => {
-                  return { id: brand.name, text: brand.name };
-                })
-              : []
-          }
+          placeholder=""
         />
         <FieldInput
           name="itemMaterial"
@@ -102,14 +95,14 @@ export default function PrepopulatedRepairAttemptForm({
 
         {/* Spare parts needed?, Part(s) needed */}
         <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
-          <FieldRadio
-            name="isRepaired"
+          <FieldSingleSelect
+            name="repairStatus"
             control={control}
-            label="Repaired?"
-            rules={{ required: true }}
+            options={REPAIR_STATUS_OPTIONS}
+            label="Status"
           />
 
-          <FieldRadio
+          <FieldCheckbox
             name="isSparePartsNeeded"
             control={control}
             label="Spare parts needed?"

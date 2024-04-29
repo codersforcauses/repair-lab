@@ -29,12 +29,6 @@ export const teardown = async () => {
 };
 
 export const seedTestData = async () => {
-  await prisma.brand.create({
-    data: {
-      name: "Apple"
-    }
-  });
-
   await prisma.itemType.create({
     data: {
       name: "Laptop"
@@ -57,7 +51,6 @@ export const seedTestData = async () => {
 
   await prisma.repairRequest.create({
     data: {
-      id: "56005d72-2614-11ee-be56-0242ac120002",
       createdBy: "mock user",
       eventId: "acf5ed50-19a2-11ee-be56-0242ac120002",
       description: "My laptop is broken",
@@ -80,7 +73,7 @@ export const seedTestData = async () => {
  */
 export async function testPaginationResponse<
   T extends Record<string, string | string[]>
->(handler: NextApiHandler, params: T, expectedIDs: string[]) {
+>(handler: NextApiHandler, params: T, expectedIDs: string[] | number[]) {
   await testApiHandler({
     handler,
     params,

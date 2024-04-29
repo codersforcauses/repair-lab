@@ -14,6 +14,7 @@ import {
 } from "react-hook-form";
 export interface FormProps<T extends FieldValues = FieldValues>
   extends UseControllerProps<T> {
+  label?: string;
   children?: React.ReactNode;
 }
 
@@ -27,7 +28,7 @@ export default function FieldCheckbox<T extends FieldValues = FieldValues>({
     <div className="px-2 py-2">
       <input type="checkbox" {...field} id={props.name} className="ml-4 mr-4" />
 
-      <label htmlFor={props.name}>{children}</label>
+      <label htmlFor={props.label}>{children}</label>
     </div>
   );
 }

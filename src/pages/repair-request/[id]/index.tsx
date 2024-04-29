@@ -20,7 +20,7 @@ export default function RepairAttempt() {
     query: { id }
   } = useRouter();
 
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest(id as string);
+  const { mutate: updateRepairRequest } = useUpdateRepairRequest(Number(id));
 
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),

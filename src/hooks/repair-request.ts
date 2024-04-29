@@ -62,7 +62,7 @@ export const useCreateRepairRequest = () => {
   });
 };
 
-export const useUpdateRepairRequest = (id: string | undefined) => {
+export const useUpdateRepairRequest = (id: number | undefined) => {
   const queryClient = useQueryClient();
 
   const mutationFn = async (data: GeneralRepairAttempt) => {

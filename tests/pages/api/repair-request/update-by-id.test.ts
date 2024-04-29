@@ -31,7 +31,7 @@ describe("PATCH /api/repair-request/:id", () => {
           },
           body: JSON.stringify({
             hoursWorked: "asdfasdf",
-            isRepaired: "true",
+            repairStatus: "REPAIRED",
             isSparePartsNeeded: "true",
             spareParts: "battery",
             repairComment: "sfs"
@@ -46,7 +46,7 @@ describe("PATCH /api/repair-request/:id", () => {
   it("should return 404 status code for an invalid repair request", async () => {
     await testApiHandler({
       handler,
-      params: { id: "NONEXISTENT_ID" },
+      params: { id: "1919199" },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "PATCH",
@@ -58,7 +58,7 @@ describe("PATCH /api/repair-request/:id", () => {
             itemBrand: "Wonderland",
             itemMaterial: "Plastic",
             hoursWorked: 1.5,
-            isRepaired: "true",
+            repairStatus: "REPAIRED",
             isSparePartsNeeded: "true",
             spareParts: "battery",
             repairComment: "Fixed"
@@ -71,7 +71,7 @@ describe("PATCH /api/repair-request/:id", () => {
   });
 
   it("should be able to update a repair request", async () => {
-    const id = "56005d72-2614-11ee-be56-0242ac120002";
+    const id = "1";
     await testApiHandler({
       handler,
       params: { id },
@@ -86,7 +86,7 @@ describe("PATCH /api/repair-request/:id", () => {
             itemBrand: "Apple",
             itemMaterial: "Metal",
             hoursWorked: 9.9,
-            isRepaired: "true",
+            repairStatus: "REPAIRED",
             isSparePartsNeeded: "true",
             spareParts: "new brain x1",
             repairComment: "nice brain. fixed!"
@@ -98,7 +98,7 @@ describe("PATCH /api/repair-request/:id", () => {
         const expectedRepairRequest: RepairRequest | null =
           await prisma.repairRequest.findUnique({
             where: {
-              id
+              id: Number(id)
             }
           });
 

@@ -15,7 +15,7 @@ type Props = {
   lastName: string | undefined | null;
   avatar?: string | undefined;
   assignedTo?: string;
-  repairRequestId?: string;
+  repairRequestId?: number;
 };
 
 export default function AssigneeBadge({

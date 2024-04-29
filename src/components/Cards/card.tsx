@@ -10,7 +10,7 @@ import { useUpdateRepairRequest } from "@/hooks/repair-request";
 import { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
 
 export type CardProps = {
-  title?: string;
+  title?: number;
   description?: string;
   image?: string;
   status?: string;

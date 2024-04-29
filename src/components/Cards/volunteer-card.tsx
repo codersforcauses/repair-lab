@@ -15,7 +15,7 @@ type Props = {
   email: string;
   avatar: string;
   acceptedTasksCount: number;
-  repairRequestId: string | undefined;
+  repairRequestId: number | undefined;
   assigned: boolean;
 };
 
@@ -30,9 +30,8 @@ export default function VolunteerCard({
   repairRequestId,
   assigned
 }: Props) {
-  const { mutate: updateRepairRequest } = useUpdateRepairRequest(
-    repairRequestId as string
-  );
+  const { mutate: updateRepairRequest } =
+    useUpdateRepairRequest(repairRequestId);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleClick = () => {
