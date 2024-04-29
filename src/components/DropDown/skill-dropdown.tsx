@@ -1,7 +1,8 @@
-import React, { useState, Fragment, useRef, useEffect } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { GoChevronDown, GoChevronUp } from "react-icons/go";
+
 import SelectedOption from "@/components/Tag/tag";
-import { GoChevronUp, GoChevronDown } from "react-icons/go";
 
 // Define skills
 const options = [
