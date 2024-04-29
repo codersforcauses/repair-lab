@@ -1,12 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { Prisma } from "@prisma/client";
 import { HttpStatusCode } from "axios";
-import { z } from "zod";
 
 import apiHandler from "@/lib/api-handler";
+import { PaginationResponse } from "@/lib/pagination";
 import prisma from "@/lib/prisma";
+import { getRepairRequestSchema } from "@/schema/repair-request";
 import repairRequestService from "@/services/repairRequest";
-import { RepairRequestResponse } from "@/types";
+import userService from "@/services/user";
+import { RepairRequestResponse, SortDirection } from "@/types";
+import { isNumber } from "@/utils";
 
 export default apiHandler({
   get: getRepairRequests
@@ -14,9 +18,23 @@ export default apiHandler({
 
 async function getRepairRequests(
   req: NextApiRequest,
-  res: NextApiResponse<RepairRequestResponse[]>
+  res: NextApiResponse<PaginationResponse<RepairRequestResponse[]>>
 ) {
-  const eventId = z.string().parse(req.query.id);
+  const {
+    id: eventId,
+    sortKey = prisma.repairRequest.fields.requestDate.name,
+    sortMethod = "asc",
+    searchWord,
+    itemType,
+    itemBrand,
+    assignedTo,
+    // pagination
+    page,
+    perPage
+  } = getRepairRequestSchema.parse(req.query);
+
+  const findUnassigned =
+    assignedTo?.length == 1 && assignedTo[0] == "unassigned";
 
   const event = await prisma.event.findUnique({
     where: { id: eventId }
@@ -26,16 +44,67 @@ async function getRepairRequests(
     throw new ApiError(HttpStatusCode.NotFound, "Event not found");
   }
 
-  const repairRequests = await prisma.repairRequest.findMany({
-    where: { event: { id: eventId } },
-    include: {
-      images: true
-    }
-  });
+  const sortObj: Record<string, SortDirection> = {
+    [sortKey]: sortMethod
+  };
 
-  // TODO: make a singular version
-  const repairRequestResponse =
-    await repairRequestService.toClientResponse(repairRequests);
+  // Find user ids that match the search
+  let userIdList = undefined;
+  if (searchWord) {
+    const users = await userService.getAll({
+      query: searchWord,
+      orderBy: "created_at"
+    });
 
+    userIdList = users.map((u) => u.id);
+  }
+
+  // Query DB
+  const where: Prisma.RepairRequestWhereInput = {
+    event: { id: eventId as string },
+    // Need to pass undefined directly to the OR
+    OR: searchWord
+      ? [
+          {
+            id: {
+              equals: isNumber(searchWord) ? Number(searchWord) : undefined
+            }
+          },
+          { description: { contains: searchWord, mode: "insensitive" } },
+          // Users
+          { assignedTo: { in: userIdList } },
+          { createdBy: { in: userIdList } }
+        ]
+      : undefined,
+    item: { name: { in: itemType } },
+    itemBrand: { in: itemBrand },
+    ...(findUnassigned
+      ? { assignedTo: "" }
+      : { assignedTo: { in: assignedTo } })
+  };
+
+  const [repairRequests, totalCount] = await prisma.$transaction([
+    prisma.repairRequest.findMany({
+      where,
+      include: {
+        images: true
+      },
+      orderBy: sortObj,
+      // Pagination
+      skip: (page - 1) * perPage,
+      take: perPage
+    }),
+    prisma.repairRequest.count({ where })
+  ]);
+
+  // Convert to response type
+  const repairRequestResponse = await repairRequestService.toClientResponse(
+    repairRequests,
+    {
+      page,
+      perPage
+    },
+    totalCount
+  );
   return res.status(200).json(repairRequestResponse);
 }

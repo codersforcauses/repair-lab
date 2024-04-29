@@ -1,5 +1,5 @@
-import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
 
 import Account from "@/components/NavBar/account";
@@ -9,7 +9,7 @@ import ProfilePopover from "@/components/ProfilePopover";
 import { useAuth } from "@/hooks/auth";
 import { UserRole } from "@/types";
 
-const adminItems = ["Home", "Events", "Repair Requests"];
+const adminItems = ["Home", "Events", "Repair Requests", "Manage"];
 const clientItems = ["Home", "Events", "My Events"];
 const guestItems = ["Home", "Events"]; // Shown when user is not logged in
 
@@ -17,7 +17,8 @@ const pathMap: { [key: string]: string } = {
   Home: "/",
   Events: "/events",
   "Repair Requests": "/repair-request",
-  "My Events": "/my-events" // To be redirected to a new page for existing repair requests
+  "My Events": "/my-events", // To be redirected to a new page for existing repair requests
+  Manage: "/manage/events"
 };
 
 export interface MenuItems {
@@ -44,18 +45,20 @@ export default function NavBar() {
   }
 
   return (
-    <div className="sticky top-0 z-50 h-[100px] text-lg bg-white drop-shadow-md w-full">
+    <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
       {isLoaded && (
         <div className="flex justify-between items-center mx-auto px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
           <div className="hidden md:flex items-center">
-            <Image
-              src="/images/repair_lab_logo.png"
-              alt="Repair Labs Logo"
-              width={721}
-              height={831}
-              style={{ width: "4rem", height: "4rem" }}
-            />
+            <Link href="/">
+              <Image
+                src="/images/repair_lab_logo.png"
+                alt="Repair Labs Logo"
+                width={721}
+                height={831}
+                style={{ width: "50px", height: "50px" }}
+              />
+            </Link>
             <MenuList items={menuItems} />
           </div>
           <div className="hidden md:flex items-center">
@@ -71,12 +74,14 @@ export default function NavBar() {
             />
           </div>
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 md:hidden ">
-            <Image
-              src="/images/repair_lab_logo.png"
-              alt="Repair Labs Logo"
-              width={50}
-              height={50}
-            />
+            <Link href="/">
+              <Image
+                src="/images/repair_lab_logo.png"
+                alt="Repair Labs Logo"
+                width={50}
+                height={50}
+              />
+            </Link>
           </div>
           <div className="md:hidden flex items-center mt-1.5">
             <ProfilePopover />
