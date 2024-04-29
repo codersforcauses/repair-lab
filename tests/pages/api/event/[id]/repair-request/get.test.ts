@@ -35,21 +35,23 @@ describe("GET /api/event", () => {
 
   // RETURNS CORRECT VALUES
   it("should be able to get repair requests", async () => {
-    await testPaginationResponse<AllowedParams>(handler, { id: "ev-1" }, [
-      "rr-1",
-      "rr-2"
-    ]);
-    await testPaginationResponse<AllowedParams>(handler, { id: "ev-2" }, [
-      "rr-3",
-      "rr-4"
-    ]);
+    await testPaginationResponse<AllowedParams>(
+      handler,
+      { id: "ev-1" },
+      [1, 2]
+    );
+    await testPaginationResponse<AllowedParams>(
+      handler,
+      { id: "ev-2" },
+      [3, 4]
+    );
   });
 
   it("should be able to filter repair requests by searching description", async () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", searchWord: "eggplant" },
-      ["rr-2"]
+      [2]
     );
   });
 
@@ -57,12 +59,12 @@ describe("GET /api/event", () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", searchWord: "Justin" },
-      ["rr-1", "rr-2"]
+      [1, 2]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-2", searchWord: "spongebob" },
-      ["rr-3"]
+      [3]
     );
   });
 
@@ -70,7 +72,7 @@ describe("GET /api/event", () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", searchWord: "Justin" },
-      ["rr-1", "rr-2"]
+      [1, 2]
     );
   });
 
@@ -78,12 +80,12 @@ describe("GET /api/event", () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", itemType: "Laptop" },
-      ["rr-1"]
+      [1]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-2", itemType: "Laptop" },
-      ["rr-3", "rr-4"]
+      [3, 4]
     );
   });
 
@@ -91,12 +93,12 @@ describe("GET /api/event", () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", assignedTo: "user_2" },
-      ["rr-1"]
+      [1]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", assignedTo: "unassigned" },
-      ["rr-2"]
+      [2]
     );
   });
 
@@ -104,17 +106,17 @@ describe("GET /api/event", () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", itemType: "" },
-      ["rr-1", "rr-2"]
+      [1, 2]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", itemBrand: "" },
-      ["rr-1", "rr-2"]
+      [1, 2]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-2", itemBrand: "" },
-      ["rr-3", "rr-4"]
+      [3, 4]
     );
   });
 
@@ -122,12 +124,12 @@ describe("GET /api/event", () => {
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", searchWord: "Justin", perPage: "1", page: "1" },
-      ["rr-1"]
+      [1]
     );
     await testPaginationResponse<AllowedParams>(
       handler,
       { id: "ev-1", searchWord: "Justin", perPage: "1", page: "2" },
-      ["rr-2"]
+      [2]
     );
   });
 
