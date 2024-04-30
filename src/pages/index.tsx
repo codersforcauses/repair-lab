@@ -45,7 +45,7 @@ const Home: NextPageWithLayout = () => {
 
       <section
         id="big-green-area"
-        className="relative w-full min-h-[40rem] sm:min-h-[45rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
+        className="relative w-full min-h-[40rem] sm:min-h-[50rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
       >
         <div id="drill" className="absolute z-10 right-[6%] top-[10%] w-[10%]">
           <Drill />
@@ -95,7 +95,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="white text area pt-[1rem] relative z-10 border-green-500 border-0 sm:min-h-[50rem] min-h-[40rem]">
+      <section className="white text area pt-[1rem] relative z-10 border-green-500 border-0 sm:min-h-[55rem] min-h-[40rem]">
         <Image
           src="/images/white_area_bg_v5.jpg"
           alt="white area bg"
@@ -104,7 +104,7 @@ const Home: NextPageWithLayout = () => {
         />
         <div className="relative lg:grid lg:grid-cols-2 lg:grid-rows-2 grid-cols-1 grid-rows-2 border-red-500 border-0 sm:min-h-[55rem] min-h-[20rem] w-full">
           <div className="flex flex-col row-start-1 row-end-1 col-start-1 col-end-1 border-blue-500 border-0 justify-center items-center">
-            <h2 className="relative text-5xl font-black text-primary-600 z-20 text-center mb-10 mt-4 md:mt-0">
+            <h2 className="relative text-5xl font-black text-primary-600 z-20 text-center mb-10">
               Learn new skills
             </h2>
             <p className="relative z-20 text-xl font-medium text-center lg:w-3/4 w-2/3 mb-14">
@@ -136,10 +136,10 @@ const Home: NextPageWithLayout = () => {
             </div>
           </div>
           <div className="border-pink-500 border-0 flex flex-col justify-center items-center ">
-            <h2 className=" relative z-20 lg:-top-8 text-center text-5xl font-black text-primary-600 mb-10">
+            <h2 className=" relative z-20 text-center text-5xl font-black text-primary-600 mb-10">
               Reduce Waste
             </h2>
-            <p className="relative lg:-top-8 text-center text-xl font-medium lg:w-3/4 w-2/3 mb-16">
+            <p className="relative text-center text-xl font-medium lg:w-3/4 w-2/3 mb-16">
               If you think that we are all creating too much waste by discarding
               everything without even trying to repair, join us at Repair Lab!
               Meet like minded locals and treasure your stuff.
@@ -185,7 +185,7 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="min-h-[22rem] w-full bg-white flex flex-col justify-center">
+      <section className="min-h-[25rem] w-full bg-white flex flex-col justify-center">
         <div className="pb-6 text-center text-5xl font-extrabold text-primary-600">
           Submit item for Repair
         </div>
@@ -201,16 +201,18 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="grey area relative bg-[#56727E] min-h-[11rem] w-full border-yellow-500 border-0 grid grid-cols-2">
+      <section className="grey area relative bg-[#56727E] min-h-[18rem] w-full border-yellow-500 border-0 grid grid-cols-2">
         <div className="flex justify-center items-center">
-          <h5 className="absolute z-10 text-white text-center md:text-2xl sm:text-xl text-lg max-[640px]:text-base lg:text-white font-extrabold mx-4">
-            Click on the icons to go to our socials!
-          </h5>
+          <div className="oval relative w-[70%] h-44 rounded-[50%] bg-primary-500 flex items-center justify-center col-span-1">
+            <h5 className="absolute z-10 text-white text-center text-2xl lg:text-white font-extrabold md:text-yellow-300 sm:text-red-300 mx-4">
+              Click on the icons to go to our socials!
+            </h5>
+          </div>
         </div>
-        <div className="col-span-1 border-red-500 border-0 m-auto sm:w-3/4 w-full sm:p-0 pr-4">
+        <div className="col-span-1 border-red-500 border-0 m-auto w-3/4">
           <div className=" border-blue-500 border-0 ">
             <div className="flex justify-center w-full">
-              <p className="text-white text-bold sm:p-4 md:text-xl text-lg underline text-center break-all w-full">
+              <p className="text-white text-bold sm:p-4 text-xl underline text-center break-all w-full">
                 <a href="mailto:repairlab.perth@gmail.com">
                   Email: repairlab.perth@gmail.com
                 </a>
@@ -221,19 +223,19 @@ const Home: NextPageWithLayout = () => {
                 href="https://www.instagram.com/repair_lab_perth"
                 target="_blank"
               >
-                <FaInstagram className="fill-white md:w-[5rem] md:h-[5rem] sm:w-[4.5rem] sm:h-[4.5rem] w-[3rem] h-[3rem]" />
+                <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
               </a>
               <a
                 href="https://www.facebook.com/RepairLabPerth/"
                 target="_blank"
               >
-                <FaFacebook className="fill-white md:w-[5rem] md:h-[5rem] sm:w-[4.5rem] sm:h-[4.5rem] w-[3rem] h-[3rem]" />
+                <FaFacebook className="fill-white w-[6rem] h-[6rem] " />
               </a>
             </div>
           </div>
         </div>
       </section>
-      <div className="copyright bg-[#4a626c] w-full h-10 p-2 text-white text-center">
+      <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
         Copyright © All Rights Reserved
       </div>
     </div>

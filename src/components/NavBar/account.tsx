@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { FaPlus } from "react-icons/fa";
 
 import Modal from "@/components/Modal";
 import ProfilePopover from "@/components/ProfilePopover";
@@ -16,6 +17,8 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   const router = useRouter();
 
   const [ShowConfirmLogOut, setShowConfirmLogOut] = useState(false);
+  const [isIconHovered, setIsIconHovered] = useState(false); // Add state for icon hover
+
   function confirmLogOut() {
     setShowConfirmLogOut(true);
   }
@@ -25,15 +28,34 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center sm:ml-2 md:ml-4 lg:ml-12">
       {isLoggedIn ? (
         <>
-          <Link
-            href="/repair-request"
-            className="flex items-center justify-center px-3 py-6 mx-4 placeholder:w-[160px] h-[40px]  rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800"
-          >
-            New Repair Request +
-          </Link>
+          <div className="group relative flex flex-col items-center justify-center mx-4">
+            <Link
+              href="/repair-request"
+              className="flex items-center justify-center px-2 h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800 transition-all duration-300 ease-in-out"
+            >
+              {/* Adaptively visible text */}
+              <span className="hidden truncate md:hidden lg:flex placeholder:w-[160px] text-xs md:text-sm lg:text-sm transition-all duration-300 ease-in-out text-clip">
+                New Repair Request +
+              </span>
+              {/* Icon with conditional visibility and size adjustment. Add onMouseEnter and onMouseLeave */}
+              <div
+                onMouseEnter={() => setIsIconHovered(true)}
+                onMouseLeave={() => setIsIconHovered(false)}
+                className="lg:hidden"
+              >
+                <FaPlus className="w-[40px]" />
+              </div>
+            </Link>
+            {/* Modify condition for displaying hover text to depend on isIconHovered state */}
+            {isIconHovered && (
+              <span className="w-[220px] opacity-100 mt-2 bg-primary-700 text-white py-1 px-2 rounded-md absolute top-full text-center lg:hidden">
+                New Repair Request +
+              </span>
+            )}
+          </div>
 
           <ActionButton onClick={confirmLogOut} label="Log Out" />
           <Modal
@@ -46,8 +68,9 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
               <ActionButton onClick={hideConfirmLogOut} label="No" />
             </div>
           </Modal>
-
-          <ProfilePopover />
+          <div className="sm:ml-2 md:ml-4 lg:ml-12">
+            <ProfilePopover />
+          </div>
         </>
       ) : (
         <ActionButton onClick={() => router.push("/login")} label="Sign In" />
@@ -66,7 +89,7 @@ function ActionButton({
   return (
     <button
       onClick={onClick}
-      className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:text-primary-700"
+      className="h-[60px] rounded-lg whitespace-nowrap sm:ml-2 md:ml-4 lg:ml-12 font-medium outline-none text-black hover:text-primary-700"
     >
       {label}
     </button>

@@ -58,8 +58,8 @@ export const createEventSchema = z
     path: ["endDate"]
   });
 
-export const addEventRepairerSchema = z.object({
-  userId: z.array(z.string({ required_error: "UserId is required" })),
+export const modifyEventRepairerSchema = z.object({
+  userId: z.array(z.string({ required_error: "User ID is required" })),
   id: z.string({ required_error: "Event ID is required" })
 });
 
@@ -78,7 +78,9 @@ export const updateEventSchema = z
       .string()
       .datetime({ offset: true, message: "Invalid date format for endDate" })
       .optional(),
-    status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional()
+    status: z.enum(["UPCOMING", "ONGOING", "COMPLETED"]).optional(),
+    thumbnailImage: z.string().optional(), // an optional string that is a URL
+    images: z.array(z.any()).optional()
   })
   .refine(
     (data) => {

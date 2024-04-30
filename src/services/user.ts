@@ -8,13 +8,7 @@ import { getAuth as getClerkAuth } from "@clerk/nextjs/server";
 import { PaginationResponse } from "@/lib/pagination";
 import { User, UserRole, UserSearchQuery } from "@/types";
 
-type ClerkOrderBy =
-  | "created_at"
-  | "updated_at"
-  | "+created_at"
-  | "+updated_at"
-  | "-created_at"
-  | "-updated_at";
+type ClerkOrderBy = "created_at" | "updated_at";
 
 async function getAuth(req: NextApiRequest) {
   const auth = getClerkAuth(req);
@@ -55,6 +49,41 @@ async function getMany(
   };
 }
 
+/**
+ * Goes through and gets all users from the pagination
+ * @param options - { orderBy, query, userId }
+ * @returns A list of all users
+ */
+async function getAll(
+  options: Omit<UserSearchQuery, "page" | "perPage">
+): Promise<User[]> {
+  const { orderBy, query, userId } = options;
+
+  const perRequest = 499;
+
+  const searchRequest = {
+    orderBy: orderBy as ClerkOrderBy,
+    offset: 0,
+    limit: perRequest,
+    query,
+    userId
+  };
+
+  const totalCount = await clerkClient.users.getCount(searchRequest);
+  const allUsers: ClerkUser[] = [];
+  let page = 0;
+  while (allUsers.length < totalCount) {
+    const users = await clerkClient.users.getUserList({
+      ...searchRequest,
+      offset: page * perRequest
+    });
+    if (users.length == 0) break;
+    allUsers.push(...users);
+    page++;
+  }
+
+  return allUsers.map((user) => toResponse(user));
+}
 async function getUserMapFromIds(userIds: string[]) {
   const users = await clerkClient.users.getUserList({ userId: userIds });
   const userMap = users.reduce(
@@ -123,6 +152,7 @@ function unknownUser(userId: string): User {
 const userService = {
   getAuth,
   getMany,
+  getAll,
   getUser,
   getUsers,
   updateRole,

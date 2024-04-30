@@ -47,7 +47,7 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
   const { field, fieldState } = useController(props);
   const [displayText, setDisplayText] = useState(field.value?.toString());
 
-  const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
+  const baseStyle = `flex ${height} ${width} justify-between overflow-hidden rounded-lg bg-white px-3 py-2.5 text-base font-medium text-gray-900 shadow-sm ring-1 ring-inset hover:shadow-grey-300`;
   const normalBorderStyle = `ring-grey-300`;
   const errorBorderStyle = `ring-red-500`;
   return (
@@ -65,11 +65,13 @@ export default function FieldSingleSelect<T extends FieldValues = FieldValues>({
             <Label label={!label ? props.name : label} {...props} />
             {fieldState.invalid && <Error {...props} />}
             {field.value === "" ? (
-              <span className="text-gray-500">
+              <span className="text-gray-500 font-normal">
                 {!placeholder ? `Select ${props.name}` : `${placeholder}`}
               </span>
             ) : (
-              <span className="truncate text-grey-900">{displayText}</span>
+              <span className="truncate text-black font-normal">
+                {displayText}
+              </span>
             )}
             <HiChevronDown
               className="ml-auto h-6 w-5 text-grey-600"

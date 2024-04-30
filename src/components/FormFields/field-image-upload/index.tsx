@@ -27,11 +27,11 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
   const { field } = useController(props);
 
   const [dragging, setDragging] = useState(false);
-  const files = field.value as File[];
+  const files = field.value as File[] | undefined;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const previews = useMemo(() => {
-    return files.map((file) => URL.createObjectURL(file));
+    return files?.map((file) => URL.createObjectURL(file));
   }, [files]);
 
   const handleFiles = (fileList: FileList) => {
@@ -74,7 +74,7 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
       field.onChange([newState]);
     }
     // update internal state
-    const newState = [...files, ...fileArray];
+    const newState = [...(files ?? []), ...fileArray];
     // update rhf state
     field.onChange(newState);
   };
@@ -133,12 +133,12 @@ export default function FieldUpload<T extends FieldValues = FieldValues>({
         htmlFor={props.name}
       >
         <div className="flex flex-wrap items-center justify-center gap-2 p-2">
-          {files.length > 0 ? (
+          {files?.length ? (
             files.map((file, i) => (
               <ImageChip
                 key={i}
                 text={file.name}
-                url={previews[i]}
+                url={previews?.[i]}
                 alt={`Image preview for ${file.name}`}
                 onClick={(e) => {
                   e.preventDefault();
