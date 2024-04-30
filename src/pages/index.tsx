@@ -201,41 +201,42 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="grey area relative bg-[#56727E] min-h-[18rem] w-full border-yellow-500 border-0 grid grid-cols-2">
-        <div className="flex justify-center items-center">
+      <section className="grey area relative bg-[#4E6C79] min-h-[8rem] w-full border-yellow-500 border-0 grid grid-cols-2">
+        {/* <div className="flex justify-center items-center">
           <div className="oval relative w-[70%] h-44 rounded-[50%] bg-primary-500 flex items-center justify-center col-span-1">
-            <h5 className="absolute z-10 text-white text-center text-2xl lg:text-white font-extrabold md:text-yellow-300 sm:text-red-300 mx-4">
+            <h5 className="absolute z-10 text-white text-center text-xl lg:text-2xl lg:text-white font-extrabold mx-4">
               Click on the icons to go to our socials!
             </h5>
           </div>
+        </div> */}
+        <div className="col-span-1">
+          <p className="text-white font-semibold pl-5 pt-5  text-2xl text-left">
+            Contact us
+          </p>
+          <p className="text-white sm:px-8 px-2 text-xl underline text-left break-all w-full">
+            <a href="mailto:repairlab.perth@gmail.com">
+              Email: repairlab.perth@gmail.com
+            </a>
+          </p>
         </div>
-        <div className="col-span-1 border-red-500 border-0 m-auto w-3/4">
-          <div className=" border-blue-500 border-0 ">
-            <div className="flex justify-center w-full">
-              <p className="text-white text-bold sm:p-4 text-xl underline text-center break-all w-full">
-                <a href="mailto:repairlab.perth@gmail.com">
-                  Email: repairlab.perth@gmail.com
-                </a>
-              </p>
-            </div>
-            <div className="flex justify-evenly">
-              <a
-                href="https://www.instagram.com/repair_lab_perth"
-                target="_blank"
-              >
-                <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
-              </a>
-              <a
-                href="https://www.facebook.com/RepairLabPerth/"
-                target="_blank"
-              >
-                <FaFacebook className="fill-white w-[6rem] h-[6rem] " />
-              </a>
-            </div>
+
+        <div className="col-span-1 border-red-500 border-4 m-auto w-3/4">
+          {/* <div className=" border-blue-500 border-0 "> */}
+          <div className="flex justify-evenly">
+            <a
+              href="https://www.instagram.com/repair_lab_perth"
+              target="_blank"
+            >
+              <FaInstagram className="fill-white w-[3rem] h-[3rem] sm:w-[4rem] sm:h-[4rem]" />
+            </a>
+            <a href="https://www.facebook.com/RepairLabPerth/" target="_blank">
+              <FaFacebook className="fill-white w-[3rem] h-[3rem] sm:w-[4rem] sm:h-[4rem] " />
+            </a>
           </div>
+          {/* </div> */}
         </div>
       </section>
-      <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
+      <div className="copyright bg-[#3E5964] w-full h-10 text-white text-center">
         Copyright © All Rights Reserved
       </div>
     </div>
