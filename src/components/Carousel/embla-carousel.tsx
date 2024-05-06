@@ -1,14 +1,40 @@
-import { useState } from "react";
+import React, { useCallback } from "react";
 import Image from "next/image";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
 
 import { Event } from "@/types";
 
-export default function EventsCarousel({ events }: { events?: Event[] }) {
-  const [currentEvent, setCurrentEvent] = useState(0);
+import { DotButton, useDotButton } from "./embla-carousel-button";
 
-  // Testing purposes
-  events = events || [
+type PropType = {
+  events?: Event[];
+  options?: EmblaOptionsType;
+};
+
+const EmblaCarousel: React.FC<PropType> = (props) => {
+  const { events, options } = props;
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
+
+  const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
+    const autoplay = emblaApi?.plugins()?.autoplay;
+    if (!autoplay) return;
+
+    const resetOrStop =
+      autoplay.options.stopOnInteraction === false
+        ? autoplay.reset
+        : autoplay.stop;
+
+    resetOrStop();
+  }, []);
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(
+    emblaApi,
+    onNavButtonClick
+  );
+
+  const this_events = props.events || [
     {
       id: "1",
       createdAt: new Date("2022-03-14T00:00:00.000Z"),
@@ -55,23 +81,12 @@ export default function EventsCarousel({ events }: { events?: Event[] }) {
     }
   ];
 
-  const nextEvent = () => {
-    setCurrentEvent((prev) => (prev + 1) % events.length);
-  };
-  const prevEvent = () => {
-    setCurrentEvent((prev) => (prev - 1 + events.length) % events.length);
-  };
-
   return (
-    <div className="m-auto relative w-full">
-      <div className="flex overflow-hidden w-[340px] md:w-[690px] lg:w-[1020px] items-center m-auto rounded-t-lg">
-        <div className="flex items-center gap-4">
-          {events?.map((event) => (
-            <div
-              className=" shadow-lg shadow-darkAqua-700 w-[340px] transition-transform ease-in-out duration-500 hover:cursor-pointer z-10"
-              key={event.id}
-              style={{ transform: `translateX(-${currentEvent * (100 + 5)}%` }}
-            >
+    <section className="embla">
+      <div className="embla__viewport" ref={emblaRef}>
+        <div className="embla__container">
+          {this_events.map((event, index) => (
+            <div className="embla__slide w-full z-auto" key={index}>
               <div className="w-full h-52 relative rounded-t-lg bg-slate-600 hover:cursor-pointer">
                 <Image
                   src="/images/jeans_repair.jpg"
@@ -101,14 +116,21 @@ export default function EventsCarousel({ events }: { events?: Event[] }) {
           ))}
         </div>
       </div>
-      <div className="absolute flex items-center justify-between inset-0 ">
-        <button className="transition-all ease-in-out duration-150 hover:scale-125 active:scale-150">
-          <BiChevronLeft size={80} color="white" onClick={prevEvent} />
-        </button>
-        <button className="transition-all ease-in-out duration-150 hover:scale-125 active:scale-150">
-          <BiChevronRight size={80} color="white" onClick={nextEvent} />
-        </button>
+      <div className="flex justify-center gap-1 mt-4">
+        <div className="embla__dots">
+          {scrollSnaps.map((_, index) => (
+            <DotButton
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              className={"embla__dot".concat(
+                index === selectedIndex ? " embla__dot--selected" : ""
+              )}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
+
+export default EmblaCarousel;

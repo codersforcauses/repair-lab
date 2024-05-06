@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 
 import Button from "@/components/Button/index";
-import EventsCarousel from "@/components/Carousel/events-carousel";
+import EmblaCarousel from "@/components/Carousel/embla-carousel";
 import NavBar from "@/components/NavBar";
 
 import type { NextPageWithLayout } from "./_app";
@@ -165,7 +165,7 @@ const Home: NextPageWithLayout = () => {
           {" "}
           UPCOMING EVENTS{" "}
         </span>
-        <EventsCarousel />
+        <EmblaCarousel />
       </section>
 
       <section className="min-h-[25rem] w-full bg-white flex flex-col justify-center">
