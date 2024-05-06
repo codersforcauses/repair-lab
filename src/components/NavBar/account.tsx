@@ -28,7 +28,7 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center sm:ml-2 md:ml-4 lg:ml-12">
       {isLoggedIn ? (
         <>
           <div className="group relative flex flex-col items-center justify-center mx-4">
@@ -68,8 +68,9 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
               <ActionButton onClick={hideConfirmLogOut} label="No" />
             </div>
           </Modal>
-
-          <ProfilePopover />
+          <div className="sm:ml-2 md:ml-4 lg:ml-12">
+            <ProfilePopover />
+          </div>
         </>
       ) : (
         <ActionButton onClick={() => router.push("/login")} label="Sign In" />
@@ -88,7 +89,7 @@ function ActionButton({
   return (
     <button
       onClick={onClick}
-      className="w-[160px] h-[60px] rounded-lg font-medium outline-none text-black hover:text-primary-700"
+      className="h-[60px] rounded-lg whitespace-nowrap sm:ml-2 md:ml-4 lg:ml-12 font-medium outline-none text-black hover:text-primary-700"
     >
       {label}
     </button>
