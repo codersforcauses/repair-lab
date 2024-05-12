@@ -102,9 +102,8 @@ const EventCard: React.FC<{ event: EventResponse }> = ({ event }) => {
         <span className="pb-10 font-bold">{event.name}</span>
         <div className="pt-2 text-sm h mb-2 h-32 text-ellipsis">
           <h1 className="font-bold">{event.location}</h1>
-          <h2>
-            {new Date(event.startDate).toDateString()} -{" "}
-            {new Date(event.endDate).toDateString()}
+          <h2 className="text-base">
+            {new Date(event.startDate).toDateString()}
           </h2>
           <p className="pb-3 pl-10 pr-10 pt-2">{event.description}</p>
         </div>
