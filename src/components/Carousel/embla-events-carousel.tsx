@@ -19,6 +19,11 @@ type PropType = {
   options?: EmblaOptionsType;
 };
 
+/**
+ * Displays a carousel of events.
+ *
+ * Fetches events data using the `useEvents` hook and renders an `EventCard` for each event.
+ */
 const EmblaCarousel: React.FC<PropType> = () => {
   // const { events, options } = props; Unused props because events are self-managed for now
 
@@ -85,6 +90,11 @@ const EmblaCarousel: React.FC<PropType> = () => {
   );
 };
 
+/**
+ * Displays an event card.
+ *
+ * @param event - The event to display
+ */
 const EventCard: React.FC<{ event: EventResponse }> = ({ event }) => {
   return (
     <>
