@@ -17,7 +17,7 @@ describe("GET /api/event/:id/repairers", () => {
 
     await prisma.event.create({
       data: {
-        id: "acf5ed50-19a2-11ee-be56-0242ac120003",
+        id: "ev-1",
         createdBy: "Mock Repairer",
         name: "Test Laptop Repair Event",
         location: "Curtin University",
@@ -31,9 +31,20 @@ describe("GET /api/event/:id/repairers", () => {
 
     await prisma.eventRepairer.create({
       data: {
-        id: "88676ba2-8d86-49b1-9969-ba3997917575",
         userId: "Mock Repairer",
-        eventId: "acf5ed50-19a2-11ee-be56-0242ac120003"
+        eventId: "ev-1"
+      }
+    });
+
+    await prisma.repairRequest.create({
+      data: {
+        eventId: "ev-1",
+        description: "Test Laptop repair event.",
+        itemType: "Laptop",
+        itemBrand: "Dell",
+        status: "ACCEPTED",
+        assignedTo: "Mock Repairer",
+        createdBy: "Mock Client"
       }
     });
 
@@ -51,6 +62,7 @@ describe("GET /api/event/:id/repairers", () => {
           id: "Mock Repairer",
           firstName: "Mock",
           lastName: "Repairer",
+          imageUrl: "https://example.com/image.jpg",
           emailAddresses: [
             {
               emailAddress: "test@gmail.com"
@@ -64,10 +76,10 @@ describe("GET /api/event/:id/repairers", () => {
     );
   });
 
-  it("have matched event, repariers, should be able to return valid ones ", async () => {
+  it("should be able to return repairers for a valid event id", async () => {
     await testApiHandler({
       handler,
-      params: { id: "acf5ed50-19a2-11ee-be56-0242ac120003" },
+      params: { id: "ev-1" },
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "GET",
@@ -76,24 +88,25 @@ describe("GET /api/event/:id/repairers", () => {
           }
         });
 
-        const expectedRepairers = [
+        const result = await res.json();
+
+        expect(res.status).toBe(200);
+        expect(result).toMatchObject([
           {
             id: "Mock Repairer",
             firstName: "Mock",
             lastName: "Repairer",
-            emailAddress: "test@gmail.com"
+            emailAddress: "test@gmail.com",
+            role: "CLIENT",
+            imageUrl: "https://example.com/image.jpg",
+            acceptedTasksCount: 1
           }
-        ];
-
-        const result = await res.json();
-
-        expect(res.status).toBe(200);
-        expect(result).toMatchObject(expectedRepairers);
+        ]);
       }
     });
   });
 
-  it("no matched event repairers, should be able to return an empty array ", async () => {
+  it("should return an empty array if the event doesn't exist", async () => {
     await testApiHandler({
       handler,
       params: { id: "not-exists" },

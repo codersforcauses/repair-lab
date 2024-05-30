@@ -1,14 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ItemType } from "@prisma/client";
+import { ItemType, RepairStatus } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
+import FieldCheckbox from "@/components/check-box";
 import FieldInput from "@/components/FormFields/field-input";
-import FieldRadio from "@/components/FormFields/field-radio";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
-import type { GeneralRepairAttempt } from "@/types";
+import type { GeneralRepairAttempt, Option } from "@/types";
+
+const REPAIR_STATUS_OPTIONS: Option[] = [
+  { id: RepairStatus.PENDING, text: "Pending" },
+  { id: RepairStatus.REPAIRED, text: "Repaired" },
+  { id: RepairStatus.FAILED, text: "Failed" }
+];
 
 export default function RepairAttemptForm({
   itemTypes,
@@ -20,11 +26,11 @@ export default function RepairAttemptForm({
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
-      item: "",
+      itemType: "",
       itemBrand: "",
       itemMaterial: "",
       hoursWorked: undefined,
-      isRepaired: undefined,
+      status: RepairStatus.PENDING,
       isSparePartsNeeded: undefined,
       spareParts: "",
       repairComment: ""
@@ -66,7 +72,7 @@ export default function RepairAttemptForm({
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
         <FieldSingleSelect
-          name="item"
+          name="itemType"
           control={control}
           rules={{ required: true }}
           options={actualItemTypes}
@@ -98,14 +104,14 @@ export default function RepairAttemptForm({
 
         {/* Spare parts needed?, Part(s) needed */}
         <div className="flex w-full flex-row gap-8 max-[415px]:gap-3">
-          <FieldRadio
-            name="isRepaired"
+          <FieldSingleSelect
+            name="status"
             control={control}
-            label="Repaired?"
-            rules={{ required: true }}
+            options={REPAIR_STATUS_OPTIONS}
+            label="Status"
           />
 
-          <FieldRadio
+          <FieldCheckbox
             name="isSparePartsNeeded"
             control={control}
             label="Spare parts needed?"

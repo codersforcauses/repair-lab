@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiError } from "next/dist/server/api-utils";
+import { RepairStatus } from "@prisma/client";
 import { HttpStatusCode } from "axios";
 import { z } from "zod";
 
@@ -47,7 +48,7 @@ async function createRepairer(
     throw new ApiError(HttpStatusCode.NotFound, "Users not found / empty");
   }
 
-  const responseEndpoint = await prisma.eventRepairer.createMany({
+  await prisma.eventRepairer.createMany({
     data: userId.map((userId) => ({
       userId: userId as string,
       eventId: id
@@ -62,45 +63,65 @@ async function createRepairer(
 
 async function getRepairers(req: NextApiRequest, res: NextApiResponse<User[]>) {
   const eventId = z.string().parse(req.query.id);
-  const result = await getEventRepairers(eventId as string);
 
-  res.status(200).json(result);
-}
-
-async function getEventRepairers(id: string) {
   // get repairers from table EventRepairer
-  const eventRepairer = await prisma.eventRepairer.findMany({
-    where: { eventId: id }
+  const eventRepairers = await prisma.eventRepairer.findMany({
+    where: { eventId }
   });
 
-  if (eventRepairer.length === 0) {
-    return [];
+  if (eventRepairers.length === 0) {
+    return res.status(200).json([]);
   }
 
-  const userIds = eventRepairer.map((repairer) => repairer.userId);
+  const userIds = eventRepairers.map((repairer) => repairer.userId);
 
-  // get additional informations like firstName, lastName, email
+  // get additional informations like firstName, lastName, email, avatar
   const repairersUsers: Partial<Record<string, User>> =
     await userService.getUserMapFromIds(userIds);
+
+  // Prepare to fetch accepted task counts in parallel
+  const countsPromises = userIds.map((userId) =>
+    prisma.repairRequest.count({
+      where: {
+        assignedTo: userId,
+        status: RepairStatus.ACCEPTED
+      }
+    })
+  );
+
+  const counts = await Promise.all(countsPromises);
 
   /* eslint-disable no-console */
   if (Object.keys(repairersUsers).length !== userIds.length) {
     console.error("Mismatch in users from clerk and database");
   }
-  const repairers = userIds.map((userId) => {
+
+  const repairers = userIds.map((userId, index) => {
     const userData = repairersUsers[userId];
 
     return {
       id: userId,
       firstName: userData?.firstName,
       lastName: userData?.lastName,
-      emailAddress: userData?.emailAddress
+      emailAddress: userData?.emailAddress,
+      role: userData?.role,
+      imageUrl: userData?.imageUrl,
+      acceptedTasksCount: counts[index]
     };
   });
 
-  return repairers as User[];
+  // TODO fix
+  res.status(200).json(repairers as User[]);
 }
 
+export type EventRepairer = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar: string;
+  acceptedTasksCount: number;
+};
 async function deleteRepairers(
   req: NextApiRequest,
   res: NextApiResponse<responseEventRepairer>
@@ -124,7 +145,7 @@ async function deleteRepairers(
     throw new ApiError(HttpStatusCode.NotFound, "Users not found / empty");
   }
 
-  const responseEndpoint = await prisma.eventRepairer.deleteMany({
+  await prisma.eventRepairer.deleteMany({
     where: {
       userId: {
         in: userId

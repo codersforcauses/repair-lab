@@ -3,8 +3,8 @@ import Image from "next/image";
 import { UserResource } from "@clerk/types";
 import { Popover, Transition } from "@headlessui/react";
 import { GoCheck, GoPencil, GoX } from "react-icons/go";
-import SkillDropdown from "@/components/DropDown/skill-dropdown";
 
+import SkillDropdown from "@/components/DropDown/skill-dropdown";
 import { useAuth } from "@/hooks/auth";
 
 async function updateUserMetadata(user: UserResource, description: string) {
