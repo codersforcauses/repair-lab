@@ -10,6 +10,7 @@ import { getRepairRequestSchema } from "@/schema/repair-request";
 import repairRequestService from "@/services/repairRequest";
 import userService from "@/services/user";
 import { RepairRequestResponse, SortDirection } from "@/types";
+import { isNumber } from "@/utils";
 
 export default apiHandler({
   get: getRepairRequests
@@ -64,7 +65,11 @@ async function getRepairRequests(
     // Need to pass undefined directly to the OR
     OR: searchWord
       ? [
-          { id: { contains: searchWord, mode: "insensitive" } },
+          {
+            id: {
+              equals: isNumber(searchWord) ? Number(searchWord) : undefined
+            }
+          },
           { description: { contains: searchWord, mode: "insensitive" } },
           // Users
           { assignedTo: { in: userIdList } },

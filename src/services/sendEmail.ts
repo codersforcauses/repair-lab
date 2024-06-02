@@ -15,7 +15,7 @@ const sesClient = new SESClient({
     : process.env.AWS_SES_MOCK_ENDPOINT
 });
 
-const createEmailContent = async (customerUser: User, requestId: string) => {
+const createEmailContent = async (customerUser: User, requestId: number) => {
   // repair request confimation email
   const repairRequest = await prisma.repairRequest.findUnique({
     where: { id: requestId }
@@ -80,7 +80,7 @@ const createSendEmailCommand = (
 const sendEmail = async (
   subject: string,
   userId: string,
-  requestId: string
+  requestId: number
 ) => {
   const customerUser = await userService.getUser(userId);
   if (customerUser === undefined) {

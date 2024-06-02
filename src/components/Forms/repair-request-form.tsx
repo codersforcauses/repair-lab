@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ItemType } from "@prisma/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "@/components/Button";
@@ -6,65 +7,69 @@ import FieldInput from "@/components/FormFields/field-input";
 import FieldRadio from "@/components/FormFields/field-radio";
 import FieldSingleSelect from "@/components/FormFields/field-single-select";
 import FieldTextArea from "@/components/FormFields/field-text-area";
-import { ItemType, useItemTypes } from "@/hooks/item-types";
 import { updateRepairRequestSchema } from "@/schema/repair-request";
-import type { GeneralRepairAttempt, RepairRequestResponse } from "@/types";
+import type { GeneralRepairAttempt } from "@/types";
 
-export default function PrepopulatedRepairAttemptForm({
-  props,
+export default function RepairAttemptForm({
+  itemTypes,
   onSubmit
 }: {
-  props: RepairRequestResponse;
-  onSubmit: SubmitHandler<GeneralRepairAttempt>;
+  itemTypes?: ItemType[];
+  onSubmit?: SubmitHandler<GeneralRepairAttempt>;
 }) {
-  const { data: itemTypes } = useItemTypes();
-
-  let status;
-  switch (props.status) {
-    case "REPAIRED":
-      status = "true";
-      break;
-    case "FAILED":
-    case "PENDING":
-      status = "false";
-  }
-
-  let isSparePartsNeeded;
-  props.spareParts == ""
-    ? (isSparePartsNeeded = "false")
-    : (isSparePartsNeeded = "true");
-
   const { watch, control, handleSubmit } = useForm<GeneralRepairAttempt>({
     resolver: zodResolver(updateRepairRequestSchema),
     defaultValues: {
-      item: props.itemType,
-      itemBrand: props.itemBrand,
-      itemMaterial: props.itemMaterial,
-      hoursWorked: Number(props.hoursWorked),
-      isRepaired: status,
-      isSparePartsNeeded: isSparePartsNeeded,
-      spareParts: props.spareParts,
-      repairComment: props.repairComment
+      item: "",
+      itemBrand: "",
+      itemMaterial: "",
+      hoursWorked: undefined,
+      isRepaired: undefined,
+      isSparePartsNeeded: undefined,
+      spareParts: "",
+      repairComment: ""
     }
   });
 
+  let actualItemTypes;
+  itemTypes
+    ? (actualItemTypes = itemTypes.map((type) => ({
+        id: type.name,
+        text: type.name
+      })))
+    : (actualItemTypes = [
+        { id: 0, text: "Bike" },
+        { id: 1, text: "Clock" },
+        { id: 2, text: "Computer" }
+      ]);
+
   const watchIsSparePartsNeeded = watch("isSparePartsNeeded");
 
+  const defaultOnSubmit: SubmitHandler<GeneralRepairAttempt> = async (data) => {
+    // console.log(JSON.stringify(data));
+    const response = await fetch(`/api/repair-request`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (response.ok) {
+      alert("Data submitted");
+    } else {
+      alert(`Error! ${response.statusText}`);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
       {/* ID, Item */}
       <div className="m-5 flex flex-wrap gap-2 max-[415px]:m-2">
         <FieldSingleSelect
           name="item"
           control={control}
           rules={{ required: true }}
-          options={
-            itemTypes
-              ? itemTypes.map((itemType: ItemType) => {
-                  return { id: itemType.name, text: itemType.name };
-                })
-              : []
-          }
+          options={actualItemTypes}
         />
 
         {/* Brand, Material */}
@@ -73,7 +78,6 @@ export default function PrepopulatedRepairAttemptForm({
           label="Brand"
           control={control}
           rules={{ required: true }}
-          placeholder=""
         />
         <FieldInput
           name="itemMaterial"
@@ -133,7 +137,9 @@ export default function PrepopulatedRepairAttemptForm({
 
       {/* Submit */}
       <div className="my-5 flex flex-row">
-        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+        <Button onClick={handleSubmit(onSubmit ? onSubmit : defaultOnSubmit)}>
+          Submit
+        </Button>
       </div>
     </form>
   );
