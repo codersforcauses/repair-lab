@@ -19,7 +19,7 @@ export default function RepairAttempt({
   props: RepairRequestResponse;
 }) {
   const { mutate: updateRepairRequest } = useUpdateRepairRequest(
-    props.id as string
+    props.id.toString()
   );
 
   const { data: itemTypes } = useItemTypes();
@@ -56,10 +56,10 @@ export default function RepairAttempt({
 
   return (
     <main className="sm:mx-10 md:mx-16 mx-5 border-0 border-blue-500 h-fit">
-      <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500 pb-2">
+      <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500 pb-1">
         Repair Request ID: {props.id}
       </h4>
-      <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500 max-[860px]:pb-0 pb-2">
+      <h4 className="flex justify-center text-xl max-[860px]:text-lg max-[640px]:text-base font-bold text-primary-500">
         Requested By: {props.createdBy.firstName} {props.createdBy.lastName} on{" "}
         {formatDate(String(props.requestDate))}
       </h4>
@@ -68,8 +68,8 @@ export default function RepairAttempt({
         className="border-0 border-green-500"
       >
         {/* ID, Item */}
-        <div className="m-0 flex flex-col gap-6 sm:m-5 md:mt-5 lg:mt-10 xl:mx-14">
-          <div className="flex flex-col m-auto w-3/4 gap-2 max-[415px]:m-2 mt-2">
+        <div className="m-0 flex flex-col gap-5 sm:m-5 md:mt-5 lg:mt-10 xl:mx-14">
+          <div className="flex flex-col m-auto w-3/4 gap-2 max-[415px]:m-2">
             <FieldSingleSelect
               name="item"
               placeholder="eg. Computer, Bike..."
@@ -102,11 +102,11 @@ export default function RepairAttempt({
           </div>
 
           {/* Spare parts needed?, Part(s) needed */}
-          <div className="flex w-full flex-row justify-center gap-4 max-[415px]:gap-3">
+          <div className="flex w-full flex-row justify-center gap-3 max-[415px]:gap-3">
             {/* Time it took, Repaired? */}
             <FieldRadio
               name="isRepaired"
-              width="w-[33%]"
+              width="w-[33%] md:w-1/2"
               height="min-h-10 max-[960px]:min-h-20"
               axis="flex-col sm:flex-row"
               control={control}
@@ -116,24 +116,36 @@ export default function RepairAttempt({
             <FieldInput
               name="hoursWorked"
               label="Hours taken"
-              width="w-[33%]"
+              width="w-[33%] md:w-1/2"
               height="min-h-10"
               placeholder="Time in hours, e.g. 1.5..."
               control={control}
               rules={{ required: true }}
             />
-            <FieldRadio
+            {/* <FieldRadio
               name="isSparePartsNeeded"
-              width="w-[33%]"
+              width="md:hidden w-[33%]"
               height="min-h-10 max-[960px]:min-h-20"
               axis="flex-col sm:flex-row"
-              labelYPosition="-top-10 sm:-top-3 max-[450px]:-top-10"
+              labelYPosition="-top-10 sm:-top-3 md:-top-10"
+              control={control}
+              label="Spare parts needed?"
+              rules={{ required: true }}
+            /> */}
+          </div>
+          <div className="flex first-letter:flex flex-row justify-center">
+            <FieldRadio
+              name="isSparePartsNeeded"
+              width="w-full"
+              height="min-h-10 max-[960px]:min-h-20"
+              axis="flex-col sm:flex-row"
+              labelYPosition="-top-5 sm:-top-3"
               control={control}
               label="Spare parts needed?"
               rules={{ required: true }}
             />
           </div>
-          <div className="flex flex-col gap-4 h-56">
+          <div className="flex flex-col gap-3 h-56">
             {watchIsSparePartsNeeded === "true" && (
               <FieldInput
                 name="spareParts"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa6";
 
@@ -27,8 +27,49 @@ const RequestView = ({
   repairAttemptProps
 }: RequestProps) => {
   const [showRepairRequestModal, setShowRepairRequestModal] = useState(false);
-  function manageModal() {
-    setShowRepairRequestModal(true);
+  // function manageModal() {
+  //   setShowRepairRequestModal(true);
+  // }
+
+  const useWindowDimensions = () => {
+    const hasWindow = typeof window !== "undefined";
+
+    const getWindowDimensions = useCallback(() => {
+      const width = hasWindow ? window.innerWidth : null;
+      const height = hasWindow ? window.innerHeight : null;
+      return {
+        width,
+        height
+      };
+    }, [hasWindow]);
+
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    );
+
+    useEffect(() => {
+      if (hasWindow) {
+        const handleResize = () => {
+          setWindowDimensions(getWindowDimensions());
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+      }
+    }, [hasWindow, getWindowDimensions]);
+
+    return windowDimensions;
+  };
+
+  const { height, width } = useWindowDimensions();
+
+  function handleRepairClick() {
+    if (width > 640) {
+      setShowRepairRequestModal(true);
+    } else {
+      // this is for if we want to optionally render a seperate page on mobile view
+      setShowRepairRequestModal(false);
+    }
   }
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
@@ -83,8 +124,8 @@ const RequestView = ({
                 <div className="flex justify-center mt-1">
                   <button
                     className="bg-primary-700 px-4 py-1 rounded-lg text-white text-md hover:bg-primary-600"
-                    onClick={manageModal}
-                    onKeyDown={manageModal}
+                    onClick={handleRepairClick}
+                    // onKeyDown={handleRepairClick}
                   >
                     Repair
                   </button>

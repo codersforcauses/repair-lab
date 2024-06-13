@@ -40,7 +40,7 @@ export default function FieldRadio<T extends FieldValues = FieldValues>({
   const baseStyle = `relative flex ${width} ${height} mb-2 items-center justify-between rounded-lg bg-white px-3 py-2.5 text-sm font-medium text-gray-900 border shadow-sm hover:shadow-grey-300`;
   const errorBorderStyle = `border-red-500`;
   const normalBorderStyle = `border-grey-300`;
-  const radioStyle = `my-auto flex ${axis} items-start gap-4 text-xs`;
+  const radioStyle = `m-auto flex ${axis} items-start gap-4 text-xs justify-center`;
 
   return (
     <div
