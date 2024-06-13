@@ -10,6 +10,7 @@ type ModalProps = {
   width?: string;
   height?: string;
   children?: ReactNode;
+  crossWidthAndHeight?: string;
 };
 
 const Modal = ({
@@ -17,8 +18,9 @@ const Modal = ({
   setShowPopup,
   title,
   width = "w-full sm:max-w-lg md:max-w-2xl",
-  height = "h-5/6",
-  children
+  height = "h-fit",
+  children,
+  crossWidthAndHeight = "w-6 h-6"
 }: ModalProps) => {
   return (
     <>
@@ -38,7 +40,7 @@ const Modal = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-grey-950 opacity-20" />
+            <div className="fixed inset-0 bg-grey-950 opacity-65" />
           </Transition.Child>
 
           <div className="fixed inset-0 h-full overflow-y-auto">
@@ -53,7 +55,7 @@ const Modal = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${width} ${height} overflow-auto transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${width} ${height}  transform rounded-2xl bg-white sm:p-6 p-0 text-left align-middle shadow-xl transition-all`}
                 >
                   {title ? (
                     <Dialog.Title
@@ -66,13 +68,18 @@ const Modal = ({
                     ""
                   )}
 
-                  <div>{children}</div>
-                  <button
-                    onClick={() => setShowPopup(false)}
-                    className="absolute right-2 top-2 rounded-lg p-1 hover:bg-gray-50"
-                  >
-                    <AiFillCloseCircle className="text-2xl" color="teal" />
-                  </button>
+                  <div>
+                    {children}
+                    <button
+                      onClick={() => setShowPopup(false)}
+                      className="absolute right-2 top-2 rounded-lg sm:p-1 p-0 hover:bg-gray-50"
+                    >
+                      <AiFillCloseCircle
+                        className={`text-2xl ${crossWidthAndHeight}`}
+                        color="teal"
+                      />
+                    </button>
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

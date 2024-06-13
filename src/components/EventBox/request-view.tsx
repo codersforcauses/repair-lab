@@ -1,17 +1,20 @@
+import { useCallback, useEffect, useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa6";
 
-import { User } from "@/types";
+import RepairAttemptForm from "@/components/Forms/repair-attempt-form";
+import Modal from "@/components/Modal";
+import { RepairRequestResponse, User } from "@/types";
 
 // Contains type of info stored in our event box.
-type RequestProps = {
+export type RequestProps = {
   repairRequestId: number;
   createdBy: User;
   requestDate: string;
   itemType: string;
   itemBrand: string;
   description: string;
-  handleClick?: () => void;
+  repairAttemptProps: RepairRequestResponse;
 };
 
 const RequestView = ({
@@ -20,8 +23,54 @@ const RequestView = ({
   requestDate,
   itemType,
   itemBrand,
-  description
+  description,
+  repairAttemptProps
 }: RequestProps) => {
+  const [showRepairRequestModal, setShowRepairRequestModal] = useState(false);
+  // function manageModal() {
+  //   setShowRepairRequestModal(true);
+  // }
+
+  const useWindowDimensions = () => {
+    const hasWindow = typeof window !== "undefined";
+
+    const getWindowDimensions = useCallback(() => {
+      const width = hasWindow ? window.innerWidth : null;
+      const height = hasWindow ? window.innerHeight : null;
+      return {
+        width,
+        height
+      };
+    }, [hasWindow]);
+
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    );
+
+    useEffect(() => {
+      if (hasWindow) {
+        const handleResize = () => {
+          setWindowDimensions(getWindowDimensions());
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+      }
+    }, [hasWindow, getWindowDimensions]);
+
+    return windowDimensions;
+  };
+
+  const { height, width } = useWindowDimensions();
+
+  function handleRepairClick() {
+    if (width) {
+      width > 640
+        ? setShowRepairRequestModal(true)
+        : setShowRepairRequestModal(false);
+      // this is for if we want to optionally render a seperate page on mobile view
+    }
+  }
   return (
     <div className="mx-5 mt-4 rounded-lg bg-slate-200 shadow-lg">
       <Disclosure>
@@ -34,7 +83,7 @@ const RequestView = ({
             >
               <div className=" flex flex-col text-left py-2">
                 <span className="font-bold">
-                  {repairRequestId}- {createdBy.id}
+                  {repairRequestId}- {createdBy.firstName} {createdBy.lastName}
                 </span>
               </div>
               <FaChevronDown
@@ -75,14 +124,26 @@ const RequestView = ({
                 <div className="flex justify-center mt-1">
                   <button
                     className="bg-primary-700 px-4 py-1 rounded-lg text-white text-md hover:bg-primary-600"
-                    // onClick={() =>
-                    // For future use when linking to issue 198
-                    // router.push("")
-                    // }
+                    onClick={handleRepairClick}
+                    // onKeyDown={handleRepairClick}
                   >
                     Repair
                   </button>
                 </div>
+                <Modal
+                  showModal={showRepairRequestModal}
+                  setShowPopup={setShowRepairRequestModal}
+                  height="h-full overflow-auto"
+                  title="Repair Attempt"
+                  width="w-full sm:w-full md:w-2/3 lg:w-1/2"
+                  crossWidthAndHeight="w-10 h-10"
+                >
+                  <div className="text-center">
+                    <div>
+                      <RepairAttemptForm props={repairAttemptProps} />
+                    </div>
+                  </div>
+                </Modal>
               </Disclosure.Panel>
             </Transition>
           </>
