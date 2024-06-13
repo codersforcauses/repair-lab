@@ -19,7 +19,7 @@ export default function RepairAttempt({
   props: RepairRequestResponse;
 }) {
   const { mutate: updateRepairRequest } = useUpdateRepairRequest(
-    props.id.toString()
+    props.id as unknown as string
   );
 
   const { data: itemTypes } = useItemTypes();
