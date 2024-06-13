@@ -64,11 +64,11 @@ const RequestView = ({
   const { height, width } = useWindowDimensions();
 
   function handleRepairClick() {
-    if (width > 640) {
-      setShowRepairRequestModal(true);
-    } else {
+    if (width) {
+      width > 640
+        ? setShowRepairRequestModal(true)
+        : setShowRepairRequestModal(false);
       // this is for if we want to optionally render a seperate page on mobile view
-      setShowRepairRequestModal(false);
     }
   }
   return (
