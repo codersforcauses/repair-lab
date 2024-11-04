@@ -18,7 +18,7 @@ const Home: NextPageWithLayout = () => {
     <div>
       <div
         id="grid-bg-container"
-        className="relative w-full h-[25rem] sm:h-[30rem] md:h-[35rem] lg:h-[46rem] border-green-500 border-0"
+        className="relative w-full h-[25rem] sm:h-[30rem] md:h-[35rem] lg:h-[40rem] border-green-500 border-0"
       >
         <Image
           src="/images/big_hero_bg.jpg"
@@ -46,7 +46,7 @@ const Home: NextPageWithLayout = () => {
 
       <section
         id="big-green-area"
-        className="relative w-full min-h-[40rem] sm:min-h-[50rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
+        className="relative w-full min-h-[40rem] border-blue-500 border-0 bg-primary-600 bottom-[1px]"
       >
         <div id="drill" className="absolute z-10 right-[6%] top-[10%] w-[10%]">
           <Drill />
@@ -60,7 +60,7 @@ const Home: NextPageWithLayout = () => {
 
         <div
           id="gear"
-          className="absolute z-10 -bottom-[40%] lg:-bottom-[50%] md:-bottom-[50%] md:w-1/2 right-[2%] lg:w-[40%] w-2/3 lg:block hidden"
+          className="absolute z-10 -bottom-[40%] lg:-bottom-[50%] md:-bottom-[50%] md:w-1/2 right-[2%] lg:w-[35%] w-2/3 lg:block hidden"
         >
           <Gear />
         </div>
@@ -87,7 +87,7 @@ const Home: NextPageWithLayout = () => {
               </svg>
             </div>
             <div className="sm:flex justify-center hidden">
-              <h3 className="lg:w-1/3 sm:w-2/3 w-full sm:pr-0 sm:pl-0 pr-5 pl-5 text-white pb-20 font-medium text-3xl ">
+              <h3 className="lg:w-1/3 sm:w-2/3 w-full sm:pr-0 sm:pl-0 pr-5 pl-5 italic text-white pb-20 font-medium text-3xl ">
                 It’s a collaborative and learning experience, a little antidote
                 to modern day throw-away mentality.
               </h3>
@@ -168,7 +168,7 @@ const Home: NextPageWithLayout = () => {
         <EmblaCarousel />
       </section>
 
-      <section className="min-h-[25rem] w-full bg-white flex flex-col justify-center">
+      <section className="min-h-[22rem] w-full bg-white flex flex-col justify-center">
         <div className="pb-6 text-center text-5xl font-extrabold text-primary-600">
           Submit item for Repair
         </div>
@@ -184,41 +184,27 @@ const Home: NextPageWithLayout = () => {
         </div>
       </section>
 
-      <section className="grey area relative bg-[#56727E] min-h-[18rem] w-full border-yellow-500 border-0 grid grid-cols-2">
-        <div className="flex justify-center items-center">
-          <div className="oval relative w-[70%] h-44 rounded-[50%] bg-primary-500 flex items-center justify-center col-span-1">
-            <h5 className="absolute z-10 text-white text-center text-2xl lg:text-white font-extrabold md:text-yellow-300 sm:text-red-300 mx-4">
-              Click on the icons to go to our socials!
-            </h5>
-          </div>
+      <section className="relative bg-[#56727E] min-h-[10rem] w-full flex flex-col items-center justify-center sm:flex-row sm:justify-between">
+        <div className="flex flex-col justify-center  text-left ">
+          <h5 className=" text-white text-2xl lg:text-white mx-4">
+            Contact us
+          </h5>
+          <p className="text-white text-bold sm:p-4 text-xl underline break-all w-full">
+            <a href="mailto:repairlab.perth@gmail.com">
+              Email: repairlab.perth@gmail.com
+            </a>
+          </p>
         </div>
-        <div className="col-span-1 border-red-500 border-0 m-auto w-3/4">
-          <div className=" border-blue-500 border-0 ">
-            <div className="flex justify-center w-full">
-              <p className="text-white text-bold sm:p-4 text-xl underline text-center break-all w-full">
-                <a href="mailto:repairlab.perth@gmail.com">
-                  Email: repairlab.perth@gmail.com
-                </a>
-              </p>
-            </div>
-            <div className="flex justify-evenly">
-              <a
-                href="https://www.instagram.com/repair_lab_perth"
-                target="_blank"
-              >
-                <FaInstagram className="fill-white w-[6rem] h-[6rem]" />
-              </a>
-              <a
-                href="https://www.facebook.com/RepairLabPerth/"
-                target="_blank"
-              >
-                <FaFacebook className="fill-white w-[6rem] h-[6rem] " />
-              </a>
-            </div>
-          </div>
+        <div className="flex md:gap-8 sm:pr-10 md:pr-20 justify-end items-center w-1/4">
+          <a href="https://www.instagram.com/repair_lab_perth" target="_blank">
+            <FaInstagram className="fill-white w-[3rem] h-[3rem]" />
+          </a>
+          <a href="https://www.facebook.com/RepairLabPerth/" target="_blank">
+            <FaFacebook className="fill-white w-[3rem] h-[3rem] " />
+          </a>
         </div>
       </section>
-      <div className="copyright bg-[#56727E] w-full h-10 text-white text-center">
+      <div className="flex items-center justify-center bg-[#3E5964] w-full h-10 text-white text-center">
         Copyright © All Rights Reserved
       </div>
     </div>
