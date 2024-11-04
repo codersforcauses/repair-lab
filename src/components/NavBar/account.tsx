@@ -34,10 +34,10 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
           <div className="group relative flex flex-col items-center justify-center mx-4">
             <Link
               href="/repair-request"
-              className="flex items-center justify-center px-2 h-[40px] rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800 transition-all duration-300 ease-in-out"
+              className="flex items-center justify-center px-4 h-12 rounded-full bg-primary-700 text-white font-medium outline-none hover:bg-primary-800 transition-all duration-300 ease-in-out"
             >
               {/* Adaptively visible text */}
-              <span className="hidden truncate md:hidden lg:flex placeholder:w-[160px] text-xs md:text-sm lg:text-sm transition-all duration-300 ease-in-out text-clip">
+              <span className="hidden truncate md:hidden lg:flex placeholder:w-[160px] text-xs md:text-sm lg:text-lg transition-all duration-300 ease-in-out text-clip">
                 New Repair Request +
               </span>
               {/* Icon with conditional visibility and size adjustment. Add onMouseEnter and onMouseLeave */}
@@ -63,7 +63,7 @@ export default function Account({ isLoggedIn, onSignOut }: Readonly<Props>) {
             showModal={ShowConfirmLogOut}
             setShowPopup={setShowConfirmLogOut}
           >
-            <div className="text-center">
+            <div className="flex justify-evenly items-center">
               <ActionButton onClick={onSignOut} label="Yes" />
               <ActionButton onClick={hideConfirmLogOut} label="No" />
             </div>

@@ -45,18 +45,18 @@ export default function NavBar() {
   }
 
   return (
-    <div className="sticky top-0 z-50 h-[60px] text-lg bg-white">
+    <div className="sticky flex items-center justify-between top-0 z-50 min-h-20 text-lg bg-white border-[1.5px] border-b-grey-300">
       {isLoaded && (
-        <div className="flex justify-between items-center mx-auto px-4">
+        <div className="flex justify-between items-center w-full px-4">
           {/* For larger screen (768px width or above) - horizontal nav bar */}
-          <div className="hidden md:flex items-center">
-            <Link href="/">
+          <div className="hidden md:flex items-center py-2">
+            <Link href="/" className="pr-10">
               <Image
                 src="/images/repair_lab_logo.png"
                 alt="Repair Labs Logo"
                 width={721}
                 height={831}
-                style={{ width: "50px", height: "50px" }}
+                style={{ width: "80px", height: "80px" }}
               />
             </Link>
             <MenuList items={menuItems} />
@@ -78,8 +78,8 @@ export default function NavBar() {
               <Image
                 src="/images/repair_lab_logo.png"
                 alt="Repair Labs Logo"
-                width={50}
-                height={50}
+                width={70}
+                height={70}
               />
             </Link>
           </div>

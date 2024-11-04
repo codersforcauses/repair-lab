@@ -20,7 +20,7 @@ const Modal = ({
   width = "w-full sm:max-w-lg md:max-w-2xl",
   height = "h-fit",
   children,
-  crossWidthAndHeight = "w-6 h-6"
+  crossWidthAndHeight = "w-8 h-8"
 }: ModalProps) => {
   return (
     <>
